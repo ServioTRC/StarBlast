@@ -53,8 +53,8 @@ public class PantallaInicio implements Screen {
     private void crearObjetos() {
         batch = new SpriteBatch();
         escenaInicio = new Stage(vista, batch);
-		Image imgFondo = new Image(texturaFondo);
-		escenaInicio.addActor(imgFondo);
+        Image imgFondo = new Image(texturaFondo);
+        escenaInicio.addActor(imgFondo);
 
 
         TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));
@@ -91,6 +91,7 @@ public class PantallaInicio implements Screen {
     public void render(float delta) {
         borrarPantalla();
         escenaInicio.draw();
+        
     }
 
     private void borrarPantalla() {

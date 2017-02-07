@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -34,6 +35,9 @@ public class PantallaSplashTec implements Screen {
 	//Escenas
 	private Stage escenaSplashTec;
 
+	//Cronómetro
+	private long tiempoInicio;
+
 	public PantallaSplashTec(Menu menu) {
 		this.menu=menu;
 	}
@@ -43,6 +47,7 @@ public class PantallaSplashTec implements Screen {
 		crearCamara();
 		cargarTexturas();
 		crearObjetos();
+		tiempoInicio = TimeUtils.millis();
 	}
 
 	private void crearObjetos() {
@@ -68,7 +73,7 @@ public class PantallaSplashTec implements Screen {
 	}
 
 	private void cargarTexturas() {
-		texturaBtn = new Texture("LogoTec.jpg");
+		texturaBtn = new Texture("LogoTec.png");
 			}
 
 	private void crearCamara() {
@@ -82,10 +87,14 @@ public class PantallaSplashTec implements Screen {
 	public void render(float delta) {
 		borrarPantalla();
 		escenaSplashTec.draw();
+		if((TimeUtils.millis() - tiempoInicio) > 2500){
+			Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaInicio");
+			menu.setScreen(new PantallaInicio(menu));
+		}
 	}
 
 	private void borrarPantalla() {
-		Gdx.gl.glClearColor(0,0,0,1);
+		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
