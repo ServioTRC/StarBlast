@@ -2,17 +2,16 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -30,10 +29,6 @@ public class PantallaMenu implements Screen {
 
     //Texturas
     private Texture texturaFondo;
-    private Texture texturaHistoria;
-    private Texture texturaEndless;
-    private Texture texturaOpciones;
-    private Texture texturaCreditos;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -41,6 +36,9 @@ public class PantallaMenu implements Screen {
     //Escenas
     private Stage escenaMenu;
 
+    //Texto
+    Texto texto;
+    private TextButton.TextButtonStyle textButtonStyle;
 
     public PantallaMenu(Menu menu) {
         this.menu=menu;
@@ -58,7 +56,7 @@ public class PantallaMenu implements Screen {
         escenaMenu = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaMenu.addActor(imgFondo);
-
+        texto = new Texto("Textos/Arcade50.fnt");
         crearBotonCreditos();
         crearBotonEndless();
         crearBotonHistoria();
@@ -70,8 +68,8 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonHistoria(){
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaHistoria));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
+        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
@@ -86,8 +84,8 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonEndless(){
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaEndless));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
+        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
@@ -102,8 +100,8 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonOpciones(){
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaOpciones));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
+        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
@@ -118,10 +116,9 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonCreditos(){
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaCreditos));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
+        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
-
         escenaMenu.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
@@ -135,11 +132,6 @@ public class PantallaMenu implements Screen {
 
     private void cargarTexturas() {
         texturaFondo = new Texture("PantallaMenu/pantallaMenu.jpg");
-        texturaHistoria = new Texture("PantallaMenu/historia.png");
-        texturaEndless = new Texture("PantallaMenu/endless.png");
-        texturaOpciones = new Texture("PantallaMenu/opciones.png");
-        texturaCreditos = new Texture("PantallaMenu/creditos.png");
-
     }
 
     private void crearCamara() {

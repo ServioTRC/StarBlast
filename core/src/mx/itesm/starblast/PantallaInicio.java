@@ -1,18 +1,15 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -38,6 +35,8 @@ public class PantallaInicio implements Screen {
     //Escenas
     private Stage escenaInicio;
 
+    //Texto
+    private Texto tap;
 
     public PantallaInicio(Menu menu) {
         this.menu=menu;
@@ -55,24 +54,10 @@ public class PantallaInicio implements Screen {
         escenaInicio = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
-
-
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
-        btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/4-btnPlay.getHeight()/2);
-
-        escenaInicio.addActor(btnPlay);
-
-        btnPlay.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaMenu");
-                menu.setScreen(new PantallaMenu(menu));
-            }
-        });
-
-        Gdx.input.setInputProcessor(escenaInicio);
+        tap = new Texto("Textos/Arcade50.fnt");
+        Gdx.input.setInputProcessor(new ProcesadorEntrada());
         Gdx.input.setCatchBackKey(false);
+
     }
 
     private void cargarTexturas() {
@@ -91,7 +76,11 @@ public class PantallaInicio implements Screen {
     public void render(float delta) {
         borrarPantalla();
         escenaInicio.draw();
-        
+        batch.setProjectionMatrix(camara.combined);
+        batch.begin();
+        tap.mostrarMensaje(batch,"TAP PARA CONTINUAR",StarBlast.ANCHO_PANTALLA/2,3*StarBlast.ALTO_PANTALLA/8,
+                Color.BLUE,5);
+        batch.end();
     }
 
     private void borrarPantalla() {
@@ -123,4 +112,53 @@ public class PantallaInicio implements Screen {
     public void dispose() {
 
     }
+
+    //Una clase para capturar los eventos del touch (teclado y mouse también)
+    class ProcesadorEntrada implements InputProcessor {
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            //Revisar si hace tap para reiniciar el juego
+            Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaMenu");
+            menu.setScreen(new PantallaMenu(menu));
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return false;
+        }
+    }
+
+
 }
