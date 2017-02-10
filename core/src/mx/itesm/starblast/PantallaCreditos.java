@@ -7,14 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -24,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaCreditos implements Screen{
 
-    private final Menu menu;
+    private final StarBlast menu;
 
     //Camara, vista
     private OrthographicCamera camara;
@@ -43,7 +40,7 @@ public class PantallaCreditos implements Screen{
     Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
-    public PantallaCreditos(Menu menu) {
+    public PantallaCreditos(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -68,7 +65,7 @@ public class PantallaCreditos implements Screen{
     private void crearBotonAtras() {
         textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7*StarBlast.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaInicio.addActor(btnPlay);
 
@@ -86,10 +83,10 @@ public class PantallaCreditos implements Screen{
     }
 
     private void crearCamara() {
-        camara = new OrthographicCamera(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA);
-        camara.position.set(StarBlast.ANCHO_PANTALLA/2, StarBlast.ALTO_PANTALLA/2,0);
+        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
         camara.update();
-        vista = new StretchViewport(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA, camara);
+        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
     }
 
     @Override

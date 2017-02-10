@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaSplashTec implements Screen {
 
-	private final Menu menu;
+	private final StarBlast menu;
 
 	//Camara, vista
 	private OrthographicCamera camara;
@@ -36,7 +36,7 @@ public class PantallaSplashTec implements Screen {
 	//Cronómetro
 	private long tiempoInicio;
 
-	public PantallaSplashTec(Menu menu) {
+	public PantallaSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
 
@@ -54,7 +54,7 @@ public class PantallaSplashTec implements Screen {
 
 		TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));
 		ImageButton btnPlay = new ImageButton(trdBtnPlay);
-		btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
+		btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
 
 		escenaSplashTec.addActor(btnPlay);
 
@@ -75,10 +75,10 @@ public class PantallaSplashTec implements Screen {
 			}
 
 	private void crearCamara() {
-		camara = new OrthographicCamera(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA);
-		camara.position.set(StarBlast.ANCHO_PANTALLA/2,StarBlast.ALTO_PANTALLA/2,0);
+		camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+		camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
 		camara.update();
-		vista = new StretchViewport(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA, camara);
+		vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
 	}
 
 	@Override

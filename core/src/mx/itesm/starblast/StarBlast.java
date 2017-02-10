@@ -1,14 +1,14 @@
 package mx.itesm.starblast;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Game;
 
 /**
  * Created by Servio T on 05/02/2017.
  */
 
-public class StarBlast {
-    public static final float ANCHO_PANTALLA = 2560;
-    public static final float ALTO_PANTALLA = 1440;
-    public static AssetManager ASSET_GENERAL = new AssetManager();
-
+public class StarBlast extends Game {
+    @Override
+    public void create () {
+        setScreen(new PantallaSplashTec(this));
+    }
 }

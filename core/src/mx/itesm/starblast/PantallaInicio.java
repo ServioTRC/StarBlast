@@ -3,7 +3,6 @@ package mx.itesm.starblast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaInicio implements Screen {
 
-    private final Menu menu;
+    private final StarBlast menu;
 
     //Camara, vista
     private OrthographicCamera camara;
@@ -45,7 +44,7 @@ public class PantallaInicio implements Screen {
     private float alpha = (float) 1;
     private int cuenta = 0;
 
-    public PantallaInicio(Menu menu) {
+    public PantallaInicio(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -62,7 +61,7 @@ public class PantallaInicio implements Screen {
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
         tap = new Texto("Textos/Arcade50.fnt");
-        sprite = new GeneralSprite("PantallaInicio/TAP.png", StarBlast.ANCHO_PANTALLA/2,1*StarBlast.ALTO_PANTALLA/4);
+        sprite = new GeneralSprite("PantallaInicio/TAP.png", Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         Gdx.input.setCatchBackKey(false);
     }
@@ -73,10 +72,10 @@ public class PantallaInicio implements Screen {
     }
 
     private void crearCamara() {
-        camara = new OrthographicCamera(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA);
-        camara.position.set(StarBlast.ANCHO_PANTALLA/2, StarBlast.ALTO_PANTALLA/2,0);
+        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
         camara.update();
-        vista = new StretchViewport(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA, camara);
+        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
     }
 
     @Override

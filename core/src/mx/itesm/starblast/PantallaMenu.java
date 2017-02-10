@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaMenu implements Screen {
 
-    private final Menu menu;
+    private final StarBlast menu;
 
     //Camara, vista
     private OrthographicCamera camara;
@@ -40,7 +40,7 @@ public class PantallaMenu implements Screen {
     Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
-    public PantallaMenu(Menu menu) {
+    public PantallaMenu(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -70,7 +70,7 @@ public class PantallaMenu implements Screen {
     private void crearBotonHistoria(){
         textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
-        btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
 
@@ -86,7 +86,7 @@ public class PantallaMenu implements Screen {
     private void crearBotonEndless(){
         textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
-        btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
 
@@ -102,7 +102,7 @@ public class PantallaMenu implements Screen {
     private void crearBotonOpciones(){
         textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
-        btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaMenu.addActor(btnPlay);
 
@@ -118,7 +118,7 @@ public class PantallaMenu implements Screen {
     private void crearBotonCreditos(){
         textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
-        btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
         escenaMenu.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
@@ -135,10 +135,10 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearCamara() {
-        camara = new OrthographicCamera(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA);
-        camara.position.set(StarBlast.ANCHO_PANTALLA/2, StarBlast.ALTO_PANTALLA/2,0);
+        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
         camara.update();
-        vista = new StretchViewport(StarBlast.ANCHO_PANTALLA, StarBlast.ALTO_PANTALLA, camara);
+        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
     }
 
     @Override
