@@ -33,12 +33,13 @@ public class Texto {
         font.draw(batch, glyp, x-anchoTexto/2, y);
     }
 
-    public TextButton.TextButtonStyle generarTexto(Color color, int escala){
+    public TextButton.TextButtonStyle generarTexto(Color colorFont, Color colorPushed, int escala){
         font.getData().setScale(escala);
         skin.addRegions(buttonAtlas);
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        textButtonStyle.fontColor = color;
+        textButtonStyle.fontColor = colorFont;
+        textButtonStyle.downFontColor = colorPushed;
         return textButtonStyle;
     }
 }

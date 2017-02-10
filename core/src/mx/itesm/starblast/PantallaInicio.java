@@ -38,6 +38,13 @@ public class PantallaInicio implements Screen {
     //Texto
     private Texto tap;
 
+    //Sprite
+    private GeneralSprite sprite;
+
+    private float cambioAlpha = (float)1/120;
+    private float alpha = (float) 1;
+    private int cuenta = 0;
+
     public PantallaInicio(Menu menu) {
         this.menu=menu;
     }
@@ -55,9 +62,9 @@ public class PantallaInicio implements Screen {
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
         tap = new Texto("Textos/Arcade50.fnt");
+        sprite = new GeneralSprite("PantallaInicio/TAP.png", StarBlast.ANCHO_PANTALLA/2,1*StarBlast.ALTO_PANTALLA/4);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         Gdx.input.setCatchBackKey(false);
-
     }
 
     private void cargarTexturas() {
@@ -78,8 +85,14 @@ public class PantallaInicio implements Screen {
         escenaInicio.draw();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        tap.mostrarMensaje(batch,"TAP PARA CONTINUAR",StarBlast.ANCHO_PANTALLA/2,3*StarBlast.ALTO_PANTALLA/8,
-                Color.BLUE,5);
+        sprite.draw(batch);
+        sprite.setAlpha(alpha);
+        if(cuenta >= 120){
+            cambioAlpha *= -1;
+            cuenta = 0;
+        }
+        alpha -= cambioAlpha;
+        cuenta++;
         batch.end();
     }
 

@@ -68,7 +68,7 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonHistoria(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
 
@@ -84,7 +84,7 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonEndless(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
@@ -100,7 +100,7 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonOpciones(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2*StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
@@ -116,7 +116,7 @@ public class PantallaMenu implements Screen {
     }
 
     private void crearBotonCreditos(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,5);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,5);
         TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
         btnPlay.setPosition(StarBlast.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
         escenaMenu.addActor(btnPlay);

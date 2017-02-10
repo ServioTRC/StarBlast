@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -30,7 +32,6 @@ public class PantallaCreditos implements Screen{
 
     //Texturas
     private Texture texturaFondo;
-    private Texture texturaBtn;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -38,6 +39,9 @@ public class PantallaCreditos implements Screen{
     //Escenas
     private Stage escenaInicio;
 
+    //Texto
+    Texto texto;
+    private TextButton.TextButtonStyle textButtonStyle;
 
     public PantallaCreditos(Menu menu) {
         this.menu=menu;
@@ -54,11 +58,16 @@ public class PantallaCreditos implements Screen{
         batch = new SpriteBatch();
         escenaInicio = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
+        texto = new Texto("Textos/Arcade50.fnt");
         escenaInicio.addActor(imgFondo);
+        crearBotonAtras();
+        Gdx.input.setInputProcessor(escenaInicio);
+        Gdx.input.setCatchBackKey(false);
+    }
 
-
-        TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));
-        ImageButton btnPlay = new ImageButton(trdBtnPlay);
+    private void crearBotonAtras() {
+        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
+        TextButton btnPlay = new TextButton("X", textButtonStyle);
         btnPlay.setPosition(7*StarBlast.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, StarBlast.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaInicio.addActor(btnPlay);
@@ -66,18 +75,14 @@ public class PantallaCreditos implements Screen{
         btnPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla de Creditos: ","Voy a PantallaMenu");
+                Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
                 menu.setScreen(new PantallaMenu(menu));
             }
         });
-
-        Gdx.input.setInputProcessor(escenaInicio);
-        Gdx.input.setCatchBackKey(false);
     }
 
     private void cargarTexturas() {
         texturaFondo = new Texture("PantallaCreditos/creditos.jpg");
-        texturaBtn = new Texture("PantallaCreditos/back.png");
     }
 
     private void crearCamara() {

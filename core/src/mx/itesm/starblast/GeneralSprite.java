@@ -19,10 +19,9 @@ public class GeneralSprite {
     private AssetManager assetManager;
 
     public GeneralSprite(String ubicacion, float x, float y){
-        this.assetManager = StarBlast.ASSET_GENERAL;
-        this.texture = assetManager.get(ubicacion);
+        this.texture = new Texture(ubicacion);
         this.sprite = new Sprite(texture);
-        this.sprite.setPosition(x,y);
+        this.sprite.setPosition(x-sprite.getWidth()/2,y-sprite.getHeight()/2);
     }
 
     public void setAlpha(float alpha){
