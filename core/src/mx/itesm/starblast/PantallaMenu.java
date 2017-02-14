@@ -110,7 +110,7 @@ public class PantallaMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Me voy a Opciones");
-                //menu.setScreen(new PantallaAcercaDe(menu));
+                menu.setScreen(new PantallaOpciones(menu));
             }
         });
     }
