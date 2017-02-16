@@ -67,7 +67,7 @@ public class PantallaSplashTec implements Screen {
 		});
 
 		Gdx.input.setInputProcessor(escenaSplashTec);
-		Gdx.input.setCatchBackKey(false);
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	private void cargarTexturas() {

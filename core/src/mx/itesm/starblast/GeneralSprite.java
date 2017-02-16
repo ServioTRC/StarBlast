@@ -21,6 +21,7 @@ public class GeneralSprite {
     public GeneralSprite(String ubicacion, float x, float y){
         this.texture = new Texture(ubicacion);
         this.sprite = new Sprite(texture);
+        this.assetManager = Constantes.ASSET_GENERAL;
         this.sprite.setPosition(x-sprite.getWidth()/2,y-sprite.getHeight()/2);
     }
 
@@ -32,8 +33,18 @@ public class GeneralSprite {
         this.sprite.draw(batch);
     }
 
-    public boolean isTouched(float x, float y) {
-        return this.sprite.getBoundingRectangle().contains(x, y);
+    //Gira en sentido contrario a las manecillas del reloj
+    public void rotar(int angulo){
+        this.sprite.setRotation(angulo);
     }
 
+    public boolean isTouched(float x, float y, Camera camara, Viewport vista) {
+        Vector3 vector = new Vector3(x,y,0);
+        camara.unproject(vector);
+        return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);
+    }
+
+    public void escalar(float escala){
+        this.sprite.scale(escala);
+    }
 }

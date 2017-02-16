@@ -63,7 +63,7 @@ public class PantallaInicio implements Screen {
         tap = new Texto("Textos/Arcade50.fnt");
         sprite = new GeneralSprite("PantallaInicio/TAP.png", Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarTexturas() {

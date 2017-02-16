@@ -1,6 +1,7 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,15 +58,25 @@ public class PantallaOpciones implements Screen {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaOpciones = new Stage(vista, batch);
+        escenaOpciones = new Stage(vista, batch)
+        {
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    // DEBUG
+                    Gdx.app.log("Pantalla Opciones: ","Voy al Menu");
+                    menu.setScreen(new PantallaMenu(menu));
+                    return true;
+                }
+                return super.keyDown(keycode);
+            }
+        };
         Image imgFondo = new Image(texturaFondo);
         escenaOpciones.addActor(imgFondo);
         texto = new Texto("Textos/Arcade50.fnt");
         crearBotonAtras();
         crearSprites();
         Gdx.input.setInputProcessor(escenaOpciones);
-        Gdx.input.setCatchBackKey(false);
-
     }
 
     /*private void crearTextos(){
@@ -156,7 +167,7 @@ public class PantallaOpciones implements Screen {
 
     @Override
     public void dispose() {
-
+        Constantes.ASSET_GENERAL.dispose();
     }
 
 }

@@ -17,10 +17,10 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Servio T on 05/02/2017.
+ * Created by Servio T on 15/02/2017.
  */
 
-public class PantallaCreditos implements Screen{
+public class PantallaPuntajes implements Screen {
 
     private final StarBlast menu;
 
@@ -41,7 +41,7 @@ public class PantallaCreditos implements Screen{
     Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
-    public PantallaCreditos(StarBlast menu) {
+    public PantallaPuntajes(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -60,7 +60,7 @@ public class PantallaCreditos implements Screen{
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
-                    Gdx.app.log("Pantalla Creditos: ","Voy al Menu");
+                    Gdx.app.log("Pantalla Puntajes: ","Voy al Menu");
                     menu.setScreen(new PantallaMenu(menu));
                     return true;
                 }
@@ -77,7 +77,7 @@ public class PantallaCreditos implements Screen{
     private void crearBotonAtras() {
         textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2+100, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
         escenaInicio.addActor(btnPlay);
 
@@ -91,7 +91,7 @@ public class PantallaCreditos implements Screen{
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaCreditos/creditos.jpg");
+        texturaFondo = new Texture("PantallaPuntajes/PantallaPuntajes.jpg");
     }
 
     private void crearCamara() {
