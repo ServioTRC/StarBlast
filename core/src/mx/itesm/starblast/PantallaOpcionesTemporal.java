@@ -17,10 +17,10 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Servio T on 10/02/2017.
+ * Created by Servio T on 16/02/2017.
  */
 
-public class PantallaOpciones implements Screen {
+public class PantallaOpcionesTemporal implements Screen {
     private final StarBlast menu;
 
     //Camara, vista
@@ -34,7 +34,7 @@ public class PantallaOpciones implements Screen {
     private SpriteBatch batch;
 
     //Escenas
-    private Stage escenaOpciones;
+    private Stage escenaOpciones2;
 
     //Texto
     private Texto texto;
@@ -45,8 +45,8 @@ public class PantallaOpciones implements Screen {
     private GeneralSprite spriteAyuda;
     private GeneralSprite spriteCodigos;
 
-    public PantallaOpciones(StarBlast menu) {
-        this.menu=menu;
+    public PantallaOpcionesTemporal(StarBlast menu) {
+        this.menu = menu;
     }
 
     @Override
@@ -58,25 +58,25 @@ public class PantallaOpciones implements Screen {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaOpciones = new Stage(vista, batch)
-        {
+        escenaOpciones2 = new Stage(vista, batch) {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
-                    Gdx.app.log("Pantalla Opciones: ","Voy al Menu");
-                    menu.setScreen(new PantallaMenu(menu));
+                    Gdx.app.log("Pantalla Opciones: ", "Voy al Juego");
+                    menu.setScreen(new PantallaJuego(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
         Image imgFondo = new Image(texturaFondo);
-        escenaOpciones.addActor(imgFondo);
+        escenaOpciones2.addActor(imgFondo);
         texto = new Texto("Textos/Arcade50.fnt");
-        crearBotonAtras();
+        crearBotonMenu();
+        crearBotonJuego();
         crearSprites();
-        Gdx.input.setInputProcessor(escenaOpciones);
+        Gdx.input.setInputProcessor(escenaOpciones2);
     }
 
     /*private void crearTextos(){
@@ -92,27 +92,43 @@ public class PantallaOpciones implements Screen {
         escenaOpciones.addActor(btnPlay);
     }*/
 
-    private void crearSprites(){
-        spriteAyuda = new GeneralSprite("PantallaOpciones/BotonAyuda.png",3*Constantes.ANCHO_PANTALLA/4,
-                3*Constantes.ALTO_PANTALLA/4-50);
-        spriteSonido = new GeneralSprite("PantallaOpciones/BotonSonido.png",3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/2);
-        spriteCodigos = new GeneralSprite("PantallaOpciones/botonCodigos.png",3*Constantes.ANCHO_PANTALLA/4,
-                1*Constantes.ALTO_PANTALLA/4+100);
+    private void crearSprites() {
+        spriteAyuda = new GeneralSprite("PantallaOpciones/BotonAyuda.png", 3 * Constantes.ANCHO_PANTALLA / 4,
+                3 * Constantes.ALTO_PANTALLA / 4-50);
+        spriteSonido = new GeneralSprite("PantallaOpciones/BotonSonido.png", 3 * Constantes.ANCHO_PANTALLA / 4,
+                Constantes.ALTO_PANTALLA / 2);
+        spriteCodigos = new GeneralSprite("PantallaOpciones/botonCodigos.png", 3 * Constantes.ANCHO_PANTALLA / 4,
+                1 * Constantes.ALTO_PANTALLA / 4+100);
     }
 
-    private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
-        TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(12*Constantes.ANCHO_PANTALLA/13-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+    private void crearBotonMenu() {
+        textButtonStyle = texto.generarTexto(Color.ORANGE, Color.GOLD, 3);
+        TextButton btnPlay = new TextButton("MENU", textButtonStyle);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA / 3 - btnPlay.getWidth() / 2 -100, Constantes.ALTO_PANTALLA / 4 - btnPlay.getHeight() / 2-100);
 
-        escenaOpciones.addActor(btnPlay);
+        escenaOpciones2.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
+                Gdx.app.log("Pantalla Creditos: ", "Voy a pantalla menu");
                 menu.setScreen(new PantallaMenu(menu));
+            }
+        });
+    }
+
+    private void crearBotonJuego() {
+        textButtonStyle = texto.generarTexto(Color.ORANGE, Color.GOLD, 3);
+        TextButton btnPlay = new TextButton("CONTINUAR", textButtonStyle);
+        btnPlay.setPosition(2 * Constantes.ANCHO_PANTALLA / 3 - btnPlay.getWidth() / 2+50, Constantes.ALTO_PANTALLA / 4 - btnPlay.getHeight() / 2-100);
+
+        escenaOpciones2.addActor(btnPlay);
+
+        btnPlay.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Pantalla Creditos: ", "Voy a pantalla menu");
+                menu.setScreen(new PantallaJuego(menu));
             }
         });
     }
@@ -123,7 +139,7 @@ public class PantallaOpciones implements Screen {
 
     private void crearCamara() {
         camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
+        camara.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
         camara.update();
         vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
     }
@@ -131,7 +147,7 @@ public class PantallaOpciones implements Screen {
     @Override
     public void render(float delta) {
         borrarPantalla();
-        escenaOpciones.draw();
+        escenaOpciones2.draw();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         spriteAyuda.draw(batch);
@@ -141,7 +157,7 @@ public class PantallaOpciones implements Screen {
     }
 
     private void borrarPantalla() {
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
@@ -169,5 +185,4 @@ public class PantallaOpciones implements Screen {
     public void dispose() {
         Constantes.ASSET_GENERAL.dispose();
     }
-
 }

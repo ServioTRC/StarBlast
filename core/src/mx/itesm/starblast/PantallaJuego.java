@@ -177,8 +177,8 @@ public class PantallaJuego implements Screen {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             if(botonPausa.isTouched(screenX, screenY, camara, vista)) {
-                Gdx.app.log("Pantalla Juego: ","Voy al Menu");
-                menu.setScreen(new PantallaMenu(menu));
+                Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
+                menu.setScreen(new PantallaOpcionesTemporal(menu));
             }
             return true;
         }
