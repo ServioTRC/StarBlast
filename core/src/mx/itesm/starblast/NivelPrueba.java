@@ -4,26 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Random;
+import java.math.*;
+
 /**
- * Created by Servio T on 15/02/2017.
+ * Created by Ian Neumann on 16/02/2017.
  */
 
-public class PantallaJuego implements Screen {
+public class NivelPrueba implements Screen{
 
+    private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
 
     //Camara, vista
@@ -45,12 +50,16 @@ public class PantallaJuego implements Screen {
 
     //Sprites
     private GeneralSprite avatar;
+    private ArrayList<NaveEnemiga> enemigos;
+    private ArrayList<GeneralSprite> proyectiles;
     private GeneralSprite enemigo1;
     private GeneralSprite enemigo2;
     private GeneralSprite botonPausa;
     private GeneralSprite controles;
 
-    public PantallaJuego(StarBlast menu) {
+    Vector2 target;
+
+    public NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
 
@@ -62,31 +71,34 @@ public class PantallaJuego implements Screen {
     }
 
     private void crearObjetos() {
+        target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
+
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         texto = new Texto("Textos/Arcade50.fnt");
-        imgFondo.setHeight(1440);
-        imgFondo.setWidth(2560);
+        enemigos = new ArrayList<NaveEnemiga>();
         escenaJuego.addActor(imgFondo);
         crearSprites();
-        Gdx.input.setInputProcessor(new Procesador());
+        Gdx.input.setInputProcessor(new mx.itesm.starblast.NivelPrueba.Procesador());
     }
 
     private void crearSprites() {
         float escala = 1.5f;
         avatar = new GeneralSprite("PantallaJuego/avatar.png",Constantes.ANCHO_PANTALLA/2,
-                Constantes.ALTO_PANTALLA/3);
-        avatar.rotar(20);
-        avatar.escalar(escala);
-        enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
+                Constantes.ALTO_PANTALLA/5);
+        avatar.rotar(90);
+        avatar.escalar(Constantes.ESCALA_NAVES);
+
+        crearEnemigos();
+        /*enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo1.rotar(40);
         enemigo1.escalar(escala);
         enemigo2 = new GeneralSprite("PantallaJuego/enemigo2.png",3*Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo2.rotar(330);
-        enemigo2.escalar(escala);
+        enemigo2.escalar(escala);*/
         botonPausa = new GeneralSprite("PantallaJuego/Pausa.png",11*Constantes.ANCHO_PANTALLA/12,
                 9*Constantes.ALTO_PANTALLA/10);
         botonPausa.escalar(escala);
@@ -94,6 +106,17 @@ public class PantallaJuego implements Screen {
                 Constantes.ALTO_PANTALLA/2);
         controles.escalar(escala);
         controles.setAlpha(0.5f);
+    }
+
+    private void crearEnemigos() {
+        NaveEnemiga enemigo;
+        Random r = new Random();
+        for(int i = 0; i< ENEMIGOS_INICIALES;i++){
+            //enemigo = new NaveEnemiga("PantallaJuego/enemigo"+(r.nextBoolean()?"1.png":"2.png"),r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA);
+            enemigo = new NaveEnemiga("PantallaJuego/enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3);
+            enemigo.escalar(Constantes.ESCALA_NAVES);
+            enemigos.add(enemigo);
+        }
     }
 
     private void cargarTexturas() {
@@ -110,11 +133,33 @@ public class PantallaJuego implements Screen {
     @Override
     public void render(float delta) {
         borrarPantalla();
+        procesarJuego(delta);
+        dibujarElementos();
+    }
+
+    private void procesarJuego(float delta) {
+        moverEnemigos(delta);
+        moverJugador(delta);
+    }
+
+    private void moverJugador(float delta) {
+    }
+
+    private void moverEnemigos(float delta) {
+        for(NaveEnemiga enemigo:enemigos){
+            //enemigo.mover(new Vector2((int)avatar.getSprite().getX(),(int)avatar.getSprite().getY()),delta);
+            //enemigo.mover(new Vector2((int)Constantes.ANCHO_PANTALLA/2,(int)Constantes.ALTO_PANTALLA/2),delta);
+            enemigo.mover(target,delta);
+        }
+    }
+
+    private void dibujarElementos() {
         escenaJuego.draw();
         batch.begin();
         avatar.draw(batch);
-        enemigo1.draw(batch);
-        enemigo2.draw(batch);
+        for (NaveEnemiga enemigo:enemigos){
+            enemigo.draw(batch);
+        }
         botonPausa.draw(batch);
         controles.draw(batch);
         batch.end();
@@ -192,7 +237,8 @@ public class PantallaJuego implements Screen {
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
+            target = new Vector2(screenX,Constantes.ALTO_PANTALLA-screenY);
+            return true;
         }
 
         @Override
@@ -208,3 +254,4 @@ public class PantallaJuego implements Screen {
 
 
 }
+

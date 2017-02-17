@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -70,13 +71,17 @@ public class PantallaMenu implements Screen {
         Image imgFondo = new Image(texturaFondo);
         escenaMenu.addActor(imgFondo);
         texto = new Texto("Textos/Arcade50.fnt");
+        crearBotones();
+
+        Gdx.input.setInputProcessor(escenaMenu);
+    }
+
+    private void crearBotones() {
         crearBotonCreditos();
         crearBotonEndless();
         crearBotonHistoria();
         crearBotonOpciones();
         crearBotonPuntajes();
-
-        Gdx.input.setInputProcessor(escenaMenu);
     }
 
     private void crearBotonHistoria(){
@@ -90,7 +95,7 @@ public class PantallaMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Voy a Modo Historia");
-                menu.setScreen(new PantallaJuego(menu));
+                menu.setScreen(new NivelPrueba(menu));
             }
         });
     }

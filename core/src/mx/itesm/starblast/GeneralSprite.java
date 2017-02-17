@@ -22,6 +22,7 @@ public class GeneralSprite {
         this.texture = new Texture(ubicacion);
         this.sprite = new Sprite(texture);
         this.assetManager = Constantes.ASSET_GENERAL;
+        this.sprite.setCenter(sprite.getWidth()/2,sprite.getHeight()/2);
         this.sprite.setPosition(x-sprite.getWidth()/2,y-sprite.getHeight()/2);
     }
 
@@ -34,7 +35,7 @@ public class GeneralSprite {
     }
 
     //Gira en sentido contrario a las manecillas del reloj
-    public void rotar(int angulo){
+    public void rotar(float angulo){
         this.sprite.setRotation(angulo);
     }
 
@@ -46,5 +47,9 @@ public class GeneralSprite {
 
     public void escalar(float escala){
         this.sprite.scale(escala);
+    }
+
+    public Sprite getSprite(){
+        return this.sprite;
     }
 }
