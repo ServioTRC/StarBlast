@@ -21,13 +21,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Servio T on 05/02/2017.
  */
 
-public class PantallaMenu implements Screen {
+public class PantallaMenu extends Pantalla {
 
     private final StarBlast menu;
-
-    //Camara, vista
-    private OrthographicCamera camara;
-    private Viewport vista;
 
     //Texturas
     private Texture texturaFondo;
@@ -48,7 +44,6 @@ public class PantallaMenu implements Screen {
 
     @Override
     public void show() {
-        crearCamara();
         cargarTexturas();
         crearObjetos();
     }
@@ -167,22 +162,10 @@ public class PantallaMenu implements Screen {
         texturaFondo = new Texture("PantallaMenu/pantallaMenu.jpg");
     }
 
-    private void crearCamara() {
-        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
-        camara.update();
-        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
-    }
-
     @Override
     public void render(float delta) {
         borrarPantalla();
         escenaMenu.draw();
-    }
-
-    private void borrarPantalla() {
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override

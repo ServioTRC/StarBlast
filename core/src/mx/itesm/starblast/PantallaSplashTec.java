@@ -16,13 +16,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class PantallaSplashTec implements Screen {
+public class PantallaSplashTec extends Pantalla {
 
 	private final StarBlast menu;
-
-	//Camara, vista
-	private OrthographicCamera camara;
-	private Viewport vista;
 
 	//Texturas
 	private Texture texturaBtn;
@@ -42,7 +38,6 @@ public class PantallaSplashTec implements Screen {
 
 	@Override
 	public void show() {
-		crearCamara();
 		cargarTexturas();
 		crearObjetos();
 		tiempoInicio = TimeUtils.millis();
@@ -74,13 +69,6 @@ public class PantallaSplashTec implements Screen {
 		texturaBtn = new Texture("LogoTec.png");
 			}
 
-	private void crearCamara() {
-		camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-		camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
-		camara.update();
-		vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
-	}
-
 	@Override
 	public void render(float delta) {
 		borrarPantalla();
@@ -89,11 +77,6 @@ public class PantallaSplashTec implements Screen {
 			Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaInicio");
 			menu.setScreen(new PantallaInicio(menu));
 		}
-	}
-
-	private void borrarPantalla() {
-		Gdx.gl.glClearColor(1,1,1,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override

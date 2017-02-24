@@ -7,8 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 
 public class Constantes {
-    public static final float ANCHO_PANTALLA = 2560;
-    public static final float ALTO_PANTALLA = 1440;
+    public static final float ANCHO_PANTALLA = 1280;
+    public static final float ALTO_PANTALLA = 800;
     public static AssetManager ASSET_GENERAL = new AssetManager();
     public static final float ESCALA_NAVES = 0.5f;
 

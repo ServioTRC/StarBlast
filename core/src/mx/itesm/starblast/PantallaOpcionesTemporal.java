@@ -20,12 +20,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Servio T on 16/02/2017.
  */
 
-public class PantallaOpcionesTemporal implements Screen {
+public class PantallaOpcionesTemporal extends Pantalla {
     private final StarBlast menu;
-
-    //Camara, vista
-    private OrthographicCamera camara;
-    private Viewport vista;
 
     //Texturas
     private Texture texturaFondo;
@@ -51,7 +47,6 @@ public class PantallaOpcionesTemporal implements Screen {
 
     @Override
     public void show() {
-        crearCamara();
         cargarTexturas();
         crearObjetos();
     }
@@ -154,11 +149,6 @@ public class PantallaOpcionesTemporal implements Screen {
         spriteCodigos.draw(batch);
         spriteSonido.draw(batch);
         batch.end();
-    }
-
-    private void borrarPantalla() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override
