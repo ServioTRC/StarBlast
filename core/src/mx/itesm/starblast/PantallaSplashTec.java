@@ -66,7 +66,7 @@ public class PantallaSplashTec extends Pantalla {
 	}
 
 	private void cargarTexturas() {
-		texturaBtn = new Texture("LogoTec.png");
+		texturaBtn = new Texture("LogoTec.jpg");
 			}
 
 	@Override

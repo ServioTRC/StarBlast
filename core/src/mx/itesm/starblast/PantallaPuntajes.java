@@ -66,11 +66,12 @@ public class PantallaPuntajes extends Pantalla {
         texto = new Texto("Textos/Arcade50.fnt");
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
+        crearTitulo();
         Gdx.input.setInputProcessor(escenaInicio);
     }
 
     private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
+        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
         btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2+100, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
@@ -85,8 +86,16 @@ public class PantallaPuntajes extends Pantalla {
         });
     }
 
+    private void crearTitulo() {
+        textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
+        TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA / 2 - btnPlay.getWidth() / 2, 9 * Constantes.ALTO_PANTALLA / 10 - btnPlay.getHeight() / 2);
+
+        escenaInicio.addActor(btnPlay);
+    }
+
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaPuntajes/PantallaPuntajes.jpg");
+        texturaFondo = new Texture("PantallaPuntajes/fondoSimple.jpg");
     }
 
     @Override

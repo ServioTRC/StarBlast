@@ -77,12 +77,13 @@ public class PantallaMenu extends Pantalla {
         crearBotonHistoria();
         crearBotonOpciones();
         crearBotonPuntajes();
+        crearBotonMinijuegos();
     }
 
     private void crearBotonHistoria(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,3);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
-        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/2-btnPlay.getHeight()/2+100);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/2-btnPlay.getHeight()/2+40);
 
         escenaMenu.addActor(btnPlay);
 
@@ -96,9 +97,9 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearBotonEndless(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,3);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
-        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2+100);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2+80);
 
         escenaMenu.addActor(btnPlay);
 
@@ -112,7 +113,7 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearBotonPuntajes(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,3);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
         TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
         btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/3-btnPlay.getHeight()/2-25);
 
@@ -128,9 +129,9 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearBotonOpciones(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,3);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
         TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
-        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2-100);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 2* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2-30);
 
         escenaMenu.addActor(btnPlay);
 
@@ -144,9 +145,9 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearBotonCreditos(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,3);
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
         TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
-        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2-100);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
         escenaMenu.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
@@ -154,6 +155,21 @@ public class PantallaMenu extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: "," Me voy a Créditos");
                 menu.setScreen(new PantallaCreditos(menu));
+            }
+        });
+    }
+
+    private void crearBotonMinijuegos(){
+        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,2);
+        TextButton btnPlay = new TextButton("MINIJUEGOS", textButtonStyle);
+        btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/3-btnPlay.getHeight()/2+40);
+        escenaMenu.addActor(btnPlay);
+
+        btnPlay.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Pantalla Menu: "," Me voy a Minijuegos");
+                //menu.setScreen(new PantallaCreditos(menu));
             }
         });
     }
