@@ -42,4 +42,13 @@ public class Texto {
         textButtonStyle.downFontColor = colorPushed;
         return textButtonStyle;
     }
+
+    public TextButton.TextButtonStyle generarTextoSimple(Color colorFont, int escala){
+        font.getData().setScale(escala);
+        skin.addRegions(buttonAtlas);
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        textButtonStyle.fontColor = colorFont;
+        return textButtonStyle;
+    }
 }

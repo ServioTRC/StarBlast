@@ -69,6 +69,7 @@ public class PantallaMenu extends Pantalla {
         crearBotones();
 
         Gdx.input.setInputProcessor(escenaMenu);
+
     }
 
     private void crearBotones() {

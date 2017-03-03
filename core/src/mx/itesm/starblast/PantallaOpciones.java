@@ -97,7 +97,7 @@ public class PantallaOpciones extends Pantalla {
     }
 
     private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
+        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
         btnPlay.setPosition(12*Constantes.ANCHO_PANTALLA/13-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 

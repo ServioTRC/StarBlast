@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,6 +38,9 @@ public class PantallaPuntajes extends Pantalla {
     Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
+    //Preferencias (archivos)
+    Preferences prefs;
+
     public PantallaPuntajes(StarBlast menu) {
         this.menu=menu;
     }
@@ -67,6 +71,7 @@ public class PantallaPuntajes extends Pantalla {
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
         crearTitulo();
+        imprimirPuntajes();
         Gdx.input.setInputProcessor(escenaInicio);
     }
 
@@ -90,7 +95,27 @@ public class PantallaPuntajes extends Pantalla {
         textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
         TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
         btnPlay.setPosition(Constantes.ANCHO_PANTALLA / 2 - btnPlay.getWidth() / 2, 9 * Constantes.ALTO_PANTALLA / 10 - btnPlay.getHeight() / 2);
+        escenaInicio.addActor(btnPlay);
+    }
 
+    private void imprimirPuntajes(){
+        prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
+        String punt1 = prefs.getString("punt1", "1");
+        crearMarcadores(("1. ".concat(punt1)),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
+        String punt2 = prefs.getString("punt2", "2");
+        crearMarcadores(("2. "+punt2),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-50);
+        String punt3 = prefs.getString("punt3", "3");
+        crearMarcadores(("3. "+punt3),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);
+        String punt4 = prefs.getString("punt4", "4");
+        crearMarcadores(("4. "+punt4),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-150);
+        String punt5 = prefs.getString("punt5", "5");
+        crearMarcadores(("5. "+punt5),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-200);
+    }
+
+    private void crearMarcadores(String nombre, float x, float y){
+        textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
+        TextButton btnPlay = new TextButton(nombre, textButtonStyle);
+        btnPlay.setPosition(x - btnPlay.getWidth() / 2, y - btnPlay.getHeight() / 2);
         escenaInicio.addActor(btnPlay);
     }
 
