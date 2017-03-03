@@ -65,7 +65,7 @@ public class PantallaMenu extends Pantalla {
         };
         Image imgFondo = new Image(texturaFondo);
         escenaMenu.addActor(imgFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         crearBotones();
 
         Gdx.input.setInputProcessor(escenaMenu);

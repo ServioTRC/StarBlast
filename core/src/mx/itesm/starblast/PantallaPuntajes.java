@@ -14,8 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
 
 /**
  * Created by Servio T on 15/02/2017.
@@ -67,7 +66,7 @@ public class PantallaPuntajes extends Pantalla {
             }
         };
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
         crearTitulo();
@@ -100,16 +99,16 @@ public class PantallaPuntajes extends Pantalla {
 
     private void imprimirPuntajes(){
         prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
-        String punt1 = prefs.getString("punt1", "1");
-        crearMarcadores(("1. ".concat(punt1)),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
-        String punt2 = prefs.getString("punt2", "2");
-        crearMarcadores(("2. "+punt2),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-50);
-        String punt3 = prefs.getString("punt3", "3");
-        crearMarcadores(("3. "+punt3),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);
-        String punt4 = prefs.getString("punt4", "4");
-        crearMarcadores(("4. "+punt4),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-150);
-        String punt5 = prefs.getString("punt5", "5");
-        crearMarcadores(("5. "+punt5),Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-200);
+        String punt1 = prefs.getString("punt1", "1. ----- 00000");
+        crearMarcadores(punt1,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
+        String punt2 = prefs.getString("punt2", "2. ----- 00000");
+        crearMarcadores(punt2,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);
+        String punt3 = prefs.getString("punt3", "3. ----- 00000");
+        crearMarcadores(punt3,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-200);
+        String punt4 = prefs.getString("punt4", "4. ----- 00000");
+        crearMarcadores(punt4,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-300);
+        String punt5 = prefs.getString("punt5", "5. ----- 00000");
+        crearMarcadores(punt5,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-400);
     }
 
     private void crearMarcadores(String nombre, float x, float y){

@@ -68,7 +68,7 @@ public class PantallaOpciones extends Pantalla {
         };
         Image imgFondo = new Image(texturaFondo);
         escenaOpciones.addActor(imgFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         crearBotonAtras();
         crearSprites();
         Gdx.input.setInputProcessor(escenaOpciones);

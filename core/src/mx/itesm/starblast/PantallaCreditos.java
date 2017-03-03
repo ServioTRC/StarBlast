@@ -63,7 +63,7 @@ public class PantallaCreditos extends Pantalla{
             }
         };
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
         Gdx.input.setInputProcessor(escenaInicio);

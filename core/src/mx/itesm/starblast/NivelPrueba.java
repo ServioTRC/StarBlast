@@ -26,7 +26,7 @@ import java.math.*;
  * Created by Ian Neumann on 16/02/2017.
  */
 
-public class NivelPrueba implements Screen{
+public class  NivelPrueba implements Screen{
 
     private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;

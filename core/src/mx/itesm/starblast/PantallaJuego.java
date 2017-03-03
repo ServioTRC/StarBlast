@@ -61,7 +61,7 @@ public class PantallaJuego extends Pantalla {
         escenaJuego = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         imgFondo.setScale(3f,3f); //ESCALADO RÁPIDO, PERO ES MEJOR TENER EL FONDO DEL TAMAÑO CORRECTO
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         imgFondo.setHeight(1440);
         imgFondo.setWidth(2560);
         escenaJuego.addActor(imgFondo);

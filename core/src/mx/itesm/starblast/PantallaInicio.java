@@ -31,9 +31,6 @@ public class PantallaInicio extends Pantalla {
     //Escenas
     private Stage escenaInicio;
 
-    //Texto
-    private Texto tap;
-
     //Sprite
     private GeneralSprite sprite;
 
@@ -56,7 +53,6 @@ public class PantallaInicio extends Pantalla {
         escenaInicio = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
-        tap = new Texto("Textos/Arcade50.fnt");
         sprite = new GeneralSprite("PantallaInicio/TAP.png", Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         Gdx.input.setCatchBackKey(true);
