@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,6 +39,9 @@ public class PantallaInicio extends Pantalla {
     private float alpha = (float) 1;
     private int cuenta = 0;
 
+    //EfectosSonoros
+    private Music musicaFondo;
+
     public PantallaInicio(StarBlast menu) {
         this.menu=menu;
     }
@@ -46,6 +50,7 @@ public class PantallaInicio extends Pantalla {
     public void show() {
         cargarTexturas();
         crearObjetos();
+        cargarEfectosSonoros();
     }
 
     private void crearObjetos() {
@@ -54,8 +59,16 @@ public class PantallaInicio extends Pantalla {
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
         sprite = new GeneralSprite("PantallaInicio/TAP.png", Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
+        Gdx.input.setCatchBackKey(false);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        Gdx.input.setCatchBackKey(true);
+    }
+
+    private void cargarEfectosSonoros(){
+        Constantes.ASSET_GENERAL.load("EfectosSonoros/StarWars.mp3", Music.class);
+        Constantes.ASSET_GENERAL.finishLoading();
+        musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/StarWars.mp3");
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
     }
 
     private void cargarTexturas() {
@@ -92,7 +105,7 @@ public class PantallaInicio extends Pantalla {
 
     @Override
     public void resume() {
-
+        musicaFondo.play();
     }
 
     @Override

@@ -223,7 +223,7 @@ public class  NivelPrueba implements Screen{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(botonPausa.isTouched(screenX, screenY, camara, vista)) {
+            if(botonPausa.isTouched(screenX, screenY, camara)) {
                 Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
                 menu.setScreen(new PantallaOpcionesTemporal(menu));
             }

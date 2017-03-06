@@ -12,5 +12,6 @@ public class Constantes {
     public static AssetManager ASSET_GENERAL = new AssetManager();
     public static final float ESCALA_NAVES = 0.5f;
     public static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
-
+    public static boolean MUSICA_HABILITADA = true;
+    public static boolean SONIDO_HABILITADO = true;
 }
