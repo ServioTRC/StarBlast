@@ -50,7 +50,6 @@ public class PantallaInicio extends Pantalla {
     public void show() {
         cargarTexturas();
         crearObjetos();
-        cargarEfectosSonoros();
     }
 
     private void crearObjetos() {
@@ -63,13 +62,6 @@ public class PantallaInicio extends Pantalla {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
 
-    private void cargarEfectosSonoros(){
-        Constantes.ASSET_GENERAL.load("EfectosSonoros/StarWars.mp3", Music.class);
-        Constantes.ASSET_GENERAL.finishLoading();
-        musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/StarWars.mp3");
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
-    }
 
     private void cargarTexturas() {
         texturaFondo = new Texture("PantallaInicio/FondoInicio.jpg");
@@ -105,7 +97,7 @@ public class PantallaInicio extends Pantalla {
 
     @Override
     public void resume() {
-        musicaFondo.play();
+
     }
 
     @Override

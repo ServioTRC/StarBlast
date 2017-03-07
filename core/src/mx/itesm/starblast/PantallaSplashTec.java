@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +33,9 @@ public class PantallaSplashTec extends Pantalla {
 	//Cronómetro
 	private long tiempoInicio;
 
+	//Musica
+	private Music musicaFondo;
+
 	public PantallaSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
@@ -61,13 +65,14 @@ public class PantallaSplashTec extends Pantalla {
 			}
 		});
 
-		Gdx.input.setInputProcessor(escenaSplashTec);
+        Gdx.input.setInputProcessor(escenaSplashTec);
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	private void cargarTexturas() {
 		texturaBtn = new Texture("LogoTec.jpg");
 			}
+
 
 	@Override
 	public void render(float delta) {
@@ -91,7 +96,6 @@ public class PantallaSplashTec extends Pantalla {
 
 	@Override
 	public void resume() {
-
 	}
 
 	@Override
