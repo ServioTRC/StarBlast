@@ -24,7 +24,7 @@ public class StarBlast extends Game {
     @Override
     public void resume(){
         Gdx.app.log("OnResume", "StarBlast");
-        musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/StarWars.mp3");
+        //musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/StarWars.mp3");
         musicaFondo.play();
     }
 
