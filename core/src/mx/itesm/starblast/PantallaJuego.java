@@ -71,15 +71,15 @@ public class PantallaJuego extends Pantalla {
 
     private void crearSprites() {
         float escala = 1.5f;
-        avatar = new GeneralSprite("PantallaJuego/avatar.png",Constantes.ANCHO_PANTALLA/2,
+        avatar = new GeneralSprite("PantallaJuego/Avatar.png",Constantes.ANCHO_PANTALLA/2,
                 Constantes.ALTO_PANTALLA/3);
         avatar.rotar(20);
         avatar.escalar(escala);
-        enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
+        enemigo1 = new GeneralSprite("PantallaJuego/Enemigo1.png",Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo1.rotar(40);
         enemigo1.escalar(escala);
-        enemigo2 = new GeneralSprite("PantallaJuego/enemigo2.png",3*Constantes.ANCHO_PANTALLA/4,
+        enemigo2 = new GeneralSprite("PantallaJuego/Enemigo2.png",3*Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo2.rotar(330);
         enemigo2.escalar(escala);
@@ -93,7 +93,7 @@ public class PantallaJuego extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/fondoSimple.jpg");
+        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
     }
 
     @Override

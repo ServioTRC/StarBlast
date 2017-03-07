@@ -119,7 +119,7 @@ public class PantallaPuntajes extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaPuntajes/fondoSimple.jpg");
+        texturaFondo = new Texture("PantallaPuntajes/FondoSimple.jpg");
     }
 
     @Override

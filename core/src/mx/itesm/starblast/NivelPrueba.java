@@ -120,7 +120,7 @@ public class  NivelPrueba implements Screen{
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/fondoSimple.jpg");
+        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
     }
 
     private void crearCamara() {

@@ -79,7 +79,7 @@ public class PantallaOpciones extends Pantalla {
                 Constantes.ALTO_PANTALLA/3+10);
         spriteReiniciar = new GeneralSprite("PantallaOpciones/BotonReset.png",3*Constantes.ANCHO_PANTALLA/4,
                 Constantes.ALTO_PANTALLA/6+20);
-        spriteBack = new GeneralSprite("PantallaOpciones/back.png",12*Constantes.ANCHO_PANTALLA/13,
+        spriteBack = new GeneralSprite("PantallaOpciones/Back.png",12*Constantes.ANCHO_PANTALLA/13,
                 Constantes.ALTO_PANTALLA/8);
     }
 
@@ -164,7 +164,7 @@ public class PantallaOpciones extends Pantalla {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             if(spriteBack.isTouched(screenX, screenY, camara)){
-                spriteBack.setTexture("PantallaOpciones/backYellow.png");
+                spriteBack.setTexture("PantallaOpciones/BackYellow.png");
             }
             return true;
         }
@@ -185,7 +185,7 @@ public class PantallaOpciones extends Pantalla {
                 Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
                 menu.setScreen(new PantallaMenu(menu));
             } else {
-                spriteBack.setTexture("PantallaOpciones/back.png");
+                spriteBack.setTexture("PantallaOpciones/Back.png");
             }
             return true;
         }

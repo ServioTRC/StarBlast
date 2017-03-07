@@ -176,7 +176,7 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaMenu/pantallaMenu.jpg");
+        texturaFondo = new Texture("PantallaMenu/PantallaMenu.jpg");
     }
 
     @Override

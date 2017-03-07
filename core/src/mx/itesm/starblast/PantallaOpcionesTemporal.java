@@ -92,7 +92,7 @@ public class PantallaOpcionesTemporal extends Pantalla {
                 3 * Constantes.ALTO_PANTALLA / 4-50);
         spriteSonido = new GeneralSprite("PantallaOpciones/BotonSonido.png", 3 * Constantes.ANCHO_PANTALLA / 4,
                 Constantes.ALTO_PANTALLA / 2);
-        spriteCodigos = new GeneralSprite("PantallaOpciones/botonCodigos.png", 3 * Constantes.ANCHO_PANTALLA / 4,
+        spriteCodigos = new GeneralSprite("PantallaOpciones/BotonCodigos.png", 3 * Constantes.ANCHO_PANTALLA / 4,
                 1 * Constantes.ALTO_PANTALLA / 4+100);
     }
 

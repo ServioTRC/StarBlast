@@ -86,7 +86,7 @@ public class PantallaCreditos extends Pantalla{
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaCreditos/creditos.jpg");
+        texturaFondo = new Texture("PantallaCreditos/Creditos.jpg");
     }
 
     @Override
