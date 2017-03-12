@@ -30,6 +30,11 @@ public class GeneralSprite {
         this.sprite.setAlpha(alpha);
     }
 
+    public void setTexture(String ubicacion){
+        this.texture = new Texture(ubicacion);
+        this.sprite.setTexture(texture);
+    }
+
     public void draw(SpriteBatch batch) {
         this.sprite.draw(batch);
     }
@@ -39,7 +44,7 @@ public class GeneralSprite {
         this.sprite.setRotation(angulo);
     }
 
-    public boolean isTouched(float x, float y, Camera camara, Viewport vista) {
+    public boolean isTouched(float x, float y, Camera camara) {
         Vector3 vector = new Vector3(x,y,0);
         camara.unproject(vector);
         return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);

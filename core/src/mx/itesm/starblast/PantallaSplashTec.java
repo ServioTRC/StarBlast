@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,13 +17,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class PantallaSplashTec implements Screen {
+public class PantallaSplashTec extends Pantalla {
 
 	private final StarBlast menu;
-
-	//Camara, vista
-	private OrthographicCamera camara;
-	private Viewport vista;
 
 	//Texturas
 	private Texture texturaBtn;
@@ -36,13 +33,15 @@ public class PantallaSplashTec implements Screen {
 	//Cronómetro
 	private long tiempoInicio;
 
+	//Musica
+	private Music musicaFondo;
+
 	public PantallaSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
 
 	@Override
 	public void show() {
-		crearCamara();
 		cargarTexturas();
 		crearObjetos();
 		tiempoInicio = TimeUtils.millis();
@@ -66,20 +65,14 @@ public class PantallaSplashTec implements Screen {
 			}
 		});
 
-		Gdx.input.setInputProcessor(escenaSplashTec);
+        Gdx.input.setInputProcessor(escenaSplashTec);
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	private void cargarTexturas() {
-		texturaBtn = new Texture("LogoTec.png");
+		texturaBtn = new Texture("LogoTec.jpg");
 			}
 
-	private void crearCamara() {
-		camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-		camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
-		camara.update();
-		vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
-	}
 
 	@Override
 	public void render(float delta) {
@@ -89,11 +82,6 @@ public class PantallaSplashTec implements Screen {
 			Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaInicio");
 			menu.setScreen(new PantallaInicio(menu));
 		}
-	}
-
-	private void borrarPantalla() {
-		Gdx.gl.glClearColor(1,1,1,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override
@@ -108,7 +96,6 @@ public class PantallaSplashTec implements Screen {
 
 	@Override
 	public void resume() {
-
 	}
 
 	@Override

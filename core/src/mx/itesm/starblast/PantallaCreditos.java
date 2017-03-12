@@ -20,13 +20,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Servio T on 05/02/2017.
  */
 
-public class PantallaCreditos implements Screen{
+public class PantallaCreditos extends Pantalla{
 
     private final StarBlast menu;
-
-    //Camara, vista
-    private OrthographicCamera camara;
-    private Viewport vista;
 
     //Texturas
     private Texture texturaFondo;
@@ -47,7 +43,6 @@ public class PantallaCreditos implements Screen{
 
     @Override
     public void show() {
-        crearCamara();
         cargarTexturas();
         crearObjetos();
     }
@@ -68,14 +63,14 @@ public class PantallaCreditos implements Screen{
             }
         };
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
         Gdx.input.setInputProcessor(escenaInicio);
     }
 
     private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,5);
+        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
         btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 
@@ -91,25 +86,13 @@ public class PantallaCreditos implements Screen{
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaCreditos/creditos.jpg");
-    }
-
-    private void crearCamara() {
-        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2,0);
-        camara.update();
-        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
+        texturaFondo = new Texture("PantallaCreditos/Creditos.jpg");
     }
 
     @Override
     public void render(float delta) {
         borrarPantalla();
         escenaInicio.draw();
-    }
-
-    private void borrarPantalla() {
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override
