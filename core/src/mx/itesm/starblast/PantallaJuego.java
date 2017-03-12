@@ -162,7 +162,9 @@ public class PantallaJuego extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(botonPausa.isTouched(screenX, screenY, camara)) {
+            v = new Vector3(screenX,screenY,0);
+            v = camara.unproject(v);
+            if(botonPausa.isTouched(v.x, v.y)) {
                 Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
                 menu.setScreen(new PantallaOpcionesTemporal(menu));
             }

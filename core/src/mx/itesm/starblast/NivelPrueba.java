@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -58,7 +59,6 @@ public class NivelPrueba implements Screen{
     private ArrayList<GeneralSprite> proyectiles;
     private GeneralSprite enemigo1;
     private GeneralSprite enemigo2;
-    private GeneralSprite botonPausa;
     private GeneralSprite controles;
 
     private Vector2 target;
@@ -68,6 +68,8 @@ public class NivelPrueba implements Screen{
     private Stage escenaHUD;
 
     private Touchpad touchpad;
+
+    private Button botonPausa;
 
     private NaveJugador jugador;
 
@@ -92,27 +94,63 @@ public class NivelPrueba implements Screen{
         texto = new Texto(Constantes.TEXTO_FUENTE);
         enemigos = new ArrayList<NaveEnemiga>();
         escenaJuego.addActor(imgFondo);
+
         crearSprites();
-        Gdx.input.setInputProcessor(new mx.itesm.starblast.NivelPrueba.Procesador());
+        crearHud();
 
-        //crearPad();
 
+        Gdx.input.setInputProcessor(escenaHUD);
     }
 
-    private void crearPad() {
-
+    private void crearHud() {
         camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA);
         camaraHUD.position.set(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2,0);
         camaraHUD.update();
         vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA,camaraHUD);
 
+        crearPad();
+        crearBotonPausa();
+    }
+
+    private void crearBotonPausa() {
+        float escala = 0.3f;
+
         Skin skin = new Skin();
-        skin.add("padBack", new Texture("padBack.png"));
-        skin.add("padKnob", new Texture("padKnob.png"));
+        skin.add("Pausa",new Texture("PantallaJuego/Pausa.png"));
+
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.down = skin.getDrawable("Pausa");
+        estilo.up = skin.getDrawable("Pausa");
+
+        botonPausa = new Button(estilo);
+        botonPausa.scaleBy(escala);
+        botonPausa.setPosition(11*Constantes.ANCHO_PANTALLA/12,
+                9*Constantes.ALTO_PANTALLA/10);
+        botonPausa.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Button boton = (Button) actor;
+                if(boton.isPressed()){
+                    Gdx.app.log("Nivel Prueba:", "Voy a pantalla opciones");
+                    menu.setScreen(new PantallaOpciones(menu));
+                }
+            }
+        });
+
+        escenaHUD.addActor(botonPausa);
+    }
+
+    private void crearPad() {
+
+
+
+        Skin skin = new Skin();
+        skin.add("PadBack", new Texture("PadBack.png"));
+        skin.add("PadKnob", new Texture("PadKnob.png"));
 
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
-        estilo.background = skin.getDrawable("padBack");
-        estilo.knob = skin.getDrawable("padKnob");
+        estilo.background = skin.getDrawable("PadBack");
+        estilo.knob = skin.getDrawable("PadKnob");
 
         touchpad = new Touchpad(20, estilo);
         touchpad.setBounds(0, 0, 200, 200);
@@ -121,17 +159,17 @@ public class NivelPrueba implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Touchpad pad = (Touchpad) actor;
-                /*if()
+
                 if (pad.getKnobPercentX()>0.20) {
-                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+
                 } else if (pad.getKnobPercentX()<-0.20){
-                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+
                 } else {
-                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+
                 }
                 if(pad.getKnobPercentY() > 0.20){
-                    mario.saltar();
-                }*/
+
+                }
             }
         });
 
@@ -155,9 +193,7 @@ public class NivelPrueba implements Screen{
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo2.rotar(330);
         enemigo2.escalar(escala);*/
-        botonPausa = new GeneralSprite("PantallaJuego/Pausa.png",11*Constantes.ANCHO_PANTALLA/12,
-                9*Constantes.ALTO_PANTALLA/10);
-        botonPausa.escalar(escala);
+
         controles = new GeneralSprite("PantallaJuego/Controles.png",Constantes.ANCHO_PANTALLA/2,
                 Constantes.ALTO_PANTALLA/2);
         controles.escalar(escala);
@@ -203,8 +239,6 @@ public class NivelPrueba implements Screen{
 
     private void moverEnemigos(float delta) {
         for(NaveEnemiga enemigo:enemigos){
-            //enemigo.mover(new Vector2((int)avatar.getSprite().getX(),(int)avatar.getSprite().getY()),delta);
-            //enemigo.mover(new Vector2((int)Constantes.ANCHO_PANTALLA/2,(int)Constantes.ALTO_PANTALLA/2),delta);
             enemigo.mover(target,delta);
         }
     }
@@ -216,9 +250,13 @@ public class NivelPrueba implements Screen{
         for (NaveEnemiga enemigo:enemigos){
             enemigo.draw(batch);
         }
-        botonPausa.draw(batch);
-        controles.draw(batch);
+        //botonPausa.draw(batch);
+        //comentado para probar el touch pad
+        //controles.draw(batch);
         batch.end();
+
+        batch.setProjectionMatrix(camaraHUD.combined);
+        escenaHUD.draw();
     }
 
     private void borrarPantalla() {
@@ -264,7 +302,7 @@ public class NivelPrueba implements Screen{
                 menu.setScreen(new PantallaMenu(menu));
                 return true;
             }
-            return true;
+            return false;
         }
 
         @Override
@@ -279,11 +317,8 @@ public class NivelPrueba implements Screen{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(botonPausa.isTouched(screenX, screenY, camara)) {
-                Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
-                menu.setScreen(new PantallaOpcionesTemporal(menu));
-            }
-            return true;
+
+            return false;
         }
 
         @Override
@@ -293,10 +328,11 @@ public class NivelPrueba implements Screen{
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            v.set(screenX,screenY,0);
+            return false;
+            /*v.set(screenX,screenY,0);
             camara.unproject(v);
             target = new Vector2(v.x,v.y);
-            return true;
+            return true;*/
         }
 
         @Override

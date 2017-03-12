@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -144,6 +145,7 @@ public class PantallaOpciones extends Pantalla {
     }
 
     private class ProcesadorEntrada implements InputProcessor {
+        private Vector3 vector;
         @Override
         public boolean keyDown(int keycode) {
             Gdx.app.log("Pantalla Creditos: ","Voy al Menu");
@@ -163,7 +165,9 @@ public class PantallaOpciones extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(spriteBack.isTouched(screenX, screenY, camara)){
+            vector = new Vector3(screenX,screenY,0);
+            vector = camara.unproject(vector);
+            if(spriteBack.isTouched(vector.x, vector.y)) {
                 spriteBack.setTexture("PantallaOpciones/BackYellow.png");
             }
             return true;
@@ -171,17 +175,19 @@ public class PantallaOpciones extends Pantalla {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            if(spriteSonido.isTouched(screenX, screenY, camara)){
+            vector = new Vector3(screenX,screenY,0);
+            vector = camara.unproject(vector);
+            if(spriteSonido.isTouched(vector.x, vector.y)){
                 spriteSonido.setTexture("PantallaOpciones/BotonNoSonido.png");
-            } else if(spriteMusica.isTouched(screenX, screenY, camara)){
+            } else if(spriteMusica.isTouched(vector.x, vector.y)){
                 spriteMusica.setTexture("PantallaOpciones/BotonNoMusica.png");
-            } else if(spriteAyuda.isTouched(screenX, screenY, camara)){
+            } else if(spriteAyuda.isTouched(vector.x, vector.y)){
 
-            } else if(spriteCodigos.isTouched(screenX, screenY, camara)){
+            } else if(spriteCodigos.isTouched(vector.x, vector.y)){
 
-            } else if(spriteReiniciar.isTouched(screenX, screenY, camara)){
+            } else if(spriteReiniciar.isTouched(vector.x, vector.y)){
 
-            } else if(spriteBack.isTouched(screenX, screenY, camara)){
+            } else if(spriteBack.isTouched(vector.x, vector.y)){
                 Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
                 menu.setScreen(new PantallaMenu(menu));
             } else {

@@ -44,10 +44,8 @@ public class GeneralSprite {
         this.sprite.setRotation(angulo);
     }
 
-    public boolean isTouched(float x, float y, Camera camara) {
-        Vector3 vector = new Vector3(x,y,0);
-        camara.unproject(vector);
-        return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);
+    public boolean isTouched(float x, float y) {
+        return this.sprite.getBoundingRectangle().contains(x,y);
     }
 
     public void escalar(float escala){
