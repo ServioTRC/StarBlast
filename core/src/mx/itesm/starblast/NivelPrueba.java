@@ -10,9 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -57,7 +61,16 @@ public class NivelPrueba implements Screen{
     private GeneralSprite botonPausa;
     private GeneralSprite controles;
 
-    Vector2 target;
+    private Vector2 target;
+
+    private OrthographicCamera camaraHUD;
+    private Viewport vistaHUD;
+    private Stage escenaHUD;
+
+    private Touchpad touchpad;
+
+    private NaveJugador jugador;
+
 
     public NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -81,6 +94,49 @@ public class NivelPrueba implements Screen{
         escenaJuego.addActor(imgFondo);
         crearSprites();
         Gdx.input.setInputProcessor(new mx.itesm.starblast.NivelPrueba.Procesador());
+
+        //crearPad();
+
+    }
+
+    private void crearPad() {
+
+        camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA);
+        camaraHUD.position.set(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2,0);
+        camaraHUD.update();
+        vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA,camaraHUD);
+
+        Skin skin = new Skin();
+        skin.add("padBack", new Texture("padBack.png"));
+        skin.add("padKnob", new Texture("padKnob.png"));
+
+        Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
+        estilo.background = skin.getDrawable("padBack");
+        estilo.knob = skin.getDrawable("padKnob");
+
+        touchpad = new Touchpad(20, estilo);
+        touchpad.setBounds(0, 0, 200, 200);
+
+        touchpad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Touchpad pad = (Touchpad) actor;
+                /*if()
+                if (pad.getKnobPercentX()>0.20) {
+                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_DERECHA);
+                } else if (pad.getKnobPercentX()<-0.20){
+                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.MOV_IZQUIERDA);
+                } else {
+                    mario.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                }
+                if(pad.getKnobPercentY() > 0.20){
+                    mario.saltar();
+                }*/
+            }
+        });
+
+        escenaHUD = new Stage(vistaHUD);
+        escenaHUD.addActor(touchpad);
     }
 
     private void crearSprites() {
