@@ -206,6 +206,7 @@ public class NivelPrueba implements Screen{
             //enemigo.mover(new Vector2((int)avatar.getSprite().getX(),(int)avatar.getSprite().getY()),delta);
             //enemigo.mover(new Vector2((int)Constantes.ANCHO_PANTALLA/2,(int)Constantes.ALTO_PANTALLA/2),delta);
             enemigo.mover(target,delta);
+            boolean bool = true;
         }
     }
 
