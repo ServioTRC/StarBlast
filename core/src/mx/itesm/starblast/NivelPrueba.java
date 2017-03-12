@@ -30,7 +30,7 @@ import java.math.*;
  * Created by Ian Neumann on 16/02/2017.
  */
 
-public class  NivelPrueba implements Screen{
+public class NivelPrueba implements Screen{
 
     private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
@@ -176,7 +176,7 @@ public class  NivelPrueba implements Screen{
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
+        texturaFondo = new Texture("PantallaJuego/fondoSimple.jpg");
     }
 
     private void crearCamara() {
@@ -206,7 +206,6 @@ public class  NivelPrueba implements Screen{
             //enemigo.mover(new Vector2((int)avatar.getSprite().getX(),(int)avatar.getSprite().getY()),delta);
             //enemigo.mover(new Vector2((int)Constantes.ANCHO_PANTALLA/2,(int)Constantes.ALTO_PANTALLA/2),delta);
             enemigo.mover(target,delta);
-            boolean bool = true;
         }
     }
 
@@ -280,7 +279,7 @@ public class  NivelPrueba implements Screen{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(botonPausa.isTouched(screenX, screenY, camara)) {
+            if(botonPausa.isTouched(screenX, screenY, camara, vista)) {
                 Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
                 menu.setScreen(new PantallaOpcionesTemporal(menu));
             }
