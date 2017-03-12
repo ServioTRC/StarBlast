@@ -67,7 +67,7 @@ public class PantallaOpcionesTemporal extends Pantalla {
         };
         Image imgFondo = new Image(texturaFondo);
         escenaOpciones2.addActor(imgFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto("Textos/ArcadeFont.fnt");
         crearBotonMenu();
         crearBotonJuego();
         crearSprites();

@@ -89,7 +89,7 @@ public class NivelPrueba implements Screen{
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto("Textos/Arcade50.fnt");
+        texto = new Texto(Constantes.TEXTO_FUENTE);
         enemigos = new ArrayList<NaveEnemiga>();
         escenaJuego.addActor(imgFondo);
         crearSprites();
@@ -140,8 +140,8 @@ public class NivelPrueba implements Screen{
     }
 
     private void crearSprites() {
-        float escala = 1.5f;
-        avatar = new GeneralSprite("PantallaJuego/avatar.png",Constantes.ANCHO_PANTALLA/2,
+        float escala = 0.3f;
+        avatar = new GeneralSprite("PantallaJuego/Avatar.png",Constantes.ANCHO_PANTALLA/2,
                 Constantes.ALTO_PANTALLA/5);
         avatar.rotar(90);
         avatar.escalar(Constantes.ESCALA_NAVES);
@@ -161,7 +161,7 @@ public class NivelPrueba implements Screen{
         controles = new GeneralSprite("PantallaJuego/Controles.png",Constantes.ANCHO_PANTALLA/2,
                 Constantes.ALTO_PANTALLA/2);
         controles.escalar(escala);
-        controles.setAlpha(0.5f);
+        controles.setAlpha(1);
     }
 
     private void crearEnemigos() {
@@ -169,14 +169,14 @@ public class NivelPrueba implements Screen{
         Random r = new Random();
         for(int i = 0; i< ENEMIGOS_INICIALES;i++){
             //enemigo = new NaveEnemiga("PantallaJuego/enemigo"+(r.nextBoolean()?"1.png":"2.png"),r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA);
-            enemigo = new NaveEnemiga("PantallaJuego/enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/fondoSimple.jpg");
+        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
     }
 
     private void crearCamara() {
@@ -279,7 +279,7 @@ public class NivelPrueba implements Screen{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if(botonPausa.isTouched(screenX, screenY, camara, vista)) {
+            if(botonPausa.isTouched(screenX, screenY, camara)) {
                 Gdx.app.log("Pantalla Juego: ","Voy a Opciones");
                 menu.setScreen(new PantallaOpcionesTemporal(menu));
             }
@@ -293,7 +293,9 @@ public class NivelPrueba implements Screen{
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            target = new Vector2(screenX,Constantes.ALTO_PANTALLA-screenY);
+            v.set(screenX,screenY,0);
+            camara.unproject(v);
+            target = new Vector2(v.x,v.y);
             return true;
         }
 

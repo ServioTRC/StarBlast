@@ -16,7 +16,7 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int ACELERACION_MAX = 10;
     private static final int ACELERACION_MIN = -10;
     private static final int RANGO_GIRO_MAX = 3;
-    private static final int VELOCIDAD_MAX = 10;
+    private static final int VELOCIDAD_MAX = 7;
     private static final int IMPULSO = 30;
     private final int MOVEMENT_OFFSET = 35;
 
@@ -63,8 +63,8 @@ public class NaveEnemiga extends NavesEspaciales {
             sumaY += vector.y*cont;
             cont--;
         }
-        sprite.setX(sprite.getX()+v.x*velocidad+sumaX);
-        sprite.setY(sprite.getY()+v.y*velocidad+sumaY);
+        sprite.setX((sprite.getX()+v.x*velocidad+sumaX));
+        sprite.setY((sprite.getY()+v.y*velocidad+sumaY));
     }
 
     @Override
@@ -78,8 +78,8 @@ public class NaveEnemiga extends NavesEspaciales {
         }
 
         velocidad += aceleracion;
-        if(velocidad > 10){
-            velocidad = 10;
+        if(velocidad > VELOCIDAD_MAX){
+            velocidad = VELOCIDAD_MAX;
         }
         mover();
     }
@@ -132,7 +132,7 @@ public class NaveEnemiga extends NavesEspaciales {
         angulo%=360;
         girar(angulo,delta);
 
-        if(objetivo.dst2(sprite.getX(),sprite.getY()) < 20000){
+        if(objetivo.dst2(sprite.getX(),sprite.getY()) < 10000){
             if(velocidad > 0) {
                 acelerar(-IMPULSO * delta);
             }
@@ -148,5 +148,12 @@ public class NaveEnemiga extends NavesEspaciales {
 
     public void escalar(float escala){
         this.sprite.escalar(escala);
+    }
+
+    public float getX(){
+        return sprite.getSprite().getX();
+    }
+    public float getY(){
+        return sprite.getSprite().getY();
     }
 }
