@@ -34,5 +34,8 @@ public abstract class NavesEspaciales implements INaveEspacial {
 
     public abstract void escalar(float escala);
 
+    public abstract float getX();
+
+    public abstract float getY();
 
 }

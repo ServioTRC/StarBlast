@@ -18,6 +18,7 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int RANGO_GIRO_MAX = 3;
     private static final int VELOCIDAD_MAX = 7;
     private static final int IMPULSO = 30;
+    private static final int DISTANCIA_FRENADO = 8000;
     private final int MOVEMENT_OFFSET = 35;
 
     private final float dispararCooldown = 500;
@@ -69,23 +70,18 @@ public class NaveEnemiga extends NavesEspaciales {
 
     @Override
     public void acelerar(float aceleracion) {
-        if(aceleracion > ACELERACION_MAX){
-            aceleracion = ACELERACION_MAX;
-        }
-
-        if(aceleracion < ACELERACION_MIN){
-            aceleracion = ACELERACION_MIN;
-        }
+        aceleracion = Math.min(aceleracion,ACELERACION_MAX);
+        aceleracion = Math.max(aceleracion,ACELERACION_MIN);
 
         velocidad += aceleracion;
-        if(velocidad > VELOCIDAD_MAX){
-            velocidad = VELOCIDAD_MAX;
-        }
+
+        velocidad = Math.min(velocidad,VELOCIDAD_MAX);
+
         mover();
     }
 
 
-    private void girar(float angulo,float delta) {
+    private void girar(float angulo) {
         Sprite sprite = this.sprite.getSprite();
 
         if(angulo < 0){
@@ -130,9 +126,9 @@ public class NaveEnemiga extends NavesEspaciales {
         angulo = (float)Math.atan2(objetivo.y-sprite.getY(),objetivo.x-sprite.getX());
         angulo = (float) (angulo*180/(Math.PI));
         angulo%=360;
-        girar(angulo,delta);
+        girar(angulo);
 
-        if(objetivo.dst2(sprite.getX(),sprite.getY()) < 10000){
+        if(objetivo.dst2(sprite.getX(),sprite.getY()) < DISTANCIA_FRENADO){
             if(velocidad > 0) {
                 acelerar(-IMPULSO * delta);
             }
@@ -150,9 +146,11 @@ public class NaveEnemiga extends NavesEspaciales {
         this.sprite.escalar(escala);
     }
 
+    @Override
     public float getX(){
         return sprite.getSprite().getX();
     }
+    @Override
     public float getY(){
         return sprite.getSprite().getY();
     }

@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -98,7 +99,7 @@ public class NivelPrueba implements Screen{
         crearSprites();
         crearHud();
 
-
+        //Gdx.input.setInputProcessor(new Procesador());
         Gdx.input.setInputProcessor(escenaHUD);
     }
 
@@ -160,15 +161,17 @@ public class NivelPrueba implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 Touchpad pad = (Touchpad) actor;
 
-                if (pad.getKnobPercentX()>0.20) {
-
-                } else if (pad.getKnobPercentX()<-0.20){
-
-                } else {
-
+                if (Math.abs(pad.getKnobPercentX())> Constantes.TOUCHPAD_DEADZONE) {
+                    jugador.girar(pad.getKnobPercentX());
                 }
-                if(pad.getKnobPercentY() > 0.20){
-
+                else {
+                    jugador.girar(0);
+                }
+                if(Math.abs(pad.getKnobPercentY()) > Constantes.TOUCHPAD_DEADZONE){
+                    jugador.acelerar(pad.getKnobPercentY());
+                }
+                else{
+                    jugador.acelerar(0);
                 }
             }
         });
@@ -179,12 +182,12 @@ public class NivelPrueba implements Screen{
 
     private void crearSprites() {
         float escala = 0.3f;
-        avatar = new GeneralSprite("PantallaJuego/Avatar.png",Constantes.ANCHO_PANTALLA/2,
-                Constantes.ALTO_PANTALLA/5);
-        avatar.rotar(90);
-        avatar.escalar(Constantes.ESCALA_NAVES);
 
         crearEnemigos();
+
+        jugador = new NaveJugador("PantallaJuego/Avatar.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5);
+        jugador.escalar(Constantes.ESCALA_NAVES);
+
         /*enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3);
         enemigo1.rotar(40);
@@ -230,14 +233,17 @@ public class NivelPrueba implements Screen{
     }
 
     private void procesarJuego(float delta) {
+
         moverEnemigos(delta);
         moverJugador(delta);
     }
 
     private void moverJugador(float delta) {
+        jugador.mover(target,delta);
     }
 
     private void moverEnemigos(float delta) {
+        target = new Vector2(jugador.getX(),jugador.getY());
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
         }
@@ -246,7 +252,7 @@ public class NivelPrueba implements Screen{
     private void dibujarElementos() {
         escenaJuego.draw();
         batch.begin();
-        avatar.draw(batch);
+        jugador.draw(batch);
         for (NaveEnemiga enemigo:enemigos){
             enemigo.draw(batch);
         }
@@ -328,11 +334,11 @@ public class NivelPrueba implements Screen{
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-            /*v.set(screenX,screenY,0);
+            //return false;
+            v.set(screenX,screenY,0);
             camara.unproject(v);
             target = new Vector2(v.x,v.y);
-            return true;*/
+            return true;
         }
 
         @Override
