@@ -68,6 +68,7 @@ public class PantallaMenu extends Pantalla {
         texto = new Texto(Constantes.TEXTO_FUENTE);
         crearBotones();
 
+        Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(escenaMenu);
 
     }
@@ -170,7 +171,7 @@ public class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: "," Me voy a Minijuegos");
-                //menu.setScreen(new PantallaCreditos(menu));
+                menu.setScreen(new PantallaSeleccionMinijuegos(menu));
             }
         });
     }
