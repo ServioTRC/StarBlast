@@ -54,6 +54,7 @@ public class PantallaSeleccionMinijuegos extends Pantalla {
         };
         Image imgFondo = new Image(texturaFondo);
         escenaSeleccion.addActor(imgFondo);
+        //TODO checar cual minijuego es cual
         crearBotonMinijuego1();
         crearBotonMinijuego2();
         crearBotonMinijuego3();
