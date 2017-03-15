@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 
 public class PantallaSeleccionMinijuegos extends Pantalla {
-
+    //TODO texturas para cuando estas haciendo click en las diferentes opciones
     private final StarBlast menu;
 
     //Texturas
@@ -41,7 +41,17 @@ public class PantallaSeleccionMinijuegos extends Pantalla {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaSeleccion = new Stage(vista, batch);
+        escenaSeleccion = new Stage(vista, batch){
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    Gdx.app.log("PantallaSeleccionMinijuegos: ","Voy al Menu");
+                    menu.setScreen(new PantallaMenu(menu));
+                    return true;
+                }
+                return super.keyDown(keycode);
+            }
+        };
         Image imgFondo = new Image(texturaFondo);
         escenaSeleccion.addActor(imgFondo);
         crearBotonMinijuego1();
@@ -64,7 +74,7 @@ public class PantallaSeleccionMinijuegos extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("PantallaSeleccionMinijuegos: ", "Voy a pantalla minijuego1");
-                //menu.setScreen(new PantallaJuego(menu));
+                menu.setScreen(new PantallaMinijuego1(menu));
             }
         });
     }
@@ -109,19 +119,11 @@ public class PantallaSeleccionMinijuegos extends Pantalla {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            menu.setScreen(new PantallaMenu(menu));
-        }
         borrarPantalla();
         escenaSeleccion.draw();
         batch.begin();
 
         batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        vista.update(width, height);
     }
 
     @Override
@@ -131,11 +133,6 @@ public class PantallaSeleccionMinijuegos extends Pantalla {
 
     @Override
     public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
 
     }
 

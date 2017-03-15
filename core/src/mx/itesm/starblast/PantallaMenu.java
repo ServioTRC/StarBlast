@@ -187,11 +187,6 @@ public class PantallaMenu extends Pantalla {
     }
 
     @Override
-    public void resize(int width, int height) {
-        vista.update(width, height);
-    }
-
-    @Override
     public void pause() {
 
     }
