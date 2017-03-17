@@ -37,10 +37,10 @@ public class PantallaMinijuego1 extends Pantalla implements InputProcessor {
     private boolean[] done = new boolean[25];
     private int selectedPieceIdx = -1;
     private Vector3 vector;
-    private final float BOARD_START_X = 275;
-    private final float BOARD_START_Y = 733;
-    private final float PIECE_WIDTH = 136;
-    private final float PIECE_HEIGHT = 136;
+    private static final float BOARD_START_X = 275;
+    private static final float BOARD_START_Y = 733;
+    private static final float PIECE_WIDTH = 136;
+    private static final float PIECE_HEIGHT = 136;
     //TODO yo creo que hay que agragar pantalla de pausa
     public PantallaMinijuego1(StarBlast menu){
         this.menu = menu;

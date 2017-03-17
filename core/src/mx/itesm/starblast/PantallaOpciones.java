@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -46,6 +47,9 @@ public class PantallaOpciones extends Pantalla {
     private GeneralSprite spriteReiniciar;
     private GeneralSprite spriteBack;
 
+    private String stringsBotonMusica[] = {"PantallaOpciones/BotonMusica.png","PantallaOpciones/BotonNoMusica.png"};
+    private String stringsBotonSonido[] = {"PantallaOpciones/BotonSonido.png","PantallaOpciones/BotonNoSonido.png"};
+
 
     public PantallaOpciones(StarBlast menu) {
         this.menu=menu;
@@ -72,9 +76,9 @@ public class PantallaOpciones extends Pantalla {
     private void crearSprites(){
         spriteAyuda = new GeneralSprite("PantallaOpciones/BotonAyuda.png",3*Constantes.ANCHO_PANTALLA/4,
                 Constantes.ALTO_PANTALLA/2-25);
-        spriteMusica = new GeneralSprite("PantallaOpciones/BotonMusica.png",3*Constantes.ANCHO_PANTALLA/4,
+        spriteMusica = new GeneralSprite(stringsBotonMusica[Preferencias.MUSICA_HABILITADA?0:1],3*Constantes.ANCHO_PANTALLA/4,
                 Constantes.ALTO_PANTALLA/2+80);
-        spriteSonido = new GeneralSprite("PantallaOpciones/BotonSonido.png",3*Constantes.ANCHO_PANTALLA/4,
+        spriteSonido = new GeneralSprite(stringsBotonSonido[Preferencias.SONIDO_HABILITADO?0:1],3*Constantes.ANCHO_PANTALLA/4,
                 2*Constantes.ALTO_PANTALLA/3+40);
         spriteCodigos = new GeneralSprite("PantallaOpciones/BotonCodigos.png",3*Constantes.ANCHO_PANTALLA/4,
                 Constantes.ALTO_PANTALLA/3+10);
@@ -82,22 +86,6 @@ public class PantallaOpciones extends Pantalla {
                 Constantes.ALTO_PANTALLA/6+20);
         spriteBack = new GeneralSprite("PantallaOpciones/Back.png",12*Constantes.ANCHO_PANTALLA/13,
                 Constantes.ALTO_PANTALLA/8);
-    }
-
-    private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
-        TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(12*Constantes.ANCHO_PANTALLA/13-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
-
-        escenaOpciones.addActor(btnPlay);
-
-        btnPlay.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
-                menu.setScreen(new PantallaMenu(menu));
-            }
-        });
     }
 
     private void cargarTexturas() {
@@ -144,23 +132,13 @@ public class PantallaOpciones extends Pantalla {
         Constantes.ASSET_GENERAL.dispose();
     }
 
-    private class ProcesadorEntrada implements InputProcessor {
+    private class ProcesadorEntrada extends InputAdapter {
         private Vector3 vector;
         @Override
         public boolean keyDown(int keycode) {
             Gdx.app.log("Pantalla Creditos: ","Voy al Menu");
             menu.setScreen(new PantallaMenu(menu));
             return true;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
         }
 
         @Override
@@ -178,9 +156,18 @@ public class PantallaOpciones extends Pantalla {
             vector = new Vector3(screenX,screenY,0);
             vector = camara.unproject(vector);
             if(spriteSonido.isTouched(vector.x, vector.y)){
-                spriteSonido.setTexture("PantallaOpciones/BotonNoSonido.png");
+                Preferencias.SONIDO_HABILITADO = !Preferencias.SONIDO_HABILITADO;
+                spriteSonido.setTexture(stringsBotonSonido[Preferencias.SONIDO_HABILITADO?0:1]);
+                Preferencias.escribirPreferencias();
             } else if(spriteMusica.isTouched(vector.x, vector.y)){
-                spriteMusica.setTexture("PantallaOpciones/BotonNoMusica.png");
+                Preferencias.MUSICA_HABILITADA = !Preferencias.MUSICA_HABILITADA;
+                if(Preferencias.MUSICA_HABILITADA){
+                    menu.playMusica();
+                }else{
+                    menu.pauseMusica();
+                }
+                spriteMusica.setTexture(stringsBotonMusica[Preferencias.MUSICA_HABILITADA?0:1]);
+                Preferencias.escribirPreferencias();
             } else if(spriteAyuda.isTouched(vector.x, vector.y)){
 
             } else if(spriteCodigos.isTouched(vector.x, vector.y)){
@@ -194,21 +181,6 @@ public class PantallaOpciones extends Pantalla {
                 spriteBack.setTexture("PantallaOpciones/Back.png");
             }
             return true;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return false;
         }
     }
 

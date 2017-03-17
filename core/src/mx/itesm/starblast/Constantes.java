@@ -14,7 +14,4 @@ public class Constantes {
     public static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
 
     public static final float TOUCHPAD_DEADZONE = 0.20f;
-
-    public static boolean MUSICA_HABILITADA = true;
-    public static boolean SONIDO_HABILITADO = true;
 }
