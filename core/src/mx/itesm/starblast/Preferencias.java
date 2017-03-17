@@ -21,5 +21,6 @@ public class Preferencias {
         Preferences prefs = Gdx.app.getPreferences("Sonido");
         prefs.putBoolean("MUSICA_HABILITADA",MUSICA_HABILITADA);
         prefs.putBoolean("SONIDO_HABILITADO",SONIDO_HABILITADO);
+        prefs.flush();
     }
 }
