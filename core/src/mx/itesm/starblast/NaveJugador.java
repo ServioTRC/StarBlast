@@ -10,9 +10,10 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static java.lang.Math.*;
 
@@ -48,21 +49,25 @@ public class NaveJugador extends NavesEspaciales {
 
     private BodyDef bodyDef;
     private Body body;
+    private CircleShape bodyShape;
 
-    public NaveJugador(String ubicacion,float x,float y) {
+    public NaveJugador(String ubicacion,float x,float y,World world) {
         sprite = new GeneralSprite(ubicacion,x,y);
         this.sprite.getSprite().setRotation(90);
         this.aceleracion= 0;
         this.velocidad = 0;
+
         this.bodyDef = new BodyDef();
         this.bodyDef.type = BodyDef.BodyType.KinematicBody;
-        this.bodyDef.position.set(x,y);
+        this.bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         this.bodyDef.angle = 90;
 
-        //makeFixture(0.7f,0.7f);
+        body = world.createBody(bodyDef);
+
+        makeFixture(0.7f,0.7f);
     }
 
-    /*private void makeFixture(float density,float restitution){
+    private void makeFixture(float density,float restitution){
 
         for(Fixture fix: body.getFixtureList()){
             body.destroyFixture(fix);
@@ -81,7 +86,7 @@ public class NaveJugador extends NavesEspaciales {
         fixtureDef.friction = 0;
 
         body.createFixture(fixtureDef);
-    }*/
+    }
 
     private void disparar(){
 
@@ -131,10 +136,11 @@ public class NaveJugador extends NavesEspaciales {
         theta = (float)atan2(vector.y,vector.x);
         velocidad = (float)sqrt(vector.x*vector.x+vector.y*vector.y);
 
+        body.setLinearVelocity(vector.scl(0.5f));
 
         Sprite sprite = this.sprite.getSprite();
 
-        sprite.setPosition(vector.x+sprite.getX(),vector.y+sprite.getY());
+        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
     }
 
     @Override
@@ -157,16 +163,27 @@ public class NaveJugador extends NavesEspaciales {
 
     @Override
     public void escalar(float escala) {
-        sprite.escalar(escala);
+        bodyShape.dispose();
+
+        this.sprite.escalar(escala);
+        bodyShape = new CircleShape();
+        this.bodyShape.setRadius(sprite.getSprite().getWidth()*sprite.getSprite().getScaleX()/2);
+        makeFixture(0.1f,0.1f);
     }
 
     @Override
     public float getX() {
-        return sprite.getSprite().getX();
+        return Constantes.toScreenSize(body.getPosition().x);
     }
 
     @Override
     public float getY() {
-        return sprite.getSprite().getY();
+        return Constantes.toScreenSize(body.getPosition().y);
+    }
+
+
+    @Override
+    public Shape getShape() {
+        return bodyShape;
     }
 }

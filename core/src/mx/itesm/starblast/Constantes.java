@@ -17,4 +17,12 @@ public class Constantes {
     public static final float TOUCHPAD_DEADZONE = 0.20f;
     public static ArrayList<String> CODIGOS = new ArrayList<String>(5);
     public static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
+
+    public static float toWorldSize(float screen){
+        return screen*0.01f;
+    }
+    public static float toScreenSize(float world){
+        return world*100;
+    }
+    
 }

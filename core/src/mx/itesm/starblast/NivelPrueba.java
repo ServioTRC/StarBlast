@@ -50,7 +50,7 @@ import java.math.*;
 
 public class NivelPrueba implements Screen{
 
-    private static final int ENEMIGOS_INICIALES = 3;
+    private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
 
     //Camara, vista
@@ -294,7 +294,7 @@ public class NivelPrueba implements Screen{
 
         crearEnemigos();
 
-        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5);
+        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5,world);
         jugador.escalar(Constantes.ESCALA_NAVES);
 
         /*enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
@@ -316,8 +316,8 @@ public class NivelPrueba implements Screen{
         NaveEnemiga enemigo;
         Random r = new Random();
         for(int i = 0; i< ENEMIGOS_INICIALES;i++){
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
-            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
+            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
@@ -354,10 +354,23 @@ public class NivelPrueba implements Screen{
 
         shapeRenderer.setProjectionMatrix(camara.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+
+
         shapeRenderer.setColor(new Color(0,1,0,0.5f));
         for (NaveEnemiga enemigo: enemigos) {
             shapeRenderer.circle(enemigo.getX(),enemigo.getY(),enemigo.getShape().getRadius());
         }
+        shapeRenderer.circle(jugador.getX(),jugador.getY(),jugador.getShape().getRadius());
+
+
+
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        shapeRenderer.line(enemigos.get(0).getX(),enemigos.get(0).getY(),target.x,target.y);
+
         shapeRenderer.end();
 
     }
