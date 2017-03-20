@@ -90,6 +90,8 @@ public class NivelPrueba implements Screen{
 
     Box2DDebugRenderer debugRenderer;
 
+    private boolean isPaused = false;
+
     public NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -130,10 +132,10 @@ public class NivelPrueba implements Screen{
                 Body bodyB = contact.getFixtureB().getBody();
                 Vector2 positionA = bodyA.getPosition();
                 Vector2 positionB = bodyB.getPosition();
-                /*Vector2 fuerza = new Vector2((positionA.x-positionB.x)*1000,(positionA.y-positionB.y)*1000);
+                Vector2 fuerza = new Vector2((positionA.x-positionB.x)*1000,(positionA.y-positionB.y)*1000);
                 bodyA.setLinearVelocity(fuerza);
                 fuerza = new Vector2(-fuerza.x,-fuerza.y);
-                bodyB.setLinearVelocity(fuerza);*/
+                bodyB.setLinearVelocity(fuerza);
             }
 
             @Override
@@ -151,6 +153,7 @@ public class NivelPrueba implements Screen{
 
             }
         });
+
     }
 
     private void crearHud() {
@@ -209,8 +212,7 @@ public class NivelPrueba implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
                 if(boton.isPressed()){
-                    Gdx.app.log("Nivel Prueba:", "Voy a pantalla opciones");
-                    menu.setScreen(new PantallaOpciones(menu));
+                    isPaused = !isPaused;
                 }
             }
         });
@@ -260,7 +262,7 @@ public class NivelPrueba implements Screen{
 
         crearEnemigos();
 
-        jugador = new NaveJugador("PantallaJuego/Avatar.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5);
+        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5);
         jugador.escalar(Constantes.ESCALA_NAVES);
 
         /*enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
@@ -282,7 +284,7 @@ public class NivelPrueba implements Screen{
         NaveEnemiga enemigo;
         Random r = new Random();
         for(int i = 0; i< ENEMIGOS_INICIALES;i++){
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1.png":"2.png"),r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
             //enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
@@ -316,9 +318,11 @@ public class NivelPrueba implements Screen{
     }
 
     private void procesarJuego(float delta) {
-        update(delta);
-        moverEnemigos(delta);
-        moverJugador(delta);
+        if(!isPaused) {
+            update(delta);
+            moverEnemigos(delta);
+            moverJugador(delta);
+        }
     }
 
 
