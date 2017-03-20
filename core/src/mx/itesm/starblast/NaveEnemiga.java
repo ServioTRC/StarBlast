@@ -1,17 +1,9 @@
 package mx.itesm.starblast;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
 
@@ -29,20 +21,15 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int IMPULSO = 30;
     private final int MOVEMENT_OFFSET = 35;
 
-    private final float dispararCooldown = 500;
-    private float disparoAnterior = 0;
-    private GeneralSprite sprite;
     private Queue<Vector2> velocidadesAnteriores;
     private float velocidad;
 
-    private Body body;
-
-    private CircleShape bodyShape;
 
     public NaveEnemiga(String ubicacion, float x, float y,World world) {
-        sprite = new GeneralSprite(ubicacion,x,y);
-        this.sprite.getSprite().setRotation(-90);
-        this.velocidad = 0;
+        COOLDOWN_DISPARO = 500;
+        sprite = new Sprite(new Texture(ubicacion));
+        sprite.setRotation(-90);
+        velocidad = 0;
         velocidadesAnteriores = new Queue<Vector2>(MOVEMENT_OFFSET);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -53,43 +40,7 @@ public class NaveEnemiga extends NavesEspaciales {
         makeFixture(0.1f,0.1f);
     }
 
-    private void makeFixture(float density,float restitution){
-
-        for(Fixture fix: body.getFixtureList()){
-            body.destroyFixture(fix);
-        }
-        bodyShape = new CircleShape();
-        Sprite sprite = this.sprite.getSprite();
-
-        float w=sprite.getWidth()*sprite.getScaleX()/2f;
-
-        bodyShape.setRadius(w);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density=density;
-        fixtureDef.restitution=restitution;
-        fixtureDef.shape=bodyShape;
-        fixtureDef.friction = 0;
-
-        body.createFixture(fixtureDef);
-    }
-
-
-    private void generarDisparo() {
-
-    }
-
-
-    @Override
-    public void disparar(long time) {
-        if(disparoAnterior+dispararCooldown < time){
-            disparoAnterior = time;
-            generarDisparo();
-        }
-    }
-
     private void mover(){
-        Sprite sprite = this.sprite.getSprite();
         Vector2 v = new Vector2(
                 (float)Math.cos(Math.toRadians(sprite.getRotation())),
                 (float)Math.sin(Math.toRadians(sprite.getRotation())));
@@ -121,8 +72,6 @@ public class NaveEnemiga extends NavesEspaciales {
     }
 
     private void girar(float angulo) {
-        Sprite sprite = this.sprite.getSprite();
-
         if(angulo < 0){
             angulo = 360+angulo;
         }
@@ -153,14 +102,8 @@ public class NaveEnemiga extends NavesEspaciales {
         sprite.setRotation(theta);
     }
 
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
-    }
-
     @Override
     public void mover(Vector2 target,float delta){
-
-        Sprite sprite = this.sprite.getSprite();
         float angulo;
         angulo = (float)Math.atan2(target.y-sprite.getY(),target.x-sprite.getX());
         angulo = (float) (angulo*180/(Math.PI));
@@ -180,38 +123,10 @@ public class NaveEnemiga extends NavesEspaciales {
     }
 
     private void updateBody() {
-        Sprite sprite = this.sprite.getSprite();
         Vector2 v = new Vector2(
                 (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*100,
                 (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*100);
         body.setLinearVelocity(v);
         sprite.setCenter(body.getPosition().x,body.getPosition().y);
-    }
-
-    @Override
-    public Body getBody() {
-        return body;
-    }
-
-    public void escalar(float escala){
-        bodyShape.dispose();
-
-        this.sprite.escalar(escala);
-        bodyShape = new CircleShape();
-        this.bodyShape.setRadius(sprite.getSprite().getWidth()*sprite.getSprite().getScaleX()/2);
-        makeFixture(0.1f,0.1f);
-    }
-
-    @Override
-    public float getX(){
-        return body.getPosition().x;
-    }
-    @Override
-    public float getY(){
-        return body.getPosition().y;
-    }
-
-    public Shape getShape(){
-        return bodyShape;
     }
 }

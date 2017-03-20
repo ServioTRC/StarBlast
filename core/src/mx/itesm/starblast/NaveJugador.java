@@ -1,21 +1,17 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.MassData;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Queue;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 /**
  * Created by Ian Neumann on 16/02/2017.
@@ -35,30 +31,23 @@ public class NaveJugador extends NavesEspaciales {
     private final float CONSTANTE_FRENADO = 0.9f;
 
     private final float RANGO_GIRO_MAX = 2;
-    private final long COOLDOWN_DISPARO = 500;
 
-    private long disparoAnterior = 0;
-    private GeneralSprite sprite;
     private float aceleracion;
 
     private EstadoMovimiento estado = EstadoMovimiento.PARADO;
     private float porcentajeGiro;
-    private float porcentajeAceleracion;
     private float velocidad;
     private float theta;
 
-    private BodyDef bodyDef;
-    private Body body;
-    private CircleShape bodyShape;
-
     public NaveJugador(String ubicacion,float x,float y,World world) {
-        sprite = new GeneralSprite(ubicacion,x,y);
-        this.sprite.getSprite().setRotation(90);
+        COOLDOWN_DISPARO = 500;
+        sprite = new Sprite(new Texture(ubicacion));
+        this.sprite.setRotation(90);
         this.aceleracion= 0;
         this.velocidad = 0;
 
         this.bodyDef = new BodyDef();
-        this.bodyDef.type = BodyDef.BodyType.KinematicBody;
+        this.bodyDef.type = BodyDef.BodyType.DynamicBody;
         this.bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         this.bodyDef.angle = 90;
 
@@ -67,51 +56,9 @@ public class NaveJugador extends NavesEspaciales {
         makeFixture(0.7f,0.7f);
     }
 
-    private void makeFixture(float density,float restitution){
-
-        for(Fixture fix: body.getFixtureList()){
-            body.destroyFixture(fix);
-        }
-        bodyShape = new CircleShape();
-        Sprite sprite = this.sprite.getSprite();
-
-        float w=sprite.getWidth()*sprite.getScaleX()/2f;
-
-        bodyShape.setRadius(w);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density=density;
-        fixtureDef.restitution=restitution;
-        fixtureDef.shape=bodyShape;
-        fixtureDef.friction = 0;
-
-        body.createFixture(fixtureDef);
-    }
-
-    private void disparar(){
-
-    }
-
-    @Override
-    public void disparar(long time) {
-        if(disparoAnterior+COOLDOWN_DISPARO >= time){
-            disparar();
-        }
-    }
-
-    @Override
-    public void acelerar(float porcentaje) {
-        this.porcentajeAceleracion = porcentaje;
-    }
-
-    @Override
-    public void draw(SpriteBatch batch) {
-        sprite.draw(batch);
-    }
-
     @Override
     public void mover(Vector2 vector, float delta) {
-        switch (estado){
+        switch (estado) {
             case GIRANDO:
                 girar();
                 break;
@@ -121,31 +68,23 @@ public class NaveJugador extends NavesEspaciales {
 
         Vector2 destino = new Vector2(porcentajeGiro * -1, porcentajeAceleracion);
 
-        aceleracion = (float)sqrt(destino.x*destino.x+destino.y*destino.y);
+        aceleracion = (float) sqrt(destino.x * destino.x + destino.y * destino.y);
 
-        velocidad = min(velocidad,VELOCIDAD_MAX);
+        velocidad = min(velocidad, VELOCIDAD_MAX);
 
-        if(aceleracion == 0){
-            velocidad*=CONSTANTE_FRENADO;
+        if (aceleracion == 0) {
+            velocidad *= CONSTANTE_FRENADO;
             vector = new Vector2((float) (velocidad * cos(theta)), (float) (velocidad * sin(theta)));
-        }
-        else {
+        } else {
             vector = new Vector2((float) (velocidad * cos(theta)), (float) (velocidad * sin(theta)));
             vector.add(porcentajeGiro * -1, porcentajeAceleracion);
         }
-        theta = (float)atan2(vector.y,vector.x);
-        velocidad = (float)sqrt(vector.x*vector.x+vector.y*vector.y);
+        theta = (float) atan2(vector.y, vector.x);
+        velocidad = (float) sqrt(vector.x * vector.x + vector.y * vector.y);
 
         body.setLinearVelocity(vector.scl(0.5f));
 
-        Sprite sprite = this.sprite.getSprite();
-
-        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
-    }
-
-    @Override
-    public Body getBody() {
-        return body;
+        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x), Constantes.toScreenSize(body.getPosition().y));
     }
 
 
@@ -155,35 +94,9 @@ public class NaveJugador extends NavesEspaciales {
     }
 
     private void girar(){
-        Sprite sprite = this.sprite.getSprite();
         sprite.setRotation(sprite.getRotation()+RANGO_GIRO_MAX*porcentajeGiro);
         sprite.setRotation(min(sprite.getRotation(),90+RANGO_GIRO/2));
         sprite.setRotation(max(sprite.getRotation(),90-RANGO_GIRO/2));
     }
 
-    @Override
-    public void escalar(float escala) {
-        bodyShape.dispose();
-
-        this.sprite.escalar(escala);
-        bodyShape = new CircleShape();
-        this.bodyShape.setRadius(sprite.getSprite().getWidth()*sprite.getSprite().getScaleX()/2);
-        makeFixture(0.1f,0.1f);
-    }
-
-    @Override
-    public float getX() {
-        return Constantes.toScreenSize(body.getPosition().x);
-    }
-
-    @Override
-    public float getY() {
-        return Constantes.toScreenSize(body.getPosition().y);
-    }
-
-
-    @Override
-    public Shape getShape() {
-        return bodyShape;
-    }
 }

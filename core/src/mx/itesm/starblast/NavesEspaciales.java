@@ -1,10 +1,14 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Queue;
 
@@ -15,31 +19,87 @@ import java.util.ArrayList;
  * Created by Ian Neumann on 16/02/2017.
  */
 
-public abstract class NavesEspaciales implements INaveEspacial {
+public class NavesEspaciales implements INaveEspacial {
+
+    protected BodyDef bodyDef;
+    protected Body body;
+    protected CircleShape bodyShape;
+    protected Sprite sprite;
+    protected float porcentajeAceleracion;
+    protected long COOLDOWN_DISPARO;
+    protected long disparoAnterior = 0;
 
     public NavesEspaciales() {
     }
 
     @Override
-    public abstract void disparar(long time);
+    public void disparar(long time) {
+        if (disparoAnterior + COOLDOWN_DISPARO >= time) {
+            disparoAnterior = time;
+            disparar();
+        }
+    }
+
+    protected void disparar(){
+
+    }
 
     @Override
-    public abstract void acelerar(float aceleracion);
+    public void acelerar(float porcentaje) {
+        this.porcentajeAceleracion = porcentaje;
+    }
 
-    public abstract void draw(SpriteBatch batch);
+    public void draw(SpriteBatch batch) {
+        sprite.draw(batch);
+    }
 
     @Override
-    public abstract void mover(Vector2 punto,float delta);
+    public void mover(Vector2 punto,float delta){
+        Gdx.app.log("NavesEspaciales","mover");
+    }
 
-    @Override
-    public abstract Body getBody();
+    public Body getBody() {
+        return body;
+    }
 
-    public abstract void escalar(float escala);
+    public float getX() {
+        return Constantes.toScreenSize(body.getPosition().x);
+    }
 
-    public abstract float getX();
+    public float getY() {
+        return Constantes.toScreenSize(body.getPosition().y);
+    }
 
-    public abstract float getY();
+    public Shape getShape() {
+        return bodyShape;
+    }
 
-    public abstract Shape getShape();
+    public void escalar(float escala) {
+        bodyShape.dispose();
 
+        this.sprite.scale(escala);
+        bodyShape = new CircleShape();
+        this.bodyShape.setRadius(sprite.getWidth()*sprite.getScaleX()/2);
+        makeFixture(0.1f,0.1f);
+    }
+
+    protected void makeFixture(float density,float restitution){
+
+        for(Fixture fix: body.getFixtureList()){
+            body.destroyFixture(fix);
+        }
+        bodyShape = new CircleShape();
+
+        float w=Constantes.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
+
+        bodyShape.setRadius(w);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.density=density;
+        fixtureDef.restitution=restitution;
+        fixtureDef.shape=bodyShape;
+        fixtureDef.friction = 0;
+
+        body.createFixture(fixtureDef);
+    }
 }
