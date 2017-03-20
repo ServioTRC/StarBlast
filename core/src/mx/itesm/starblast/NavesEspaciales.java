@@ -16,10 +16,6 @@ import java.util.ArrayList;
 
 public abstract class NavesEspaciales implements INaveEspacial {
 
-
-
-
-
     public NavesEspaciales() {
     }
 
