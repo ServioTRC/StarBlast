@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Queue;
 
 
 /**
@@ -19,12 +18,12 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int RANGO_GIRO_MAX = 3;
     private static final int VELOCIDAD_MAX = 7;
     private static final int IMPULSO = 30;
-    private final int MOVEMENT_OFFSET = 35;
 
     private float velocidad;
 
 
     public NaveEnemiga(String ubicacion, float x, float y,World world) {
+        super(world);
         COOLDOWN_DISPARO = 500;
         sprite = new Sprite(new Texture(ubicacion));
         sprite.setRotation(-90);

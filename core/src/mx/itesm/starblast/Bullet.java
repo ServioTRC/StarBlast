@@ -23,7 +23,7 @@ public class Bullet {
     private Body body;
     private CircleShape bodyShape;
     private Sprite sprite;
-    private static float VELOCITY = 100;
+    private static float VELOCITY = 10;
 
     public Bullet(float x, float y, World world, float angle){
         sprite = new Sprite(textura);
@@ -35,8 +35,12 @@ public class Bullet {
         body = world.createBody(bodyDef);
         makeFixture(0.7f,0.7f);
         body.setBullet(true);
-        body.setLinearVelocity(MathUtils.cos(angle)*VELOCITY,
-                            MathUtils.sin(angle)*VELOCITY);
+        body.setLinearVelocity(MathUtils.cosDeg(angle)*VELOCITY,
+                            MathUtils.sinDeg(angle)*VELOCITY);
+    }
+
+    public Bullet(Vector2 v, World world, float angle){
+        this(v.x,v.y,world,angle);
     }
 
     private void makeFixture(float density,float restitution){
@@ -46,7 +50,7 @@ public class Bullet {
         }
         bodyShape = new CircleShape();
 
-        float w=sprite.getWidth()*sprite.getScaleX()/2f;
+        float w=Constantes.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
 
         bodyShape.setRadius(w);
 
@@ -65,5 +69,13 @@ public class Bullet {
 
     public Shape getShape(){
         return bodyShape;
+    }
+
+    public float getX() {
+        return Constantes.toScreenSize(body.getPosition().x);
+    }
+
+    public float getY() {
+        return Constantes.toScreenSize(body.getPosition().y);
     }
 }

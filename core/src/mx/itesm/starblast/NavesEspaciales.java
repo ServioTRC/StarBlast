@@ -10,14 +10,10 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
 
 import java.util.ArrayList;
-
-
-/**
- * Created by Ian Neumann on 16/02/2017.
- */
 
 public class NavesEspaciales implements INaveEspacial {
 
@@ -28,20 +24,23 @@ public class NavesEspaciales implements INaveEspacial {
     protected float porcentajeAceleracion;
     protected long COOLDOWN_DISPARO;
     protected long disparoAnterior = 0;
+    protected World world;
 
-    public NavesEspaciales() {
+    protected NavesEspaciales(World world) {
+        this.world = world;
     }
 
     @Override
-    public void disparar(long time) {
-        if (disparoAnterior + COOLDOWN_DISPARO >= time) {
+    public Bullet disparar(long time) {
+        if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            disparar();
+            return disparar();
         }
+        return null;
     }
 
-    protected void disparar(){
-
+    protected Bullet disparar(){
+        return new Bullet(body.getPosition(),world, sprite.getRotation());
     }
 
     @Override

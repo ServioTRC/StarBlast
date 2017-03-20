@@ -8,17 +8,13 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static java.lang.Math.*;
 
-/**
- * Created by Ian Neumann on 16/02/2017.
- */
-
 public class NaveJugador extends NavesEspaciales {
 
 
-    public enum EstadoMovimiento{
+    private enum EstadoMovimiento{
         GIRANDO,
         PARADO
-    };
+    }
 
     private final float RANGO_GIRO = 80;
     private final float VELOCIDAD_MAX = 8;
@@ -35,6 +31,7 @@ public class NaveJugador extends NavesEspaciales {
     private float theta;
 
     public NaveJugador(String ubicacion,float x,float y,World world) {
+        super(world);
         COOLDOWN_DISPARO = 500;
         sprite = new Sprite(new Texture(ubicacion));
         this.sprite.setRotation(90);

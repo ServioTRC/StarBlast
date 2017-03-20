@@ -98,6 +98,8 @@ public class NivelPrueba implements Screen{
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
 
+    private ArrayList<Bullet> balas = new ArrayList<Bullet>();
+
     public NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -207,7 +209,10 @@ public class NivelPrueba implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
                 if(boton.isPressed()){
-                    jugador.disparar(TimeUtils.millisToNanos(TimeUtils.nanoTime()));
+                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+                    if(tmp!=null){
+                        balas.add(tmp);
+                    }
                 }
             }
         });
@@ -316,8 +321,8 @@ public class NivelPrueba implements Screen{
         NaveEnemiga enemigo;
         Random r = new Random();
         for(int i = 0; i< ENEMIGOS_INICIALES;i++){
-            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
+            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
@@ -362,7 +367,9 @@ public class NivelPrueba implements Screen{
             shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
         }
         shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
-
+        for(Bullet bala: balas){
+            shapeRenderer.circle(bala.getX(),bala.getY(),Constantes.toScreenSize(bala.getShape().getRadius()));
+        }
 
 
         shapeRenderer.end();
@@ -410,6 +417,9 @@ public class NivelPrueba implements Screen{
         jugador.draw(batch);
         for (NaveEnemiga enemigo:enemigos){
             enemigo.draw(batch);
+        }
+        for (Bullet bala: balas){
+            bala.draw(batch);
         }
         //botonPausa.draw(batch);
         //comentado para probar el touch pad
