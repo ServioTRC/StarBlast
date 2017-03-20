@@ -3,6 +3,8 @@ package mx.itesm.starblast;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Queue;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public abstract class NavesEspaciales implements INaveEspacial {
     }
 
     @Override
-    public abstract void disparar(float time);
+    public abstract void disparar(long time);
 
     @Override
     public abstract void acelerar(float aceleracion);
@@ -31,6 +33,9 @@ public abstract class NavesEspaciales implements INaveEspacial {
 
     @Override
     public abstract void mover(Vector2 punto,float delta);
+
+    @Override
+    public abstract Body getBody();
 
     public abstract void escalar(float escala);
 

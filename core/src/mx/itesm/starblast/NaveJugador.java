@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.Queue;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -28,11 +31,10 @@ public class NaveJugador extends NavesEspaciales {
     private final float CONSTANTE_FRENADO = 0.9f;
 
     private final float RANGO_GIRO_MAX = 2;
-    private final float COOLDOWN_DISPARO = 500;
+    private final long COOLDOWN_DISPARO = 500;
 
-    private float disparoAnterior = 0;
+    private long disparoAnterior = 0;
     private GeneralSprite sprite;
-    private Queue<Vector2> velocidadesAnteriores;
     private float aceleracion;
 
     private EstadoMovimiento estado = EstadoMovimiento.PARADO;
@@ -41,21 +43,35 @@ public class NaveJugador extends NavesEspaciales {
     private float velocidad;
     private float theta;
 
+    private BodyDef bodyDef;
+    private Body body;
+
     public NaveJugador(String ubicacion,float x,float y) {
         sprite = new GeneralSprite(ubicacion,x,y);
         this.sprite.getSprite().setRotation(90);
         this.aceleracion= 0;
         this.velocidad = 0;
+        this.bodyDef = new BodyDef();
+        this.bodyDef.type = BodyDef.BodyType.KinematicBody;
+        this.bodyDef.position.set(x,y);
+        this.bodyDef.angle = 90;
+
+    }
+
+
+    private void disparar(){
+
     }
 
     @Override
-    public void disparar(float time) {
-        throw new NotImplementedException();
+    public void disparar(long time) {
+        if(disparoAnterior+COOLDOWN_DISPARO >= time){
+            disparar();
+        }
     }
 
     @Override
     public void acelerar(float porcentaje) {
-
         this.porcentajeAceleracion = porcentaje;
     }
 
@@ -70,7 +86,7 @@ public class NaveJugador extends NavesEspaciales {
             case GIRANDO:
                 girar();
                 break;
-            case PARADO:
+            default:
                 break;
         }
 
@@ -97,6 +113,10 @@ public class NaveJugador extends NavesEspaciales {
         sprite.setPosition(vector.x+sprite.getX(),vector.y+sprite.getY());
     }
 
+    @Override
+    public Body getBody() {
+        return body;
+    }
 
 
     public void girar(float porcentaje){

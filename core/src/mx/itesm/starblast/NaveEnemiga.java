@@ -1,8 +1,15 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -27,11 +34,38 @@ public class NaveEnemiga extends NavesEspaciales {
     private Queue<Vector2> velocidadesAnteriores;
     private float velocidad;
 
-    public NaveEnemiga(String ubicacion, float x, float y) {
+    private Body body;
+
+    public NaveEnemiga(String ubicacion, float x, float y,World world) {
         sprite = new GeneralSprite(ubicacion,x,y);
         this.sprite.getSprite().setRotation(-90);
         this.velocidad = 0;
         velocidadesAnteriores = new Queue<Vector2>(MOVEMENT_OFFSET);
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x,y);
+        bodyDef.angle = -90;
+        body = world.createBody(bodyDef);
+        MakeRectFixture(0.7f,0.7f);
+    }
+
+    private void MakeRectFixture(float density,float restitution){
+        Rectangle rectangle = new Rectangle();
+        PolygonShape bodyShape = new PolygonShape();
+        Sprite sprite = this.sprite.getSprite();
+
+        float w=sprite.getWidth()/2f;
+        float h=sprite.getHeight()/2f;
+        bodyShape.setAsBox(w,h);
+
+        FixtureDef fixtureDef=new FixtureDef();
+        fixtureDef.density=density;
+        fixtureDef.restitution=restitution;
+        fixtureDef.shape=bodyShape;
+        fixtureDef.friction = 0;
+
+        body.createFixture(fixtureDef);
+        bodyShape.dispose();
     }
 
 
@@ -41,7 +75,7 @@ public class NaveEnemiga extends NavesEspaciales {
 
 
     @Override
-    public void disparar(float time) {
+    public void disparar(long time) {
         if(disparoAnterior+dispararCooldown < time){
             disparoAnterior = time;
             generarDisparo();
@@ -140,6 +174,22 @@ public class NaveEnemiga extends NavesEspaciales {
         velocidadesAnteriores.addFirst(new Vector2(
                 (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*0.001f,
                 (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*0.001f));
+
+        updateBody();
+    }
+
+    private void updateBody() {
+        Sprite sprite = this.sprite.getSprite();
+        Vector2 v = new Vector2(
+                (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*100,
+                (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*100);
+        body.setLinearVelocity(v);
+        sprite.setPosition(body.getPosition().x,body.getPosition().y);
+    }
+
+    @Override
+    public Body getBody() {
+        return body;
     }
 
     public void escalar(float escala){
