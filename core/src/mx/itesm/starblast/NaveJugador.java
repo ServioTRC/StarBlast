@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Queue;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -56,8 +59,29 @@ public class NaveJugador extends NavesEspaciales {
         this.bodyDef.position.set(x,y);
         this.bodyDef.angle = 90;
 
+        //makeFixture(0.7f,0.7f);
     }
 
+    /*private void makeFixture(float density,float restitution){
+
+        for(Fixture fix: body.getFixtureList()){
+            body.destroyFixture(fix);
+        }
+        bodyShape = new CircleShape();
+        Sprite sprite = this.sprite.getSprite();
+
+        float w=sprite.getWidth()*sprite.getScaleX()/2f;
+
+        bodyShape.setRadius(w);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.density=density;
+        fixtureDef.restitution=restitution;
+        fixtureDef.shape=bodyShape;
+        fixtureDef.friction = 0;
+
+        body.createFixture(fixtureDef);
+    }*/
 
     private void disparar(){
 
@@ -129,10 +153,6 @@ public class NaveJugador extends NavesEspaciales {
         sprite.setRotation(sprite.getRotation()+RANGO_GIRO_MAX*porcentajeGiro);
         sprite.setRotation(min(sprite.getRotation(),90+RANGO_GIRO/2));
         sprite.setRotation(max(sprite.getRotation(),90-RANGO_GIRO/2));
-    }
-
-    public void setEstadoMovimiento(EstadoMovimiento estado){
-        this.estado = estado;
     }
 
     @Override

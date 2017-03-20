@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -88,7 +93,7 @@ public class NivelPrueba implements Screen{
 
     private float accumulator;
 
-    Box2DDebugRenderer debugRenderer;
+    ShapeRenderer shapeRenderer;
 
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
@@ -119,7 +124,9 @@ public class NivelPrueba implements Screen{
 
         //Gdx.input.setInputProcessor(new Procesador());
         Gdx.input.setInputProcessor(escenaHUD);
-        debugRenderer = new Box2DDebugRenderer();
+        shapeRenderer = new ShapeRenderer();
+
+
         escenaPausa = new StageOpciones(vista,batch,menu){
             @Override
             public boolean keyDown(int keyCode) {
@@ -139,6 +146,7 @@ public class NivelPrueba implements Screen{
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
+                /*
                 Gdx.app.log("Choque: ","chocaron");
                 Body bodyA = contact.getFixtureA().getBody();
                 Body bodyB = contact.getFixtureB().getBody();
@@ -147,7 +155,7 @@ public class NivelPrueba implements Screen{
                 Vector2 fuerza = new Vector2((positionA.x-positionB.x)*1000,(positionA.y-positionB.y)*1000);
                 bodyA.setLinearVelocity(fuerza);
                 fuerza = new Vector2(-fuerza.x,-fuerza.y);
-                bodyB.setLinearVelocity(fuerza);
+                bodyB.setLinearVelocity(fuerza);*/
             }
 
             @Override
@@ -193,6 +201,7 @@ public class NivelPrueba implements Screen{
         botonDisparo.scaleBy(escala);
         botonDisparo.setPosition(13*Constantes.ANCHO_PANTALLA/16,
                 1*Constantes.ALTO_PANTALLA/10);
+
         botonDisparo.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -330,6 +339,27 @@ public class NivelPrueba implements Screen{
         borrarPantalla();
         procesarJuego(delta);
         dibujarElementos();
+        debugearElementos();
+    }
+
+    private void debugearElementos() {
+        if(enemigos.size() == 0) {
+            return;
+        }
+        camara.update();
+
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        shapeRenderer.setProjectionMatrix(camara.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0,1,0,0.5f));
+        for (NaveEnemiga enemigo: enemigos) {
+            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),enemigo.getShape().getRadius());
+        }
+        shapeRenderer.end();
+
     }
 
     private void update(float dt){
@@ -408,63 +438,6 @@ public class NivelPrueba implements Screen{
     @Override
     public void dispose() {
         Constantes.ASSET_GENERAL.dispose();
-    }
-
-    //Procesar entrada
-    class Procesador implements InputProcessor {
-
-        private Vector3 v = new Vector3();
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if (keycode == Input.Keys.BACK) {
-                // DEBUG
-                Gdx.app.log("Pantalla Juego: ", "Voy al Menu");
-                menu.setScreen(new PantallaMenu(menu));
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            //return false;
-            v.set(screenX,screenY,0);
-            camara.unproject(v);
-            target = new Vector2(v.x,v.y);
-            return true;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return false;
-        }
     }
 
 

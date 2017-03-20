@@ -7,8 +7,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
 
@@ -36,6 +39,8 @@ public class NaveEnemiga extends NavesEspaciales {
 
     private Body body;
 
+    private CircleShape bodyShape;
+
     public NaveEnemiga(String ubicacion, float x, float y,World world) {
         sprite = new GeneralSprite(ubicacion,x,y);
         this.sprite.getSprite().setRotation(-90);
@@ -46,26 +51,29 @@ public class NaveEnemiga extends NavesEspaciales {
         bodyDef.position.set(x,y);
         bodyDef.angle = -90;
         body = world.createBody(bodyDef);
-        MakeRectFixture(0.7f,0.7f);
+
+        makeFixture(0.7f,0.7f);
     }
 
-    private void MakeRectFixture(float density,float restitution){
-        Rectangle rectangle = new Rectangle();
-        PolygonShape bodyShape = new PolygonShape();
+    private void makeFixture(float density,float restitution){
+
+        for(Fixture fix: body.getFixtureList()){
+            body.destroyFixture(fix);
+        }
+        bodyShape = new CircleShape();
         Sprite sprite = this.sprite.getSprite();
 
-        float w=sprite.getWidth()/2f;
-        float h=sprite.getHeight()/2f;
-        bodyShape.setAsBox(w,h);
+        float w=sprite.getWidth()*sprite.getScaleX()/2f;
 
-        FixtureDef fixtureDef=new FixtureDef();
+        bodyShape.setRadius(w);
+
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density=density;
         fixtureDef.restitution=restitution;
         fixtureDef.shape=bodyShape;
         fixtureDef.friction = 0;
 
         body.createFixture(fixtureDef);
-        bodyShape.dispose();
     }
 
 
@@ -113,7 +121,6 @@ public class NaveEnemiga extends NavesEspaciales {
 
         mover();
     }
-
 
     private void girar(float angulo) {
         Sprite sprite = this.sprite.getSprite();
@@ -184,7 +191,8 @@ public class NaveEnemiga extends NavesEspaciales {
                 (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*100,
                 (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*100);
         body.setLinearVelocity(v);
-        sprite.setPosition(body.getPosition().x,body.getPosition().y);
+        sprite.setPosition(body.getPosition().x-sprite.getWidth()/2,body.getPosition().y-sprite.getHeight()/2);
+
     }
 
     @Override
@@ -193,15 +201,24 @@ public class NaveEnemiga extends NavesEspaciales {
     }
 
     public void escalar(float escala){
+        bodyShape.dispose();
+
         this.sprite.escalar(escala);
+        bodyShape = new CircleShape();
+        this.bodyShape.setRadius(sprite.getSprite().getWidth()*sprite.getSprite().getScaleX()/2);
+        makeFixture(0.7f,0.7f);
     }
 
     @Override
     public float getX(){
-        return sprite.getSprite().getX();
+        return body.getPosition().x;
     }
     @Override
     public float getY(){
-        return sprite.getSprite().getY();
+        return body.getPosition().y;
+    }
+
+    public Shape getShape(){
+        return bodyShape;
     }
 }
