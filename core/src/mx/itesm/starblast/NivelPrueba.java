@@ -359,9 +359,9 @@ public class NivelPrueba implements Screen{
 
         shapeRenderer.setColor(new Color(0,1,0,0.5f));
         for (NaveEnemiga enemigo: enemigos) {
-            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),enemigo.getShape().getRadius());
+            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
         }
-        shapeRenderer.circle(jugador.getX(),jugador.getY(),jugador.getShape().getRadius());
+        shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
 
 
 
@@ -398,6 +398,7 @@ public class NivelPrueba implements Screen{
 
     private void moverEnemigos(float delta) {
         target = new Vector2(jugador.getX(),jugador.getY());
+        //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
         }

@@ -21,7 +21,6 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int IMPULSO = 30;
     private final int MOVEMENT_OFFSET = 35;
 
-    private Queue<Vector2> velocidadesAnteriores;
     private float velocidad;
 
 
@@ -30,33 +29,13 @@ public class NaveEnemiga extends NavesEspaciales {
         sprite = new Sprite(new Texture(ubicacion));
         sprite.setRotation(-90);
         velocidad = 0;
-        velocidadesAnteriores = new Queue<Vector2>(MOVEMENT_OFFSET);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x,y);
+        bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         bodyDef.angle = -90;
         body = world.createBody(bodyDef);
 
         makeFixture(0.1f,0.1f);
-    }
-
-    private void mover(){
-        Vector2 v = new Vector2(
-                (float)Math.cos(Math.toRadians(sprite.getRotation())),
-                (float)Math.sin(Math.toRadians(sprite.getRotation())));
-        while (velocidadesAnteriores.size > MOVEMENT_OFFSET){
-            velocidadesAnteriores.removeLast();
-        }
-        float sumaX = 0;
-        float sumaY = 0;
-        int cont = MOVEMENT_OFFSET;
-        for(Vector2 vector:velocidadesAnteriores){
-            sumaX += vector.x*cont;
-            sumaY += vector.y*cont;
-            cont--;
-        }
-        sprite.setX((sprite.getX()+v.x*velocidad+sumaX));
-        sprite.setY((sprite.getY()+v.y*velocidad+sumaY));
     }
 
     @Override
@@ -68,7 +47,6 @@ public class NaveEnemiga extends NavesEspaciales {
 
         velocidad = Math.min(velocidad,VELOCIDAD_MAX);
 
-        mover();
     }
 
     private void girar(float angulo) {
@@ -110,23 +88,16 @@ public class NaveEnemiga extends NavesEspaciales {
         angulo%=360;
         girar(angulo);
 
-
-
         acelerar(IMPULSO * delta);
-
-
-        velocidadesAnteriores.addFirst(new Vector2(
-                (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*0.001f,
-                (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*0.001f));
 
         updateBody();
     }
 
     private void updateBody() {
         Vector2 v = new Vector2(
-                (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*100,
-                (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*100);
+                (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad,
+                (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad);
         body.setLinearVelocity(v);
-        sprite.setCenter(body.getPosition().x,body.getPosition().y);
+        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
     }
 }

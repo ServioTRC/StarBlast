@@ -6,12 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 /**
  * Created by Ian Neumann on 16/02/2017.
@@ -58,7 +53,7 @@ public class NaveJugador extends NavesEspaciales {
 
     @Override
     public void mover(Vector2 vector, float delta) {
-        switch (estado) {
+        switch (estado){
             case GIRANDO:
                 girar();
                 break;
