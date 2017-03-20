@@ -91,6 +91,7 @@ public class NivelPrueba implements Screen{
     Box2DDebugRenderer debugRenderer;
 
     private boolean isPaused = false;
+    private StageOpciones escenaPausa;
 
     public NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -119,6 +120,17 @@ public class NivelPrueba implements Screen{
         //Gdx.input.setInputProcessor(new Procesador());
         Gdx.input.setInputProcessor(escenaHUD);
         debugRenderer = new Box2DDebugRenderer();
+        escenaPausa = new StageOpciones(vista,batch,menu){
+            @Override
+            public boolean keyDown(int keyCode) {
+                if(keyCode == Input.Keys.BACK){
+                    isPaused = false;
+                    handlePause();
+                    return true;
+                }
+                return super.keyDown(keyCode);
+            }
+        };
     }
 
     private void crearWorld(){
@@ -213,11 +225,22 @@ public class NivelPrueba implements Screen{
                 Button boton = (Button) actor;
                 if(boton.isPressed()){
                     isPaused = !isPaused;
+                    handlePause();
                 }
             }
         });
 
         escenaHUD.addActor(botonPausa);
+    }
+
+    private void handlePause() {
+        if(isPaused){
+            escenaPausa.addActor(botonPausa);
+            Gdx.input.setInputProcessor(escenaPausa);
+        }else{
+            escenaHUD.addActor(botonPausa);
+            Gdx.input.setInputProcessor(escenaHUD);
+        }
     }
 
     private void crearPad() {
@@ -352,6 +375,9 @@ public class NivelPrueba implements Screen{
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
+        if(isPaused){
+            escenaPausa.draw();
+        }
     }
 
     private void borrarPantalla() {
