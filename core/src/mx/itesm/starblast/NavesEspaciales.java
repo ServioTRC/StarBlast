@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Queue;
 
 import java.util.ArrayList;
@@ -42,5 +43,7 @@ public abstract class NavesEspaciales implements INaveEspacial {
     public abstract float getX();
 
     public abstract float getY();
+
+    public abstract Shape getShape();
 
 }

@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Queue;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by Ian Neumann on 16/02/2017.
@@ -28,7 +27,6 @@ public class NaveEnemiga extends NavesEspaciales {
     private static final int RANGO_GIRO_MAX = 3;
     private static final int VELOCIDAD_MAX = 7;
     private static final int IMPULSO = 30;
-    private static final int DISTANCIA_FRENADO = 8000;
     private final int MOVEMENT_OFFSET = 35;
 
     private final float dispararCooldown = 500;
@@ -52,7 +50,7 @@ public class NaveEnemiga extends NavesEspaciales {
         bodyDef.angle = -90;
         body = world.createBody(bodyDef);
 
-        makeFixture(0.7f,0.7f);
+        makeFixture(0.1f,0.1f);
     }
 
     private void makeFixture(float density,float restitution){
@@ -78,7 +76,7 @@ public class NaveEnemiga extends NavesEspaciales {
 
 
     private void generarDisparo() {
-        throw new NotImplementedException();
+
     }
 
 
@@ -160,23 +158,19 @@ public class NaveEnemiga extends NavesEspaciales {
     }
 
     @Override
-    public void mover(Vector2 objetivo,float delta){
+    public void mover(Vector2 target,float delta){
 
         Sprite sprite = this.sprite.getSprite();
         float angulo;
-        angulo = (float)Math.atan2(objetivo.y-sprite.getY(),objetivo.x-sprite.getX());
+        angulo = (float)Math.atan2(target.y-sprite.getY(),target.x-sprite.getX());
         angulo = (float) (angulo*180/(Math.PI));
         angulo%=360;
         girar(angulo);
 
-        if(objetivo.dst2(sprite.getX(),sprite.getY()) < DISTANCIA_FRENADO){
-            if(velocidad > 0) {
-                acelerar(-IMPULSO * delta);
-            }
-        }
-        else {
-            acelerar(IMPULSO * delta);
-        }
+
+
+        acelerar(IMPULSO * delta);
+
 
         velocidadesAnteriores.addFirst(new Vector2(
                 (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*0.001f,
@@ -191,8 +185,7 @@ public class NaveEnemiga extends NavesEspaciales {
                 (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad*100,
                 (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad*100);
         body.setLinearVelocity(v);
-        sprite.setPosition(body.getPosition().x-sprite.getWidth()/2,body.getPosition().y-sprite.getHeight()/2);
-
+        sprite.setCenter(body.getPosition().x,body.getPosition().y);
     }
 
     @Override
@@ -206,7 +199,7 @@ public class NaveEnemiga extends NavesEspaciales {
         this.sprite.escalar(escala);
         bodyShape = new CircleShape();
         this.bodyShape.setRadius(sprite.getSprite().getWidth()*sprite.getSprite().getScaleX()/2);
-        makeFixture(0.7f,0.7f);
+        makeFixture(0.1f,0.1f);
     }
 
     @Override
