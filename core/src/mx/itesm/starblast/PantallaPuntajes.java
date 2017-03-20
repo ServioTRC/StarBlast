@@ -99,15 +99,15 @@ public class PantallaPuntajes extends Pantalla {
 
     private void imprimirPuntajes(){
         prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
-        String punt1 = prefs.getString("punt1", "1. ----- 00000");
+        String punt1 = "1. "+prefs.getString("punt1", "----- 00000");
         crearMarcadores(punt1,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
-        String punt2 = prefs.getString("punt2", "2. ----- 00000");
+        String punt2 = "2. " + prefs.getString("punt2", "----- 00000");
         crearMarcadores(punt2,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);
-        String punt3 = prefs.getString("punt3", "3. ----- 00000");
+        String punt3 = "3. " + prefs.getString("punt3", "----- 00000");
         crearMarcadores(punt3,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-200);
-        String punt4 = prefs.getString("punt4", "4. ----- 00000");
+        String punt4 = "4. " + prefs.getString("punt4", "----- 00000");
         crearMarcadores(punt4,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-300);
-        String punt5 = prefs.getString("punt5", "5. ----- 00000");
+        String punt5 = "5. " + prefs.getString("punt5", "----- 00000");
         crearMarcadores(punt5,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-400);
     }
 

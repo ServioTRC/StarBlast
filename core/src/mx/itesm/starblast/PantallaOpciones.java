@@ -3,21 +3,12 @@ package mx.itesm.starblast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Servio T on 10/02/2017.
@@ -158,20 +149,37 @@ public class PantallaOpciones extends Pantalla {
             if(spriteSonido.isTouched(vector.x, vector.y)){
                 Preferencias.SONIDO_HABILITADO = !Preferencias.SONIDO_HABILITADO;
                 spriteSonido.setTexture(stringsBotonSonido[Preferencias.SONIDO_HABILITADO?0:1]);
-                Preferencias.escribirPreferencias();
+                Preferencias.escribirPreferenciasSonidos();
             } else if(spriteMusica.isTouched(vector.x, vector.y)){
                 Preferencias.MUSICA_HABILITADA = !Preferencias.MUSICA_HABILITADA;
                 if(Preferencias.MUSICA_HABILITADA){
+                    Gdx.app.log("Pantalla Opciones", "Play a Música");
                     menu.playMusica();
                 }else{
                     menu.pauseMusica();
                 }
                 spriteMusica.setTexture(stringsBotonMusica[Preferencias.MUSICA_HABILITADA?0:1]);
-                Preferencias.escribirPreferencias();
+                Preferencias.escribirPreferenciasSonidos();
             } else if(spriteAyuda.isTouched(vector.x, vector.y)){
 
             } else if(spriteCodigos.isTouched(vector.x, vector.y)){
+                Input.TextInputListener textListener = new Input.TextInputListener()
+                {
+                    @Override
+                    public void input(String input)
+                    {
+                        Gdx.app.log("Codigo Ingresado: ",input);
+                        Constantes.CODIGOS.add(input);
+                    }
 
+                    @Override
+                    public void canceled()
+                    {
+                        Gdx.app.log("Codigo Ingresado: ", "Salida del teclado");
+                    }
+                };
+
+                Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             } else if(spriteReiniciar.isTouched(vector.x, vector.y)){
 
             } else if(spriteBack.isTouched(vector.x, vector.y)){
