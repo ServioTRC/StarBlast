@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -73,7 +74,7 @@ public class NaveJugador extends NavesEspaciales {
         }
         theta = (float) atan2(vector.y, vector.x);
         velocidad = (float) sqrt(vector.x * vector.x + vector.y * vector.y);
-
+        if(!body.getLinearVelocity().isZero(0.05f))Gdx.app.log("Nave Jugador:","LV: "+body.getLinearVelocity());
         body.setLinearVelocity(vector.scl(0.5f));
 
         sprite.setCenter(Constantes.toScreenSize(body.getPosition().x), Constantes.toScreenSize(body.getPosition().y));

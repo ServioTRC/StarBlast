@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,24 +20,35 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Bullet {
 
-    private static Texture textura = new Texture(Constantes.BULLET_SPRITE);
+    public static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
+    private static Texture textura;
     private Body body;
     private CircleShape bodyShape;
     private Sprite sprite;
     private static float VELOCITY = 10;
 
+    public static void CargarTextura(){
+        textura = new Texture(BULLET_SPRITE);
+    }
+
     public Bullet(float x, float y, World world, float angle){
         sprite = new Sprite(textura);
-        sprite.setCenter(x,y);
+//        sprite.setCenter(x,y);
+        sprite.setCenter(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         BodyDef bodyDef = new BodyDef();
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x,y);
+//        bodyDef.position.set(x,y);
+        bodyDef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA/2),
+                Constantes.toWorldSize(Constantes.ALTO_PANTALLA/2));
         body = world.createBody(bodyDef);
         makeFixture(0.7f,0.7f);
         body.setBullet(true);
+        sprite.setRotation(angle-90);
         body.setLinearVelocity(MathUtils.cosDeg(angle)*VELOCITY,
                             MathUtils.sinDeg(angle)*VELOCITY);
+        Gdx.app.log("Bullet:","Angle: "+angle+" cos: "+MathUtils.cosDeg(angle));
+        Gdx.app.log("Bullet:","LV: "+body.getLinearVelocity());
     }
 
     public Bullet(Vector2 v, World world, float angle){
@@ -64,6 +76,9 @@ public class Bullet {
     }
 
     public void draw(SpriteBatch batch){
+        //TODO ponerlo en la punta, no en el centro
+        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),
+                Constantes.toScreenSize(body.getPosition().y));
         sprite.draw(batch);
     }
 

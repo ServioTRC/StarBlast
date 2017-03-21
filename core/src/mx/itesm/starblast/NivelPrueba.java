@@ -367,6 +367,8 @@ public class NivelPrueba implements Screen{
             shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
         }
         shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
+
+        shapeRenderer.setColor(new Color(1,0,0,0.5f));
         for(Bullet bala: balas){
             shapeRenderer.circle(bala.getX(),bala.getY(),Constantes.toScreenSize(bala.getShape().getRadius()));
         }
