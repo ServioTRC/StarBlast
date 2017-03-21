@@ -48,7 +48,7 @@ import java.math.*;
  * Created by Ian Neumann on 16/02/2017.
  */
 
-public class NivelPrueba implements Screen{
+public class NivelPrueba implements Screen, IPausable {
 
     private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
@@ -125,7 +125,7 @@ public class NivelPrueba implements Screen{
     }
 
     private void crearObjetos() {
-        target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
+        target = new Vector2(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2);
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
@@ -142,22 +142,12 @@ public class NivelPrueba implements Screen{
         shapeRenderer = new ShapeRenderer();
 
 
-        escenaPausa = new StageOpciones(vista,batch,menu){
-            @Override
-            public boolean keyDown(int keyCode) {
-                if(keyCode == Input.Keys.BACK){
-                    isPaused = false;
-                    handlePause();
-                    return true;
-                }
-                return super.keyDown(keyCode);
-            }
-        };
+        escenaPausa = new StageOpciones(vista, batch, menu, this);
     }
 
     //region metodos crearObjetos
 
-    private void crearWorld(){
+    private void crearWorld() {
         world = new World(new Vector2(0, 0), true);
         accumulator = 0;
         world.setContactListener(new ContactListener() {
@@ -189,11 +179,11 @@ public class NivelPrueba implements Screen{
 
         crearEnemigos();
 
-        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5,world);
+        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
         jugador.escalar(Constantes.ESCALA_NAVES);
 
-        controles = new GeneralSprite("PantallaJuego/Controles.png",Constantes.ANCHO_PANTALLA/2,
-                Constantes.ALTO_PANTALLA/2);
+        controles = new GeneralSprite("PantallaJuego/Controles.png", Constantes.ANCHO_PANTALLA / 2,
+                Constantes.ALTO_PANTALLA / 2);
         controles.escalar(escala);
         controles.setAlpha(1);
     }
@@ -202,8 +192,8 @@ public class NivelPrueba implements Screen{
     private void crearEnemigos() {
         NaveEnemiga enemigo;
         Random r = new Random();
-        for(int i = 0; i< ENEMIGOS_INICIALES;i++){
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
+        for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world);
 //            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
@@ -212,10 +202,10 @@ public class NivelPrueba implements Screen{
     //endregion
 
     private void crearHud() {
-        camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA);
-        camaraHUD.position.set(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2,0);
+        camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+        camaraHUD.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
         camaraHUD.update();
-        vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA,camaraHUD);
+        vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camaraHUD);
 
         crearPad();
         crearBotonPausa();
@@ -241,16 +231,14 @@ public class NivelPrueba implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 Touchpad pad = (Touchpad) actor;
 
-                if (Math.abs(pad.getKnobPercentX())> Constantes.TOUCHPAD_DEADZONE) {
+                if (Math.abs(pad.getKnobPercentX()) > Constantes.TOUCHPAD_DEADZONE) {
                     jugador.girar(pad.getKnobPercentX());
-                }
-                else {
+                } else {
                     jugador.girar(0);
                 }
-                if(Math.abs(pad.getKnobPercentY()) > Constantes.TOUCHPAD_DEADZONE){
+                if (Math.abs(pad.getKnobPercentY()) > Constantes.TOUCHPAD_DEADZONE) {
                     jugador.acelerar(pad.getKnobPercentY());
-                }
-                else{
+                } else {
                     jugador.acelerar(0);
                 }
             }
@@ -264,7 +252,7 @@ public class NivelPrueba implements Screen{
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("Pausa",new Texture("PantallaJuego/Pausa.png"));
+        skin.add("Pausa", new Texture("PantallaJuego/Pausa.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("Pausa");
@@ -272,15 +260,18 @@ public class NivelPrueba implements Screen{
 
         botonPausa = new Button(estilo);
         botonPausa.scaleBy(escala);
-        botonPausa.setPosition(11*Constantes.ANCHO_PANTALLA/12,
-                9*Constantes.ALTO_PANTALLA/10);
+        botonPausa.setPosition(11 * Constantes.ANCHO_PANTALLA / 12,
+                9 * Constantes.ALTO_PANTALLA / 10);
         botonPausa.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
-                if(boton.isPressed()){
-                    isPaused = !isPaused;
-                    handlePause();
+                if (boton.isPressed()) {
+                    if(!isPaused){
+                        pause();
+                    }else{
+                        unPause();
+                    }
                 }
             }
         });
@@ -292,24 +283,24 @@ public class NivelPrueba implements Screen{
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("DisparoStandby",new Texture("HUD/BotonAStandby.png"));
-        skin.add("DisparoPresionado",new Texture("HUD/BotonAPresionado.png"));
+        skin.add("DisparoStandby", new Texture("HUD/BotonAStandby.png"));
+        skin.add("DisparoPresionado", new Texture("HUD/BotonAPresionado.png"));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("DisparoPresionado");
         estilo.up = skin.getDrawable("DisparoStandby");
 
         botonDisparo = new Button(estilo);
         botonDisparo.scaleBy(escala);
-        botonDisparo.setPosition(13*Constantes.ANCHO_PANTALLA/16,
-                1*Constantes.ALTO_PANTALLA/10);
+        botonDisparo.setPosition(13 * Constantes.ANCHO_PANTALLA / 16,
+                1 * Constantes.ALTO_PANTALLA / 10);
 
         botonDisparo.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
-                if(boton.isPressed()){
+                if (boton.isPressed()) {
                     Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
-                    if(tmp!=null){
+                    if (tmp != null) {
                         balas.add(tmp);
                     }
                 }
@@ -323,14 +314,20 @@ public class NivelPrueba implements Screen{
 
     //endregion
 
-    private void handlePause() {
-        if(isPaused){
-            escenaPausa.addActor(botonPausa);
-            Gdx.input.setInputProcessor(escenaPausa);
-        }else{
-            escenaHUD.addActor(botonPausa);
-            Gdx.input.setInputProcessor(escenaHUD);
-        }
+
+    //region metodos pausa
+    @Override
+    public void pause() {
+        isPaused = true;
+        escenaPausa.addActor(botonPausa);
+        Gdx.input.setInputProcessor(escenaPausa);
+    }
+
+    @Override
+    public void unPause() {
+        isPaused = false;
+        escenaHUD.addActor(botonPausa);
+        Gdx.input.setInputProcessor(escenaHUD);
     }
 
     @Override
@@ -340,7 +337,7 @@ public class NivelPrueba implements Screen{
         dibujarElementos();
         debugearElementos();
     }
-
+    //endregion
 
 
     //region metodos render
@@ -350,7 +347,7 @@ public class NivelPrueba implements Screen{
     }
 
     private void procesarJuego(float delta) {
-        if(!isPaused) {
+        if (!isPaused) {
             update(delta);
             moverEnemigos(delta);
             moverJugador(delta);
@@ -358,24 +355,24 @@ public class NivelPrueba implements Screen{
     }
 
     //region metodos procesarJuego
-    private void update(float dt){
-        accumulator+=dt;
-        while(accumulator>1/120f){
-            world.step(1/120f,8,3);
-            accumulator-=1/120f;
+    private void update(float dt) {
+        accumulator += dt;
+        while (accumulator > 1 / 120f) {
+            world.step(1 / 120f, 8, 3);
+            accumulator -= 1 / 120f;
         }
     }
 
     private void moverEnemigos(float delta) {
-        target = new Vector2(jugador.getX(),jugador.getY());
+        target = new Vector2(jugador.getX(), jugador.getY());
         //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
-        for(NaveEnemiga enemigo:enemigos){
-            enemigo.mover(target,delta);
+        for (NaveEnemiga enemigo : enemigos) {
+            enemigo.mover(target, delta);
         }
     }
 
     private void moverJugador(float delta) {
-        jugador.mover(target,delta);
+        jugador.mover(target, delta);
     }
     //endregion
 
@@ -383,10 +380,10 @@ public class NivelPrueba implements Screen{
         escenaJuego.draw();
         batch.begin();
         jugador.draw(batch);
-        for (NaveEnemiga enemigo:enemigos){
+        for (NaveEnemiga enemigo : enemigos) {
             enemigo.draw(batch);
         }
-        for (Bullet bala: balas){
+        for (Bullet bala : balas) {
             bala.draw(batch);
         }
         //botonPausa.draw(batch);
@@ -397,13 +394,13 @@ public class NivelPrueba implements Screen{
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
-        if(isPaused){
+        if (isPaused) {
             escenaPausa.draw();
         }
     }
 
     private void debugearElementos() {
-        if(enemigos.size() == 0) {
+        if (enemigos.size() == 0) {
             return;
         }
         camara.update();
@@ -416,16 +413,15 @@ public class NivelPrueba implements Screen{
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
 
-
-        shapeRenderer.setColor(new Color(0,1,0,0.5f));
-        for (NaveEnemiga enemigo: enemigos) {
-            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
+        shapeRenderer.setColor(new Color(0, 1, 0, 0.5f));
+        for (NaveEnemiga enemigo : enemigos) {
+            shapeRenderer.circle(enemigo.getX(), enemigo.getY(), Constantes.toScreenSize(enemigo.getShape().getRadius()));
         }
-        shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
+        shapeRenderer.circle(jugador.getX(), jugador.getY(), Constantes.toScreenSize(jugador.getShape().getRadius()));
 
-        shapeRenderer.setColor(new Color(1,0,0,0.7f));
-        for(Bullet bala: balas){
-            shapeRenderer.circle(bala.getX(),bala.getY(),Constantes.toScreenSize(bala.getShape().getRadius()));
+        shapeRenderer.setColor(new Color(1, 0, 0, 0.7f));
+        for (Bullet bala : balas) {
+            shapeRenderer.circle(bala.getX(), bala.getY(), Constantes.toScreenSize(bala.getShape().getRadius()));
         }
 
 
@@ -433,8 +429,8 @@ public class NivelPrueba implements Screen{
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-        shapeRenderer.setColor(new Color(0,1,0,0.5f));
-        shapeRenderer.line(enemigos.get(0).getX(),enemigos.get(0).getY(),target.x,target.y);
+        shapeRenderer.setColor(new Color(0, 1, 0, 0.5f));
+        shapeRenderer.line(enemigos.get(0).getX(), enemigos.get(0).getY(), target.x, target.y);
 
         shapeRenderer.end();
 
@@ -445,11 +441,6 @@ public class NivelPrueba implements Screen{
     @Override
     public void resize(int width, int height) {
         vista.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
     }
 
     @Override

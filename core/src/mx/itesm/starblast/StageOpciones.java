@@ -4,55 +4,62 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.IntFloatMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-/**
- * Created by delag on 3/20/2017.
- */
 
 public class StageOpciones extends Stage {
 
-    private String stringsBotonMusica[] = {"PantallaOpciones/BotonMusica.png","PantallaOpciones/BotonNoMusica.png"};
-    private String stringsBotonSonido[] = {"PantallaOpciones/BotonSonido.png","PantallaOpciones/BotonNoSonido.png"};
     private StarBlast menu;
+    private IPausable parent;
 
-
-    public StageOpciones(Viewport viewport, Batch batch, StarBlast menu){
-        super(viewport,batch);
+    public StageOpciones(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
+        super(viewport, batch);
         this.menu = menu;
-        init();
-    }
-
-    public StageOpciones(Viewport viewport, StarBlast menu){
-        super(viewport);
-        this.menu = menu;
+        this.parent = parent;
         init();
     }
 
     private void init() {
         Image backgroud = new Image(new Texture("PantallaOpciones/CuadroOpciones.png"));
-        backgroud.setPosition(Constantes.ANCHO_PANTALLA/2-backgroud.getWidth()/2,
-                Constantes.ALTO_PANTALLA/2-backgroud.getHeight()/2);
+        backgroud.setPosition(Constantes.ANCHO_PANTALLA / 2 - backgroud.getWidth() / 2,
+                Constantes.ALTO_PANTALLA / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
         crearBotonSonido();
         crearBotonMusica();
         crearBotonBack();
         crearBotonCodigos();
+        crearBotonRegresar();
+    }
+
+    private void crearBotonRegresar() {
+        Skin skin = new Skin();
+        skin.add("Up", new Texture("PantallaOpciones/BotonAtras.png"));
+
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.up = skin.getDrawable("Up");
+
+        final Button btn = new Button(estilo);
+        btn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                parent.unPause();
+            }
+        });
+        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4 - 15,
+                Constantes.ALTO_PANTALLA / 6 + 50, Align.center);
+        addActor(btn);
     }
 
     private void crearBotonCodigos() {
         Skin skin = new Skin();
-        skin.add("Up",new Texture("PantallaOpciones/BotonCodigos.png"));
+        skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
         //skin.add("Down",new Texture("PantallaOpciones/BotonCodigos.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
@@ -60,22 +67,19 @@ public class StageOpciones extends Stage {
         //estilo.down = skin.getDrawable("Down");
 
         final Button btn = new Button(estilo);
-        btn.addListener(new ClickListener(){
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Input.TextInputListener textListener = new Input.TextInputListener()
-                {
+                Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
-                    public void input(String input)
-                    {
-                        Gdx.app.log("Codigo Ingresado: ",input);
+                    public void input(String input) {
+                        Gdx.app.log("Codigo Ingresado: ", input);
                         Constantes.CODIGOS.add(input);
                     }
 
                     @Override
-                    public void canceled()
-                    {
+                    public void canceled() {
                         Gdx.app.log("Codigo Ingresado: ", "Salida del teclado");
                     }
                 };
@@ -83,44 +87,44 @@ public class StageOpciones extends Stage {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/3+10, Align.center);
+        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
+                Constantes.ALTO_PANTALLA / 2 - 25, Align.center);
         addActor(btn);
     }
 
     private void crearBotonBack() {
         Skin skin = new Skin();
-        skin.add("Up",new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down",new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
+        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
         estilo.down = skin.getDrawable("Down");
 
         final Button btn = new Button(estilo);
-        btn.addListener(new ClickListener(){
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 menu.setScreen(new PantallaMenu(menu));
             }
         });
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/6+20, Align.center);
+        btn.setPosition(Constantes.ANCHO_PANTALLA / 4 - 10,
+                Constantes.ALTO_PANTALLA / 6 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonSonido() {
         Skin skin = new Skin();
-        skin.add("Si",new Texture("PantallaOpciones/BotonSonido.png"));
-        skin.add("No",new Texture("PantallaOpciones/BotonNoSonido.png"));
+        skin.add("Si", new Texture("PantallaOpciones/BotonSonido.png"));
+        skin.add("No", new Texture("PantallaOpciones/BotonNoSonido.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
         estilo.checked = skin.getDrawable("No");
 
         final Button btn = new Button(estilo);
-        btn.addListener(new ClickListener(){
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -129,37 +133,46 @@ public class StageOpciones extends Stage {
             }
         });
         btn.setChecked(!Preferencias.SONIDO_HABILITADO);
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                2*Constantes.ALTO_PANTALLA/3+40, Align.center);
+        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
+                2 * Constantes.ALTO_PANTALLA / 3 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonMusica() {
         Skin skin = new Skin();
-        skin.add("Si",new Texture("PantallaOpciones/BotonMusica.png"));
-        skin.add("No",new Texture("PantallaOpciones/BotonNoMusica.png"));
+        skin.add("Si", new Texture("PantallaOpciones/BotonMusica.png"));
+        skin.add("No", new Texture("PantallaOpciones/BotonNoMusica.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
         estilo.checked = skin.getDrawable("No");
 
         final Button btn = new Button(estilo);
-        btn.addListener(new ClickListener(){
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 Preferencias.MUSICA_HABILITADA = !btn.isChecked();
                 Preferencias.escribirPreferenciasSonidos();
-                if(btn.isChecked()){
+                if (btn.isChecked()) {
                     menu.pauseMusica();
-                }else{
+                } else {
                     menu.playMusica();
                 }
             }
         });
         btn.setChecked(!Preferencias.MUSICA_HABILITADA);
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/2+75, Align.center);
+        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
+                Constantes.ALTO_PANTALLA / 2 + 75, Align.center);
         addActor(btn);
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.BACK) {
+            parent.unPause();
+            return true;
+        }
+        return super.keyDown(keyCode);
     }
 }
