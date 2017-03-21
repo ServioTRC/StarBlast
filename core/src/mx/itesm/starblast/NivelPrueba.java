@@ -111,6 +111,19 @@ public class NivelPrueba implements Screen{
         crearObjetos();
     }
 
+    //region metodos show
+
+    private void crearCamara() {
+        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
+        camara.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
+        camara.update();
+        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
+    }
+
+    private void cargarTexturas() {
+        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
+    }
+
     private void crearObjetos() {
         target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         batch = new SpriteBatch();
@@ -142,22 +155,15 @@ public class NivelPrueba implements Screen{
         };
     }
 
+    //region metodos crearObjetos
+
     private void crearWorld(){
         world = new World(new Vector2(0, 0), true);
         accumulator = 0;
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                /*
-                Gdx.app.log("Choque: ","chocaron");
-                Body bodyA = contact.getFixtureA().getBody();
-                Body bodyB = contact.getFixtureB().getBody();
-                Vector2 positionA = bodyA.getPosition();
-                Vector2 positionB = bodyB.getPosition();
-                Vector2 fuerza = new Vector2((positionA.x-positionB.x)*1000,(positionA.y-positionB.y)*1000);
-                bodyA.setLinearVelocity(fuerza);
-                fuerza = new Vector2(-fuerza.x,-fuerza.y);
-                bodyB.setLinearVelocity(fuerza);*/
+
             }
 
             @Override
@@ -178,6 +184,33 @@ public class NivelPrueba implements Screen{
 
     }
 
+    private void crearSprites() {
+        float escala = 0.3f;
+
+        crearEnemigos();
+
+        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5,world);
+        jugador.escalar(Constantes.ESCALA_NAVES);
+
+        controles = new GeneralSprite("PantallaJuego/Controles.png",Constantes.ANCHO_PANTALLA/2,
+                Constantes.ALTO_PANTALLA/2);
+        controles.escalar(escala);
+        controles.setAlpha(1);
+    }
+
+    //region metodos crearSprites
+    private void crearEnemigos() {
+        NaveEnemiga enemigo;
+        Random r = new Random();
+        for(int i = 0; i< ENEMIGOS_INICIALES;i++){
+            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
+            enemigo.escalar(Constantes.ESCALA_NAVES);
+            enemigos.add(enemigo);
+        }
+    }
+    //endregion
+
     private void crearHud() {
         camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA,Constantes.ALTO_PANTALLA);
         camaraHUD.position.set(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2,0);
@@ -189,74 +222,7 @@ public class NivelPrueba implements Screen{
         crearBotonDisparo();
     }
 
-    private void crearBotonDisparo() {
-        float escala = 0.3f;
-
-        Skin skin = new Skin();
-        skin.add("DisparoStandby",new Texture("HUD/BotonAStandby.png"));
-        skin.add("DisparoPresionado",new Texture("HUD/BotonAPresionado.png"));
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.down = skin.getDrawable("DisparoPresionado");
-        estilo.up = skin.getDrawable("DisparoStandby");
-
-        botonDisparo = new Button(estilo);
-        botonDisparo.scaleBy(escala);
-        botonDisparo.setPosition(13*Constantes.ANCHO_PANTALLA/16,
-                1*Constantes.ALTO_PANTALLA/10);
-
-        botonDisparo.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Button boton = (Button) actor;
-                if(boton.isPressed()){
-                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
-                    if(tmp!=null){
-                        balas.add(tmp);
-                    }
-                }
-            }
-        });
-        escenaHUD.addActor(botonDisparo);
-    }
-
-    private void crearBotonPausa() {
-        float escala = 0.3f;
-
-        Skin skin = new Skin();
-        skin.add("Pausa",new Texture("PantallaJuego/Pausa.png"));
-
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.down = skin.getDrawable("Pausa");
-        estilo.up = skin.getDrawable("Pausa");
-
-        botonPausa = new Button(estilo);
-        botonPausa.scaleBy(escala);
-        botonPausa.setPosition(11*Constantes.ANCHO_PANTALLA/12,
-                9*Constantes.ALTO_PANTALLA/10);
-        botonPausa.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Button boton = (Button) actor;
-                if(boton.isPressed()){
-                    isPaused = !isPaused;
-                    handlePause();
-                }
-            }
-        });
-
-        escenaHUD.addActor(botonPausa);
-    }
-
-    private void handlePause() {
-        if(isPaused){
-            escenaPausa.addActor(botonPausa);
-            Gdx.input.setInputProcessor(escenaPausa);
-        }else{
-            escenaHUD.addActor(botonPausa);
-            Gdx.input.setInputProcessor(escenaHUD);
-        }
-    }
-
+    //region metodos crearHud
     private void crearPad() {
 
         Skin skin = new Skin();
@@ -294,49 +260,77 @@ public class NivelPrueba implements Screen{
         escenaHUD.addActor(touchpad);
     }
 
-    private void crearSprites() {
+    private void crearBotonPausa() {
         float escala = 0.3f;
 
-        crearEnemigos();
+        Skin skin = new Skin();
+        skin.add("Pausa",new Texture("PantallaJuego/Pausa.png"));
 
-        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png",Constantes.ANCHO_PANTALLA/2,Constantes.ANCHO_PANTALLA/5,world);
-        jugador.escalar(Constantes.ESCALA_NAVES);
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.down = skin.getDrawable("Pausa");
+        estilo.up = skin.getDrawable("Pausa");
 
-        /*enemigo1 = new GeneralSprite("PantallaJuego/enemigo1.png",Constantes.ANCHO_PANTALLA/4,
-                2*Constantes.ALTO_PANTALLA/3);
-        enemigo1.rotar(40);
-        enemigo1.escalar(escala);
-        enemigo2 = new GeneralSprite("PantallaJuego/enemigo2.png",3*Constantes.ANCHO_PANTALLA/4,
-                2*Constantes.ALTO_PANTALLA/3);
-        enemigo2.rotar(330);
-        enemigo2.escalar(escala);*/
+        botonPausa = new Button(estilo);
+        botonPausa.scaleBy(escala);
+        botonPausa.setPosition(11*Constantes.ANCHO_PANTALLA/12,
+                9*Constantes.ALTO_PANTALLA/10);
+        botonPausa.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Button boton = (Button) actor;
+                if(boton.isPressed()){
+                    isPaused = !isPaused;
+                    handlePause();
+                }
+            }
+        });
 
-        controles = new GeneralSprite("PantallaJuego/Controles.png",Constantes.ANCHO_PANTALLA/2,
-                Constantes.ALTO_PANTALLA/2);
-        controles.escalar(escala);
-        controles.setAlpha(1);
+        escenaHUD.addActor(botonPausa);
     }
 
-    private void crearEnemigos() {
-        NaveEnemiga enemigo;
-        Random r = new Random();
-        for(int i = 0; i< ENEMIGOS_INICIALES;i++){
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo"+(r.nextBoolean()?"1":"2")+"Sprite.png",r.nextInt((int)Constantes.ANCHO_PANTALLA),Constantes.ALTO_PANTALLA,world);
-            //enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
-            enemigo.escalar(Constantes.ESCALA_NAVES);
-            enemigos.add(enemigo);
+    private void crearBotonDisparo() {
+        float escala = 0.3f;
+
+        Skin skin = new Skin();
+        skin.add("DisparoStandby",new Texture("HUD/BotonAStandby.png"));
+        skin.add("DisparoPresionado",new Texture("HUD/BotonAPresionado.png"));
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.down = skin.getDrawable("DisparoPresionado");
+        estilo.up = skin.getDrawable("DisparoStandby");
+
+        botonDisparo = new Button(estilo);
+        botonDisparo.scaleBy(escala);
+        botonDisparo.setPosition(13*Constantes.ANCHO_PANTALLA/16,
+                1*Constantes.ALTO_PANTALLA/10);
+
+        botonDisparo.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Button boton = (Button) actor;
+                if(boton.isPressed()){
+                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+                    if(tmp!=null){
+                        balas.add(tmp);
+                    }
+                }
+            }
+        });
+        escenaHUD.addActor(botonDisparo);
+    }
+    //endregion
+
+    //endregion
+
+    //endregion
+
+    private void handlePause() {
+        if(isPaused){
+            escenaPausa.addActor(botonPausa);
+            Gdx.input.setInputProcessor(escenaPausa);
+        }else{
+            escenaHUD.addActor(botonPausa);
+            Gdx.input.setInputProcessor(escenaHUD);
         }
-    }
-
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
-    }
-
-    private void crearCamara() {
-        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
-        camara.update();
-        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
     }
 
     @Override
@@ -347,49 +341,12 @@ public class NivelPrueba implements Screen{
         debugearElementos();
     }
 
-    private void debugearElementos() {
-        if(enemigos.size() == 0) {
-            return;
-        }
-        camara.update();
 
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        shapeRenderer.setProjectionMatrix(camara.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-
-
-        shapeRenderer.setColor(new Color(0,1,0,0.5f));
-        for (NaveEnemiga enemigo: enemigos) {
-            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
-        }
-        shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
-
-        shapeRenderer.setColor(new Color(1,0,0,0.5f));
-        for(Bullet bala: balas){
-            shapeRenderer.circle(bala.getX(),bala.getY(),Constantes.toScreenSize(bala.getShape().getRadius()));
-        }
-
-
-        shapeRenderer.end();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
-        shapeRenderer.line(enemigos.get(0).getX(),enemigos.get(0).getY(),target.x,target.y);
-
-        shapeRenderer.end();
-
-    }
-
-    private void update(float dt){
-        accumulator+=dt;
-        while(accumulator>1/120f){
-            world.step(1/120f,8,3);
-            accumulator-=1/120f;
-        }
+    //region metodos render
+    private void borrarPantalla() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     private void procesarJuego(float delta) {
@@ -400,9 +357,13 @@ public class NivelPrueba implements Screen{
         }
     }
 
-
-    private void moverJugador(float delta) {
-        jugador.mover(target,delta);
+    //region metodos procesarJuego
+    private void update(float dt){
+        accumulator+=dt;
+        while(accumulator>1/120f){
+            world.step(1/120f,8,3);
+            accumulator-=1/120f;
+        }
     }
 
     private void moverEnemigos(float delta) {
@@ -412,6 +373,11 @@ public class NivelPrueba implements Screen{
             enemigo.mover(target,delta);
         }
     }
+
+    private void moverJugador(float delta) {
+        jugador.mover(target,delta);
+    }
+    //endregion
 
     private void dibujarElementos() {
         escenaJuego.draw();
@@ -436,10 +402,42 @@ public class NivelPrueba implements Screen{
         }
     }
 
-    private void borrarPantalla() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    private void debugearElementos() {
+        if(enemigos.size() == 0) {
+            return;
+        }
+        camara.update();
+
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        shapeRenderer.setProjectionMatrix(camara.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+
+
+        shapeRenderer.setColor(new Color(0,1,0,0.5f));
+        for (NaveEnemiga enemigo: enemigos) {
+            shapeRenderer.circle(enemigo.getX(),enemigo.getY(),Constantes.toScreenSize(enemigo.getShape().getRadius()));
+        }
+        shapeRenderer.circle(jugador.getX(),jugador.getY(),Constantes.toScreenSize(jugador.getShape().getRadius()));
+        for(Bullet bala: balas){
+            shapeRenderer.circle(bala.getX(),bala.getY(),Constantes.toScreenSize(bala.getShape().getRadius()));
+        }
+
+
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        shapeRenderer.line(enemigos.get(0).getX(),enemigos.get(0).getY(),target.x,target.y);
+
+        shapeRenderer.end();
+
     }
+
+    //endregion
 
     @Override
     public void resize(int width, int height) {
@@ -468,4 +466,3 @@ public class NivelPrueba implements Screen{
 
 
 }
-
