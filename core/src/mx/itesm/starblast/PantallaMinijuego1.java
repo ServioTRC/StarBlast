@@ -13,11 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.Random;
 
-/**
- * Created by delag on 3/14/2017.
- */
-
-public class PantallaMinijuego1 extends Pantalla implements InputProcessor {
+class PantallaMinijuego1 extends Pantalla implements InputProcessor {
 
     private final StarBlast menu;
 
@@ -32,9 +28,9 @@ public class PantallaMinijuego1 extends Pantalla implements InputProcessor {
 
     private boolean won = false;
     private boolean isStoryMode = false;
-    private Sprite[] pieces = new Sprite[25];
-    private Vector2[] places = new Vector2[25];
-    private boolean[] done = new boolean[25];
+    private final Sprite[] pieces = new Sprite[25];
+    private final Vector2[] places = new Vector2[25];
+    private final boolean[] done = new boolean[25];
     private int selectedPieceIdx = -1;
     private Vector3 vector;
     private static final float BOARD_START_X = 275;

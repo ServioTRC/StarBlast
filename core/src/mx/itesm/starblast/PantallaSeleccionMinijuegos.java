@@ -12,11 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-/**
- * Created by delag on 3/14/2017.
- */
-
-public class PantallaSeleccionMinijuegos extends Pantalla {
+class PantallaSeleccionMinijuegos extends Pantalla {
     //TODO texturas para cuando estas haciendo click en las diferentes opciones
     private final StarBlast menu;
 

@@ -11,38 +11,35 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Queue;
 
-import java.util.ArrayList;
+class NavesEspaciales implements INaveEspacial {
 
-public class NavesEspaciales implements INaveEspacial {
+    BodyDef bodyDef;
+    Body body;
+    private CircleShape bodyShape;
+    Sprite sprite;
+    float porcentajeAceleracion;
+    long COOLDOWN_DISPARO;
+    private long disparoAnterior = 0;
+    private final World world;
+    short CATEGORY = -1;
+    short MASK = -1;
 
-    protected BodyDef bodyDef;
-    protected Body body;
-    protected CircleShape bodyShape;
-    protected Sprite sprite;
-    protected float porcentajeAceleracion;
-    protected long COOLDOWN_DISPARO;
-    protected long disparoAnterior = 0;
-    protected World world;
-    protected short CATEGORY = -1;
-    protected short MASK = -1;
-
-    protected NavesEspaciales(World world) {
+    NavesEspaciales(World world) {
         this.world = world;
     }
 
     @Override
-    public Bullet disparar(long time) {
+    public Bullet disparar(long time, boolean enemy) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            return disparar();
+            return disparar(enemy);
         }
         return null;
     }
 
-    protected Bullet disparar(){
-        return new Bullet(body.getPosition(),world, sprite.getRotation());
+    private Bullet disparar(boolean enemy){
+        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy);
     }
 
     @Override
@@ -84,7 +81,7 @@ public class NavesEspaciales implements INaveEspacial {
         makeFixture(0.1f,0.1f);
     }
 
-    protected void makeFixture(float density,float restitution){
+    void makeFixture(float density, float restitution){
         for(Fixture fix: body.getFixtureList()){
             body.destroyFixture(fix);
         }

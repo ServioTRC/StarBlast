@@ -4,10 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
-/**
- * Created by Servio T on 05/02/2017.
- */
-
 public class StarBlast extends Game {
 
     private Music musicaFondo;

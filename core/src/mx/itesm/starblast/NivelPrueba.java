@@ -1,31 +1,20 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -33,20 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
-import java.math.*;
-
-/**
- * Created by Ian Neumann on 16/02/2017.
- */
 
 public class NivelPrueba implements Screen, IPausable {
 
@@ -93,12 +74,12 @@ public class NivelPrueba implements Screen, IPausable {
 
     private float accumulator;
 
-    ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer;
 
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
 
-    private ArrayList<Bullet> balas = new ArrayList<Bullet>();
+    private final ArrayList<Bullet> balas = new ArrayList<Bullet>();
 
     public NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -299,7 +280,7 @@ public class NivelPrueba implements Screen, IPausable {
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
                 if (boton.isPressed()) {
-                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()), false);
                     if (tmp != null) {
                         balas.add(tmp);
                     }

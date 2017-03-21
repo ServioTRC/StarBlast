@@ -9,14 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-/**
- * Created by Servio T on 08/02/2017.
- */
-
-public class Texto {
-    private BitmapFont font;
-    private Skin skin;
-    private TextureAtlas buttonAtlas;
+class Texto {
+    private final BitmapFont font;
+    private final Skin skin;
+    private final TextureAtlas buttonAtlas;
 
     public Texto(String archivo){
         font = new BitmapFont(Gdx.files.internal(archivo));

@@ -1,22 +1,12 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-/**
- * Created by Servio T on 05/02/2017.
- */
 
 public class PantallaInicio extends Pantalla {
 
@@ -111,7 +101,7 @@ public class PantallaInicio extends Pantalla {
     }
 
     //Una clase para capturar los eventos del touch (teclado y mouse también)
-    class ProcesadorEntrada implements InputProcessor {
+    private class ProcesadorEntrada implements InputProcessor {
 
         @Override
         public boolean keyDown(int keycode) {

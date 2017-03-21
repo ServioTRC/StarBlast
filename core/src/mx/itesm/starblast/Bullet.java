@@ -13,9 +13,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Bullet {
+class Bullet {
 
-    public static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
+    private static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
     private static Texture textura;
     private Body body;
     private CircleShape bodyShape;
@@ -23,15 +23,11 @@ public class Bullet {
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
 
-    public static void CargarTextura() {
+    static void CargarTextura() {
         textura = new Texture(BULLET_SPRITE);
     }
 
-    public Bullet(float x, float y, World world, float angle) {
-        this(x, y, world, angle, false);
-    }
-
-    public Bullet(float x, float y, World world, float angle, boolean enemy) {
+    Bullet(float x, float y, World world, float angle, boolean enemy) {
         isEnemy = enemy;
         sprite = new Sprite(textura);
         sprite.setCenter(x, y);
@@ -47,8 +43,8 @@ public class Bullet {
                 MathUtils.sinDeg(angle) * VELOCITY);
     }
 
-    public Bullet(Vector2 v, World world, float angle) {
-        this(v.x, v.y, world, angle);
+    Bullet(Vector2 v, World world, float angle, boolean enemy) {
+        this(v.x, v.y, world, angle,enemy);
     }
 
     private void makeFixture(float density, float restitution) {
@@ -81,15 +77,15 @@ public class Bullet {
         sprite.draw(batch);
     }
 
-    public Shape getShape() {
+    Shape getShape() {
         return bodyShape;
     }
 
-    public float getX() {
+    float getX() {
         return Constantes.toScreenSize(body.getPosition().x);
     }
 
-    public float getY() {
+    float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
     }
 }

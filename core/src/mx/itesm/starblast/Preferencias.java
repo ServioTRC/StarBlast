@@ -5,11 +5,7 @@ import com.badlogic.gdx.Preferences;
 
 import java.util.ArrayList;
 
-/**
- * Created by delag on 3/17/2017.
- */
-
-public class Preferencias {
+class Preferencias {
     public static boolean MUSICA_HABILITADA = true;
     public static boolean SONIDO_HABILITADO = true;
 

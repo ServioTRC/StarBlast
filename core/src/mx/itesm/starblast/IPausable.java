@@ -1,10 +1,6 @@
 package mx.itesm.starblast;
 
-/**
- * Created by delag on 3/21/2017.
- */
-
-public interface IPausable {
+interface IPausable {
 
     void pause();
 

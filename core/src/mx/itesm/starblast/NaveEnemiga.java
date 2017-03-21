@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class NaveEnemiga extends NavesEspaciales {
+class NaveEnemiga extends NavesEspaciales {
 
     private static final int ACELERACION_MAX = 10;
     private static final int ACELERACION_MIN = -10;
@@ -17,7 +17,7 @@ public class NaveEnemiga extends NavesEspaciales {
     private float velocidad;
 
 
-    public NaveEnemiga(String ubicacion, float x, float y,World world) {
+    NaveEnemiga(String ubicacion, float x, float y,World world) {
         super(world);
         COOLDOWN_DISPARO = 500;
         CATEGORY = Constantes.CATEGORY_ENEMY;

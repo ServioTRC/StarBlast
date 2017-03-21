@@ -10,10 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-/**
- * Created by Servio T on 10/02/2017.
- */
-
 public class PantallaOpciones extends Pantalla {
     private final StarBlast menu;
 
@@ -38,8 +34,8 @@ public class PantallaOpciones extends Pantalla {
     private GeneralSprite spriteReiniciar;
     private GeneralSprite spriteBack;
 
-    private String stringsBotonMusica[] = {"PantallaOpciones/BotonMusica.png","PantallaOpciones/BotonNoMusica.png"};
-    private String stringsBotonSonido[] = {"PantallaOpciones/BotonSonido.png","PantallaOpciones/BotonNoSonido.png"};
+    private final String[] stringsBotonMusica = {"PantallaOpciones/BotonMusica.png","PantallaOpciones/BotonNoMusica.png"};
+    private final String[] stringsBotonSonido = {"PantallaOpciones/BotonSonido.png","PantallaOpciones/BotonNoSonido.png"};
 
 
     public PantallaOpciones(StarBlast menu) {
