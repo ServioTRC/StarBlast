@@ -25,6 +25,8 @@ public class NavesEspaciales implements INaveEspacial {
     protected long COOLDOWN_DISPARO;
     protected long disparoAnterior = 0;
     protected World world;
+    protected short CATEGORY = -1;
+    protected short MASK = -1;
 
     protected NavesEspaciales(World world) {
         this.world = world;
@@ -83,10 +85,6 @@ public class NavesEspaciales implements INaveEspacial {
     }
 
     protected void makeFixture(float density,float restitution){
-        makeFixture(density,restitution,(short) 0);
-    }
-
-    protected void makeFixture(float density,float restitution, short group){
         for(Fixture fix: body.getFixtureList()){
             body.destroyFixture(fix);
         }
@@ -101,9 +99,8 @@ public class NavesEspaciales implements INaveEspacial {
         fixtureDef.restitution=restitution;
         fixtureDef.shape=bodyShape;
         fixtureDef.friction = 0;
-        if(group!=0) {
-            fixtureDef.filter.groupIndex = group;
-        }
+        fixtureDef.filter.categoryBits = CATEGORY;
+        fixtureDef.filter.maskBits = MASK;
         body.createFixture(fixtureDef);
     }
 }

@@ -33,6 +33,8 @@ public class NaveJugador extends NavesEspaciales {
 
     public NaveJugador(String ubicacion,float x,float y,World world) {
         super(world);
+        CATEGORY = Constantes.CATEGORY_PLAYER;
+        MASK = Constantes.MASK_PLAYER;
         COOLDOWN_DISPARO = 500;
         sprite = new Sprite(new Texture(ubicacion));
         this.sprite.setRotation(90);
@@ -46,7 +48,7 @@ public class NaveJugador extends NavesEspaciales {
 
         body = world.createBody(bodyDef);
 
-        makeFixture(0.7f,0.7f,Constantes.GROUP_FRIENDLY);
+        makeFixture(0.7f,0.7f);
     }
 
     @Override

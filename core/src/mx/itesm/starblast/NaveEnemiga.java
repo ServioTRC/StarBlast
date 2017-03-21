@@ -25,6 +25,8 @@ public class NaveEnemiga extends NavesEspaciales {
     public NaveEnemiga(String ubicacion, float x, float y,World world) {
         super(world);
         COOLDOWN_DISPARO = 500;
+        CATEGORY = Constantes.CATEGORY_ENEMY;
+        MASK = Constantes.MASK_ENEMY;
         sprite = new Sprite(new Texture(ubicacion));
         sprite.setRotation(-90);
         velocidad = 0;

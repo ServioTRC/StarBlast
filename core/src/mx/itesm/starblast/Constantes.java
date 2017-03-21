@@ -16,7 +16,16 @@ public class Constantes {
     public static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
     public static final float TOUCHPAD_DEADZONE = 0.20f;
     public static ArrayList<String> CODIGOS = new ArrayList<String>(5);
-    public static final short GROUP_FRIENDLY = -1;
+
+    public static final short CATEGORY_PLAYER = 1;
+    public static final short CATEGORY_ENEMY = 2;
+    public static final short CATEGORY_BULLET = 4;
+    public static final short CATEGORY_BULLET_ENEMY = 8;
+
+    public static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
+    public static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_ENEMY | CATEGORY_BULLET;
+    public static final short MASK_BULLET = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
+    public static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET;
 
     public static float toWorldSize(float screen){
         return screen*0.01f;

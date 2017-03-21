@@ -71,8 +71,8 @@ public class Bullet {
         fixtureDef.restitution=restitution;
         fixtureDef.shape=bodyShape;
         fixtureDef.friction = 0;
-        fixtureDef.filter.groupIndex = Constantes.GROUP_FRIENDLY;
-
+        fixtureDef.filter.categoryBits = Constantes.CATEGORY_BULLET;
+        fixtureDef.filter.maskBits = Constantes.MASK_BULLET;
         body.createFixture(fixtureDef);
     }
 
