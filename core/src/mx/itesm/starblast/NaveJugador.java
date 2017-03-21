@@ -46,7 +46,7 @@ public class NaveJugador extends NavesEspaciales {
 
         body = world.createBody(bodyDef);
 
-        makeFixture(0.7f,0.7f);
+        makeFixture(0.7f,0.7f,Constantes.GROUP_FRIENDLY);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class NaveJugador extends NavesEspaciales {
         }
         theta = (float) atan2(vector.y, vector.x);
         velocidad = (float) sqrt(vector.x * vector.x + vector.y * vector.y);
-        if(!body.getLinearVelocity().isZero(0.05f))Gdx.app.log("Nave Jugador:","LV: "+body.getLinearVelocity());
+//        if(!body.getLinearVelocity().isZero(0.05f))Gdx.app.log("Nave Jugador:","LV: "+body.getLinearVelocity());
         body.setLinearVelocity(vector.scl(0.5f));
 
         sprite.setCenter(Constantes.toScreenSize(body.getPosition().x), Constantes.toScreenSize(body.getPosition().y));

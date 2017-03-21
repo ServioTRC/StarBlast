@@ -42,13 +42,13 @@ public class Bullet {
 //        bodyDef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA/2),
 //                Constantes.toWorldSize(Constantes.ALTO_PANTALLA/2));
         body = world.createBody(bodyDef);
-        makeFixture(0.7f,0.7f);
+        makeFixture(0.1f,0.7f);
         body.setBullet(true);
         sprite.setRotation(angle-90);
         body.setLinearVelocity(MathUtils.cosDeg(angle)*VELOCITY,
                             MathUtils.sinDeg(angle)*VELOCITY);
-        Gdx.app.log("Bullet:","Angle: "+angle+" cos: "+MathUtils.cosDeg(angle));
-        Gdx.app.log("Bullet:","LV: "+body.getLinearVelocity());
+//        Gdx.app.log("Bullet:","Angle: "+angle+" cos: "+MathUtils.cosDeg(angle));
+//        Gdx.app.log("Bullet:","LV: "+body.getLinearVelocity());
     }
 
     public Bullet(Vector2 v, World world, float angle){
@@ -71,6 +71,7 @@ public class Bullet {
         fixtureDef.restitution=restitution;
         fixtureDef.shape=bodyShape;
         fixtureDef.friction = 0;
+        fixtureDef.filter.groupIndex = Constantes.GROUP_FRIENDLY;
 
         body.createFixture(fixtureDef);
     }

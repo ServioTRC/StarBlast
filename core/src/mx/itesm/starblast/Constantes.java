@@ -16,6 +16,7 @@ public class Constantes {
     public static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
     public static final float TOUCHPAD_DEADZONE = 0.20f;
     public static ArrayList<String> CODIGOS = new ArrayList<String>(5);
+    public static final short GROUP_FRIENDLY = -1;
 
     public static float toWorldSize(float screen){
         return screen*0.01f;

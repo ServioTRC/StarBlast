@@ -83,7 +83,10 @@ public class NavesEspaciales implements INaveEspacial {
     }
 
     protected void makeFixture(float density,float restitution){
+        makeFixture(density,restitution,(short) 0);
+    }
 
+    protected void makeFixture(float density,float restitution, short group){
         for(Fixture fix: body.getFixtureList()){
             body.destroyFixture(fix);
         }
@@ -98,7 +101,9 @@ public class NavesEspaciales implements INaveEspacial {
         fixtureDef.restitution=restitution;
         fixtureDef.shape=bodyShape;
         fixtureDef.friction = 0;
-
+        if(group!=0) {
+            fixtureDef.filter.groupIndex = group;
+        }
         body.createFixture(fixtureDef);
     }
 }
