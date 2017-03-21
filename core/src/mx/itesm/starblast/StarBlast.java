@@ -31,11 +31,17 @@ public class StarBlast extends Game {
         Constantes.ASSET_GENERAL.clear();
     }
 
+    @Override
+    public void pause(){
+        Gdx.app.log("PAUsando musica", "StarBlAST");
+        pauseMusica();
+    }
+
     private void cargarEfectosSonoros(){
         Gdx.app.log("Creando aplicacion", "Musica");
-        Constantes.ASSET_GENERAL.load("EfectosSonoros/StarWars.mp3", Music.class);
+        Constantes.ASSET_GENERAL.load("EfectosSonoros/MusicaFondo.mp3", Music.class);
         Constantes.ASSET_GENERAL.finishLoading();
-        musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/StarWars.mp3");
+        musicaFondo = Constantes.ASSET_GENERAL.get("EfectosSonoros/MusicaFondo.mp3");
         musicaFondo.setLooping(true);
     }
 
