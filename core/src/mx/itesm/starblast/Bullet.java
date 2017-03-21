@@ -33,14 +33,14 @@ public class Bullet {
 
     public Bullet(float x, float y, World world, float angle){
         sprite = new Sprite(textura);
-//        sprite.setCenter(x,y);
-        sprite.setCenter(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
+        sprite.setCenter(x,y);
+//        sprite.setCenter(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         BodyDef bodyDef = new BodyDef();
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-//        bodyDef.position.set(x,y);
-        bodyDef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA/2),
-                Constantes.toWorldSize(Constantes.ALTO_PANTALLA/2));
+        bodyDef.position.set(x,y);
+//        bodyDef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA/2),
+//                Constantes.toWorldSize(Constantes.ALTO_PANTALLA/2));
         body = world.createBody(bodyDef);
         makeFixture(0.7f,0.7f);
         body.setBullet(true);
