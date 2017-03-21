@@ -33,9 +33,6 @@ public class PantallaSplashTec extends Pantalla {
 	//Cronómetro
 	private long tiempoInicio;
 
-	//Musica
-	private Music musicaFondo;
-
 	public PantallaSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
