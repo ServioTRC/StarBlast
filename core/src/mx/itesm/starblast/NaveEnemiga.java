@@ -11,7 +11,7 @@ class NaveEnemiga extends NavesEspaciales {
     private static final int ACELERACION_MAX = 10;
     private static final int ACELERACION_MIN = -10;
     private static final int RANGO_GIRO_MAX = 3;
-    private static final int VELOCIDAD_MAX = 7;
+    private static final int VELOCIDAD_MAX = 5;
     private static final int IMPULSO = 30;
 
     private float velocidad;
@@ -19,20 +19,16 @@ class NaveEnemiga extends NavesEspaciales {
 
 
     NaveEnemiga(String ubicacion, float x, float y,World world) {
-        super(world);
-        COOLDOWN_DISPARO = 500;
+        super(ubicacion,x,y,world,-90,8,0.4f);
+
+
         CATEGORY = Constantes.CATEGORY_ENEMY;
         MASK = Constantes.MASK_ENEMY;
-        sprite = new Sprite(new Texture(ubicacion));
-        sprite.setRotation(-90);
+        COOLDOWN_DISPARO = 500;
+
         velocidad = 0;
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
-        bodyDef.angle = -90;
-        body = world.createBody(bodyDef);
+        damage = 10;
         puedeDisparar = false;
-        makeFixture(0.1f,0.1f);
     }
 
     @Override

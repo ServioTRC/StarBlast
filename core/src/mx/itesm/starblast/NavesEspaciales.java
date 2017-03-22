@@ -1,6 +1,7 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.StringBuilder;
 
 class NavesEspaciales implements INaveEspacial {
 
@@ -25,10 +27,23 @@ class NavesEspaciales implements INaveEspacial {
     short CATEGORY = -1;
     short MASK = -1;
     int vida;
+    int damage;
 
-    NavesEspaciales(World world) {
+    NavesEspaciales(String ubicacion,float x,float y,World world,float angulo,float density, float restitution) {
         this.world = world;
         vida = 100;
+        damage = 10;
+        sprite = new Sprite(new Texture(ubicacion));
+        sprite.setRotation(angulo);
+        this.bodyDef = new BodyDef();
+        this.bodyDef.type = BodyDef.BodyType.DynamicBody;
+        this.bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
+        this.bodyDef.angle = angulo;
+
+        body = world.createBody(bodyDef);
+        body.setUserData(this);
+
+        makeFixture(density,restitution);
     }
 
     @Override
@@ -41,7 +56,7 @@ class NavesEspaciales implements INaveEspacial {
     }
 
     private Bullet disparar(boolean enemy){
-        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy);
+        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,20);
     }
 
     @Override
@@ -68,6 +83,10 @@ class NavesEspaciales implements INaveEspacial {
 
     public float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
+    }
+
+    public void doDamage(int damage){
+        vida-=damage;
     }
 
     Shape getShape() {

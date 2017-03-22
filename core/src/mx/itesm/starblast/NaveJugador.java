@@ -18,9 +18,7 @@ class NaveJugador extends NavesEspaciales {
 
     private final float RANGO_GIRO = 80;
     private final float VELOCIDAD_MAX = 8;
-
     private final float CONSTANTE_FRENADO = 0.9f;
-
     private final float RANGO_GIRO_MAX = 2;
 
     private float aceleracion;
@@ -31,24 +29,15 @@ class NaveJugador extends NavesEspaciales {
     private float theta;
 
     NaveJugador(String ubicacion,float x,float y,World world) {
-        super(world);
+        super(ubicacion,x,y,world,90,10,0.5f);
+
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
         COOLDOWN_DISPARO = 300;
 
-        sprite = new Sprite(new Texture(ubicacion));
-        this.sprite.setRotation(90);
-        this.aceleracion= 0;
-        this.velocidad = 0;
-
-        this.bodyDef = new BodyDef();
-        this.bodyDef.type = BodyDef.BodyType.DynamicBody;
-        this.bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
-        this.bodyDef.angle = 90;
-
-        body = world.createBody(bodyDef);
-
-        makeFixture(0.7f,0.7f);
+        velocidad = 0;
+        aceleracion = 0;
+        damage = 20;
     }
 
     @Override

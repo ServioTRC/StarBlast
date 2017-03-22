@@ -6,21 +6,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -28,10 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -84,8 +77,9 @@ class NivelPrueba implements Screen, IPausable {
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
 
-    private ArrayList<Bullet> balas = new ArrayList<Bullet>();
     private boolean disparando = false;
+
+    private Array<Body> toRemove;
 
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -136,10 +130,34 @@ class NivelPrueba implements Screen, IPausable {
     private void crearWorld() {
         world = new World(new Vector2(0, 0), true);
         accumulator = 0;
+        toRemove = new Array<Body>();
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
 
+                Object objetoA = contact.getFixtureA().getBody().getUserData();
+                Object objetoB = contact.getFixtureB().getBody().getUserData();
+                if(objetoA == null || objetoB == null){
+                    return;
+                }
+                int damageA,damageB;
+                damageA = obtenerDamage(objetoA);
+                damageB = obtenerDamage(objetoB);
+                if(objetoA instanceof Bullet){
+                    ((Bullet)objetoA).damage = 0;
+                    toRemove.add(contact.getFixtureA().getBody());
+                }
+                if(objetoB instanceof Bullet){
+                    ((Bullet)objetoB).damage = 0;
+                    toRemove.add(contact.getFixtureB().getBody());
+                }
+                if(objetoA instanceof NavesEspaciales){
+                    ((NavesEspaciales)objetoA).doDamage(damageB);
+                }
+                if(objetoB instanceof NavesEspaciales){
+                    ((NavesEspaciales)objetoB).doDamage(damageA);
+                }
+                barraVida.setHealthPorcentage(jugador.vida/100);
             }
 
             @Override
@@ -159,6 +177,20 @@ class NivelPrueba implements Screen, IPausable {
         });
 
     }
+
+    //region metodos crearWorld
+    private int obtenerDamage(Object objeto){
+        if(objeto instanceof Bullet){
+            Bullet balaA = (Bullet)objeto;
+            return balaA.damage;
+        }
+        if(objeto instanceof NavesEspaciales){
+            NavesEspaciales naveA = (NavesEspaciales)objeto;
+            return naveA.damage;
+        }
+        return 0;
+    }
+    //endregion
 
     private void crearSprites() {
         crearEnemigos();
@@ -277,12 +309,7 @@ class NivelPrueba implements Screen, IPausable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 disparando = true;
-                Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
-                if(tmp!=null){
-                    balas.add(tmp);
-                }
-                jugador.vida =jugador.vida-1;
-                barraVida.setHealthPorcentage(jugador.vida/100f);
+                jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
                 return true;
             }
 
@@ -290,17 +317,6 @@ class NivelPrueba implements Screen, IPausable {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 disparando = false;
             }
-            /*
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Button boton = (Button) actor;
-                if (boton.isPressed()) {
-                    Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()), false);
-                    if (tmp != null) {
-                        balas.add(tmp);
-                    }
-                }
-            }*/
         });
         escenaHUD.addActor(botonDisparo);
     }
@@ -364,6 +380,13 @@ class NivelPrueba implements Screen, IPausable {
             world.step(1 / 120f, 8, 3);
             accumulator -= 1 / 120f;
         }
+        for(Body b: toRemove){
+            for(Fixture fix: b.getFixtureList()){
+                b.destroyFixture(fix);
+            }
+            world.destroyBody(b);
+        }
+        toRemove = new Array<Body>();
     }
 
     private void moverEnemigos(float delta) {
@@ -371,20 +394,14 @@ class NivelPrueba implements Screen, IPausable {
         //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
-            Bullet tmp = enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
-            if(tmp!=null){
-                balas.add(tmp);
-            }
+            enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
         }
     }
 
     private void moverJugador(float delta) {
         jugador.mover(target,delta);
         if(disparando){
-            Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
-            if(tmp!=null){
-                balas.add(tmp);
-            }
+            jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
         }
     }
     //endregion
@@ -392,13 +409,22 @@ class NivelPrueba implements Screen, IPausable {
     private void dibujarElementos() {
         escenaJuego.draw();
         batch.begin();
-        jugador.draw(batch);
+        Array<Body> bodies = new Array<Body>();
+        world.getBodies(bodies);
+        Object object;
+        for(Body b:bodies){
+            object = b.getUserData();
+            if(object instanceof NavesEspaciales){
+                ((NavesEspaciales)object).draw(batch);
+            }
+            if(object instanceof Bullet){
+                ((Bullet)object).draw(batch);
+            }
+        }
+        /*jugador.draw(batch);
         for (NaveEnemiga enemigo : enemigos) {
             enemigo.draw(batch);
-        }
-        for (Bullet bala : balas) {
-            bala.draw(batch);
-        }
+        }*/
         //botonPausa.draw(batch);
         //comentado para probar el touch pad
         //controles.draw(batch);
@@ -433,9 +459,9 @@ class NivelPrueba implements Screen, IPausable {
         shapeRenderer.circle(jugador.getX(), jugador.getY(), Constantes.toScreenSize(jugador.getShape().getRadius()));
 
         shapeRenderer.setColor(new Color(1, 0, 0, 0.7f));
-        for (Bullet bala : balas) {
+        /*for (Bullet bala : balas) {
             shapeRenderer.circle(bala.getX(), bala.getY(), Constantes.toScreenSize(bala.getShape().getRadius()));
-        }
+        }*/
 
 
         shapeRenderer.end();

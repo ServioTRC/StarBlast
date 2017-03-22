@@ -22,12 +22,12 @@ class Bullet {
     private Sprite sprite;
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
-
+    int damage;
     static void CargarTextura() {
         textura = new Texture(BULLET_SPRITE);
     }
 
-    Bullet(float x, float y, World world, float angle, boolean enemy) {
+    Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
         sprite = new Sprite(textura);
         sprite.setCenter(x, y);
@@ -42,10 +42,12 @@ class Bullet {
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
         body.setUserData(this);
+
+        this.damage = damage;
     }
 
-    Bullet(Vector2 v, World world, float angle, boolean enemy) {
-        this(v.x, v.y, world, angle,enemy);
+    Bullet(Vector2 v, World world, float angle, boolean enemy,int damage) {
+        this(v.x, v.y, world, angle,enemy, damage);
     }
 
     private void makeFixture(float density, float restitution) {
