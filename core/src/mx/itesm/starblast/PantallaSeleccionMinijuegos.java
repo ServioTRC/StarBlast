@@ -25,7 +25,7 @@ class PantallaSeleccionMinijuegos extends Pantalla {
     //Escenas
     private Stage escenaSeleccion;
 
-    public PantallaSeleccionMinijuegos(StarBlast menu) {
+    PantallaSeleccionMinijuegos(StarBlast menu) {
         this.menu = menu;
     }
 
@@ -71,7 +71,7 @@ class PantallaSeleccionMinijuegos extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("PantallaSeleccionMinijuegos: ", "Voy a pantalla minijuego1");
-                menu.setScreen(new PantallaMinijuego1(menu));
+                menu.setScreen(new PantallaMinijuego1(menu, false));
             }
         });
     }

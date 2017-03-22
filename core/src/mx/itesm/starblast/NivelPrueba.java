@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -29,7 +28,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class NivelPrueba implements Screen, IPausable {
+class NivelPrueba implements Screen, IPausable {
 
     private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
@@ -47,15 +46,8 @@ public class NivelPrueba implements Screen, IPausable {
     //Escenas
     private Stage escenaJuego;
 
-    //Texto
-    private Texto texto;
-    private TextButton.TextButtonStyle textButtonStyle;
-
     //Sprites
-    private GeneralSprite avatar;
     private ArrayList<NaveEnemiga> enemigos;
-
-    private GeneralSprite controles;
 
     private Vector2 target;
 
@@ -81,7 +73,7 @@ public class NivelPrueba implements Screen, IPausable {
 
     private final ArrayList<Bullet> balas = new ArrayList<Bullet>();
 
-    public NivelPrueba(StarBlast menu) {
+    NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
 
@@ -110,7 +102,6 @@ public class NivelPrueba implements Screen, IPausable {
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto(Constantes.TEXTO_FUENTE);
         enemigos = new ArrayList<NaveEnemiga>();
         escenaJuego.addActor(imgFondo);
 
@@ -156,17 +147,9 @@ public class NivelPrueba implements Screen, IPausable {
     }
 
     private void crearSprites() {
-        float escala = 0.3f;
-
         crearEnemigos();
-
         jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
         jugador.escalar(Constantes.ESCALA_NAVES);
-
-        controles = new GeneralSprite("PantallaJuego/Controles.png", Constantes.ANCHO_PANTALLA / 2,
-                Constantes.ALTO_PANTALLA / 2);
-        controles.escalar(escala);
-        controles.setAlpha(1);
     }
 
     //region metodos crearSprites

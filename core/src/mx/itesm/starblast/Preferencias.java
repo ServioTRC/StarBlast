@@ -6,23 +6,23 @@ import com.badlogic.gdx.Preferences;
 import java.util.ArrayList;
 
 class Preferencias {
-    public static boolean MUSICA_HABILITADA = true;
-    public static boolean SONIDO_HABILITADO = true;
+    static boolean MUSICA_HABILITADA = true;
+    static boolean SONIDO_HABILITADO = true;
 
-    public static void leerPreferenciasSonidos(){
+    static void leerPreferenciasSonidos(){
         Preferences prefs = Gdx.app.getPreferences("Sonido");
         MUSICA_HABILITADA = prefs.getBoolean("MUSICA_HABILITADA",true);
         SONIDO_HABILITADO = prefs.getBoolean("SONIDO_HABILITADO",true);
     }
 
-    public static void escribirPreferenciasSonidos(){
+    static void escribirPreferenciasSonidos(){
         Preferences prefs = Gdx.app.getPreferences("Sonido");
         prefs.putBoolean("MUSICA_HABILITADA",MUSICA_HABILITADA);
         prefs.putBoolean("SONIDO_HABILITADO",SONIDO_HABILITADO);
         prefs.flush();
     }
 
-    public static void guardarPuntaje(String nombreUsuario, int puntajeUsuario){
+    static void guardarPuntaje(String nombreUsuario, int puntajeUsuario){
         //Comparando Valores
         Preferences prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
         ArrayList<Integer> puntajes = new ArrayList<Integer>(6);

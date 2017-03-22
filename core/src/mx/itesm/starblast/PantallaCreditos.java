@@ -11,24 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class PantallaCreditos extends Pantalla{
+class PantallaCreditos extends Pantalla{
 
     private final StarBlast menu;
 
     //Texturas
     private Texture texturaFondo;
 
-    //SpriteBatch
-    private SpriteBatch batch;
-
     //Escenas
     private Stage escenaInicio;
 
     //Texto
     private Texto texto;
-    private TextButton.TextButtonStyle textButtonStyle;
 
-    public PantallaCreditos(StarBlast menu) {
+    PantallaCreditos(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -39,7 +35,7 @@ public class PantallaCreditos extends Pantalla{
     }
 
     private void crearObjetos() {
-        batch = new SpriteBatch();
+        SpriteBatch batch = new SpriteBatch();
         escenaInicio = new Stage(vista, batch)
         {
             @Override
@@ -61,7 +57,7 @@ public class PantallaCreditos extends Pantalla{
     }
 
     private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
+        TextButton.TextButtonStyle textButtonStyle = texto.generarTexto(Color.RED, Color.GOLD, 2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
         btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
 

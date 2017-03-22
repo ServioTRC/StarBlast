@@ -37,12 +37,10 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
     private static final float BOARD_START_Y = 733;
     private static final float PIECE_WIDTH = 136;
     private static final float PIECE_HEIGHT = 136;
-    //TODO yo creo que hay que agragar pantalla de pausa
-    public PantallaMinijuego1(StarBlast menu){
-        this.menu = menu;
-    }
 
-    public PantallaMinijuego1(StarBlast menu, boolean isStoryMode){
+    //TODO yo creo que hay que agragar pantalla de pausa
+
+    PantallaMinijuego1(StarBlast menu, boolean isStoryMode){
         this.menu = menu;
         this.isStoryMode = isStoryMode;
     }

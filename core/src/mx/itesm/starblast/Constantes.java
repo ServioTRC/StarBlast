@@ -5,28 +5,28 @@ import com.badlogic.gdx.assets.AssetManager;
 import java.util.ArrayList;
 
 class Constantes {
-    public static final float ANCHO_PANTALLA = 1280;
-    public static final float ALTO_PANTALLA = 800;
-    public static final AssetManager ASSET_GENERAL = new AssetManager();
-    public static final float ESCALA_NAVES = -0.3f;
-    public static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
-    public static final float TOUCHPAD_DEADZONE = 0.20f;
-    public static final ArrayList<String> CODIGOS = new ArrayList<String>(5);
+    static final float ANCHO_PANTALLA = 1280;
+    static final float ALTO_PANTALLA = 800;
+    static final AssetManager ASSET_GENERAL = new AssetManager();
+    static final float ESCALA_NAVES = -0.3f;
+    static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
+    static final float TOUCHPAD_DEADZONE = 0.20f;
+    static final ArrayList<String> CODIGOS = new ArrayList<String>(5);
 
-    public static final short CATEGORY_PLAYER = 1;
-    public static final short CATEGORY_ENEMY = 2;
-    public static final short CATEGORY_BULLET = 4;
-    public static final short CATEGORY_BULLET_ENEMY = 8;
+    static final short CATEGORY_PLAYER = 1;
+    static final short CATEGORY_ENEMY = 2;
+    static final short CATEGORY_BULLET = 4;
+    static final short CATEGORY_BULLET_ENEMY = 8;
 
-    public static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
-    public static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_ENEMY | CATEGORY_BULLET;
-    public static final short MASK_BULLET = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
-    public static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET;
+    static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
+    static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_ENEMY | CATEGORY_BULLET;
+    static final short MASK_BULLET = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY;
+    static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET;
 
-    public static float toWorldSize(float screen){
+    static float toWorldSize(float screen){
         return screen*0.01f;
     }
-    public static float toScreenSize(float world){
+    static float toScreenSize(float world){
         return world*100;
     }
     

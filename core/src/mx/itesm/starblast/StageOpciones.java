@@ -18,7 +18,7 @@ class StageOpciones extends Stage {
     private final StarBlast menu;
     private final IPausable parent;
 
-    public StageOpciones(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
+    StageOpciones(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
         super(viewport, batch);
         this.menu = menu;
         this.parent = parent;
@@ -48,7 +48,6 @@ class StageOpciones extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 parent.unPause();
             }
         });
@@ -60,17 +59,14 @@ class StageOpciones extends Stage {
     private void crearBotonCodigos() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
-        //skin.add("Down",new Texture("PantallaOpciones/BotonCodigos.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
-        //estilo.down = skin.getDrawable("Down");
 
         final Button btn = new Button(estilo);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
@@ -105,7 +101,6 @@ class StageOpciones extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 menu.setScreen(new PantallaMenu(menu));
             }
         });
@@ -127,7 +122,6 @@ class StageOpciones extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Preferencias.SONIDO_HABILITADO = !btn.isChecked();
                 Preferencias.escribirPreferenciasSonidos();
             }
@@ -151,7 +145,6 @@ class StageOpciones extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Preferencias.MUSICA_HABILITADA = !btn.isChecked();
                 Preferencias.escribirPreferenciasSonidos();
                 if (btn.isChecked()) {

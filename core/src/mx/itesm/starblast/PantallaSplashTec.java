@@ -11,15 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class PantallaSplashTec extends Pantalla {
+class PantallaSplashTec extends Pantalla {
 
 	private final StarBlast menu;
 
 	//Texturas
 	private Texture texturaBtn;
-
-	//SpriteBatch
-	private SpriteBatch batch;
 
 	//Escenas
 	private Stage escenaSplashTec;
@@ -27,7 +24,7 @@ public class PantallaSplashTec extends Pantalla {
 	//Cronómetro
 	private long tiempoInicio;
 
-	public PantallaSplashTec(StarBlast menu) {
+	PantallaSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
 
@@ -39,7 +36,7 @@ public class PantallaSplashTec extends Pantalla {
 	}
 
 	private void crearObjetos() {
-		batch = new SpriteBatch();
+		SpriteBatch batch = new SpriteBatch();
 		escenaSplashTec = new Stage(vista, batch);
 
 		TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));

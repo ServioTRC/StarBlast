@@ -13,15 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-public class PantallaPuntajes extends Pantalla {
+class PantallaPuntajes extends Pantalla {
 
     private final StarBlast menu;
 
     //Texturas
     private Texture texturaFondo;
-
-    //SpriteBatch
-    private SpriteBatch batch;
 
     //Escenas
     private Stage escenaInicio;
@@ -30,10 +27,7 @@ public class PantallaPuntajes extends Pantalla {
     private Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
-    //Preferencias (archivos)
-    private Preferences prefs;
-
-    public PantallaPuntajes(StarBlast menu) {
+    PantallaPuntajes(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -44,7 +38,7 @@ public class PantallaPuntajes extends Pantalla {
     }
 
     private void crearObjetos() {
-        batch = new SpriteBatch();
+        SpriteBatch batch = new SpriteBatch();
         escenaInicio = new Stage(vista, batch)
         {
             @Override
@@ -91,8 +85,8 @@ public class PantallaPuntajes extends Pantalla {
     }
 
     private void imprimirPuntajes(){
-        prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
-        String punt1 = "1. "+prefs.getString("punt1", "----- 00000");
+        Preferences prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
+        String punt1 = "1. "+ prefs.getString("punt1", "----- 00000");
         crearMarcadores(punt1,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
         String punt2 = "2. " + prefs.getString("punt2", "----- 00000");
         crearMarcadores(punt2,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);

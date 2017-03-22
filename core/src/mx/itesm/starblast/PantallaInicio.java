@@ -2,19 +2,18 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class PantallaInicio extends Pantalla {
+class PantallaInicio extends Pantalla {
 
     private final StarBlast menu;
 
     //Texturas
     private Texture texturaFondo;
-    private Texture texturaBtn;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -23,16 +22,13 @@ public class PantallaInicio extends Pantalla {
     private Stage escenaInicio;
 
     //Sprite
-    private GeneralSprite sprite;
+    private Sprite sprite;
 
     private float cambioAlpha = (float)1/120;
     private float alpha = (float) 1;
     private int cuenta = 0;
 
-    //EfectosSonoros
-    private Music musicaFondo;
-
-    public PantallaInicio(StarBlast menu) {
+    PantallaInicio(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -47,7 +43,8 @@ public class PantallaInicio extends Pantalla {
         escenaInicio = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaInicio.addActor(imgFondo);
-        sprite = new GeneralSprite("PantallaInicio/TAP.png", Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
+        sprite = new Sprite(new Texture("PantallaInicio/TAP.png"));
+        sprite.setCenter(Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
         Gdx.input.setCatchBackKey(false);
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
@@ -55,7 +52,6 @@ public class PantallaInicio extends Pantalla {
 
     private void cargarTexturas() {
         texturaFondo = new Texture("PantallaInicio/FondoInicio.jpg");
-        texturaBtn = new Texture("PantallaInicio/TAP.png");
     }
 
     @Override

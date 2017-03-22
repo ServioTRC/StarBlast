@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static java.lang.Math.*;
 
-public class NaveJugador extends NavesEspaciales {
+class NaveJugador extends NavesEspaciales {
 
 
     private enum EstadoMovimiento{
@@ -30,7 +30,7 @@ public class NaveJugador extends NavesEspaciales {
     private float velocidad;
     private float theta;
 
-    public NaveJugador(String ubicacion,float x,float y,World world) {
+    NaveJugador(String ubicacion,float x,float y,World world) {
         super(world);
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
@@ -82,7 +82,7 @@ public class NaveJugador extends NavesEspaciales {
     }
 
 
-    public void girar(float porcentaje){
+    void girar(float porcentaje){
         this.porcentajeGiro = porcentaje*-1;
         this.estado = porcentaje == 0?EstadoMovimiento.PARADO:EstadoMovimiento.GIRANDO;
     }

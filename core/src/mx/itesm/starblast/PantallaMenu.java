@@ -11,15 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class PantallaMenu extends Pantalla {
+class PantallaMenu extends Pantalla {
 
     private final StarBlast menu;
 
     //Texturas
     private Texture texturaFondo;
-
-    //SpriteBatch
-    private SpriteBatch batch;
 
     //Escenas
     private Stage escenaMenu;
@@ -28,7 +25,7 @@ public class PantallaMenu extends Pantalla {
     private Texto texto;
     private TextButton.TextButtonStyle textButtonStyle;
 
-    public PantallaMenu(StarBlast menu) {
+    PantallaMenu(StarBlast menu) {
         this.menu=menu;
     }
 
@@ -39,7 +36,7 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearObjetos() {
-        batch = new SpriteBatch();
+        SpriteBatch batch = new SpriteBatch();
         escenaMenu = new Stage(vista, batch)
         {
             @Override
@@ -99,7 +96,7 @@ public class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Me voy a Modo Endless");
-                menu.setScreen(new PantallaJuego(menu));
+                //menu.setScreen(new PantallaJuego(menu));
             }
         });
     }

@@ -2,11 +2,11 @@ package mx.itesm.starblast.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import mx.itesm.starblast.PantallaSplashTec;
+import mx.itesm.starblast.StarBlast;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new PantallaSplashTec(), config);
+		new LwjglApplication(new StarBlast(), config);
 	}
 }

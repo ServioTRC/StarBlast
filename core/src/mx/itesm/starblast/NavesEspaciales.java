@@ -68,11 +68,11 @@ class NavesEspaciales implements INaveEspacial {
         return Constantes.toScreenSize(body.getPosition().y);
     }
 
-    public Shape getShape() {
+    Shape getShape() {
         return bodyShape;
     }
 
-    public void escalar(float escala) {
+    void escalar(float escala) {
         bodyShape.dispose();
 
         this.sprite.scale(escala);
