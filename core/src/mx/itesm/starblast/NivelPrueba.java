@@ -10,11 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -81,6 +84,8 @@ class NivelPrueba implements Screen, IPausable {
 
     private Array<Body> toRemove;
 
+    private ArrayList<Body> bordes = new ArrayList<Body>();
+
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -114,6 +119,7 @@ class NivelPrueba implements Screen, IPausable {
         escenaJuego.addActor(imgFondo);
 
         crearWorld();
+        crearBordes();
         crearSprites();
         crearHud();
 
@@ -278,9 +284,9 @@ class NivelPrueba implements Screen, IPausable {
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
                 if (boton.isPressed()) {
-                    if(!isPaused){
+                    if (!isPaused) {
                         pause();
-                    }else{
+                    } else {
                         unPause();
                     }
                 }
@@ -307,14 +313,14 @@ class NivelPrueba implements Screen, IPausable {
 
         botonDisparo.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 disparando = true;
                 jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 disparando = false;
             }
         });
@@ -324,7 +330,7 @@ class NivelPrueba implements Screen, IPausable {
     private void crearBarraVida() {
         barraVida = new HealthBar(new Texture("HUD/LifeBarBar.png"));
         barraVida.setFrame(new Texture("HUD/LifeBarFrame.png"));
-        barraVida.setPosition(9*Constantes.ANCHO_PANTALLA/10,3*Constantes.ALTO_PANTALLA/8);
+        barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10, 3 * Constantes.ALTO_PANTALLA / 8);
         escenaHUD.addActor(barraVida);
     }
     //endregion
@@ -477,6 +483,37 @@ class NivelPrueba implements Screen, IPausable {
 
     //endregion
 
+    private void crearBordes() {
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.StaticBody;
+        bdef.position.set(Constantes.toWorldSize(-120),0);
+        bordes.add(world.createBody(bdef));
+        crearFixtureBordes(bordes.get(0),100,Constantes.ALTO_PANTALLA);
+        bdef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA+120),0);
+        bordes.add(world.createBody(bdef));
+        crearFixtureBordes(bordes.get(1),100,Constantes.ALTO_PANTALLA);
+        bdef.position.set(Constantes.toWorldSize(-120),Constantes.toWorldSize(-120));
+        bordes.add(world.createBody(bdef));
+        crearFixtureBordes(bordes.get(2),Constantes.ANCHO_PANTALLA+200,100);
+        bdef.position.set(Constantes.toWorldSize(-120),
+                Constantes.toWorldSize(Constantes.ALTO_PANTALLA+120));
+        bordes.add(world.createBody(bdef));
+        crearFixtureBordes(bordes.get(3),Constantes.ANCHO_PANTALLA+200,100);
+    }
+
+    private void crearFixtureBordes(Body body, float x, float y){
+        for (Fixture fix : body.getFixtureList()) {
+            body.destroyFixture(fix);
+        }
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
+        FixtureDef fix = new FixtureDef();
+        fix.shape = shape;
+        fix.filter.categoryBits = Constantes.CATEGORY_BORDERS;
+        fix.filter.maskBits = Constantes.MASK_BORDERS;
+        body.createFixture(fix);
+    }
+
     @Override
     public void resize(int width, int height) {
         vista.update(width, height);
@@ -484,12 +521,10 @@ class NivelPrueba implements Screen, IPausable {
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
