@@ -10,14 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -84,8 +81,6 @@ class NivelPrueba implements Screen, IPausable {
 
     private Array<Body> toRemove;
 
-    private ArrayList<Body> bordes = new ArrayList<Body>();
-
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -140,11 +135,12 @@ class NivelPrueba implements Screen, IPausable {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                Object objetoA = contact.getFixtureA().getBody().getUserData();
-                Object objetoB = contact.getFixtureB().getBody().getUserData();
-                int damageA,damageB;
-                damageA = obtenerDamage(objetoA);
-                damageB = obtenerDamage(objetoB);
+                IPlayableEntity objetoA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
+                IPlayableEntity objetoB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
+                objetoA.doDamage(objetoB.getDamage());
+                objetoB.doDamage(objetoA.getDamage());
+                //TODO chance sea mejor hacer un doDamage que literal le haga daño al otro objeto y maneje cosas como el toRemove
+
                 if(objetoA instanceof Bullet){
                     ((Bullet)objetoA).damage = 0;
                     toRemove.add(contact.getFixtureA().getBody());
@@ -152,12 +148,6 @@ class NivelPrueba implements Screen, IPausable {
                 if(objetoB instanceof Bullet){
                     ((Bullet)objetoB).damage = 0;
                     toRemove.add(contact.getFixtureB().getBody());
-                }
-                if(objetoA instanceof NavesEspaciales){
-                    ((NavesEspaciales)objetoA).doDamage(damageB);
-                }
-                if(objetoB instanceof NavesEspaciales){
-                    ((NavesEspaciales)objetoB).doDamage(damageA);
                 }
                 barraVida.setHealthPorcentage(jugador.vida/100);
                 Gdx.app.log("Vida",""+jugador.vida);
@@ -180,20 +170,6 @@ class NivelPrueba implements Screen, IPausable {
         });
 
     }
-
-    //region metodos crearWorld
-    private int obtenerDamage(Object objeto){
-        if(objeto instanceof Bullet){
-            Bullet balaA = (Bullet)objeto;
-            return balaA.damage;
-        }
-        if(objeto instanceof NavesEspaciales){
-            NavesEspaciales naveA = (NavesEspaciales)objeto;
-            return naveA.damage;
-        }
-        return 0;
-    }
-    //endregion
 
     private void crearSprites() {
         crearEnemigos();
@@ -221,9 +197,9 @@ class NivelPrueba implements Screen, IPausable {
         vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camaraHUD);
 
         crearPad();
+        crearBarraVida();
         crearBotonPausa();
         crearBotonDisparo();
-        crearBarraVida();
     }
 
     //region metodos crearHud
@@ -327,7 +303,7 @@ class NivelPrueba implements Screen, IPausable {
     private void crearBarraVida() {
         barraVida = new HealthBar(new Texture("HUD/LifeBarBar.png"));
         barraVida.setFrame(new Texture("HUD/LifeBarFrame.png"));
-        barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10, 3 * Constantes.ALTO_PANTALLA / 8);
+        barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10+40, 2*Constantes.ALTO_PANTALLA / 8);
         escenaHUD.addActor(barraVida);
     }
     //endregion
@@ -416,23 +392,12 @@ class NivelPrueba implements Screen, IPausable {
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         Object object;
-        for(Body b:bodies){
+        for(Body b:bodies) {
             object = b.getUserData();
-            if(object instanceof NavesEspaciales){
-                ((NavesEspaciales)object).draw(batch);
-            }
-            if(object instanceof Bullet){
-                ((Bullet)object).draw(batch);
+            if (object instanceof IPlayableEntity) {
+                ((IPlayableEntity) object).draw(batch);
             }
         }
-        /*jugador.draw(batch);
-        for (NaveEnemiga enemigo : enemigos) {
-            enemigo.draw(batch);
-        }*/
-        //botonPausa.draw(batch);
-        //comentado para probar el touch pad
-        //controles.draw(batch);
-
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
@@ -482,34 +447,10 @@ class NivelPrueba implements Screen, IPausable {
     //endregion
 
     private void crearBordes() {
-        BodyDef bdef = new BodyDef();
-        bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set(Constantes.toWorldSize(-120),0);
-        bordes.add(world.createBody(bdef));
-        crearFixtureBordes(bordes.get(0),100,Constantes.ALTO_PANTALLA);
-        bdef.position.set(Constantes.toWorldSize(Constantes.ANCHO_PANTALLA+120),0);
-        bordes.add(world.createBody(bdef));
-        crearFixtureBordes(bordes.get(1),100,Constantes.ALTO_PANTALLA);
-        bdef.position.set(Constantes.toWorldSize(-120),Constantes.toWorldSize(-120));
-        bordes.add(world.createBody(bdef));
-        crearFixtureBordes(bordes.get(2),Constantes.ANCHO_PANTALLA+200,100);
-        bdef.position.set(Constantes.toWorldSize(-120),
-                Constantes.toWorldSize(Constantes.ALTO_PANTALLA+120));
-        bordes.add(world.createBody(bdef));
-        crearFixtureBordes(bordes.get(3),Constantes.ANCHO_PANTALLA+200,100);
-    }
-
-    private void crearFixtureBordes(Body body, float x, float y){
-        for (Fixture fix : body.getFixtureList()) {
-            body.destroyFixture(fix);
-        }
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
-        FixtureDef fix = new FixtureDef();
-        fix.shape = shape;
-        fix.filter.categoryBits = Constantes.CATEGORY_BORDERS;
-        fix.filter.maskBits = Constantes.MASK_BORDERS;
-        body.createFixture(fix);
+        new Borde(world,-120,0,100,Constantes.ALTO_PANTALLA);
+        new Borde(world, Constantes.ANCHO_PANTALLA+120,0,100,Constantes.ALTO_PANTALLA);
+        new Borde(world,-120,-120,Constantes.ANCHO_PANTALLA+200,100);
+        new Borde(world,-120,Constantes.ALTO_PANTALLA+120,Constantes.ANCHO_PANTALLA+200,100);
     }
 
     @Override

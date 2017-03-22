@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.StringBuilder;
 
-class NavesEspaciales implements INaveEspacial {
+class NavesEspaciales implements INaveEspacial, IPlayableEntity {
 
     BodyDef bodyDef;
     Body body;
@@ -64,10 +65,6 @@ class NavesEspaciales implements INaveEspacial {
         this.porcentajeAceleracion = porcentaje;
     }
 
-    public void draw(SpriteBatch batch) {
-        sprite.draw(batch);
-    }
-
     @Override
     public void mover(Vector2 punto,float delta){
         Gdx.app.log("NavesEspaciales","mover");
@@ -83,10 +80,6 @@ class NavesEspaciales implements INaveEspacial {
 
     public float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
-    }
-
-    public void doDamage(int damage){
-        vida-=damage;
     }
 
     Shape getShape() {
@@ -121,4 +114,20 @@ class NavesEspaciales implements INaveEspacial {
         fixtureDef.filter.maskBits = MASK;
         body.createFixture(fixtureDef);
     }
+
+    @Override
+    public int getDamage(){
+        return damage;
+    }
+
+    @Override
+    public void doDamage(int damage) {
+        vida -= damage;
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        sprite.draw(batch);
+    }
+
 }

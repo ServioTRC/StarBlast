@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
-class Bullet {
+class Bullet implements IPlayableEntity{
 
     private static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
     private static Texture textura;
@@ -71,6 +71,16 @@ class Bullet {
         fixtureDef.filter.maskBits = isEnemy ? Constantes.MASK_BULLET_ENEMY :
                                                 Constantes.MASK_BULLET;
         body.createFixture(fixtureDef);
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void doDamage(int damage) {
+        //TODO do something like remove the instance or whatever
     }
 
     public void draw(SpriteBatch batch) {
