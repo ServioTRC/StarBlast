@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -51,20 +52,18 @@ class NaveJugador extends NavesEspaciales {
         }
 
         Vector2 destino = new Vector2(porcentajeGiro * -1, porcentajeAceleracion);
-
-        aceleracion = (float) sqrt(destino.x * destino.x + destino.y * destino.y);
-
+        aceleracion = destino.len();
         velocidad = min(velocidad, VELOCIDAD_MAX);
 
         if (aceleracion == 0) {
             velocidad *= CONSTANTE_FRENADO;
-            vector = new Vector2((float) (velocidad * cos(theta)), (float) (velocidad * sin(theta)));
+            vector = new Vector2(velocidad * MathUtils.cos(theta), velocidad * MathUtils.sin(theta));
         } else {
-            vector = new Vector2((float) (velocidad * cos(theta)), (float) (velocidad * sin(theta)));
+            vector = new Vector2(velocidad * MathUtils.cos(theta), velocidad * MathUtils.sin(theta));
             vector.add(porcentajeGiro * -1, porcentajeAceleracion);
         }
-        theta = (float) atan2(vector.y, vector.x);
-        velocidad = (float) sqrt(vector.x * vector.x + vector.y * vector.y);
+        theta = MathUtils.atan2(vector.y, vector.x);
+        velocidad = vector.len();
 //        if(!body.getLinearVelocity().isZero(0.05f))Gdx.app.log("Nave Jugador:","LV: "+body.getLinearVelocity());
         body.setLinearVelocity(vector.scl(0.5f));
 

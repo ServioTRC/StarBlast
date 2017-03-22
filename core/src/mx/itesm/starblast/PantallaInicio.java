@@ -24,8 +24,8 @@ class PantallaInicio extends Pantalla {
     //Sprite
     private Sprite sprite;
 
-    private float cambioAlpha = (float)1/120;
-    private float alpha = (float) 1;
+    private float cambioAlpha = 1/120f;
+    private float alpha = 1f;
     private int cuenta = 0;
 
     PantallaInicio(StarBlast menu) {

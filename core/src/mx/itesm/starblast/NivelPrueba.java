@@ -134,7 +134,7 @@ class NivelPrueba implements Screen, IPausable {
     //region metodos crearObjetos
 
     private void crearWorld() {
-        world = new World(new Vector2(0, 0), true);
+        world = new World(Vector2.Zero, true);
         accumulator = 0;
         toRemove = new Array<Body>();
         world.setContactListener(new ContactListener() {
@@ -143,9 +143,6 @@ class NivelPrueba implements Screen, IPausable {
 
                 Object objetoA = contact.getFixtureA().getBody().getUserData();
                 Object objetoB = contact.getFixtureB().getBody().getUserData();
-                if(objetoA == null || objetoB == null){
-                    return;
-                }
                 int damageA,damageB;
                 damageA = obtenerDamage(objetoA);
                 damageB = obtenerDamage(objetoB);
@@ -383,6 +380,7 @@ class NivelPrueba implements Screen, IPausable {
     //region metodos procesarJuego
     private void update(float dt) {
         accumulator += dt;
+        //TODO checar porque al final de todos los steps
         while (accumulator > 1 / 120f) {
             world.step(1 / 120f, 8, 3);
             accumulator -= 1 / 120f;
@@ -393,7 +391,7 @@ class NivelPrueba implements Screen, IPausable {
             }
             world.destroyBody(b);
         }
-        toRemove = new Array<Body>();
+        toRemove.clear();
     }
 
     private void moverEnemigos(float delta) {

@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -86,8 +87,8 @@ class NaveEnemiga extends NavesEspaciales {
     @Override
     public void mover(Vector2 target,float delta){
         float angulo;
-        angulo = (float)Math.atan2(target.y-sprite.getY(),target.x-sprite.getX());
-        angulo = (float) (angulo*180/(Math.PI));
+        angulo = MathUtils.atan2(target.y-sprite.getY(),target.x-sprite.getX());
+        angulo = angulo*180/(MathUtils.PI);
         angulo%=360;
         girar(angulo);
 
@@ -98,8 +99,8 @@ class NaveEnemiga extends NavesEspaciales {
 
     private void updateBody() {
         Vector2 v = new Vector2(
-                (float)Math.cos(Math.toRadians(sprite.getRotation()))*velocidad,
-                (float)Math.sin(Math.toRadians(sprite.getRotation()))*velocidad);
+                MathUtils.cosDeg(sprite.getRotation())*velocidad,
+                MathUtils.sinDeg(sprite.getRotation())*velocidad);
         body.setLinearVelocity(v);
         sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
     }

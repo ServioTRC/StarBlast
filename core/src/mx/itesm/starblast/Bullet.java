@@ -32,7 +32,7 @@ class Bullet {
         sprite = new Sprite(textura);
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
-
+    //TODO porque es dynamic
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
