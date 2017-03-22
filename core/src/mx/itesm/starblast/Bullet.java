@@ -41,6 +41,7 @@ class Bullet {
         sprite.setRotation(angle - 90);
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
+        body.setUserData(this);
     }
 
     Bullet(Vector2 v, World world, float angle, boolean enemy) {
