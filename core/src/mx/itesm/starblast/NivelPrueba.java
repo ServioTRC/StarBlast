@@ -164,6 +164,7 @@ class NivelPrueba implements Screen, IPausable {
                     ((NavesEspaciales)objetoB).doDamage(damageA);
                 }
                 barraVida.setHealthPorcentage(jugador.vida/100);
+                Gdx.app.log("Vida",""+jugador.vida);
             }
 
             @Override
