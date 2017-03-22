@@ -140,7 +140,6 @@ class NivelPrueba implements Screen, IPausable {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-
                 Object objetoA = contact.getFixtureA().getBody().getUserData();
                 Object objetoB = contact.getFixtureB().getBody().getUserData();
                 int damageA,damageB;
