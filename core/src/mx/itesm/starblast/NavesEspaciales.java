@@ -24,9 +24,11 @@ class NavesEspaciales implements INaveEspacial {
     private final World world;
     short CATEGORY = -1;
     short MASK = -1;
+    int vida;
 
     NavesEspaciales(World world) {
         this.world = world;
+        vida = 100;
     }
 
     @Override

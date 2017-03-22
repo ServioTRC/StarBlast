@@ -34,7 +34,8 @@ class NaveJugador extends NavesEspaciales {
         super(world);
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
-        COOLDOWN_DISPARO = 500;
+        COOLDOWN_DISPARO = 300;
+
         sprite = new Sprite(new Texture(ubicacion));
         this.sprite.setRotation(90);
         this.aceleracion= 0;

@@ -15,6 +15,7 @@ class NaveEnemiga extends NavesEspaciales {
     private static final int IMPULSO = 30;
 
     private float velocidad;
+    private boolean puedeDisparar;
 
 
     NaveEnemiga(String ubicacion, float x, float y,World world) {
@@ -30,8 +31,16 @@ class NaveEnemiga extends NavesEspaciales {
         bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         bodyDef.angle = -90;
         body = world.createBody(bodyDef);
-
+        puedeDisparar = false;
         makeFixture(0.1f,0.1f);
+    }
+
+    @Override
+    public Bullet disparar(long time,boolean enemy) {
+        if(puedeDisparar){
+            return super.disparar(time,enemy);
+        }
+        return null;
     }
 
     @Override
@@ -68,9 +77,11 @@ class NaveEnemiga extends NavesEspaciales {
         }
         if(Math.abs(sprite.getRotation()-angulo) > RANGO_GIRO_MAX) {
             theta += signo*RANGO_GIRO_MAX;
+            puedeDisparar = false;
         }
         else{
             theta += signo*Math.abs(sprite.getRotation()-angulo);
+            puedeDisparar = true;
         }
 
         sprite.setRotation(theta);

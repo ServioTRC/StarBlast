@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -15,12 +18,21 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -59,6 +71,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private Button botonPausa;
     private Button botonDisparo;
+    private HealthBar barraVida;
 
     private NaveJugador jugador;
 
@@ -71,7 +84,8 @@ class NivelPrueba implements Screen, IPausable {
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
 
-    private final ArrayList<Bullet> balas = new ArrayList<Bullet>();
+    private ArrayList<Bullet> balas = new ArrayList<Bullet>();
+    private boolean disparando = false;
 
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -174,6 +188,7 @@ class NivelPrueba implements Screen, IPausable {
         crearPad();
         crearBotonPausa();
         crearBotonDisparo();
+        crearBarraVida();
     }
 
     //region metodos crearHud
@@ -258,7 +273,24 @@ class NivelPrueba implements Screen, IPausable {
         botonDisparo.setPosition(13 * Constantes.ANCHO_PANTALLA / 16,
                 1 * Constantes.ALTO_PANTALLA / 10);
 
-        botonDisparo.addListener(new ChangeListener() {
+        botonDisparo.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                disparando = true;
+                Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
+                if(tmp!=null){
+                    balas.add(tmp);
+                }
+                jugador.vida =jugador.vida-1;
+                barraVida.setHealthPorcentage(jugador.vida/100f);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                disparando = false;
+            }
+            /*
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Button boton = (Button) actor;
@@ -268,9 +300,16 @@ class NivelPrueba implements Screen, IPausable {
                         balas.add(tmp);
                     }
                 }
-            }
+            }*/
         });
         escenaHUD.addActor(botonDisparo);
+    }
+
+    private void crearBarraVida() {
+        barraVida = new HealthBar(new Texture("HUD/LifeBarBar.png"));
+        barraVida.setFrame(new Texture("HUD/LifeBarFrame.png"));
+        barraVida.setPosition(9*Constantes.ANCHO_PANTALLA/10,3*Constantes.ALTO_PANTALLA/8);
+        escenaHUD.addActor(barraVida);
     }
     //endregion
 
@@ -330,13 +369,23 @@ class NivelPrueba implements Screen, IPausable {
     private void moverEnemigos(float delta) {
         target = new Vector2(jugador.getX(), jugador.getY());
         //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
-        for (NaveEnemiga enemigo : enemigos) {
-            enemigo.mover(target, delta);
+        for(NaveEnemiga enemigo:enemigos){
+            enemigo.mover(target,delta);
+            Bullet tmp = enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
+            if(tmp!=null){
+                balas.add(tmp);
+            }
         }
     }
 
     private void moverJugador(float delta) {
-        jugador.mover(target, delta);
+        jugador.mover(target,delta);
+        if(disparando){
+            Bullet tmp = jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
+            if(tmp!=null){
+                balas.add(tmp);
+            }
+        }
     }
     //endregion
 
