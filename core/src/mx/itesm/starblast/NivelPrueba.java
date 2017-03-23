@@ -30,7 +30,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 class NivelPrueba implements Screen, IPausable {
@@ -80,6 +82,8 @@ class NivelPrueba implements Screen, IPausable {
     private boolean disparando = false;
 
     private Array<Body> toRemove;
+
+    LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
 
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -137,17 +141,37 @@ class NivelPrueba implements Screen, IPausable {
             public void beginContact(Contact contact) {
                 IPlayableEntity objetoA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
                 IPlayableEntity objetoB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
-                objetoA.doDamage(objetoB.getDamage());
-                objetoB.doDamage(objetoA.getDamage());
-                //TODO chance sea mejor hacer un doDamage que literal le haga daño al otro objeto y maneje cosas como el toRemove
-
-                if(objetoA instanceof Bullet){
-                    ((Bullet)objetoA).damage = 0;
+                if(objetoA.doDamage(objetoB.getDamage())){
+                    objetoA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
+                    if(objetoA instanceof NaveJugador){
+                        //TODO perdiste
+                        //menu.setScreen(new PantallaMenu(menu));
+                    }else if(objetoA instanceof NaveEnemiga){
+                        NaveEnemiga nve = (NaveEnemiga) objetoA;
+                        animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
+                        enemigos.remove(nve);
+                        if(enemigos.size()==0){
+                            //TODO ganaste
+                            //menu.setScreen(new PantallaMenu(menu));
+                        }
+                    }
                 }
-                if(objetoB instanceof Bullet){
-                    ((Bullet)objetoB).damage = 0;
+                if(objetoB.doDamage(objetoA.getDamage())){
+                    objetoB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
+                    if(objetoB instanceof NaveJugador){
+                        //TODO perdiste
+                        menu.setScreen(new PantallaMenu(menu));
+                    }else if(objetoB instanceof NaveEnemiga){
+                        NaveEnemiga nve = (NaveEnemiga) objetoB;
+                        animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
+                        enemigos.remove(nve);
+                        if(enemigos.size()==0){
+                            //TODO ganaste
+                            menu.setScreen(new PantallaMenu(menu));
+                        }
+                    }
                 }
                 barraVida.setHealthPorcentage(jugador.vida/100);
                 Gdx.app.log("Vida",""+jugador.vida);
@@ -396,6 +420,11 @@ class NivelPrueba implements Screen, IPausable {
             object = b.getUserData();
             if (object instanceof IPlayableEntity) {
                 ((IPlayableEntity) object).draw(batch);
+            }
+        }
+        for (AutoAnimation anim : animations){
+            if(anim.draw(batch,Gdx.graphics.getDeltaTime())){
+                animations.remove(anim);
             }
         }
         batch.end();

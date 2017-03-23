@@ -2,9 +2,11 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.StringBuilder;
 
-class NavesEspaciales implements INaveEspacial, IPlayableEntity {
+class NavesEspaciales implements IPlayableEntity {
 
     BodyDef bodyDef;
     Body body;
@@ -36,18 +38,16 @@ class NavesEspaciales implements INaveEspacial, IPlayableEntity {
         damage = 10;
         sprite = new Sprite(new Texture(ubicacion));
         sprite.setRotation(angulo);
-        this.bodyDef = new BodyDef();
-        this.bodyDef.type = BodyDef.BodyType.DynamicBody;
-        this.bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
-        this.bodyDef.angle = angulo;
+        bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
+        bodyDef.angle = angulo;
 
         body = world.createBody(bodyDef);
         body.setUserData(this);
-
         makeFixture(density,restitution);
     }
 
-    @Override
     public Bullet disparar(long time, boolean enemy) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
@@ -60,12 +60,10 @@ class NavesEspaciales implements INaveEspacial, IPlayableEntity {
         return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,20);
     }
 
-    @Override
     public void acelerar(float porcentaje) {
         this.porcentajeAceleracion = porcentaje;
     }
 
-    @Override
     public void mover(Vector2 punto,float delta){
         Gdx.app.log("NavesEspaciales","mover");
     }
@@ -116,13 +114,23 @@ class NavesEspaciales implements INaveEspacial, IPlayableEntity {
     }
 
     @Override
+    public void setDamage(int dmg){
+        damage = dmg;
+    }
+
+    @Override
     public int getDamage(){
         return damage;
     }
 
     @Override
-    public void doDamage(int damage) {
+    public boolean doDamage(int damage) {
         vida -= damage;
+        if(vida<=0){
+            die();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -130,4 +138,7 @@ class NavesEspaciales implements INaveEspacial, IPlayableEntity {
         sprite.draw(batch);
     }
 
+    public void die(){
+        //TODO chance hace algo
+    }
 }

@@ -74,13 +74,19 @@ class Bullet implements IPlayableEntity{
     }
 
     @Override
+    public void setDamage(int dmg){
+        damage = dmg;
+    }
+
+    @Override
     public int getDamage() {
         return damage;
     }
 
     @Override
-    public void doDamage(int damage) {
+    public boolean doDamage(int damage) {
         //TODO do something like remove the instance or whatever
+        return true;
     }
 
     public void draw(SpriteBatch batch) {

@@ -35,13 +35,18 @@ class Borde implements IPlayableEntity {
     }
 
     @Override
+    public void setDamage(int dmg){
+
+    }
+
+    @Override
     public int getDamage() {
         return 0;
     }
 
     @Override
-    public void doDamage(int damage) {
-
+    public boolean doDamage(int damage) {
+        return false;
     }
 
     @Override

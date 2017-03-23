@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 interface IPlayableEntity {
 
+    void setDamage(int dmg);
     int getDamage();
-    void doDamage(int damage);
+    boolean doDamage(int damage);
     void draw(SpriteBatch batch);
 
 }
