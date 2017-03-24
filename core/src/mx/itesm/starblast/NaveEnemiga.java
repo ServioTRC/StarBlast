@@ -8,27 +8,32 @@ import com.badlogic.gdx.physics.box2d.World;
 
 class NaveEnemiga extends NavesEspaciales {
 
-    private static final int ACELERACION_MAX = 10;
-    private static final int ACELERACION_MIN = -10;
-    private static final int RANGO_GIRO_MAX = 3;
-    private static final int VELOCIDAD_MAX = 5;
-    private static final int IMPULSO = 30;
+    private final int ACELERACION_MAX = 10;
+    private final int ACELERACION_MIN = -10;
+    private final int RANGO_GIRO_MAX = 2;
+    private final int VELOCIDAD_MAX = 4;
+    private final int IMPULSO = 30;
+    private final float CONSTANTE_FRENADO = 0.97f;
 
     private float velocidad;
     private boolean puedeDisparar;
 
+    private Vector2  previo;
+
 
     NaveEnemiga(String ubicacion, float x, float y,World world) {
-        super(ubicacion,x,y,world,-90,8,0.4f);
+        super(ubicacion,x,y,world,-90,0.1f,0.7f);
 
 
         CATEGORY = Constantes.CATEGORY_ENEMY;
         MASK = Constantes.MASK_ENEMY;
         COOLDOWN_DISPARO = 500;
 
+        vida = 30;
         velocidad = 0;
-        damage = 10;
+        damage = 5;
         puedeDisparar = false;
+        previo = new Vector2(0,0);
     }
 
     @Override
@@ -41,29 +46,26 @@ class NaveEnemiga extends NavesEspaciales {
 
     @Override
     public void acelerar(float aceleracion) {
-        aceleracion = Math.min(aceleracion,ACELERACION_MAX);
-        aceleracion = Math.max(aceleracion,ACELERACION_MIN);
+        aceleracion = Math.min(aceleracion, ACELERACION_MAX);
+        aceleracion = Math.max(aceleracion, ACELERACION_MIN);
 
+        velocidad = body.getLinearVelocity().len();
         velocidad += aceleracion;
-
         velocidad = Math.min(velocidad,VELOCIDAD_MAX);
 
     }
 
     private void girar(float angulo) {
-        if(angulo < 0){
-            angulo = 360+angulo;
-        }
-        angulo%=360;
+        angulo += 360;
+        angulo %= 360;
 
         if(sprite.getRotation() < 0){
             sprite.setRotation(360+sprite.getRotation());
         }
         float theta = sprite.getRotation();
-        if(theta < 0){
-            theta = 360+angulo;
-        }
+        theta += 360;
         theta%=360;
+
         int signo;
         if((sprite.getRotation()-180 <= angulo&&angulo <= sprite.getRotation()) || 360+(sprite.getRotation()-180) <= angulo) {
             signo = -1;
@@ -85,22 +87,51 @@ class NaveEnemiga extends NavesEspaciales {
 
     @Override
     public void mover(Vector2 target,float delta){
+        float deltaX;
+        float deltaY;
+
+        if(Math.abs(Constantes.toWorldSize(target.x)-body.getPosition().x) < Math.abs(body.getLinearVelocity().x)){
+            deltaX = Constantes.toWorldSize(target.x)-body.getPosition().x;
+        }
+        else{
+            deltaX = Constantes.toWorldSize(target.x)-(body.getLinearVelocity().x+body.getPosition().x);
+        }
+
+        if(Math.abs(Constantes.toWorldSize(target.y)-body.getPosition().y) < Math.abs(body.getLinearVelocity().y)){
+            deltaY = Constantes.toWorldSize(target.y)-body.getPosition().y;
+        }
+        else{
+            deltaY = Constantes.toWorldSize(target.y)-(body.getLinearVelocity().y+body.getPosition().y);
+        }
+
         float angulo;
-        angulo = MathUtils.atan2(target.y-sprite.getY(),target.x-sprite.getX());
-        angulo = angulo*180/(MathUtils.PI);
+        angulo = MathUtils.atan2(deltaY,deltaX);
+        angulo = (angulo*180/(MathUtils.PI));
+        angulo+=360;
         angulo%=360;
         girar(angulo);
 
         acelerar(IMPULSO * delta);
 
-        updateBody();
+        updateBody(angulo);
     }
 
-    private void updateBody() {
+    private void updateBody(float angulo) {
         Vector2 v = new Vector2(
-                MathUtils.cosDeg(sprite.getRotation())*velocidad,
-                MathUtils.sinDeg(sprite.getRotation())*velocidad);
-        body.setLinearVelocity(v);
+                MathUtils.cosDeg(sprite.getRotation()),
+                MathUtils.sinDeg(sprite.getRotation()));
+        float hip = body.getLinearVelocity().len();
+
+
+        //if(Math.abs(body.getLinearVelocity().angle()-angulo) < 20*RANGO_GIRO_MAX || hip < 3) {
+            body.applyForceToCenter(v.scl(0.3f), true);
+        /*}
+        else{
+            body.setLinearVelocity(body.getLinearVelocity().scl(CONSTANTE_FRENADO));
+        }*/
+        if(hip > VELOCIDAD_MAX){
+            body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAX/hip));
+        }
         sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
     }
 }

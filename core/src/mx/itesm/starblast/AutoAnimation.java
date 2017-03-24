@@ -10,13 +10,13 @@ class AutoAnimation {
     float x;
     float y;
     float time = 0;
-    Animation animation;
+    Animation<TextureRegion> animation;
 
     AutoAnimation(String route, float rate, float x, float y, int hx, int hy, SpriteBatch batch){
         TextureRegion[][] region = (new TextureRegion(new Texture(route))).split(hx,hy);
         this.x = x-hx/2f;
         this.y = y-hy/2f;
-        animation = new Animation(rate, region[0]);
+        animation = new Animation<TextureRegion>(rate, region[0]);
     }
 
     public boolean draw(SpriteBatch batch, float deltaTime){
@@ -24,7 +24,7 @@ class AutoAnimation {
         if(animation.isAnimationFinished(time)){
             return true;
         }
-        batch.draw((TextureRegion) animation.getKeyFrame(time),x,y);
+        batch.draw(animation.getKeyFrame(time),x,y);
         return false;
     }
 }

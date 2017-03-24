@@ -36,7 +36,7 @@ class Bullet implements IPlayableEntity{
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
-        makeFixture(0.1f, 0.7f);
+        makeFixture(0.1f, 1f);
         body.setBullet(true);
         sprite.setRotation(angle - 90);
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,

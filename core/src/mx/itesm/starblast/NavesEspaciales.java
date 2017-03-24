@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.StringBuilder;
+import java.util.ArrayList;
 
 class NavesEspaciales implements IPlayableEntity {
 
@@ -29,8 +30,10 @@ class NavesEspaciales implements IPlayableEntity {
     private final World world;
     short CATEGORY = -1;
     short MASK = -1;
-    int vida;
+    float vida;
     int damage;
+    float density;
+    float restitution;
 
     NavesEspaciales(String ubicacion,float x,float y,World world,float angulo,float density, float restitution) {
         this.world = world;
@@ -45,7 +48,10 @@ class NavesEspaciales implements IPlayableEntity {
 
         body = world.createBody(bodyDef);
         body.setUserData(this);
-        makeFixture(density,restitution);
+
+        this.restitution = restitution;
+        this.density = density;
+        makeFixture();
     }
 
     public Bullet disparar(long time, boolean enemy) {
@@ -57,7 +63,7 @@ class NavesEspaciales implements IPlayableEntity {
     }
 
     private Bullet disparar(boolean enemy){
-        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,20);
+        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,10);
     }
 
     public void acelerar(float porcentaje) {
@@ -90,10 +96,10 @@ class NavesEspaciales implements IPlayableEntity {
         this.sprite.scale(escala);
         bodyShape = new CircleShape();
         this.bodyShape.setRadius(sprite.getWidth()*sprite.getScaleX()/2);
-        makeFixture(0.1f,0.1f);
+        makeFixture();
     }
 
-    void makeFixture(float density, float restitution){
+    void makeFixture(){
         for(Fixture fix: body.getFixtureList()){
             body.destroyFixture(fix);
         }

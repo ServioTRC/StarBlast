@@ -30,14 +30,14 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
 class NivelPrueba implements Screen, IPausable {
 
-    private static final int ENEMIGOS_INICIALES = 1;
+    private static final int ENEMIGOS_INICIALES = 4;
     private final StarBlast menu;
 
     //Camara, vista
@@ -85,11 +85,11 @@ class NivelPrueba implements Screen, IPausable {
 
     LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
 
+    boolean gameEnded = false;
+
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
-
-    boolean gameEnded = false;
 
     @Override
     public void show() {
@@ -181,7 +181,7 @@ class NivelPrueba implements Screen, IPausable {
                         }
                     }
                 }
-                barraVida.setHealthPorcentage(jugador.vida/100);
+                barraVida.setHealthPorcentage(jugador.vida/100f);
                 Gdx.app.log("Vida",""+jugador.vida);
             }
 
@@ -351,6 +351,7 @@ class NivelPrueba implements Screen, IPausable {
         isPaused = true;
         escenaPausa.addActor(botonPausa);
         Gdx.input.setInputProcessor(escenaPausa);
+        Gdx.app.log("Pausa","pausa");
     }
 
     @Override
@@ -358,6 +359,8 @@ class NivelPrueba implements Screen, IPausable {
         isPaused = false;
         escenaHUD.addActor(botonPausa);
         Gdx.input.setInputProcessor(escenaHUD);
+
+        Gdx.app.log("Despausa","despausa");
     }
 
     @Override
@@ -433,9 +436,12 @@ class NivelPrueba implements Screen, IPausable {
                 ((IPlayableEntity) object).draw(batch);
             }
         }
-        for (AutoAnimation anim : animations){
+        Iterator<AutoAnimation> it = animations.iterator();
+        AutoAnimation anim;
+        while (it.hasNext()){
+            anim = it.next();
             if(anim.draw(batch,Gdx.graphics.getDeltaTime())){
-                animations.remove(anim);
+                it.remove();
             }
         }
         batch.end();
