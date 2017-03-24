@@ -89,6 +89,8 @@ class NivelPrueba implements Screen, IPausable {
         this.menu = menu;
     }
 
+    boolean gameEnded = false;
+
     @Override
     public void show() {
         crearCamara();
@@ -146,6 +148,8 @@ class NivelPrueba implements Screen, IPausable {
                     toRemove.add(contact.getFixtureA().getBody());
                     if(objetoA instanceof NaveJugador){
                         //TODO perdiste
+                        animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
+                        gameEnded = true;
                         //menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoA instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoA;
@@ -153,6 +157,7 @@ class NivelPrueba implements Screen, IPausable {
                         enemigos.remove(nve);
                         if(enemigos.size()==0){
                             //TODO ganaste
+                            gameEnded = true;
                             //menu.setScreen(new PantallaMenu(menu));
                         }
                     }
@@ -162,14 +167,17 @@ class NivelPrueba implements Screen, IPausable {
                     toRemove.add(contact.getFixtureB().getBody());
                     if(objetoB instanceof NaveJugador){
                         //TODO perdiste
-                        menu.setScreen(new PantallaMenu(menu));
+                        animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
+                        gameEnded = true;
+//                        menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoB instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoB;
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         if(enemigos.size()==0){
                             //TODO ganaste
-                            menu.setScreen(new PantallaMenu(menu));
+                            gameEnded = true;
+//                            menu.setScreen(new PantallaMenu(menu));
                         }
                     }
                 }
@@ -358,6 +366,9 @@ class NivelPrueba implements Screen, IPausable {
         procesarJuego(delta);
         dibujarElementos();
         debugearElementos();
+        if(gameEnded && animations.size()==0){
+            //TODO aquí mandar el perdiste o whatever
+        }
     }
     //endregion
 
