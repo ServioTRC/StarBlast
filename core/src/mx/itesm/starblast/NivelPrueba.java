@@ -65,7 +65,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private World world;
 
-    private float accumulator;
+    private float accumulator = 0;
 
     private ShapeRenderer shapeRenderer;
 
@@ -93,6 +93,12 @@ class NivelPrueba implements Screen, IPausable {
     private Texto texto;
     private int puntaje = 0;
 
+    //Oleadas
+    private long tiempoInicio;
+    private boolean oleada1Realizada = false;
+    private boolean oleada2Realizada = false;
+    private boolean oleada3Realizada = false;
+
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -102,6 +108,7 @@ class NivelPrueba implements Screen, IPausable {
         crearCamara();
         cargarTexturas();
         crearObjetos();
+        tiempoInicio = TimeUtils.millis();
     }
 
     //region metodos show
@@ -165,7 +172,7 @@ class NivelPrueba implements Screen, IPausable {
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
-                        if(enemigos.size()==0){
+                        if(enemigos.size()==0 && oleada3Realizada){
                             //TODO ganaste
                             gameEnded = true;
                             ganador = true;
@@ -188,7 +195,8 @@ class NivelPrueba implements Screen, IPausable {
                         NaveEnemiga nve = (NaveEnemiga) objetoB;
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
-                        if(enemigos.size()==0){
+                        puntaje += 100;
+                        if(enemigos.size()==0 && oleada3Realizada){
                             //TODO ganaste
                             gameEnded = true;
                             ganador = true;
@@ -221,7 +229,6 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearSprites() {
         //Sprites Complejos
-        crearEnemigos();
         jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
         jugador.escalar(Constantes.ESCALA_NAVES);
         //Sprite del fondo
@@ -230,6 +237,7 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     //region metodos crearSprites
+
     private void crearEnemigos() {
         NaveEnemiga enemigo;
         Random r = new Random();
@@ -410,6 +418,19 @@ class NivelPrueba implements Screen, IPausable {
             escenaResultados.draw();
         }
         moverFondo();
+
+        //Oleadas de enemigos
+        if((TimeUtils.millis() - tiempoInicio) > 1000 && !oleada1Realizada){
+            crearEnemigos();
+            oleada1Realizada = true;
+        } else if ((TimeUtils.millis() - tiempoInicio) > 10000 && !oleada2Realizada){
+            crearEnemigos();
+            oleada2Realizada = true;
+        } else if ((TimeUtils.millis() - tiempoInicio) > 20000 && !oleada3Realizada){
+            crearEnemigos();
+            oleada3Realizada = true;
+        }
+
     }
     //endregion
 
