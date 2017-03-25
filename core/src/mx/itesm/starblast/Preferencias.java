@@ -48,4 +48,13 @@ class Preferencias {
         prefs.flush();
     }
 
+    static void borrarInfoDelJuego(){
+        Preferences prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
+        //Sobreescribiendo información
+        for(int i = 1; i <= 5; i++){
+            prefs.putString("punt"+i, "----- 00000");
+        }
+        prefs.flush();
+    }
+
 }

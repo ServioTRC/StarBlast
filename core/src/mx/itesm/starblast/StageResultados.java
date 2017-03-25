@@ -36,6 +36,7 @@ class StageResultados extends Stage {
         this.puntaje = puntaje;
         pedirNombre();
         mostrarPuntaje();
+        mostrarLeyenda();
     }
 
     private void init() {
@@ -45,7 +46,6 @@ class StageResultados extends Stage {
         addActor(backgroud);
         crearBotonBack();
         crearBotonRegresar();
-        mostrarLeyenda();
     }
 
     private void crearBotonRegresar() {Skin skin = new Skin();
@@ -91,7 +91,7 @@ class StageResultados extends Stage {
 
     private void mostrarLeyenda(){
         Texture textura;
-        if(ganador){
+        if(this.ganador){
             textura = new Texture("PantallaPuntajes/Ganador.png");
         }else{
             textura = new Texture("PantallaPuntajes/Perdedor.png");

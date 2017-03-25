@@ -1,7 +1,6 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -23,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -31,7 +29,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -343,7 +340,6 @@ class NivelPrueba implements Screen, IPausable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 disparando = true;
-                jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
                 return true;
             }
 
@@ -408,7 +404,7 @@ class NivelPrueba implements Screen, IPausable {
             //TODO aquí mandar el perdiste o whatever
             if(!isPaused){
                 pause();
-                Gdx.app.log("PARA EL JUEGO", Integer.toString(puntaje));
+                Gdx.app.log("PARA EL JUEGO", Boolean.toString(ganador));
                 escenaResultados.setGanadorYPuntaje(ganador, puntaje);
             }
             escenaResultados.draw();
