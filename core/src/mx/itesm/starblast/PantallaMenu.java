@@ -86,7 +86,7 @@ class PantallaMenu extends Pantalla {
     }
 
     private void crearBotonEndless(){
-        textButtonStyle = texto.generarTexto(Color.BLUE,Color.GOLD,1);
+        textButtonStyle = texto.generarTexto(Color.GRAY,Color.GRAY,1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, 3* Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2+80);
 

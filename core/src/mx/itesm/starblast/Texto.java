@@ -29,4 +29,12 @@ class Texto {
         textButtonStyle.downFontColor = colorPushed;
         return textButtonStyle;
     }
+
+    public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y, Color color) {
+        GlyphLayout glyp = new GlyphLayout();
+        glyp.setText(font, mensaje);
+        float anchoTexto = glyp.width;
+        font.setColor(color);
+        font.draw(batch, glyp, x-anchoTexto/2, y);
+    }
 }

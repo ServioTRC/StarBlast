@@ -37,12 +37,13 @@ class StageOpciones extends Stage {
         crearBotonRegresar();
     }
 
-    private void crearBotonRegresar() {
-        Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonAtras.png"));
+    private void crearBotonRegresar() {Skin skin = new Skin();
+        skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
+        skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
+        estilo.down = skin.getDrawable("Down");
 
         final Button btn = new Button(estilo);
         btn.addListener(new ClickListener() {

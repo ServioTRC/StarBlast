@@ -100,9 +100,9 @@ class PantallaPuntajes extends Pantalla {
 
     private void crearMarcadores(String nombre, float x, float y){
         textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
-        TextButton btnPlay = new TextButton(nombre, textButtonStyle);
-        btnPlay.setPosition(x - btnPlay.getWidth() / 2, y - btnPlay.getHeight() / 2);
-        escenaInicio.addActor(btnPlay);
+        TextButton marcador = new TextButton(nombre, textButtonStyle);
+        marcador.setPosition(x - marcador.getWidth() / 2, y - marcador.getHeight() / 2);
+        escenaInicio.addActor(marcador);
     }
 
     private void cargarTexturas() {

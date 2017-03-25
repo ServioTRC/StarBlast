@@ -1,11 +1,13 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -20,8 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -43,12 +45,6 @@ class NivelPrueba implements Screen, IPausable {
     //Camara, vista
     private OrthographicCamera camara;
     private Viewport vista;
-
-    //Texturas
-    private Texture texturaFondo;
-
-    //SpriteBatch
-    private SpriteBatch batch;
 
     //Escenas
     private Stage escenaJuego;
@@ -78,14 +74,27 @@ class NivelPrueba implements Screen, IPausable {
 
     private boolean isPaused = false;
     private StageOpciones escenaPausa;
+    private StageResultados escenaResultados;
+
 
     private boolean disparando = false;
 
     private Array<Body> toRemove;
 
-    LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
+    private LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
 
-    boolean gameEnded = false;
+    private boolean gameEnded = false;
+    private boolean ganador = false;
+
+    //Elementos para el fondo
+    private Texture texturaFondo;
+    private SpriteBatch batch;
+    private Sprite spriteFondo;
+    private int posY = 0;
+
+    //Puntaje
+    private Texto texto;
+    private int puntaje = 0;
 
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -108,16 +117,16 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/FondoSimple.jpg");
+        texturaFondo = new Texture("PantallaJuego/fondoNivel2.jpg");
     }
 
     private void crearObjetos() {
         target = new Vector2(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2);
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
-        Image imgFondo = new Image(texturaFondo);
+        //Image imgFondo = new Image(texturaFondo);
         enemigos = new ArrayList<NaveEnemiga>();
-        escenaJuego.addActor(imgFondo);
+        //escenaJuego.addActor(imgFondo);
 
         crearWorld();
         crearBordes();
@@ -128,8 +137,10 @@ class NivelPrueba implements Screen, IPausable {
         Gdx.input.setInputProcessor(escenaHUD);
         shapeRenderer = new ShapeRenderer();
 
+        texto = new Texto(Constantes.TEXTO_FUENTE);
 
         escenaPausa = new StageOpciones(vista, batch, menu, this);
+        escenaResultados = new StageResultados(vista, batch, menu, this);
     }
 
     //region metodos crearObjetos
@@ -150,15 +161,20 @@ class NivelPrueba implements Screen, IPausable {
                         //TODO perdiste
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
+
                         //menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoA instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoA;
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
+                        puntaje += 100;
                         if(enemigos.size()==0){
                             //TODO ganaste
                             gameEnded = true;
+                            ganador = true;
+
                             //menu.setScreen(new PantallaMenu(menu));
+
                         }
                     }
                 }
@@ -169,6 +185,7 @@ class NivelPrueba implements Screen, IPausable {
                         //TODO perdiste
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
+
 //                        menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoB instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoB;
@@ -177,6 +194,8 @@ class NivelPrueba implements Screen, IPausable {
                         if(enemigos.size()==0){
                             //TODO ganaste
                             gameEnded = true;
+                            ganador = true;
+
 //                            menu.setScreen(new PantallaMenu(menu));
                         }
                     }
@@ -204,9 +223,13 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     private void crearSprites() {
+        //Sprites Complejos
         crearEnemigos();
         jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
         jugador.escalar(Constantes.ESCALA_NAVES);
+        //Sprite del fondo
+        spriteFondo = new Sprite(texturaFondo);
+        spriteFondo.setPosition(0,0);
     }
 
     //region metodos crearSprites
@@ -338,6 +361,8 @@ class NivelPrueba implements Screen, IPausable {
         barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10+40, 2*Constantes.ALTO_PANTALLA / 8);
         escenaHUD.addActor(barraVida);
     }
+
+
     //endregion
 
     //endregion
@@ -350,7 +375,12 @@ class NivelPrueba implements Screen, IPausable {
     public void pause() {
         isPaused = true;
         escenaPausa.addActor(botonPausa);
-        Gdx.input.setInputProcessor(escenaPausa);
+        if(!gameEnded)
+            Gdx.input.setInputProcessor(escenaPausa);
+        else {
+            Gdx.input.setInputProcessor(escenaResultados);
+            Gdx.app.log("Pausa","EscenaControl");
+        }
         Gdx.app.log("Pausa","pausa");
     }
 
@@ -359,24 +389,44 @@ class NivelPrueba implements Screen, IPausable {
         isPaused = false;
         escenaHUD.addActor(botonPausa);
         Gdx.input.setInputProcessor(escenaHUD);
-
         Gdx.app.log("Despausa","despausa");
     }
 
     @Override
     public void render(float delta) {
         borrarPantalla();
+
+        batch.begin();
+        spriteFondo.draw(batch);
+        batch.end();
+
         procesarJuego(delta);
         dibujarElementos();
         debugearElementos();
+
         if(gameEnded && animations.size()==0){
             //TODO aquí mandar el perdiste o whatever
+            if(!isPaused){
+                pause();
+                Gdx.app.log("PARA EL JUEGO", Integer.toString(puntaje));
+                escenaResultados.setGanadorYPuntaje(ganador, puntaje);
+            }
+            escenaResultados.draw();
         }
+        moverFondo();
     }
     //endregion
 
 
     //region metodos render
+
+    private void moverFondo(){
+        if(posY >= -3200 ){
+            posY--;
+            spriteFondo.setPosition(0,posY);
+        }
+    }
+
     private void borrarPantalla() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -427,6 +477,10 @@ class NivelPrueba implements Screen, IPausable {
     private void dibujarElementos() {
         escenaJuego.draw();
         batch.begin();
+
+        texto.mostrarMensaje(batch, "Puntaje: "+Integer.toString(puntaje),
+                2*Constantes.ANCHO_PANTALLA/10,9*Constantes.ALTO_PANTALLA/10, Color.GOLD);
+
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         Object object;
