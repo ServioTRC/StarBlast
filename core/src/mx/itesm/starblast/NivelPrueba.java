@@ -90,8 +90,10 @@ class NivelPrueba implements Screen, IPausable {
     private int posY = 0;
 
     //Puntaje
-    private Texto texto;
+    private Texto textoPuntaje;
+    private Texto textoNaves;
     private int puntaje = 0;
+    private int navesRestantes = 12;
 
     //Oleadas
     private long tiempoInicio;
@@ -141,7 +143,8 @@ class NivelPrueba implements Screen, IPausable {
         Gdx.input.setInputProcessor(escenaHUD);
         shapeRenderer = new ShapeRenderer();
 
-        texto = new Texto(Constantes.TEXTO_FUENTE);
+        textoPuntaje = new Texto(Constantes.TEXTO_FUENTE);
+        textoNaves = new Texto(Constantes.TEXTO_FUENTE);
 
         escenaPausa = new StageOpciones(vista, batch, menu, this);
         escenaResultados = new StageResultados(vista, batch, menu, this);
@@ -158,7 +161,7 @@ class NivelPrueba implements Screen, IPausable {
             public void beginContact(Contact contact) {
                 IPlayableEntity objetoA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
                 IPlayableEntity objetoB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
-                if(objetoA.doDamage(objetoB.getDamage())){
+                if(objetoA != null && objetoB != null && objetoA.doDamage(objetoB.getDamage())){
                     objetoA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
                     if(objetoA instanceof NaveJugador){
@@ -172,6 +175,7 @@ class NivelPrueba implements Screen, IPausable {
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
+                        navesRestantes--;
                         if(enemigos.size()==0 && oleada3Realizada){
                             //TODO ganaste
                             gameEnded = true;
@@ -182,7 +186,7 @@ class NivelPrueba implements Screen, IPausable {
                         }
                     }
                 }
-                if(objetoB.doDamage(objetoA.getDamage())){
+                if(objetoA != null && objetoB != null &&objetoB.doDamage(objetoA.getDamage())){
                     objetoB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
                     if(objetoB instanceof NaveJugador){
@@ -196,6 +200,7 @@ class NivelPrueba implements Screen, IPausable {
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
+                        navesRestantes--;
                         if(enemigos.size()==0 && oleada3Realizada){
                             //TODO ganaste
                             gameEnded = true;
@@ -479,14 +484,14 @@ class NivelPrueba implements Screen, IPausable {
         //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
-            enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
+            enemigo.disparar(TimeUtils.millis(),true);
         }
     }
 
     private void moverJugador(float delta) {
         jugador.mover(target,delta);
         if(disparando){
-            jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
+            jugador.disparar(TimeUtils.millis(),false);
         }
     }
     //endregion
@@ -494,9 +499,6 @@ class NivelPrueba implements Screen, IPausable {
     private void dibujarElementos() {
         escenaJuego.draw();
         batch.begin();
-
-        texto.mostrarMensaje(batch, "Puntaje: "+Integer.toString(puntaje),
-                2*Constantes.ANCHO_PANTALLA/10,9*Constantes.ALTO_PANTALLA/10, Color.GOLD);
 
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
@@ -515,6 +517,12 @@ class NivelPrueba implements Screen, IPausable {
                 it.remove();
             }
         }
+
+        textoPuntaje.mostrarMensaje(batch, "Puntaje: "+Integer.toString(puntaje),
+                2*Constantes.ANCHO_PANTALLA/10,9*Constantes.ALTO_PANTALLA/10, Color.GOLD);
+        textoNaves.mostrarMensaje(batch, "Enemigos\nRestantes: "+Integer.toString(navesRestantes),
+                2*Constantes.ANCHO_PANTALLA/10,8*Constantes.ALTO_PANTALLA/10, Color.ORANGE);
+
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);

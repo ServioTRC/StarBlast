@@ -31,7 +31,7 @@ class NaveEnemiga extends NavesEspaciales {
 
         vida = 30;
         velocidad = 0;
-        damage = 5;
+        damage = 10;
         puedeDisparar = false;
         previo = new Vector2(0,0);
     }
