@@ -418,7 +418,7 @@ class NivelPrueba implements Screen, IPausable {
 
         //Oleadas de enemigos
         //TODO mejorar la forma en la que salen
-        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime())){
+        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded){
             enemigoAnterior = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
             crearEnemigos();
         }
