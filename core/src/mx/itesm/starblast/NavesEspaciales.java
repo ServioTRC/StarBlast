@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,23 +18,26 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.StringBuilder;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 class NavesEspaciales implements IPlayableEntity {
 
     BodyDef bodyDef;
     Body body;
-    private CircleShape bodyShape;
+    protected CircleShape bodyShape;
     Sprite sprite;
     float porcentajeAceleracion;
     long COOLDOWN_DISPARO;
-    private long disparoAnterior = 0;
-    private final World world;
+    long disparoAnterior = 0;
+    final World world;
     short CATEGORY = -1;
     short MASK = -1;
-    float vida;
+    int vida;
     int damage;
     float density;
     float restitution;
+    boolean destruido;
+    int BULLET_DAMAGE;
 
     NavesEspaciales(String ubicacion,float x,float y,World world,float angulo,float density, float restitution) {
         this.world = world;
@@ -45,25 +49,26 @@ class NavesEspaciales implements IPlayableEntity {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         bodyDef.angle = angulo;
-
+        destruido = false;
         body = world.createBody(bodyDef);
         body.setUserData(this);
-
+        BULLET_DAMAGE = 10;
         this.restitution = restitution;
         this.density = density;
         makeFixture();
     }
 
-    public Bullet disparar(long time, boolean enemy) {
+    public void disparar(long time, boolean enemy) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            return disparar(enemy);
+            disparar(enemy);
         }
-        return null;
     }
 
-    private Bullet disparar(boolean enemy){
-        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,10);
+    protected void disparar(boolean enemy){
+        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
+                                          body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
+        new Bullet(gunPosition,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
     }
 
     public void acelerar(float porcentaje) {
@@ -100,8 +105,11 @@ class NavesEspaciales implements IPlayableEntity {
     }
 
     void makeFixture(){
-        for(Fixture fix: body.getFixtureList()){
-            body.destroyFixture(fix);
+        if(destruido){
+            return;
+        }
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
         }
         bodyShape = new CircleShape();
 
@@ -146,5 +154,9 @@ class NavesEspaciales implements IPlayableEntity {
 
     public void die(){
         //TODO chance hace algo
+    }
+
+    public void destroyBody(){
+        destruido = true;
     }
 }

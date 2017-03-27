@@ -17,7 +17,7 @@ public class StarBlast extends Game {
         if(Preferencias.MUSICA_HABILITADA) {
             musicaFondo.play();
         }
-        Bullet.CargarTextura();
+//        Bullet.CargarTextura();
         setScreen(new PantallaSplashTec(this));
     }
 

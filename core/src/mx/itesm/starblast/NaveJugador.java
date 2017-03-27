@@ -31,6 +31,7 @@ class NaveJugador extends NavesEspaciales {
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
         COOLDOWN_DISPARO = 100;
+        BULLET_DAMAGE = 10;
 
         velocidad = 0;
         aceleracion = 0;
@@ -39,6 +40,7 @@ class NaveJugador extends NavesEspaciales {
 
     @Override
     public void mover(Vector2 vector, float delta) {
+
         switch (estado){
             case GIRANDO:
                 girar();

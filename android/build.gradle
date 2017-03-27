@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "mx.itesm.starblast"
-        minSdkVersion 8
+        minSdkVersion 11
         targetSdkVersion 25
     }
 }

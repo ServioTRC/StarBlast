@@ -13,23 +13,31 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.Iterator;
+
 class Bullet implements IPlayableEntity{
 
     private static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
-    private static Texture textura;
+//    private Texture textura;
     private Body body;
     private CircleShape bodyShape;
     private Sprite sprite;
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
     int damage;
-    static void CargarTextura() {
-        textura = new Texture(BULLET_SPRITE);
-    }
+    boolean destruido;
+
+//    static void CargarTextura() {
+//        textura = new Texture(BULLET_SPRITE);
+//    }
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
+
+        destruido = false;
+
         isEnemy = enemy;
-        sprite = new Sprite(textura);
+//        sprite = new Sprite(textura);
+        sprite = new Sprite(new Texture(BULLET_SPRITE));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
     //TODO porque es dynamic
@@ -37,7 +45,7 @@ class Bullet implements IPlayableEntity{
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         makeFixture(0.1f, 1f);
-        body.setBullet(true);
+//        body.setBullet(true);
         sprite.setRotation(angle - 90);
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
@@ -51,9 +59,12 @@ class Bullet implements IPlayableEntity{
     }
 
     private void makeFixture(float density, float restitution) {
+        if(destruido){
+            return;
+        }
 
-        for (Fixture fix : body.getFixtureList()) {
-            body.destroyFixture(fix);
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
         }
         bodyShape = new CircleShape();
 
@@ -86,6 +97,7 @@ class Bullet implements IPlayableEntity{
     @Override
     public boolean doDamage(int damage) {
         //TODO do something like remove the instance or whatever
+        bodyShape.dispose();
         return true;
     }
 
@@ -106,5 +118,10 @@ class Bullet implements IPlayableEntity{
 
     float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
+    }
+
+    public void destroyBody(){
+        destruido = true;
+        bodyShape.dispose();
     }
 }
