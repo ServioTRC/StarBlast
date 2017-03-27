@@ -36,7 +36,7 @@ import java.util.Random;
 
 class NivelPrueba implements Screen, IPausable {
 
-    private static final int ENEMIGOS_INICIALES = 4;
+    private static final int ENEMIGOS_INICIALES = 1;
     private final StarBlast menu;
 
     //Camara, vista
@@ -165,24 +165,17 @@ class NivelPrueba implements Screen, IPausable {
                     objetoA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
                     if(objetoA instanceof NaveJugador){
-                        //TODO perdiste
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
-
-                        //menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoA instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoA;
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
                         navesRestantes--;
-                        if(enemigos.size()==0 && oleada3Realizada){
-                            //TODO ganaste
+                        if(navesRestantes==0){
                             gameEnded = true;
                             ganador = true;
-
-                            //menu.setScreen(new PantallaMenu(menu));
-
                         }
                     }
                 }
@@ -190,28 +183,22 @@ class NivelPrueba implements Screen, IPausable {
                     objetoB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
                     if(objetoB instanceof NaveJugador){
-                        //TODO perdiste
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
-
-//                        menu.setScreen(new PantallaMenu(menu));
                     }else if(objetoB instanceof NaveEnemiga){
                         NaveEnemiga nve = (NaveEnemiga) objetoB;
                         animations.add(new AutoAnimation("Animaciones/ExplosionNaveFrames.png",0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
                         navesRestantes--;
-                        if(enemigos.size()==0 && oleada3Realizada){
-                            //TODO ganaste
+                        if(navesRestantes == 0){
                             gameEnded = true;
                             ganador = true;
-
-//                            menu.setScreen(new PantallaMenu(menu));
                         }
                     }
                 }
                 barraVida.setHealthPorcentage(jugador.vida/100f);
-                Gdx.app.log("Vida",""+jugador.vida);
+//                Gdx.app.log("Vida",""+jugador.vida);
             }
 
             @Override
@@ -247,7 +234,7 @@ class NivelPrueba implements Screen, IPausable {
         NaveEnemiga enemigo;
         Random r = new Random();
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
 //            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
@@ -408,13 +395,14 @@ class NivelPrueba implements Screen, IPausable {
         batch.begin();
         spriteFondo.draw(batch);
         batch.end();
-
-        procesarJuego(delta);
+        if(!gameEnded){
+            procesarJuego(delta);
+        }
         dibujarElementos();
-        debugearElementos();
+        Gdx.app.log("Conteo de bodies y fixtures:",""+world.getBodyCount()+" "+world.getFixtureCount());
+//        debugearElementos();
 
         if(gameEnded && animations.size()==0){
-            //TODO aquí mandar el perdiste o whatever
             if(!isPaused){
                 pause();
                 Gdx.app.log("PARA EL JUEGO", Boolean.toString(ganador));
@@ -425,6 +413,7 @@ class NivelPrueba implements Screen, IPausable {
         moverFondo();
 
         //Oleadas de enemigos
+        //TODO mejorar la forma en la que salen
         if((TimeUtils.millis() - tiempoInicio) > 1000 && !oleada1Realizada){
             crearEnemigos();
             oleada1Realizada = true;
@@ -444,8 +433,10 @@ class NivelPrueba implements Screen, IPausable {
 
     private void moverFondo(){
         if(posY >= -3200 ){
-            posY--;
-            spriteFondo.setPosition(0,posY);
+            if(!isPaused) {
+                posY--;
+                spriteFondo.setPosition(0,posY);
+            }
         }
     }
 
@@ -519,9 +510,9 @@ class NivelPrueba implements Screen, IPausable {
         }
 
         textoPuntaje.mostrarMensaje(batch, "Puntaje: "+Integer.toString(puntaje),
-                2*Constantes.ANCHO_PANTALLA/10,9*Constantes.ALTO_PANTALLA/10, Color.GOLD);
-        textoNaves.mostrarMensaje(batch, "Enemigos\nRestantes: "+Integer.toString(navesRestantes),
-                2*Constantes.ANCHO_PANTALLA/10,8*Constantes.ALTO_PANTALLA/10, Color.ORANGE);
+                10,Constantes.ALTO_PANTALLA-20, Color.GOLD, false);
+        textoNaves.mostrarMensaje(batch, "Enemigos: "+Integer.toString(navesRestantes),
+                Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA-20, Color.ORANGE, false);
 
         batch.end();
 

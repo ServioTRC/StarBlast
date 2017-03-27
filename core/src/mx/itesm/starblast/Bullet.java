@@ -16,20 +16,22 @@ import com.badlogic.gdx.physics.box2d.World;
 class Bullet implements IPlayableEntity{
 
     private static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
-    private static Texture textura;
+//    private Texture textura;
     private Body body;
     private CircleShape bodyShape;
     private Sprite sprite;
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
     int damage;
-    static void CargarTextura() {
-        textura = new Texture(BULLET_SPRITE);
-    }
+
+//    static void CargarTextura() {
+//        textura = new Texture(BULLET_SPRITE);
+//    }
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
-        sprite = new Sprite(textura);
+//        sprite = new Sprite(textura);
+        sprite = new Sprite(new Texture(BULLET_SPRITE));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
     //TODO porque es dynamic
@@ -37,7 +39,7 @@ class Bullet implements IPlayableEntity{
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         makeFixture(0.1f, 1f);
-        body.setBullet(true);
+//        body.setBullet(true);
         sprite.setRotation(angle - 90);
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
