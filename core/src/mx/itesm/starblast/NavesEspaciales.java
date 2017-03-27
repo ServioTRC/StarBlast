@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,12 +23,12 @@ class NavesEspaciales implements IPlayableEntity {
 
     BodyDef bodyDef;
     Body body;
-    private CircleShape bodyShape;
+    protected CircleShape bodyShape;
     Sprite sprite;
     float porcentajeAceleracion;
     long COOLDOWN_DISPARO;
-    private long disparoAnterior = 0;
-    private final World world;
+    long disparoAnterior = 0;
+    final World world;
     short CATEGORY = -1;
     short MASK = -1;
     float vida;
@@ -54,16 +55,17 @@ class NavesEspaciales implements IPlayableEntity {
         makeFixture();
     }
 
-    public Bullet disparar(long time, boolean enemy) {
+    public void disparar(long time, boolean enemy) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            return disparar(enemy);
+            disparar(enemy);
         }
-        return null;
     }
 
-    private Bullet disparar(boolean enemy){
-        return new Bullet(body.getPosition(),world, sprite.getRotation(), enemy,10);
+    protected void disparar(boolean enemy){
+        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
+                                          body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
+        new Bullet(gunPosition,world, sprite.getRotation(), enemy,10);
     }
 
     public void acelerar(float porcentaje) {
@@ -146,5 +148,10 @@ class NavesEspaciales implements IPlayableEntity {
 
     public void die(){
         //TODO chance hace algo
+    }
+
+    public void destroyBody(){
+        body = null;
+        bodyShape.dispose();
     }
 }

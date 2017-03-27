@@ -13,13 +13,16 @@ class NaveEnemiga extends NavesEspaciales {
     private final int RANGO_GIRO_MAX = 2;
     private final int VELOCIDAD_MAX = 4;
     private final int IMPULSO = 30;
-    private final float CONSTANTE_FRENADO = 0.97f;
 
-    private float velocidad;
-    private boolean puedeDisparar;
+    float velocidad;
+    boolean puedeDisparar;
 
-    private Vector2  previo;
+    NaveEnemiga(String ubicacion, float x, float y,World world,float angulo, float density,float restitution){
+        super(ubicacion,x,y,world,angulo,density,restitution);
 
+        CATEGORY = Constantes.CATEGORY_ENEMY;
+        MASK = Constantes.MASK_ENEMY;
+    }
 
     NaveEnemiga(String ubicacion, float x, float y,World world) {
         super(ubicacion,x,y,world,-90,0.1f,0.7f);
@@ -33,15 +36,13 @@ class NaveEnemiga extends NavesEspaciales {
         velocidad = 0;
         damage = 10;
         puedeDisparar = false;
-        previo = new Vector2(0,0);
     }
 
     @Override
-    public Bullet disparar(long time,boolean enemy) {
+    public void disparar(long time,boolean enemy) {
         if(puedeDisparar){
-            return super.disparar(time,enemy);
+            super.disparar(time,enemy);
         }
-        return null;
     }
 
     @Override

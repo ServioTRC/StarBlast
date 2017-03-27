@@ -88,6 +88,7 @@ class Bullet implements IPlayableEntity{
     @Override
     public boolean doDamage(int damage) {
         //TODO do something like remove the instance or whatever
+        bodyShape.dispose();
         return true;
     }
 
@@ -108,5 +109,10 @@ class Bullet implements IPlayableEntity{
 
     float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
+    }
+
+    public void destroyBody(){
+        body = null;
+        bodyShape.dispose();
     }
 }

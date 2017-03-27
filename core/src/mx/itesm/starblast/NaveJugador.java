@@ -39,6 +39,7 @@ class NaveJugador extends NavesEspaciales {
 
     @Override
     public void mover(Vector2 vector, float delta) {
+
         switch (estado){
             case GIRANDO:
                 girar();

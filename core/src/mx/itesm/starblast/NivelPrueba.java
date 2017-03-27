@@ -37,6 +37,7 @@ import java.util.Random;
 class NivelPrueba implements Screen, IPausable {
 
     private static final int ENEMIGOS_INICIALES = 1;
+    private static long COOLDOWN_ENEMIGO = 3000;
     private final StarBlast menu;
 
     //Camara, vista
@@ -100,6 +101,7 @@ class NivelPrueba implements Screen, IPausable {
     private boolean oleada1Realizada = false;
     private boolean oleada2Realizada = false;
     private boolean oleada3Realizada = false;
+    private long enemigoAnterior = 0;
 
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
@@ -161,7 +163,10 @@ class NivelPrueba implements Screen, IPausable {
             public void beginContact(Contact contact) {
                 IPlayableEntity objetoA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
                 IPlayableEntity objetoB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
-                if(objetoA != null && objetoB != null && objetoA.doDamage(objetoB.getDamage())){
+                if(objetoA == null || objetoB == null){
+                    return;
+                }
+                if(objetoA.doDamage(objetoB.getDamage())){
                     objetoA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
                     if(objetoA instanceof NaveJugador){
@@ -179,7 +184,7 @@ class NivelPrueba implements Screen, IPausable {
                         }
                     }
                 }
-                if(objetoA != null && objetoB != null &&objetoB.doDamage(objetoA.getDamage())){
+                if(objetoB.doDamage(objetoA.getDamage())){
                     objetoB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
                     if(objetoB instanceof NaveJugador){
@@ -236,6 +241,8 @@ class NivelPrueba implements Screen, IPausable {
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
             enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
 //            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
+            //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
+
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
@@ -392,9 +399,6 @@ class NivelPrueba implements Screen, IPausable {
     public void render(float delta) {
         borrarPantalla();
 
-        batch.begin();
-        spriteFondo.draw(batch);
-        batch.end();
         if(!gameEnded){
             procesarJuego(delta);
         }
@@ -414,15 +418,9 @@ class NivelPrueba implements Screen, IPausable {
 
         //Oleadas de enemigos
         //TODO mejorar la forma en la que salen
-        if((TimeUtils.millis() - tiempoInicio) > 1000 && !oleada1Realizada){
+        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime())){
+            enemigoAnterior = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
             crearEnemigos();
-            oleada1Realizada = true;
-        } else if ((TimeUtils.millis() - tiempoInicio) > 10000 && !oleada2Realizada){
-            crearEnemigos();
-            oleada2Realizada = true;
-        } else if ((TimeUtils.millis() - tiempoInicio) > 20000 && !oleada3Realizada){
-            crearEnemigos();
-            oleada3Realizada = true;
         }
 
     }
@@ -462,10 +460,18 @@ class NivelPrueba implements Screen, IPausable {
             accumulator -= 1 / 120f;
         }
         for(Body b: toRemove){
-            for(Fixture fix: b.getFixtureList()){
-                b.destroyFixture(fix);
+            Iterator<Fixture> fixturas = b.getFixtureList().iterator();
+            while (fixturas.hasNext()){
+                b.destroyFixture(fixturas.next());
             }
             world.destroyBody(b);
+            /*Object objeto = b.getUserData();
+            if(objeto instanceof NavesEspaciales){
+                ((NavesEspaciales)objeto).destroyBody();
+            }
+            else if(objeto instanceof Bullet){
+                ((Bullet)objeto).destroyBody();
+            }*/
         }
         toRemove.clear();
     }
@@ -475,20 +481,30 @@ class NivelPrueba implements Screen, IPausable {
         //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
-            enemigo.disparar(TimeUtils.millis(),true);
+            //se utiliza el metodo nanos en vez de millis porque millis
+            //cuenta el tiempo desde 1970
+            enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
         }
     }
 
     private void moverJugador(float delta) {
         jugador.mover(target,delta);
         if(disparando){
-            jugador.disparar(TimeUtils.millis(),false);
+            //se utiliza el metodo nanos en vez de millis porque millis
+            //cuenta el tiempo desde 1970
+            jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),false);
         }
     }
     //endregion
 
     private void dibujarElementos() {
+
+        batch.begin();
+        spriteFondo.draw(batch);
+        batch.end();
+
         escenaJuego.draw();
+
         batch.begin();
 
         Array<Body> bodies = new Array<Body>();
