@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.Iterator;
+
 class Bullet implements IPlayableEntity{
 
     private static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
@@ -23,12 +25,16 @@ class Bullet implements IPlayableEntity{
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
     int damage;
+    boolean destruido;
 
 //    static void CargarTextura() {
 //        textura = new Texture(BULLET_SPRITE);
 //    }
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
+
+        destruido = false;
+
         isEnemy = enemy;
 //        sprite = new Sprite(textura);
         sprite = new Sprite(new Texture(BULLET_SPRITE));
@@ -53,9 +59,12 @@ class Bullet implements IPlayableEntity{
     }
 
     private void makeFixture(float density, float restitution) {
+        if(destruido){
+            return;
+        }
 
-        for (Fixture fix : body.getFixtureList()) {
-            body.destroyFixture(fix);
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
         }
         bodyShape = new CircleShape();
 
@@ -112,7 +121,7 @@ class Bullet implements IPlayableEntity{
     }
 
     public void destroyBody(){
-        body = null;
+        destruido = true;
         bodyShape.dispose();
     }
 }

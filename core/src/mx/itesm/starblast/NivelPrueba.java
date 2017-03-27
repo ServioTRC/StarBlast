@@ -30,6 +30,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -77,7 +78,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private boolean disparando = false;
 
-    private Array<Body> toRemove;
+    private HashSet<Body> toRemove;
 
     private LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
 
@@ -157,7 +158,7 @@ class NivelPrueba implements Screen, IPausable {
     private void crearWorld() {
         world = new World(Vector2.Zero, true);
         accumulator = 0;
-        toRemove = new Array<Body>();
+        toRemove = new HashSet<Body>();
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -246,6 +247,12 @@ class NivelPrueba implements Screen, IPausable {
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
+    }
+
+    private void crearJefeNivel() {
+        Random r = new Random();
+        NaveEnemiga jefe = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
+        enemigos.add(jefe);
     }
     //endregion
 
@@ -418,12 +425,19 @@ class NivelPrueba implements Screen, IPausable {
 
         //Oleadas de enemigos
         //TODO mejorar la forma en la que salen
-        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded){
+        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded && !isPaused && enemigos.size() < navesRestantes){
             enemigoAnterior = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
-            crearEnemigos();
+            if(navesRestantes-enemigos.size() != 1) {
+                crearEnemigos();
+            }
+            else{
+                crearJefeNivel();
+            }
+
         }
 
     }
+
     //endregion
 
 
@@ -460,18 +474,10 @@ class NivelPrueba implements Screen, IPausable {
             accumulator -= 1 / 120f;
         }
         for(Body b: toRemove){
-            Iterator<Fixture> fixturas = b.getFixtureList().iterator();
-            while (fixturas.hasNext()){
-                b.destroyFixture(fixturas.next());
+            while (b.getFixtureList().size > 0){
+                b.destroyFixture(b.getFixtureList().first());
             }
             world.destroyBody(b);
-            /*Object objeto = b.getUserData();
-            if(objeto instanceof NavesEspaciales){
-                ((NavesEspaciales)objeto).destroyBody();
-            }
-            else if(objeto instanceof Bullet){
-                ((Bullet)objeto).destroyBody();
-            }*/
         }
         toRemove.clear();
     }

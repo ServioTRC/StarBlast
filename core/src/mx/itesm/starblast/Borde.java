@@ -22,8 +22,8 @@ class Borde implements IPlayableEntity {
     }
 
     private void crearFixture(float x, float y){
-        for (Fixture fix : body.getFixtureList()) {
-            body.destroyFixture(fix);
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
         }
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(Constantes.toWorldSize(x),Constantes.toWorldSize(y));

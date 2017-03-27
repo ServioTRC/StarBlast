@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.StringBuilder;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 class NavesEspaciales implements IPlayableEntity {
 
@@ -31,10 +32,12 @@ class NavesEspaciales implements IPlayableEntity {
     final World world;
     short CATEGORY = -1;
     short MASK = -1;
-    float vida;
+    int vida;
     int damage;
     float density;
     float restitution;
+    boolean destruido;
+    int BULLET_DAMAGE;
 
     NavesEspaciales(String ubicacion,float x,float y,World world,float angulo,float density, float restitution) {
         this.world = world;
@@ -46,10 +49,10 @@ class NavesEspaciales implements IPlayableEntity {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         bodyDef.angle = angulo;
-
+        destruido = false;
         body = world.createBody(bodyDef);
         body.setUserData(this);
-
+        BULLET_DAMAGE = 10;
         this.restitution = restitution;
         this.density = density;
         makeFixture();
@@ -65,7 +68,7 @@ class NavesEspaciales implements IPlayableEntity {
     protected void disparar(boolean enemy){
         Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
                                           body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
-        new Bullet(gunPosition,world, sprite.getRotation(), enemy,10);
+        new Bullet(gunPosition,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
     }
 
     public void acelerar(float porcentaje) {
@@ -102,8 +105,11 @@ class NavesEspaciales implements IPlayableEntity {
     }
 
     void makeFixture(){
-        for(Fixture fix: body.getFixtureList()){
-            body.destroyFixture(fix);
+        if(destruido){
+            return;
+        }
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
         }
         bodyShape = new CircleShape();
 
@@ -151,7 +157,6 @@ class NavesEspaciales implements IPlayableEntity {
     }
 
     public void destroyBody(){
-        body = null;
-        bodyShape.dispose();
+        destruido = true;
     }
 }

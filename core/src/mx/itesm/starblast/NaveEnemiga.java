@@ -31,10 +31,11 @@ class NaveEnemiga extends NavesEspaciales {
         CATEGORY = Constantes.CATEGORY_ENEMY;
         MASK = Constantes.MASK_ENEMY;
         COOLDOWN_DISPARO = 500;
+        BULLET_DAMAGE = 5;
 
         vida = 30;
         velocidad = 0;
-        damage = 10;
+        damage = 5;
         puedeDisparar = false;
     }
 
