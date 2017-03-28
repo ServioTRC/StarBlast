@@ -55,7 +55,7 @@ public class JefeEnemigo extends NaveEnemiga {
                 body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
 
         float angulo = MathUtils.radiansToDegrees*MathUtils.atan2(objetivo.y-body.getPosition().y,objetivo.x-body.getPosition().x);
-        switch (random.nextInt(5)){
+        switch (random.nextInt(10)){
             case 0:
             case 1:
             case 2:

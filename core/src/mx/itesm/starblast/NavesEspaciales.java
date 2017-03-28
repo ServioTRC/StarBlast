@@ -66,9 +66,9 @@ class NavesEspaciales implements IPlayableEntity {
     }
 
     protected void disparar(boolean enemy){
-        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
-                                          body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
-        new Bullet(gunPosition,world, sprite.getRotation(), enemy, BULLET_DAMAGE);
+        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*MathUtils.cosDeg(sprite.getRotation()),
+                                          body.getPosition().y+bodyShape.getRadius()*MathUtils.sinDeg(sprite.getRotation()));
+        new Bullet(gunPosition,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
     }
 
     public void acelerar(float porcentaje) {

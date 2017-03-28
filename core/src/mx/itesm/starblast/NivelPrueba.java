@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -61,7 +60,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private Button botonPausa;
     private Button botonDisparo;
-    private HealthBar barraVida;
+    private ProgressBar barraVida;
 
     private NaveJugador jugador;
 
@@ -198,7 +197,7 @@ class NivelPrueba implements Screen, IPausable {
                         }
                     }
                 }
-                barraVida.setHealthPorcentage(jugador.vida/100f);
+                barraVida.setPorcentage(jugador.vida/100f);
 //                Gdx.app.log("Vida",""+jugador.vida);
             }
 
@@ -247,6 +246,7 @@ class NivelPrueba implements Screen, IPausable {
     private void crearJefeNivel() {
         Random r = new Random();
         NaveEnemiga jefe = new JefeEnemigo(Constantes.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
+        jefe.escalar(Constantes.ESCALA_NAVES);
         enemigos.add(jefe);
     }
     //endregion
@@ -361,7 +361,7 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     private void crearBarraVida() {
-        barraVida = new HealthBar(Constantes.MANAGER.get("HUD/LifeBarBar.png",Texture.class));
+        barraVida = new ProgressBar(Constantes.MANAGER.get("HUD/LifeBarBar.png",Texture.class),true);
         barraVida.setFrame(Constantes.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
         barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10+40, 2*Constantes.ALTO_PANTALLA / 8);
         escenaHUD.addActor(barraVida);
@@ -405,7 +405,6 @@ class NivelPrueba implements Screen, IPausable {
             procesarJuego(delta);
         }
         dibujarElementos();
-        Gdx.app.log("Conteo de bodies y fixtures:",""+world.getBodyCount()+" "+world.getFixtureCount());
 //        debugearElementos();
 
         if(gameEnded && animations.size()==0){
