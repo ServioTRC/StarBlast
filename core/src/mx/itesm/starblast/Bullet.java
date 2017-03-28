@@ -31,14 +31,14 @@ class Bullet implements IPlayableEntity{
 //        textura = new Texture(BULLET_SPRITE);
 //    }
 
-    Bullet(float x, float y, World world, float angle, boolean enemy,int damage, Texture texture) {
+    Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
 
         destruido = false;
 
         isEnemy = enemy;
 //        sprite = new Sprite(textura);
 //        sprite = new Sprite(new Texture(BULLET_SPRITE));
-        sprite = new Sprite(texture);
+        sprite = new Sprite(Constantes.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
     //TODO porque es dynamic
@@ -55,8 +55,8 @@ class Bullet implements IPlayableEntity{
         this.damage = damage;
     }
 
-    Bullet(Vector2 v, World world, float angle, boolean enemy,int damage, Texture texture) {
-        this(v.x, v.y, world, angle,enemy, damage, texture);
+    Bullet(Vector2 v, World world, float angle, boolean enemy,int damage) {
+        this(v.x, v.y, world, angle,enemy, damage);
     }
 
     private void makeFixture(float density, float restitution) {

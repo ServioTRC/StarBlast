@@ -86,7 +86,7 @@ class NivelPrueba implements Screen, IPausable {
     private boolean ganador = false;
 
     //Elementos para el fondo
-    private Texture texturaFondo;
+    private Texture texturaFondo = Constantes.MANAGER.get("PantallaJuego/FondoNivel2.jpg", Texture.class);
     private SpriteBatch batch;
     private Sprite spriteFondo;
     private int posY = 0;
@@ -104,8 +104,6 @@ class NivelPrueba implements Screen, IPausable {
     private boolean oleada3Realizada = false;
     private long enemigoAnterior = 0;
 
-    Texture textureBullet;
-
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -113,7 +111,6 @@ class NivelPrueba implements Screen, IPausable {
     @Override
     public void show() {
         crearCamara();
-        cargarTexturas();
         crearObjetos();
         tiempoInicio = TimeUtils.millis();
     }
@@ -125,11 +122,6 @@ class NivelPrueba implements Screen, IPausable {
         camara.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
         camara.update();
         vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
-    }
-
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaJuego/fondoNivel2.jpg");
-        textureBullet = new Texture(Bullet.BULLET_SPRITE);
     }
 
     private void crearObjetos() {
@@ -230,7 +222,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearSprites() {
         //Sprites Complejos
-        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world, textureBullet);
+        jugador = new NaveJugador(Constantes.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
         jugador.escalar(Constantes.ESCALA_NAVES);
         //Sprite del fondo
         spriteFondo = new Sprite(texturaFondo);
@@ -243,7 +235,7 @@ class NivelPrueba implements Screen, IPausable {
         NaveEnemiga enemigo;
         Random r = new Random();
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world, textureBullet);
+            enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
 //            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
 
@@ -254,7 +246,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearJefeNivel() {
         Random r = new Random();
-        NaveEnemiga jefe = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300, textureBullet);
+        NaveEnemiga jefe = new JefeEnemigo(Constantes.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
         enemigos.add(jefe);
     }
     //endregion
@@ -275,8 +267,8 @@ class NivelPrueba implements Screen, IPausable {
     private void crearPad() {
 
         Skin skin = new Skin();
-        skin.add("PadBack", new Texture("HUD/JoystickPad.png"));
-        skin.add("PadKnob", new Texture("HUD/JoystickStick.png"));
+        skin.add("PadBack", Constantes.MANAGER.get("HUD/JoystickPad.png",Texture.class));
+        skin.add("PadKnob", Constantes.MANAGER.get("HUD/JoystickStick.png",Texture.class));
 
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
         estilo.background = skin.getDrawable("PadBack");
@@ -311,7 +303,7 @@ class NivelPrueba implements Screen, IPausable {
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("Pausa", new Texture("PantallaJuego/Pausa.png"));
+        skin.add("Pausa", Constantes.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("Pausa");
@@ -342,8 +334,8 @@ class NivelPrueba implements Screen, IPausable {
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("DisparoStandby", new Texture("HUD/BotonAStandby.png"));
-        skin.add("DisparoPresionado", new Texture("HUD/BotonAPresionado.png"));
+        skin.add("DisparoStandby", Constantes.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
+        skin.add("DisparoPresionado", Constantes.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("DisparoPresionado");
         estilo.up = skin.getDrawable("DisparoStandby");
@@ -369,8 +361,8 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     private void crearBarraVida() {
-        barraVida = new HealthBar(new Texture("HUD/LifeBarBar.png"));
-        barraVida.setFrame(new Texture("HUD/LifeBarFrame.png"));
+        barraVida = new HealthBar(Constantes.MANAGER.get("HUD/LifeBarBar.png",Texture.class));
+        barraVida.setFrame(Constantes.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
         barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10+40, 2*Constantes.ALTO_PANTALLA / 8);
         escenaHUD.addActor(barraVida);
     }

@@ -38,14 +38,12 @@ class NavesEspaciales implements IPlayableEntity {
     float restitution;
     boolean destruido;
     int BULLET_DAMAGE;
-    Texture bulletTexture;
 
-    NavesEspaciales(String ubicacion,float x,float y,World world,float angulo,float density, float restitution, Texture bulletTexture) {
-        this.bulletTexture = bulletTexture;
+    NavesEspaciales(Texture textura,float x,float y,World world,float angulo,float density, float restitution) {
         this.world = world;
         vida = 100;
         damage = 10;
-        sprite = new Sprite(new Texture(ubicacion));
+        sprite = new Sprite(textura);
         sprite.setRotation(angulo);
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -70,7 +68,7 @@ class NavesEspaciales implements IPlayableEntity {
     protected void disparar(boolean enemy){
         Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
                                           body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
-        new Bullet(gunPosition,world, sprite.getRotation(), enemy,BULLET_DAMAGE , bulletTexture);
+        new Bullet(gunPosition,world, sprite.getRotation(), enemy, BULLET_DAMAGE);
     }
 
     public void acelerar(float porcentaje) {

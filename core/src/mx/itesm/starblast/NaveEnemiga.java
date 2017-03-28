@@ -17,15 +17,15 @@ class NaveEnemiga extends NavesEspaciales {
     float velocidad;
     boolean puedeDisparar;
 
-    NaveEnemiga(String ubicacion, float x, float y,World world,float angulo, float density,float restitution, Texture texture){
-        super(ubicacion,x,y,world,angulo,density,restitution, texture);
+    NaveEnemiga(Texture textura, float x, float y,World world,float angulo, float density,float restitution){
+        super(textura,x,y,world,angulo,density,restitution);
 
         CATEGORY = Constantes.CATEGORY_ENEMY;
         MASK = Constantes.MASK_ENEMY;
     }
 
-    NaveEnemiga(String ubicacion, float x, float y,World world, Texture texture) {
-        super(ubicacion,x,y,world,-90,0.1f,0.7f,texture);
+    NaveEnemiga(Texture textura, float x, float y,World world) {
+        super(textura,x,y,world,-90,0.1f,0.7f);
 
 
         CATEGORY = Constantes.CATEGORY_ENEMY;

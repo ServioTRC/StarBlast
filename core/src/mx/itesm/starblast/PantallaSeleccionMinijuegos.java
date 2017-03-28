@@ -4,20 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 class PantallaSeleccionMinijuegos extends Pantalla {
     //TODO texturas para cuando estas haciendo click en las diferentes opciones
     private final StarBlast menu;
-
-    //Texturas
-    private Texture texturaFondo;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -31,7 +27,6 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     @Override
     public void show() {
-        cargarTexturas();
         crearObjetos();
     }
 
@@ -42,13 +37,14 @@ class PantallaSeleccionMinijuegos extends Pantalla {
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     Gdx.app.log("PantallaSeleccionMinijuegos: ","Voy al Menu");
+                    dispose();
                     menu.setScreen(new PantallaMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
-        Image imgFondo = new Image(texturaFondo);
+        Image imgFondo = new Image(Constantes.MANAGER.get("PantallaSeleccionMinijuego/PantallaSeleccionMinijuego.png",Texture.class));
         escenaSeleccion.addActor(imgFondo);
         //TODO checar cual minijuego es cual
         crearBotonMinijuego1();
@@ -60,10 +56,11 @@ class PantallaSeleccionMinijuegos extends Pantalla {
     }
 
     private void crearBotonMinijuego1() {
-        Texture textureUp = new Texture("PantallaSeleccionMinijuego/BotonMinijuego1.png");
-        Texture textureDown = new Texture("PantallaSeleccionMinijuego/BotonMinijuego1.png");
-        Button btn = new Button(new TextureRegionDrawable(new TextureRegion(textureUp)),
-                                new TextureRegionDrawable(new TextureRegion(textureDown)));
+        Skin skin = new Skin();
+        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego1.png",Texture.class));
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.up = skin.getDrawable("up");
+        Button btn = new Button(estilo);
         btn.setPosition(Constantes.ANCHO_PANTALLA / 5 - btn.getWidth() / 2,
                         Constantes.ALTO_PANTALLA / 4 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
@@ -71,16 +68,18 @@ class PantallaSeleccionMinijuegos extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("PantallaSeleccionMinijuegos: ", "Voy a pantalla minijuego1");
+                dispose();
                 menu.setScreen(new PantallaMinijuego1(menu, false));
             }
         });
     }
 
     private void crearBotonMinijuego2() {
-        Texture textureUp = new Texture("PantallaSeleccionMinijuego/BotonMinijuego2.png");
-        Texture textureDown = new Texture("PantallaSeleccionMinijuego/BotonMinijuego2.png");
-        Button btn = new Button(new TextureRegionDrawable(new TextureRegion(textureUp)),
-                new TextureRegionDrawable(new TextureRegion(textureDown)));
+        Skin skin = new Skin();
+        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego2.png",Texture.class));
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.up = skin.getDrawable("up");
+        Button btn = new Button(estilo);
         btn.setPosition(Constantes.ANCHO_PANTALLA / 2 - btn.getWidth() / 2,
                 Constantes.ALTO_PANTALLA / 2 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
@@ -94,10 +93,11 @@ class PantallaSeleccionMinijuegos extends Pantalla {
     }
 
     private void crearBotonMinijuego3() {
-        Texture textureUp = new Texture("PantallaSeleccionMinijuego/BotonMinijuego3.png");
-        Texture textureDown = new Texture("PantallaSeleccionMinijuego/BotonMinijuego3.png");
-        Button btn = new Button(new TextureRegionDrawable(new TextureRegion(textureUp)),
-                new TextureRegionDrawable(new TextureRegion(textureDown)));
+        Skin skin = new Skin();
+        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego3.png",Texture.class));
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.up = skin.getDrawable("up");
+        Button btn = new Button(estilo);
         btn.setPosition(Constantes.ANCHO_PANTALLA - Constantes.ANCHO_PANTALLA / 5 - btn.getWidth() / 2,
                 Constantes.ALTO_PANTALLA / 4 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
@@ -108,10 +108,6 @@ class PantallaSeleccionMinijuegos extends Pantalla {
                 //menu.setScreen(new PantallaJuego(menu));
             }
         });
-    }
-
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaSeleccionMinijuego/PantallaSeleccionMinijuego.png");
     }
 
     @Override

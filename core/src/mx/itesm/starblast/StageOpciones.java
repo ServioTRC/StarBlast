@@ -26,7 +26,7 @@ class StageOpciones extends Stage {
     }
 
     private void init() {
-        Image backgroud = new Image(new Texture("PantallaOpciones/CuadroOpciones.png"));
+        Image backgroud = new Image(Constantes.MANAGER.get("PantallaOpciones/CuadroOpciones.png", Texture.class));
         backgroud.setPosition(Constantes.ANCHO_PANTALLA / 2 - backgroud.getWidth() / 2,
                 Constantes.ALTO_PANTALLA / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
@@ -38,8 +38,8 @@ class StageOpciones extends Stage {
     }
 
     private void crearBotonRegresar() {Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
+        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
+        skin.add("Down", Constantes.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -59,7 +59,7 @@ class StageOpciones extends Stage {
 
     private void crearBotonCodigos() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
+        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/BotonCodigos.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -91,8 +91,8 @@ class StageOpciones extends Stage {
 
     private void crearBotonBack() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/Back.png", Texture.class));
+        skin.add("Down", Constantes.MANAGER.get("PantallaOpciones/BackYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -112,8 +112,8 @@ class StageOpciones extends Stage {
 
     private void crearBotonSonido() {
         Skin skin = new Skin();
-        skin.add("Si", new Texture("PantallaOpciones/BotonSonido.png"));
-        skin.add("No", new Texture("PantallaOpciones/BotonNoSonido.png"));
+        skin.add("Si", Constantes.MANAGER.get("PantallaOpciones/BotonSonido.png", Texture.class));
+        skin.add("No", Constantes.MANAGER.get("PantallaOpciones/BotonNoSonido.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
@@ -135,8 +135,8 @@ class StageOpciones extends Stage {
 
     private void crearBotonMusica() {
         Skin skin = new Skin();
-        skin.add("Si", new Texture("PantallaOpciones/BotonMusica.png"));
-        skin.add("No", new Texture("PantallaOpciones/BotonNoMusica.png"));
+        skin.add("Si", Constantes.MANAGER.get("PantallaOpciones/BotonMusica.png", Texture.class));
+        skin.add("No", Constantes.MANAGER.get("PantallaOpciones/BotonNoMusica.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");

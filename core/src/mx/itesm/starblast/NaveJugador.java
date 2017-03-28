@@ -26,8 +26,8 @@ class NaveJugador extends NavesEspaciales {
     private float velocidad;
     private float theta;
 
-    NaveJugador(String ubicacion,float x,float y,World world, Texture texture) {
-        super(ubicacion,x,y,world,90,0.1f,0.7f,texture);
+    NaveJugador(Texture textura,float x,float y,World world) {
+        super(textura,x,y,world,90,0.1f,0.7f);
 
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
