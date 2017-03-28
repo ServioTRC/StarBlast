@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -21,8 +22,8 @@ public class JefeEnemigo extends NaveEnemiga {
     private Vector2 objetivo;
     private Random random;
 
-    JefeEnemigo(String ubicacion, float x, float y, World world, int vida) {
-        super(ubicacion, x, y, world, -90, 0.7f, 0.1f);
+    JefeEnemigo(String ubicacion, float x, float y, World world, int vida, Texture texture) {
+        super(ubicacion, x, y, world, -90, 0.7f, 0.1f, texture);
 
         damage = 20;
         this.vida = vida;
@@ -64,21 +65,21 @@ public class JefeEnemigo extends NaveEnemiga {
             case 3:
             case 4:
             case 5:
-                new Bullet(gunPosition,world,angulo,enemy,5);
+                new Bullet(gunPosition,world,angulo,enemy,5,bulletTexture);
                 break;
             case 6:
             case 7:
             case 8:
-                new Bullet(gunPosition,world,angulo-20,enemy,5);
-                new Bullet(gunPosition,world,angulo,enemy,5);
-                new Bullet(gunPosition,world,angulo+20,enemy,5);
+                new Bullet(gunPosition,world,angulo-20,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo+20,enemy,5,bulletTexture);
                 break;
             case 9:
-                new Bullet(gunPosition,world,angulo-50,enemy,5);
-                new Bullet(gunPosition,world,angulo-25,enemy,5);
-                new Bullet(gunPosition,world,angulo,enemy,5);
-                new Bullet(gunPosition,world,angulo+25,enemy,5);
-                new Bullet(gunPosition,world,angulo+50,enemy,5);
+                new Bullet(gunPosition,world,angulo-50,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo-25,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo+25,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angulo+50,enemy,5,bulletTexture);
                 break;
 
         }

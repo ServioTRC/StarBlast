@@ -104,6 +104,8 @@ class NivelPrueba implements Screen, IPausable {
     private boolean oleada3Realizada = false;
     private long enemigoAnterior = 0;
 
+    Texture textureBullet;
+
     NivelPrueba(StarBlast menu) {
         this.menu = menu;
     }
@@ -127,6 +129,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void cargarTexturas() {
         texturaFondo = new Texture("PantallaJuego/fondoNivel2.jpg");
+        textureBullet = new Texture(Bullet.BULLET_SPRITE);
     }
 
     private void crearObjetos() {
@@ -227,7 +230,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearSprites() {
         //Sprites Complejos
-        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
+        jugador = new NaveJugador("PantallaJuego/AvatarSprite.png", Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world, textureBullet);
         jugador.escalar(Constantes.ESCALA_NAVES);
         //Sprite del fondo
         spriteFondo = new Sprite(texturaFondo);
@@ -240,7 +243,7 @@ class NivelPrueba implements Screen, IPausable {
         NaveEnemiga enemigo;
         Random r = new Random();
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
+            enemigo = new NaveEnemiga("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world, textureBullet);
 //            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
             //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
 
@@ -251,7 +254,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearJefeNivel() {
         Random r = new Random();
-        NaveEnemiga jefe = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
+        NaveEnemiga jefe = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300, textureBullet);
         enemigos.add(jefe);
     }
     //endregion

@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.math.MathUtils;
@@ -25,8 +26,8 @@ class NaveJugador extends NavesEspaciales {
     private float velocidad;
     private float theta;
 
-    NaveJugador(String ubicacion,float x,float y,World world) {
-        super(ubicacion,x,y,world,90,0.1f,0.7f);
+    NaveJugador(String ubicacion,float x,float y,World world, Texture texture) {
+        super(ubicacion,x,y,world,90,0.1f,0.7f,texture);
 
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
