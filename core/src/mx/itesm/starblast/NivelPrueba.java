@@ -492,6 +492,7 @@ class NivelPrueba implements Screen, IPausable {
             enemigo.mover(target,delta);
             //se utiliza el metodo nanos en vez de millis porque millis
             //cuenta el tiempo desde 1970
+
             enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()),true);
         }
     }
@@ -609,7 +610,7 @@ class NivelPrueba implements Screen, IPausable {
 
     @Override
     public void dispose() {
-        Constantes.ASSET_GENERAL.dispose();
+        Constantes.MANAGER.dispose();
     }
 
 

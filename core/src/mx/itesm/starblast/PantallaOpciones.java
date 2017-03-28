@@ -242,7 +242,7 @@ class PantallaOpciones extends Pantalla {
 
     @Override
     public void dispose() {
-        Constantes.ASSET_GENERAL.dispose();
+        Constantes.MANAGER.dispose();
     }
 
 }

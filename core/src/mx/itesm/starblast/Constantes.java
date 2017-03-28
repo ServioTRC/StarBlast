@@ -7,7 +7,7 @@ import java.util.ArrayList;
 class Constantes {
     static final float ANCHO_PANTALLA = 1280;
     static final float ALTO_PANTALLA = 800;
-    static final AssetManager ASSET_GENERAL = new AssetManager();
+    static final AssetManager MANAGER = new AssetManager();
     static final float ESCALA_NAVES = -0.3f;
     static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
     static final float TOUCHPAD_DEADZONE = 0.20f;
@@ -32,5 +32,18 @@ class Constantes {
         return world*100;
     }
 
-    
+    enum Pantallas{
+        SPLASH,
+        INICIO,
+        MENU,
+        HISTORIA,
+        ENDLESS,
+        MINIJUEGOS,
+        MINI1,
+        MINI2,
+        MINI3,
+        PUNTAJES,
+        OPCIONES,
+        CREDITOS
+    }
 }
