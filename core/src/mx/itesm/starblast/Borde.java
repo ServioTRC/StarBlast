@@ -53,4 +53,19 @@ class Borde implements IPlayableEntity {
     public void draw(SpriteBatch batch) {
 
     }
+
+    @Override
+    public Body getBody() {
+        return body;
+    }
+
+    @Override
+    public float getX() {
+        return 0;
+    }
+
+    @Override
+    public float getY() {
+        return 0;
+    }
 }

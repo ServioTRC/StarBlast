@@ -12,8 +12,8 @@ class AutoAnimation {
     float time = 0;
     Animation<TextureRegion> animation;
 
-    AutoAnimation(String route, float rate, float x, float y, int hx, int hy, SpriteBatch batch){
-        TextureRegion[][] region = (new TextureRegion(new Texture(route))).split(hx,hy);
+    AutoAnimation(Texture texture, float rate, float x, float y, int hx, int hy, SpriteBatch batch){
+        TextureRegion[][] region = (new TextureRegion(texture)).split(hx,hy);
         this.x = x-hx/2f;
         this.y = y-hy/2f;
         animation = new Animation<TextureRegion>(rate, region[0]);

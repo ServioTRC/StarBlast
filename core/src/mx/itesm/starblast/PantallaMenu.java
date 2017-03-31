@@ -31,7 +31,7 @@ class PantallaMenu extends Pantalla {
 
     @Override
     public void show() {
-        cargarTexturas();
+        texturaFondo = new Texture("PantallaMenu/PantallaMenu.jpg");
         crearObjetos();
     }
 
@@ -44,7 +44,7 @@ class PantallaMenu extends Pantalla {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
                     Gdx.app.log("Pantalla Menu: ","Voy al Inicio");
-                    dispose();
+                    
                     menu.setScreen(new PantallaInicio(menu));
                     return true;
                 }
@@ -60,6 +60,8 @@ class PantallaMenu extends Pantalla {
         Gdx.input.setInputProcessor(escenaMenu);
 
     }
+
+    //region crear botones
 
     private void crearBotones() {
         crearBotonCreditos();
@@ -81,8 +83,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Voy a Modo Historia");
-                dispose();
-                menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.HISTORIA));
+                menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.NIVEL1));
             }
         });
     }
@@ -98,8 +99,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Me voy a Modo Endless");
-                dispose();
-                //menu.setScreen(new PantallaJuego(menu));
+                menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.ENDLESS));
             }
         });
     }
@@ -115,7 +115,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Me voy a Puntajes");
-                dispose();
+                
                 menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.PUNTAJES));
             }
         });
@@ -132,7 +132,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: ","Me voy a Opciones");
-                dispose();
+                
                 menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.OPCIONES));
             }
         });
@@ -148,7 +148,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: "," Me voy a Créditos");
-                dispose();
+                
                 menu.setScreen(new PantallaCreditos(menu));
             }
         });
@@ -164,15 +164,13 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("Pantalla Menu: "," Me voy a Minijuegos");
-                dispose();
+                
                 menu.setScreen(new PantallaCargando(menu, Constantes.Pantallas.MINIJUEGOS));
             }
         });
     }
 
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaMenu/PantallaMenu.jpg");
-    }
+    //endregion
 
     @Override
     public void render(float delta) {
@@ -187,11 +185,6 @@ class PantallaMenu extends Pantalla {
 
     @Override
     public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
 
     }
 

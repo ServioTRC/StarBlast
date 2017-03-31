@@ -13,11 +13,13 @@ class Texto {
     private final BitmapFont font;
     private final Skin skin;
     private final TextureAtlas buttonAtlas;
+    private final GlyphLayout layout;
 
     Texto(String archivo) {
         font = new BitmapFont(Gdx.files.internal(archivo));
         skin = new Skin();
         buttonAtlas = new TextureAtlas();
+        layout = new GlyphLayout();
     }
 
     TextButton.TextButtonStyle generarTexto(Color colorFont, Color colorPushed, int escala) {
@@ -30,11 +32,9 @@ class Texto {
         return textButtonStyle;
     }
 
-    public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y, Color color, boolean center) {
-        GlyphLayout glyp = new GlyphLayout();
-        glyp.setText(font, mensaje);
-        float anchoTexto = glyp.width;
+    public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y, Color color) {
         font.setColor(color);
-        font.draw(batch, glyp, x - (center ? anchoTexto / 2 : 0), y);
+        layout.setText(font, mensaje);
+        font.draw(batch, layout, x, y);
     }
 }

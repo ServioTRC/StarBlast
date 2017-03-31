@@ -17,9 +17,7 @@ import java.util.Iterator;
 
 class Bullet implements IPlayableEntity{
 
-    public static final String BULLET_SPRITE = "PantallaJuego/BulletSprite.png";
-//    private Texture textura;
-    private Body body;
+    public Body body;
     private CircleShape bodyShape;
     private Sprite sprite;
     private static float VELOCITY = 10;
@@ -27,26 +25,18 @@ class Bullet implements IPlayableEntity{
     int damage;
     boolean destruido;
 
-//    static void CargarTextura() {
-//        textura = new Texture(BULLET_SPRITE);
-//    }
-
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
 
         destruido = false;
 
         isEnemy = enemy;
-//        sprite = new Sprite(textura);
-//        sprite = new Sprite(new Texture(BULLET_SPRITE));
         sprite = new Sprite(Constantes.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
-    //TODO porque es dynamic
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         makeFixture(0.1f, 1f);
-//        body.setBullet(true);
         sprite.setRotation(angle - 90);
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
@@ -109,20 +99,19 @@ class Bullet implements IPlayableEntity{
         sprite.draw(batch);
     }
 
-    Shape getShape() {
-        return bodyShape;
+    @Override
+    public Body getBody() {
+        return body;
     }
 
-    float getX() {
+    @Override
+    public float getX() {
         return Constantes.toScreenSize(body.getPosition().x);
     }
 
-    float getY() {
+    @Override
+    public float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
     }
 
-    public void destroyBody(){
-        destruido = true;
-        bodyShape.dispose();
-    }
 }

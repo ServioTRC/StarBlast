@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.Random;
 
 
-public class JefeEnemigo extends NaveEnemiga {
+class JefeEnemigo extends NaveEnemiga {
 
     private final float limiteIzquierdo;
     private final float limiteDerecho;
@@ -50,9 +50,8 @@ public class JefeEnemigo extends NaveEnemiga {
     }
 
     @Override
-    protected void disparar(boolean enemy){
-        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*1.5f*MathUtils.cosDeg(sprite.getRotation()),
-                body.getPosition().y+bodyShape.getRadius()*1.5f*MathUtils.sinDeg(sprite.getRotation()));
+    protected void disparar(){
+        Vector2 gunPosition = new Vector2(body.getPosition().x,body.getPosition().y);
 
         float angulo = MathUtils.radiansToDegrees*MathUtils.atan2(objetivo.y-body.getPosition().y,objetivo.x-body.getPosition().x);
         switch (random.nextInt(10)){
@@ -83,10 +82,10 @@ public class JefeEnemigo extends NaveEnemiga {
     }
 
     @Override
-    public void disparar(long time, boolean enemy) {
+    public void disparar(long time) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            disparar(enemy);
+            disparar();
         }
     }
 }

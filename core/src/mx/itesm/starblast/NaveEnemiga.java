@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 class NaveEnemiga extends NavesEspaciales {
@@ -17,15 +18,15 @@ class NaveEnemiga extends NavesEspaciales {
     float velocidad;
     boolean puedeDisparar;
 
-    NaveEnemiga(Texture textura, float x, float y,World world,float angulo, float density,float restitution){
-        super(textura,x,y,world,angulo,density,restitution);
+    NaveEnemiga(Texture textura, float x, float y, World world, float angulo, float density, float restitution) {
+        super(textura, x, y, world, angulo, density, restitution, true);
 
         CATEGORY = Constantes.CATEGORY_ENEMY;
         MASK = Constantes.MASK_ENEMY;
     }
 
-    NaveEnemiga(Texture textura, float x, float y,World world) {
-        super(textura,x,y,world,-90,0.1f,0.7f);
+    NaveEnemiga(Texture textura, float x, float y, World world) {
+        super(textura, x, y, world, -90, 0.1f, 0.7f, true);
 
 
         CATEGORY = Constantes.CATEGORY_ENEMY;
@@ -40,9 +41,10 @@ class NaveEnemiga extends NavesEspaciales {
     }
 
     @Override
-    public void disparar(long time,boolean enemy) {
-        if(puedeDisparar){
-            super.disparar(time,enemy);
+    public void disparar(long time) {
+        if (puedeDisparar && getX() > 0 && getX() < Constantes.ANCHO_PANTALLA &&
+                getY() > 0 && getY() < Constantes.ALTO_PANTALLA) {
+            super.disparar(time);
         }
     }
 
@@ -53,7 +55,7 @@ class NaveEnemiga extends NavesEspaciales {
 
         velocidad = body.getLinearVelocity().len();
         velocidad += aceleracion;
-        velocidad = Math.min(velocidad,VELOCIDAD_MAX);
+        velocidad = Math.min(velocidad, VELOCIDAD_MAX);
 
     }
 
@@ -61,26 +63,24 @@ class NaveEnemiga extends NavesEspaciales {
         angulo += 360;
         angulo %= 360;
 
-        if(sprite.getRotation() < 0){
-            sprite.setRotation(360+sprite.getRotation());
+        if (sprite.getRotation() < 0) {
+            sprite.setRotation(360 + sprite.getRotation());
         }
         float theta = sprite.getRotation();
         theta += 360;
-        theta%=360;
+        theta %= 360;
 
         int signo;
-        if((sprite.getRotation()-180 <= angulo&&angulo <= sprite.getRotation()) || 360+(sprite.getRotation()-180) <= angulo) {
+        if ((sprite.getRotation() - 180 <= angulo && angulo <= sprite.getRotation()) || 360 + (sprite.getRotation() - 180) <= angulo) {
             signo = -1;
-        }
-        else {
+        } else {
             signo = 1;
         }
-        if(Math.abs(sprite.getRotation()-angulo) > RANGO_GIRO_MAX) {
-            theta += signo*RANGO_GIRO_MAX;
+        if (Math.abs(sprite.getRotation() - angulo) > RANGO_GIRO_MAX) {
+            theta += signo * RANGO_GIRO_MAX;
             puedeDisparar = false;
-        }
-        else{
-            theta += signo*Math.abs(sprite.getRotation()-angulo);
+        } else {
+            theta += signo * Math.abs(sprite.getRotation() - angulo);
             puedeDisparar = true;
         }
 
@@ -88,52 +88,42 @@ class NaveEnemiga extends NavesEspaciales {
     }
 
     @Override
-    public void mover(Vector2 target,float delta){
+    public void mover(Vector2 target, float delta) {
         float deltaX;
         float deltaY;
 
-        if(Math.abs(Constantes.toWorldSize(target.x)-body.getPosition().x) < Math.abs(body.getLinearVelocity().x)){
-            deltaX = Constantes.toWorldSize(target.x)-body.getPosition().x;
-        }
-        else{
-            deltaX = Constantes.toWorldSize(target.x)-(body.getLinearVelocity().x+body.getPosition().x);
+        if (Math.abs(Constantes.toWorldSize(target.x) - body.getPosition().x) < Math.abs(body.getLinearVelocity().x)) {
+            deltaX = Constantes.toWorldSize(target.x) - body.getPosition().x;
+        } else {
+            deltaX = Constantes.toWorldSize(target.x) - (body.getLinearVelocity().x + body.getPosition().x);
         }
 
-        if(Math.abs(Constantes.toWorldSize(target.y)-body.getPosition().y) < Math.abs(body.getLinearVelocity().y)){
-            deltaY = Constantes.toWorldSize(target.y)-body.getPosition().y;
-        }
-        else{
-            deltaY = Constantes.toWorldSize(target.y)-(body.getLinearVelocity().y+body.getPosition().y);
+        if (Math.abs(Constantes.toWorldSize(target.y) - body.getPosition().y) < Math.abs(body.getLinearVelocity().y)) {
+            deltaY = Constantes.toWorldSize(target.y) - body.getPosition().y;
+        } else {
+            deltaY = Constantes.toWorldSize(target.y) - (body.getLinearVelocity().y + body.getPosition().y);
         }
 
         float angulo;
-        angulo = MathUtils.atan2(deltaY,deltaX);
-        angulo = (angulo*180/(MathUtils.PI));
-        angulo+=360;
-        angulo%=360;
+        angulo = MathUtils.atan2(deltaY, deltaX);
+        angulo = (angulo * 180 / (MathUtils.PI));
+        angulo += 360;
+        angulo %= 360;
         girar(angulo);
 
         acelerar(IMPULSO * delta);
 
-        updateBody(angulo);
+        updateBody();
     }
 
-    private void updateBody(float angulo) {
-        Vector2 v = new Vector2(
-                MathUtils.cosDeg(sprite.getRotation()),
-                MathUtils.sinDeg(sprite.getRotation()));
+    private void updateBody() {
+        float x = MathUtils.cosDeg(sprite.getRotation());
+        float y = MathUtils.sinDeg(sprite.getRotation());
         float hip = body.getLinearVelocity().len();
-
-
-        //if(Math.abs(body.getLinearVelocity().angle()-angulo) < 20*RANGO_GIRO_MAX || hip < 3) {
-            body.applyForceToCenter(v.scl(0.3f), true);
-        /*}
-        else{
-            body.setLinearVelocity(body.getLinearVelocity().scl(CONSTANTE_FRENADO));
-        }*/
-        if(hip > VELOCIDAD_MAX){
-            body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAX/hip));
+        body.applyForceToCenter(x*0.3f,y*0.3f, true);
+        if (hip > VELOCIDAD_MAX) {
+            body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAX / hip));
         }
-        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x), Constantes.toScreenSize(body.getPosition().y));
     }
 }

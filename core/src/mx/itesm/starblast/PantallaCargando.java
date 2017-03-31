@@ -1,7 +1,9 @@
 package mx.itesm.starblast;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
 class PantallaCargando extends Pantalla {
@@ -25,7 +27,9 @@ class PantallaCargando extends Pantalla {
     @Override
     public void render(float delta) {
         //TODO leer arriba
-        borrarPantalla();
+//        borrarPantalla();
+        Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(Constantes.MANAGER.update()){
             goToNextScreen();
         }
@@ -58,8 +62,13 @@ class PantallaCargando extends Pantalla {
             case MENU:
                 break;
             case HISTORIA:
-                menu.setScreen(new NivelPrueba(menu));
+//                menu.setScreen(new NivelPrueba(menu));
+                break;
+            case NIVEL1:
+                menu.setScreen(new Nivel1(menu));
+                break;
             case ENDLESS:
+                menu.setScreen(new NivelPrueba(menu));
                 break;
             case MINIJUEGOS:
                 menu.setScreen(new PantallaSeleccionMinijuegos(menu));
@@ -94,6 +103,9 @@ class PantallaCargando extends Pantalla {
             case HISTORIA:
                 cargarHistoria();
                 break;
+            case NIVEL1:
+                cargarNivel1();
+                break;
             case ENDLESS:
                 cargarEndless();
                 break;
@@ -118,8 +130,13 @@ class PantallaCargando extends Pantalla {
         }
     }
 
+    private void cargarNivel1() {
+        Constantes.MANAGER.load("PantallaJuego/Nivel 1/LoopingBackground.jpg", Texture.class);
+        cargarHistoria();
+    }
+
     private void cargarHistoria() {
-        //NIVEL
+        //TODO sprites pantalla perdiste
         Constantes.MANAGER.load("PantallaJuego/AvatarSprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/BotonVolverMenu.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/BulletSprite.png", Texture.class);
@@ -128,16 +145,22 @@ class PantallaCargando extends Pantalla {
         Constantes.MANAGER.load("PantallaJuego/Enemigo1Sprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/Enemigo2Sprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/Enemigo3Sprite.png", Texture.class);
-        Constantes.MANAGER.load("PantallaJuego/FondoNivel2.jpg", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/NaveJefe.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/Pausa.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/PowerupSprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/SplashMisionCumplida.png", Texture.class);
-        //SONIDOS
+        Constantes.MANAGER.load("Animaciones/ExplosionNaveFrames.png", Texture.class);
+        cargarSonidosHistoria();
+        cargarHUD();
+        cargarPausa();
+    }
+
+    private void cargarSonidosHistoria(){
         Constantes.MANAGER.load("EfectosSonoros/SonidoDisparo1.mp3", Sound.class);
         Constantes.MANAGER.load("EfectosSonoros/SonidoDisparo2.mp3", Sound.class);
-//        Constantes.MANAGER.load("EfectosSonoros/MusicaFondo.mp3", Sound.class);
-        //HUD
+    }
+
+    private void cargarHUD(){
         Constantes.MANAGER.load("HUD/BotonAPresionado.png",Texture.class);
         Constantes.MANAGER.load("HUD/BotonAStandby.png",Texture.class);
         Constantes.MANAGER.load("HUD/BotonBPresionado.png",Texture.class);
@@ -146,7 +169,9 @@ class PantallaCargando extends Pantalla {
         Constantes.MANAGER.load("HUD/JoystickStick.png",Texture.class);
         Constantes.MANAGER.load("HUD/LifeBarBar.png",Texture.class);
         Constantes.MANAGER.load("HUD/LifeBarFrame.png",Texture.class);
-        //PAUSA
+    }
+
+    private void cargarPausa(){
         Constantes.MANAGER.load("PantallaOpciones/CuadroOpciones.png", Texture.class);
         Constantes.MANAGER.load("PantallaOpciones/BotonReset.png", Texture.class);
         Constantes.MANAGER.load("PantallaOpciones/BotonResetYellow.png", Texture.class);
@@ -161,6 +186,8 @@ class PantallaCargando extends Pantalla {
 
     private void cargarEndless() {
         cargarHistoria();
+        //TODO quitar esto
+        Constantes.MANAGER.load("PantallaJuego/FondoNivel2.jpg",Texture.class);
     }
 
     private void cargarMinijuegos() {

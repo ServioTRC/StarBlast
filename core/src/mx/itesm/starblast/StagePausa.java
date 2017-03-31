@@ -13,12 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-class StageOpciones extends Stage {
+class StagePausa extends Stage {
 
     private final StarBlast menu;
     private final IPausable parent;
 
-    StageOpciones(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
+    StagePausa(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
         super(viewport, batch);
         this.menu = menu;
         this.parent = parent;

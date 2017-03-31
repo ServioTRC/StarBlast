@@ -1,6 +1,7 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Body;
 
 interface IPlayableEntity {
 
@@ -8,5 +9,7 @@ interface IPlayableEntity {
     int getDamage();
     boolean doDamage(int damage);
     void draw(SpriteBatch batch);
-
+    Body getBody();
+    float getX();
+    float getY();
 }

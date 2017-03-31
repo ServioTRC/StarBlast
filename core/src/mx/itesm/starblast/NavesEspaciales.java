@@ -1,30 +1,21 @@
 package mx.itesm.starblast;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.StringBuilder;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-class NavesEspaciales implements IPlayableEntity {
+abstract class NavesEspaciales implements IPlayableEntity {
 
-    BodyDef bodyDef;
+    //TODO considerar hacer más exactos los coliders
+
     Body body;
-    protected CircleShape bodyShape;
     Sprite sprite;
     float porcentajeAceleracion;
     long COOLDOWN_DISPARO;
@@ -34,84 +25,64 @@ class NavesEspaciales implements IPlayableEntity {
     short MASK = -1;
     int vida;
     int damage;
-    float density;
-    float restitution;
-    boolean destruido;
     int BULLET_DAMAGE;
+    boolean enemy;
 
-    NavesEspaciales(Texture textura,float x,float y,World world,float angulo,float density, float restitution) {
+    NavesEspaciales(Texture textura,float x,float y,World world,float angulo,float density, float restitution, boolean enemy) {
         this.world = world;
+        this.enemy = enemy;
         vida = 100;
         damage = 10;
         sprite = new Sprite(textura);
         sprite.setRotation(angulo);
-        bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Constantes.toWorldSize(x),Constantes.toWorldSize(y));
         bodyDef.angle = angulo;
-        destruido = false;
         body = world.createBody(bodyDef);
         body.setUserData(this);
         BULLET_DAMAGE = 10;
-        this.restitution = restitution;
-        this.density = density;
-        makeFixture();
+        makeFixture(density, restitution);
     }
 
-    public void disparar(long time, boolean enemy) {
+    public void disparar(long time) {
         if (disparoAnterior + COOLDOWN_DISPARO < time) {
             disparoAnterior = time;
-            disparar(enemy);
+            disparar();
         }
     }
 
-    protected void disparar(boolean enemy){
-        Vector2 gunPosition = new Vector2(body.getPosition().x+bodyShape.getRadius()*MathUtils.cosDeg(sprite.getRotation()),
-                                          body.getPosition().y+bodyShape.getRadius()*MathUtils.sinDeg(sprite.getRotation()));
-        new Bullet(gunPosition,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
+    protected void disparar(){
+        new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
     }
 
     public void acelerar(float porcentaje) {
         this.porcentajeAceleracion = porcentaje;
     }
 
-    public void mover(Vector2 punto,float delta){
-        Gdx.app.log("NavesEspaciales","mover");
-    }
+    public abstract void mover(Vector2 punto,float delta);
 
-    public Body getBody() {
-        return body;
-    }
-
+    @Override
     public float getX() {
         return Constantes.toScreenSize(body.getPosition().x);
     }
 
+    @Override
     public float getY() {
         return Constantes.toScreenSize(body.getPosition().y);
     }
 
-    Shape getShape() {
-        return bodyShape;
-    }
-
     void escalar(float escala) {
-        bodyShape.dispose();
-
         this.sprite.scale(escala);
-        bodyShape = new CircleShape();
-        this.bodyShape.setRadius(sprite.getWidth()*sprite.getScaleX()/2);
-        makeFixture();
+        Fixture fix = body.getFixtureList().first();
+        makeFixture(fix.getDensity(), fix.getRestitution());
     }
 
-    void makeFixture(){
-        if(destruido){
-            return;
-        }
+    private void makeFixture(float density, float restitution){
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
-        bodyShape = new CircleShape();
+        CircleShape bodyShape = new CircleShape();
 
         float w=Constantes.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
 
@@ -125,6 +96,7 @@ class NavesEspaciales implements IPlayableEntity {
         fixtureDef.filter.categoryBits = CATEGORY;
         fixtureDef.filter.maskBits = MASK;
         body.createFixture(fixtureDef);
+        bodyShape.dispose();
     }
 
     @Override
@@ -139,7 +111,7 @@ class NavesEspaciales implements IPlayableEntity {
 
     @Override
     public boolean doDamage(int damage) {
-        vida -= damage;
+//        vida -= damage;
         if(vida<=0){
             die();
             return true;
@@ -156,7 +128,8 @@ class NavesEspaciales implements IPlayableEntity {
         //TODO chance hace algo
     }
 
-    public void destroyBody(){
-        destruido = true;
+    @Override
+    public Body getBody() {
+        return body;
     }
 }

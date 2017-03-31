@@ -2,12 +2,12 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.math.MathUtils;
 import static java.lang.Math.*;
 
 class NaveJugador extends NavesEspaciales {
-
 
     private enum EstadoMovimiento{
         GIRANDO,
@@ -25,9 +25,10 @@ class NaveJugador extends NavesEspaciales {
     private float porcentajeGiro;
     private float velocidad;
     private float theta;
+    float vidaTotal;
 
     NaveJugador(Texture textura,float x,float y,World world) {
-        super(textura,x,y,world,90,0.1f,0.7f);
+        super(textura,x,y,world,90,0.1f,0.7f, false);
 
         CATEGORY = Constantes.CATEGORY_PLAYER;
         MASK = Constantes.MASK_PLAYER;
@@ -37,6 +38,8 @@ class NaveJugador extends NavesEspaciales {
         velocidad = 0;
         aceleracion = 0;
         damage = 20;
+
+        vidaTotal = vida;
     }
 
     @Override
