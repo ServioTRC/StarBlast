@@ -368,6 +368,10 @@ class NivelHistoria extends Pantalla implements IPausable {
             while (b.getFixtureList().size > 0) {
                 b.destroyFixture(b.getFixtureList().first());
             }
+            if(b.getUserData() instanceof Bullet){
+                ((Bullet) b.getUserData()).body = null;
+            }
+            b.setUserData(null);
             world.destroyBody(b);
         }
         toRemove.clear();
@@ -414,7 +418,7 @@ class NivelHistoria extends Pantalla implements IPausable {
         Vector2 target = new Vector2(jugador.getX(), jugador.getY());
         for (NaveEnemiga enemigo : enemigos) {
             enemigo.mover(target, delta);
-//            enemigo.disparar(TimeUtils.millis());
+            enemigo.disparar(TimeUtils.millis());
         }
     }
 
