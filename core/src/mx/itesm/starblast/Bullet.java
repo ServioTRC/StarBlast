@@ -88,7 +88,7 @@ class Bullet implements IPlayableEntity{
     @Override
     public boolean doDamage(int damage) {
         //TODO do something like remove the instance or whatever
-        bodyShape.dispose();
+//        bodyShape.dispose();
         return true;
     }
 
