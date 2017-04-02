@@ -53,9 +53,7 @@ class NaveJugador extends NavesEspaciales {
                 break;
         }
 
-        Vector2 destino = new Vector2(porcentajeGiro * -1, porcentajeAceleracion);
-
-        aceleracion = destino.len();
+        aceleracion = (float)sqrt(porcentajeGiro*porcentajeGiro + porcentajeAceleracion*porcentajeAceleracion);
 
         velocidad = body.getLinearVelocity().len();
         velocidad = min(velocidad, VELOCIDAD_MAX);
@@ -68,14 +66,7 @@ class NaveJugador extends NavesEspaciales {
         }
         theta = MathUtils.atan2(vector.y, vector.x);
         velocidad = vector.len();
-//        if(!body.getLinearVelocity().isZero(0.05f))Gdx.app.log("Nave Jugador:","LV: "+body.getLinearVelocity());
-        //body.setLinearVelocity(vector.scl(0.5f));
-        /*body.applyForceToCenter(vector.scl(0.5f),true);*/
-        /*float hipotenusa = vector.len();
-        if(hipotenusa > VELOCIDAD_MAX){
-            float scale = hipotenusa/VELOCIDAD_MAX;
-            body.setLinearVelocity(body.getLinearVelocity().scl(1/scale*0.5f));
-        }*/
+
         if(aceleracion != 0) {
             body.applyForceToCenter(new Vector2(porcentajeGiro * -1, porcentajeAceleracion), true);
         }
