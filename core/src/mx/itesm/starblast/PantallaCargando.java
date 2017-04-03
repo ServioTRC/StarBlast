@@ -6,8 +6,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 
 class PantallaCargando extends Pantalla {
 
@@ -16,35 +19,57 @@ class PantallaCargando extends Pantalla {
     private ProgressBar barraCargando;
     private SpriteBatch batch;
     private Stage escenaCargando;
+    private Stage escenaTextos;
+    private Texture[] textos;
+    private final int TIEMPO_POR_TEXTO = 1000;
+    private final int NUMERO_DE_TEXTOS = 5;
+    private final int TIEMPO_TOTAL;
 
     PantallaCargando(StarBlast menu, Constantes.Pantallas pantalla){
         this.menu = menu;
         nextScreen = pantalla;
+
+        batch = new SpriteBatch();
+        escenaCargando = new Stage(vista,batch);
+        escenaTextos = new Stage(vista,batch);
+
+        cargarTextos();
+        TIEMPO_TOTAL = TIEMPO_POR_TEXTO*NUMERO_DE_TEXTOS;
+    }
+
+    private void cargarTextos() {
+        textos = new Texture[NUMERO_DE_TEXTOS];
+        for(int i = 1; i <=NUMERO_DE_TEXTOS;i++){
+            textos[i-1] = new Texture("PantallaCargando/Texto"+i+"Cargando.png");
+        }
     }
 
     //region metodos pantalla
 
     @Override
     public void show() {
-        barraCargando = new ProgressBar(new Texture("PantallaCargando/MascaraCargando.png"),false);
-        barraCargando.setFrame(new Texture("PantallaCargando/FondoCargando.jpg"));
-        Gdx.app.log("Posicion",""+(Constantes.ANCHO_PANTALLA-barraCargando.getWidth())/2);
-        barraCargando.setPosition((Constantes.ANCHO_PANTALLA-barraCargando.getWidth())/2,(Constantes.ALTO_PANTALLA-barraCargando.getHeight())/2);
-        batch = new SpriteBatch();
-        escenaCargando = new Stage(vista,batch);
-        escenaCargando.addActor(barraCargando);
+        crearProgressBar();
+        crearTextos();
         loadNextScreen();
     }
 
+
     @Override
     public void render(float delta) {
-        //TODO poner textos interesantes
         barraCargando.setPorcentage(Constantes.MANAGER.getProgress());
-        Gdx.app.log("Progreso",""+Constantes.MANAGER.getProgress());
         escenaCargando.draw();
+        mostrarTextoCorrecto();
+        escenaTextos.draw();
         if(Constantes.MANAGER.update()){
            goToNextScreen();
         }
+    }
+
+    private void mostrarTextoCorrecto() {
+        for(Actor a:escenaTextos.getActors()){
+            a.setVisible(false);
+        }
+        escenaTextos.getActors().get(((int)(TimeUtils.millis()%TIEMPO_TOTAL))/1000).setVisible(true);
     }
 
     @Override
@@ -62,6 +87,25 @@ class PantallaCargando extends Pantalla {
 
     }
 
+    //endregion
+
+    //region Metodos Show
+    private void crearTextos() {
+        Image img;
+        for(Texture tex : textos){
+            img = new Image(tex);
+            img.setPosition((Constantes.ANCHO_PANTALLA-img.getWidth())/2,Constantes.ALTO_PANTALLA/3);
+            escenaTextos.addActor(img);
+        }
+    }
+
+    private void crearProgressBar() {
+        barraCargando = new ProgressBar(new Texture("PantallaCargando/MascaraCargando.png"),false);
+        barraCargando.setFrame(new Texture("PantallaCargando/FondoCargando.jpg"));
+        barraCargando.setPosition((Constantes.ANCHO_PANTALLA-barraCargando.getWidth())/2,(Constantes.ALTO_PANTALLA-barraCargando.getHeight())/2);
+
+        escenaCargando.addActor(barraCargando);
+    }
     //endregion
 
     private void goToNextScreen() {
