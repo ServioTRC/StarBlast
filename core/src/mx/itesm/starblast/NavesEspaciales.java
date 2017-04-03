@@ -111,7 +111,7 @@ abstract class NavesEspaciales implements IPlayableEntity {
 
     @Override
     public boolean doDamage(int damage) {
-//        vida -= damage;
+        vida -= damage;
         if(vida<=0){
             die();
             return true;

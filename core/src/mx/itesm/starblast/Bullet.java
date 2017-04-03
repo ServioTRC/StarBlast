@@ -18,7 +18,6 @@ import java.util.Iterator;
 class Bullet implements IPlayableEntity{
 
     public Body body;
-    private CircleShape bodyShape;
     private Sprite sprite;
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
@@ -57,7 +56,7 @@ class Bullet implements IPlayableEntity{
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
-        bodyShape = new CircleShape();
+        CircleShape bodyShape = new CircleShape();
 
         float w = Constantes.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
 
@@ -73,6 +72,8 @@ class Bullet implements IPlayableEntity{
         fixtureDef.filter.maskBits = isEnemy ? Constantes.MASK_BULLET_ENEMY :
                                                 Constantes.MASK_BULLET;
         body.createFixture(fixtureDef);
+
+        bodyShape.dispose();
     }
 
     @Override

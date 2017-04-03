@@ -184,7 +184,6 @@ class NivelHistoria extends Pantalla implements IPausable {
 
     //region metodos de render
     //TODO manejar transiciones y demás cosas
-    //TODO debería ser proporcional al tiempo entre renders
     private void handleFondo(float dt) {
         batch.draw(loopingBackground, 0, posY);
         batch.draw(loopingBackground, 0, posY + loopingBackground.getHeight());
@@ -215,8 +214,10 @@ class NivelHistoria extends Pantalla implements IPausable {
         crearBarraVida();
         crearBotonPausa();
         crearBotonDisparo();
-        //TODO boton B
+        crearBotonEspecial();
     }
+
+
 
     private void crearPad() {
         Skin skin = new Skin();
@@ -311,6 +312,33 @@ class NivelHistoria extends Pantalla implements IPausable {
         escenaHUD.addActor(botonDisparo);
     }
 
+    private void crearBotonEspecial() {
+        Skin skin = new Skin();
+        skin.add("EspecialStandby", Constantes.MANAGER.get("HUD/BotonBStandby.png", Texture.class));
+        skin.add("EspecialPresionado", Constantes.MANAGER.get("HUD/BotonBPresionado.png", Texture.class));
+        Button.ButtonStyle estilo = new Button.ButtonStyle();
+        estilo.down = skin.getDrawable("EspecialPresionado");
+        estilo.up = skin.getDrawable("EspecialStandby");
+
+        Button botonEspecial = new Button(estilo);
+        botonEspecial.setPosition(12 * Constantes.ANCHO_PANTALLA / 16,
+                1 * Constantes.ALTO_PANTALLA / 10);
+
+        botonEspecial.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                jugadorDisparando = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                jugadorDisparando = false;
+            }
+        });
+        escenaHUD.addActor(botonEspecial);
+    }
+
     //endregion
 
     //region metodos world
@@ -342,7 +370,6 @@ class NivelHistoria extends Pantalla implements IPausable {
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
-                //TODO aqui puedes hacer el impulso de una colision 0
             }
         });
     }
@@ -351,9 +378,12 @@ class NivelHistoria extends Pantalla implements IPausable {
         if (a.doDamage(b.getDamage())) {
             a.setDamage(0);
             toRemove.add(a.getBody());
+            if(a instanceof NavesEspaciales){
+                animations.add(new AutoAnimation(Constantes.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+
+            }
             if (a instanceof NaveEnemiga) {
                 enemigos.remove(a);
-                animations.add(new AutoAnimation(Constantes.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
             }
         }
     }
@@ -408,7 +438,7 @@ class NivelHistoria extends Pantalla implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            NaveEnemiga enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (random.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), random.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
+            NaveEnemiga enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3)+1) + "Sprite.png", Texture.class), random.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
@@ -431,6 +461,7 @@ class NivelHistoria extends Pantalla implements IPausable {
                 numberEnemiesForThisWave += extraPerWave;
                 switchingWaves = true;
             } else {
+
                 //TODO se acabo el juego (ganaste)
             }
         }
