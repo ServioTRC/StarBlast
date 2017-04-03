@@ -23,6 +23,8 @@ public class ProgressBar extends Actor {
         this.textureRegion = new TextureRegion(texture);
         this.vertical = vertical;
         this.porcentage = 1;
+        setWidth(texture.getWidth());
+        setHeight(texture.getHeight());
     }
 
     @Override
@@ -36,17 +38,17 @@ public class ProgressBar extends Actor {
     }
 
     private void drawHorizontal(Batch batch) {
-        batch.draw(textureRegion, getX(), getY());
         if (frame != null) {
             batch.draw(frame, getX() - (frame.getWidth() - bar.getWidth()) / 2, getY() - (frame.getHeight() - bar.getHeight()) / 2);
         }
+        batch.draw(textureRegion, getX(), getY());
     }
 
     private void drawVertical(Batch batch) {
-        batch.draw(textureRegion, getX(), getY() - (int) (bar.getHeight() * (1 - porcentage)));
         if (frame != null) {
             batch.draw(frame, getX() - (frame.getWidth() - bar.getWidth()) / 2, getY() - (frame.getHeight() - bar.getHeight()) / 2);
         }
+        batch.draw(textureRegion, getX(), getY() - (int) (bar.getHeight() * (1 - porcentage)));
     }
 
     public void setPorcentage(float porcentage){

@@ -5,11 +5,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 
 class PantallaCargando extends Pantalla {
 
     StarBlast menu;
     Constantes.Pantallas nextScreen;
+    private ProgressBar barraCargando;
+    private SpriteBatch batch;
+    private Stage escenaCargando;
 
     PantallaCargando(StarBlast menu, Constantes.Pantallas pantalla){
         this.menu = menu;
@@ -20,16 +26,24 @@ class PantallaCargando extends Pantalla {
 
     @Override
     public void show() {
-        //TODO progress bar o wtv
+        barraCargando = new ProgressBar(new Texture("PantallaCargando/MascaraCargando.png"),false);
+        barraCargando.setFrame(new Texture("PantallaCargando/FondoCargando.jpg"));
+        Gdx.app.log("Posicion",""+(Constantes.ANCHO_PANTALLA-barraCargando.getWidth())/2);
+        barraCargando.setPosition((Constantes.ANCHO_PANTALLA-barraCargando.getWidth())/2,(Constantes.ALTO_PANTALLA-barraCargando.getHeight())/2);
+        batch = new SpriteBatch();
+        escenaCargando = new Stage(vista,batch);
+        escenaCargando.addActor(barraCargando);
         loadNextScreen();
     }
 
     @Override
     public void render(float delta) {
-        //TODO leer arriba
-//        borrarPantalla();
-        Gdx.gl.glClearColor(1,0,0,1);
+        //TODO poner textos interesantes
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        barraCargando.setPorcentage(Constantes.MANAGER.getProgress());
+        Gdx.app.log("Progreso",""+Constantes.MANAGER.getProgress());
+        escenaCargando.draw();
         if(Constantes.MANAGER.update()){
             goToNextScreen();
         }
