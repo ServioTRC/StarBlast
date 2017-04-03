@@ -39,13 +39,11 @@ class PantallaCargando extends Pantalla {
     @Override
     public void render(float delta) {
         //TODO poner textos interesantes
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         barraCargando.setPorcentage(Constantes.MANAGER.getProgress());
         Gdx.app.log("Progreso",""+Constantes.MANAGER.getProgress());
         escenaCargando.draw();
         if(Constantes.MANAGER.update()){
-            goToNextScreen();
+           goToNextScreen();
         }
     }
 
