@@ -22,12 +22,8 @@ class Bullet implements IPlayableEntity{
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
     int damage;
-    boolean destruido;
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
-
-        destruido = false;
-
         isEnemy = enemy;
         sprite = new Sprite(Constantes.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
@@ -49,10 +45,6 @@ class Bullet implements IPlayableEntity{
     }
 
     private void makeFixture(float density, float restitution) {
-        if(destruido){
-            return;
-        }
-
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }

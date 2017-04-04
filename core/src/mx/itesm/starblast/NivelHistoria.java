@@ -1,7 +1,6 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -39,6 +39,8 @@ class NivelHistoria extends Pantalla implements IPausable {
     //region estados del juego
     private boolean isPaused;
     private boolean switchingWaves;
+    private boolean perdiste;
+    private boolean ganaste;
     //endregion
 
     //region score
@@ -52,8 +54,10 @@ class NivelHistoria extends Pantalla implements IPausable {
     private Button botonPausa;
     //endregion
 
-    //pausa
-    private final Stage escenaPausa;
+    //region escenas
+    private final StagePausa escenaPausa;
+    private StagePerder escenaPerdiste;
+    //endregion
 
     // region world
     private final World world = new World(Vector2.Zero, true);
@@ -74,7 +78,7 @@ class NivelHistoria extends Pantalla implements IPausable {
     int waveNumber = 1;
     float timeoutBetweenWaves = 5;
 
-    LinkedList<NaveEnemiga> enemigos = new LinkedList<NaveEnemiga>();
+    ArrayList<NaveEnemiga> enemigos = new ArrayList<NaveEnemiga>();
     //endregion
 
     //region jugador
@@ -97,6 +101,7 @@ class NivelHistoria extends Pantalla implements IPausable {
         this.app = app;
         escenaHUD = new Stage(vista, batch);
         escenaPausa = new StagePausa(vista, batch, app, this);
+        escenaPerdiste = new StagePerder(vista, batch, app);
         this.enemigosIniciales = enemigosIniciales;
         this.extraPerWave = extraPerWave;
         this.numberOfWaves = numberOfWaves;
@@ -132,9 +137,9 @@ class NivelHistoria extends Pantalla implements IPausable {
         }
         Iterator<AutoAnimation> it = animations.iterator();
         AutoAnimation anim;
-        while (it.hasNext()){
+        while (it.hasNext()) {
             anim = it.next();
-            if(anim.draw(batch,Gdx.graphics.getDeltaTime())){
+            if (anim.draw(batch, Gdx.graphics.getDeltaTime())) {
                 it.remove();
             }
         }
@@ -142,6 +147,14 @@ class NivelHistoria extends Pantalla implements IPausable {
         batch.end();
 
         escenaHUD.draw();
+        if (perdiste) {
+            escenaPerdiste.act(Gdx.graphics.getDeltaTime());
+            escenaPerdiste.draw();
+            return;
+        }
+        if (ganaste) {
+            return;
+        }
         if (isPaused) {
             escenaPausa.draw();
         }
@@ -216,7 +229,6 @@ class NivelHistoria extends Pantalla implements IPausable {
         crearBotonDisparo();
         crearBotonEspecial();
     }
-
 
 
     private void crearPad() {
@@ -378,12 +390,16 @@ class NivelHistoria extends Pantalla implements IPausable {
         if (a.doDamage(b.getDamage())) {
             a.setDamage(0);
             toRemove.add(a.getBody());
-            if(a instanceof NavesEspaciales){
+            if (a instanceof NavesEspaciales) {
                 animations.add(new AutoAnimation(Constantes.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
-
             }
             if (a instanceof NaveEnemiga) {
                 enemigos.remove(a);
+            }
+            if (a instanceof NaveJugador) {
+                isPaused = true;
+                perdiste = true;
+                Gdx.input.setInputProcessor(escenaPerdiste);
             }
         }
     }
@@ -397,9 +413,6 @@ class NivelHistoria extends Pantalla implements IPausable {
         for (Body b : toRemove) {
             while (b.getFixtureList().size > 0) {
                 b.destroyFixture(b.getFixtureList().first());
-            }
-            if(b.getUserData() instanceof Bullet){
-                ((Bullet) b.getUserData()).body = null;
             }
             b.setUserData(null);
             world.destroyBody(b);
@@ -427,8 +440,8 @@ class NivelHistoria extends Pantalla implements IPausable {
     //region metodos enemigos
     private void spawnEnemies(float dt) {
         timeSinceLastSpawn += dt;
-        if(switchingWaves){
-            if(timeSinceLastSpawn < timeoutBetweenWaves){
+        if (switchingWaves) {
+            if (timeSinceLastSpawn < timeoutBetweenWaves) {
                 return;
             }
             timeSinceLastSpawn = spawnTimeuot;
@@ -438,7 +451,7 @@ class NivelHistoria extends Pantalla implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            NaveEnemiga enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3)+1) + "Sprite.png", Texture.class), random.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
+            NaveEnemiga enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
             enemigo.escalar(Constantes.ESCALA_NAVES);
             enemigos.add(enemigo);
         }
@@ -461,8 +474,9 @@ class NivelHistoria extends Pantalla implements IPausable {
                 numberEnemiesForThisWave += extraPerWave;
                 switchingWaves = true;
             } else {
-
                 //TODO se acabo el juego (ganaste)
+                isPaused = true;
+                ganaste = true;
             }
         }
     }

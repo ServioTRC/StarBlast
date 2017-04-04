@@ -37,7 +37,8 @@ class StagePausa extends Stage {
         crearBotonRegresar();
     }
 
-    private void crearBotonRegresar() {Skin skin = new Skin();
+    private void crearBotonRegresar() {
+        Skin skin = new Skin();
         skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
         skin.add("Down", Constantes.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
 

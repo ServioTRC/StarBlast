@@ -192,7 +192,6 @@ class PantallaCargando extends Pantalla {
     }
 
     private void cargarHistoria() {
-        //TODO sprites pantalla perdiste
         Constantes.MANAGER.load("PantallaJuego/AvatarSprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/BotonVolverMenu.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/BulletSprite.png", Texture.class);
@@ -206,6 +205,10 @@ class PantallaCargando extends Pantalla {
         Constantes.MANAGER.load("PantallaJuego/PowerupSprite.png", Texture.class);
         Constantes.MANAGER.load("PantallaJuego/SplashMisionCumplida.png", Texture.class);
         Constantes.MANAGER.load("Animaciones/ExplosionNaveFrames.png", Texture.class);
+
+        Constantes.MANAGER.load("PantallaPerder/FondoDerribado.jpg", Texture.class);
+        Constantes.MANAGER.load("PantallaPerder/Countdown.png", Texture.class);
+
         cargarSonidosHistoria();
         cargarHUD();
         cargarPausa();
