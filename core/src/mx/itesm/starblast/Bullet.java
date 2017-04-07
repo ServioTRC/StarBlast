@@ -8,12 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-
-import java.util.Iterator;
 
 class Bullet implements IPlayableEntity{
 
@@ -25,7 +21,7 @@ class Bullet implements IPlayableEntity{
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
-        sprite = new Sprite(Constantes.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
+        sprite = new Sprite(Constants.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -50,7 +46,7 @@ class Bullet implements IPlayableEntity{
         }
         CircleShape bodyShape = new CircleShape();
 
-        float w = Constantes.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
+        float w = Constants.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
 
         bodyShape.setRadius(w);
 
@@ -59,10 +55,10 @@ class Bullet implements IPlayableEntity{
         fixtureDef.restitution = restitution;
         fixtureDef.shape = bodyShape;
         fixtureDef.friction = 0;
-        fixtureDef.filter.categoryBits = isEnemy ? Constantes.CATEGORY_BULLET_ENEMY :
-                                                    Constantes.CATEGORY_BULLET;
-        fixtureDef.filter.maskBits = isEnemy ? Constantes.MASK_BULLET_ENEMY :
-                                                Constantes.MASK_BULLET;
+        fixtureDef.filter.categoryBits = isEnemy ? Constants.CATEGORY_BULLET_ENEMY :
+                                                    Constants.CATEGORY_BULLET;
+        fixtureDef.filter.maskBits = isEnemy ? Constants.MASK_BULLET_ENEMY :
+                                                Constants.MASK_BULLET;
         body.createFixture(fixtureDef);
 
         bodyShape.dispose();
@@ -87,8 +83,8 @@ class Bullet implements IPlayableEntity{
 
     public void draw(SpriteBatch batch) {
         //TODO ponerlo en la punta, no en el centro
-        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),
-                Constantes.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constants.toScreenSize(body.getPosition().x),
+                Constants.toScreenSize(body.getPosition().y));
         sprite.draw(batch);
     }
 
@@ -99,12 +95,12 @@ class Bullet implements IPlayableEntity{
 
     @Override
     public float getX() {
-        return Constantes.toScreenSize(body.getPosition().x);
+        return Constants.toScreenSize(body.getPosition().x);
     }
 
     @Override
     public float getY() {
-        return Constantes.toScreenSize(body.getPosition().y);
+        return Constants.toScreenSize(body.getPosition().y);
     }
 
 }

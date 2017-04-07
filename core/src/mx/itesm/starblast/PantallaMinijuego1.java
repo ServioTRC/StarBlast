@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.Random;
 
-class PantallaMinijuego1 extends Pantalla implements InputProcessor {
+class PantallaMinijuego1 extends ScreenSB implements InputProcessor {
 
     private final StarBlast menu;
 
@@ -53,7 +53,7 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaMinijuego = new Stage(vista, batch);
+        escenaMinijuego = new Stage(view, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaMinijuego.addActor(imgFondo);
         Random r = new Random();
@@ -79,7 +79,7 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
             //TODO hacer algo cuando gane el usuario
             Gdx.app.log("PantallaMinijuego1: ","El jugador ha ganado");
         }
-        borrarPantalla();
+        clearScreen();
         escenaMinijuego.draw();
         batch.begin();
         for(Sprite piece : pieces){
@@ -130,7 +130,7 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        vector = camara.unproject(new Vector3(screenX,screenY,0));
+        vector = camera.unproject(new Vector3(screenX,screenY,0));
         for(int i=pieces.length-1;i>=0;i--){
             if(pieces[i].getBoundingRectangle().contains(vector.x,vector.y)){
                 if(!done[i]){
@@ -145,7 +145,7 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(selectedPieceIdx != -1){
-            vector = camara.unproject(new Vector3(screenX,screenY,0));
+            vector = camera.unproject(new Vector3(screenX,screenY,0));
             if(places[selectedPieceIdx].dst(vector.x,vector.y)<PIECE_WIDTH/2){
                 pieces[selectedPieceIdx].setCenter(places[selectedPieceIdx].x,places[selectedPieceIdx].y);
                 done[selectedPieceIdx] = true;
@@ -167,7 +167,7 @@ class PantallaMinijuego1 extends Pantalla implements InputProcessor {
         if(selectedPieceIdx==-1){
             return true;
         }
-        vector = camara.unproject(new Vector3(screenX,screenY,0));
+        vector = camera.unproject(new Vector3(screenX,screenY,0));
         pieces[selectedPieceIdx].setCenter(vector.x,vector.y);
         return true;
     }

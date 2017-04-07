@@ -26,9 +26,9 @@ class StagePausa extends Stage {
     }
 
     private void init() {
-        Image backgroud = new Image(Constantes.MANAGER.get("PantallaOpciones/CuadroOpciones.png", Texture.class));
-        backgroud.setPosition(Constantes.ANCHO_PANTALLA / 2 - backgroud.getWidth() / 2,
-                Constantes.ALTO_PANTALLA / 2 - backgroud.getHeight() / 2);
+        Image backgroud = new Image(Constants.MANAGER.get("PantallaOpciones/CuadroOpciones.png", Texture.class));
+        backgroud.setPosition(Constants.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
+                Constants.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
         crearBotonSonido();
         crearBotonMusica();
@@ -39,8 +39,8 @@ class StagePausa extends Stage {
 
     private void crearBotonRegresar() {
         Skin skin = new Skin();
-        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
-        skin.add("Down", Constantes.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
+        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
+        skin.add("Down", Constants.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -53,14 +53,14 @@ class StagePausa extends Stage {
                 parent.unPause();
             }
         });
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4 - 15,
-                Constantes.ALTO_PANTALLA / 6 + 50, Align.center);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4 - 15,
+                Constants.SCREEN_HEIGTH / 6 + 50, Align.center);
         addActor(btn);
     }
 
     private void crearBotonCodigos() {
         Skin skin = new Skin();
-        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/BotonCodigos.png", Texture.class));
+        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/BotonCodigos.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -73,7 +73,7 @@ class StagePausa extends Stage {
                     @Override
                     public void input(String input) {
                         Gdx.app.log("Codigo Ingresado: ", input);
-                        Constantes.CODIGOS.add(input);
+                        Constants.CODES.add(input);
                     }
 
                     @Override
@@ -85,15 +85,15 @@ class StagePausa extends Stage {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
-                Constantes.ALTO_PANTALLA / 2 - 25, Align.center);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
+                Constants.SCREEN_HEIGTH / 2 - 25, Align.center);
         addActor(btn);
     }
 
     private void crearBotonBack() {
         Skin skin = new Skin();
-        skin.add("Up", Constantes.MANAGER.get("PantallaOpciones/Back.png", Texture.class));
-        skin.add("Down", Constantes.MANAGER.get("PantallaOpciones/BackYellow.png", Texture.class));
+        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/Back.png", Texture.class));
+        skin.add("Down", Constants.MANAGER.get("PantallaOpciones/BackYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -103,18 +103,18 @@ class StagePausa extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menu.setScreen(new PantallaMenu(menu));
+                menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(Constantes.ANCHO_PANTALLA / 4 - 10,
-                Constantes.ALTO_PANTALLA / 6 + 40, Align.center);
+        btn.setPosition(Constants.SCREEN_WIDTH / 4 - 10,
+                Constants.SCREEN_HEIGTH / 6 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonSonido() {
         Skin skin = new Skin();
-        skin.add("Si", Constantes.MANAGER.get("PantallaOpciones/BotonSonido.png", Texture.class));
-        skin.add("No", Constantes.MANAGER.get("PantallaOpciones/BotonNoSonido.png", Texture.class));
+        skin.add("Si", Constants.MANAGER.get("PantallaOpciones/BotonSonido.png", Texture.class));
+        skin.add("No", Constants.MANAGER.get("PantallaOpciones/BotonNoSonido.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
@@ -124,20 +124,20 @@ class StagePausa extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Preferencias.SONIDO_HABILITADO = !btn.isChecked();
-                Preferencias.escribirPreferenciasSonidos();
+                PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
+                PreferencesSB.savingSoundPreferences();
             }
         });
-        btn.setChecked(!Preferencias.SONIDO_HABILITADO);
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
-                2 * Constantes.ALTO_PANTALLA / 3 + 40, Align.center);
+        btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
+                2 * Constants.SCREEN_HEIGTH / 3 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonMusica() {
         Skin skin = new Skin();
-        skin.add("Si", Constantes.MANAGER.get("PantallaOpciones/BotonMusica.png", Texture.class));
-        skin.add("No", Constantes.MANAGER.get("PantallaOpciones/BotonNoMusica.png", Texture.class));
+        skin.add("Si", Constants.MANAGER.get("PantallaOpciones/BotonMusica.png", Texture.class));
+        skin.add("No", Constants.MANAGER.get("PantallaOpciones/BotonNoMusica.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
@@ -147,18 +147,18 @@ class StagePausa extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Preferencias.MUSICA_HABILITADA = !btn.isChecked();
-                Preferencias.escribirPreferenciasSonidos();
+                PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
+                PreferencesSB.savingSoundPreferences();
                 if (btn.isChecked()) {
-                    menu.pauseMusica();
+                    menu.pauseMusic();
                 } else {
-                    menu.playMusica();
+                    menu.playMusic();
                 }
             }
         });
-        btn.setChecked(!Preferencias.MUSICA_HABILITADA);
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
-                Constantes.ALTO_PANTALLA / 2 + 75, Align.center);
+        btn.setChecked(!PreferencesSB.MUSIC_ENABLE);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
+                Constants.SCREEN_HEIGTH / 2 + 75, Align.center);
         addActor(btn);
     }
 

@@ -40,7 +40,7 @@ class NivelPrueba implements Screen, IPausable {
     private static long COOLDOWN_ENEMIGO = 3000;
     private final StarBlast menu;
 
-    //Camara, vista
+    //Camara, view
     private OrthographicCamera camara;
     private Viewport vista;
 
@@ -85,14 +85,14 @@ class NivelPrueba implements Screen, IPausable {
     private boolean ganador = false;
 
     //Elementos para el fondo
-    private Texture texturaFondo = Constantes.MANAGER.get("PantallaJuego/FondoNivel2.jpg", Texture.class);
+    private Texture texturaFondo = Constants.MANAGER.get("PantallaJuego/FondoNivel2.jpg", Texture.class);
     private SpriteBatch batch;
     private Sprite spriteFondo;
     private int posY = 0;
 
     //Puntaje
-    private Texto textoPuntaje;
-    private Texto textoNaves;
+    private Text textScore;
+    private Text textShips;
     private int puntaje = 0;
     private int navesRestantes = 12;
 
@@ -117,14 +117,14 @@ class NivelPrueba implements Screen, IPausable {
     //region metodos show
 
     private void crearCamara() {
-        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
+        camara = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH);
+        camara.position.set(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGTH / 2, 0);
         camara.update();
-        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
+        vista = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH, camara);
     }
 
     private void crearObjetos() {
-        target = new Vector2(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2);
+        target = new Vector2(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGTH / 2);
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         //Image imgFondo = new Image(texturaFondo);
@@ -140,8 +140,8 @@ class NivelPrueba implements Screen, IPausable {
         Gdx.input.setInputProcessor(escenaHUD);
         shapeRenderer = new ShapeRenderer();
 
-        textoPuntaje = new Texto(Constantes.TEXTO_FUENTE);
-        textoNaves = new Texto(Constantes.TEXTO_FUENTE);
+        textScore = new Text(Constants.SOURCE_TEXT);
+        textShips = new Text(Constants.SOURCE_TEXT);
 
         escenaPausa = new StagePausa(vista, batch, menu, this);
         escenaResultados = new StageResultados(vista, batch, menu, this);
@@ -221,8 +221,8 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearSprites() {
         //Sprites Complejos
-        jugador = new NaveJugador(Constantes.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constantes.ANCHO_PANTALLA / 2, Constantes.ANCHO_PANTALLA / 5, world);
-        jugador.escalar(Constantes.ESCALA_NAVES);
+        jugador = new NaveJugador(Constants.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constants.SCREEN_WIDTH / 2, Constants.SCREEN_WIDTH / 5, world);
+        jugador.escalar(Constants.SHIPS_SCALE);
         //Sprite del fondo
         spriteFondo = new Sprite(texturaFondo);
         spriteFondo.setPosition(0,0);
@@ -234,28 +234,28 @@ class NivelPrueba implements Screen, IPausable {
         NaveEnemiga enemigo;
         Random r = new Random();
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new NaveEnemiga(Constantes.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA + 50, world);
-//            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constantes.ANCHO_PANTALLA/4,Constantes.ALTO_PANTALLA/3,world);
-            //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
+            enemigo = new NaveEnemiga(Constants.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constants.SCREEN_WIDTH), Constants.SCREEN_HEIGTH + 50, world);
+//            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constants.SCREEN_WIDTH/4,Constants.SCREEN_HEIGTH/3,world);
+            //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constants.SCREEN_WIDTH), Constants.SCREEN_HEIGTH, world,300);
 
-            enemigo.escalar(Constantes.ESCALA_NAVES);
+            enemigo.escalar(Constants.SHIPS_SCALE);
             enemigos.add(enemigo);
         }
     }
 
     private void crearJefeNivel() {
         Random r = new Random();
-        NaveEnemiga jefe = new JefeEnemigo(Constantes.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constantes.ANCHO_PANTALLA), Constantes.ALTO_PANTALLA, world,300);
-        jefe.escalar(Constantes.ESCALA_NAVES);
+        NaveEnemiga jefe = new JefeEnemigo(Constants.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constants.SCREEN_WIDTH), Constants.SCREEN_HEIGTH, world,300);
+        jefe.escalar(Constants.SHIPS_SCALE);
         enemigos.add(jefe);
     }
     //endregion
 
     private void crearHud() {
-        camaraHUD = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camaraHUD.position.set(Constantes.ANCHO_PANTALLA / 2, Constantes.ALTO_PANTALLA / 2, 0);
+        camaraHUD = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH);
+        camaraHUD.position.set(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGTH / 2, 0);
         camaraHUD.update();
-        vistaHUD = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camaraHUD);
+        vistaHUD = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH, camaraHUD);
 
         crearPad();
         crearBarraVida();
@@ -267,8 +267,8 @@ class NivelPrueba implements Screen, IPausable {
     private void crearPad() {
 
         Skin skin = new Skin();
-        skin.add("PadBack", Constantes.MANAGER.get("HUD/JoystickPad.png",Texture.class));
-        skin.add("PadKnob", Constantes.MANAGER.get("HUD/JoystickStick.png",Texture.class));
+        skin.add("PadBack", Constants.MANAGER.get("HUD/JoystickPad.png",Texture.class));
+        skin.add("PadKnob", Constants.MANAGER.get("HUD/JoystickStick.png",Texture.class));
 
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
         estilo.background = skin.getDrawable("PadBack");
@@ -282,12 +282,12 @@ class NivelPrueba implements Screen, IPausable {
             public void changed(ChangeEvent event, Actor actor) {
                 Touchpad pad = (Touchpad) actor;
 
-                if (Math.abs(pad.getKnobPercentX()) > Constantes.TOUCHPAD_DEADZONE) {
+                if (Math.abs(pad.getKnobPercentX()) > Constants.TOUCHPAD_DEADZONE) {
                     jugador.girar(pad.getKnobPercentX());
                 } else {
                     jugador.girar(0);
                 }
-                if (Math.abs(pad.getKnobPercentY()) > Constantes.TOUCHPAD_DEADZONE) {
+                if (Math.abs(pad.getKnobPercentY()) > Constants.TOUCHPAD_DEADZONE) {
                     jugador.acelerar(pad.getKnobPercentY());
                 } else {
                     jugador.acelerar(0);
@@ -303,15 +303,15 @@ class NivelPrueba implements Screen, IPausable {
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("Pausa", Constantes.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
+        skin.add("Pausa", Constants.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Pausa");
 
         botonPausa = new Button(estilo);
         botonPausa.scaleBy(escala);
-        botonPausa.setPosition(11 * Constantes.ANCHO_PANTALLA / 12,
-                9 * Constantes.ALTO_PANTALLA / 10);
+        botonPausa.setPosition(11 * Constants.SCREEN_WIDTH / 12,
+                9 * Constants.SCREEN_HEIGTH / 10);
         botonPausa.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -333,16 +333,16 @@ class NivelPrueba implements Screen, IPausable {
         float escala = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("DisparoStandby", Constantes.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
-        skin.add("DisparoPresionado", Constantes.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
+        skin.add("DisparoStandby", Constants.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
+        skin.add("DisparoPresionado", Constants.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("DisparoPresionado");
         estilo.up = skin.getDrawable("DisparoStandby");
 
         botonDisparo = new Button(estilo);
         botonDisparo.scaleBy(escala);
-        botonDisparo.setPosition(13 * Constantes.ANCHO_PANTALLA / 16,
-                1 * Constantes.ALTO_PANTALLA / 10);
+        botonDisparo.setPosition(13 * Constants.SCREEN_WIDTH / 16,
+                1 * Constants.SCREEN_HEIGTH / 10);
 
         botonDisparo.addListener(new ClickListener() {
             @Override
@@ -360,9 +360,9 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     private void crearBarraVida() {
-        barraVida = new ProgressBar(Constantes.MANAGER.get("HUD/LifeBarBar.png",Texture.class),true);
-        barraVida.setFrame(Constantes.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
-        barraVida.setPosition(9 * Constantes.ANCHO_PANTALLA / 10+40, 2*Constantes.ALTO_PANTALLA / 8);
+        barraVida = new ProgressBar(Constants.MANAGER.get("HUD/LifeBarBar.png",Texture.class),true);
+        barraVida.setFrame(Constants.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
+        barraVida.setPosition(9 * Constants.SCREEN_WIDTH / 10+40, 2* Constants.SCREEN_HEIGTH / 8);
         escenaHUD.addActor(barraVida);
     }
 
@@ -477,7 +477,7 @@ class NivelPrueba implements Screen, IPausable {
 
     private void moverEnemigos(float delta) {
         target = new Vector2(jugador.getX(), jugador.getY());
-        //target = new Vector2(Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA/2);
+        //target = new Vector2(Constants.SCREEN_WIDTH/2,Constants.SCREEN_HEIGTH/2);
         for(NaveEnemiga enemigo:enemigos){
             enemigo.mover(target,delta);
             //se utiliza el metodo nanos en vez de millis porque millis
@@ -525,10 +525,10 @@ class NivelPrueba implements Screen, IPausable {
             }
         }
 
-        textoPuntaje.mostrarMensaje(batch, "Puntaje: "+Integer.toString(puntaje),
-                10,Constantes.ALTO_PANTALLA-20, Color.GOLD);
-        textoNaves.mostrarMensaje(batch, "Enemigos: "+Integer.toString(navesRestantes),
-                Constantes.ANCHO_PANTALLA/2,Constantes.ALTO_PANTALLA-20, Color.ORANGE);
+        textScore.showMessage(batch, "Puntaje: "+Integer.toString(puntaje),
+                10, Constants.SCREEN_HEIGTH -20, Color.GOLD);
+        textShips.showMessage(batch, "Enemigos: "+Integer.toString(navesRestantes),
+                Constants.SCREEN_WIDTH /2, Constants.SCREEN_HEIGTH -20, Color.ORANGE);
 
         batch.end();
 
@@ -543,25 +543,25 @@ class NivelPrueba implements Screen, IPausable {
 //        if (enemigos.size() == 0) {
 //            return;
 //        }
-//        camara.update();
+//        camera.update();
 //
 //
 //        Gdx.gl.glEnable(GL20.GL_BLEND);
 //        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 //
-//        shapeRenderer.setProjectionMatrix(camara.combined);
+//        shapeRenderer.setProjectionMatrix(camera.combined);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //
 //
 //        shapeRenderer.setColor(new Color(0, 1, 0, 0.5f));
 //        for (NaveEnemiga enemigo : enemigos) {
-//            shapeRenderer.circle(enemigo.getX(), enemigo.getY(), Constantes.toScreenSize(enemigo.getShape().getRadius()));
+//            shapeRenderer.circle(enemigo.getX(), enemigo.getY(), Constants.toScreenSize(enemigo.getShape().getRadius()));
 //        }
-//        shapeRenderer.circle(jugador.getX(), jugador.getY(), Constantes.toScreenSize(jugador.getShape().getRadius()));
+//        shapeRenderer.circle(jugador.getX(), jugador.getY(), Constants.toScreenSize(jugador.getShape().getRadius()));
 //
 //        shapeRenderer.setColor(new Color(1, 0, 0, 0.7f));
 //        /*for (Bullet bala : balas) {
-//            shapeRenderer.circle(bala.getX(), bala.getY(), Constantes.toScreenSize(bala.getShape().getRadius()));
+//            shapeRenderer.circle(bala.getX(), bala.getY(), Constants.toScreenSize(bala.getShape().getRadius()));
 //        }*/
 //
 //
@@ -580,10 +580,10 @@ class NivelPrueba implements Screen, IPausable {
     //endregion
 
     private void crearBordes() {
-        new Borde(world,-120,0,100,Constantes.ALTO_PANTALLA);
-        new Borde(world, Constantes.ANCHO_PANTALLA+120,0,100,Constantes.ALTO_PANTALLA);
-        new Borde(world,-120,-120,Constantes.ANCHO_PANTALLA+200,100);
-        new Borde(world,-120,Constantes.ALTO_PANTALLA+120,Constantes.ANCHO_PANTALLA+200,100);
+        new Borde(world,-120,0,100, Constants.SCREEN_HEIGTH);
+        new Borde(world, Constants.SCREEN_WIDTH +120,0,100, Constants.SCREEN_HEIGTH);
+        new Borde(world,-120,-120, Constants.SCREEN_WIDTH +200,100);
+        new Borde(world,-120, Constants.SCREEN_HEIGTH +120, Constants.SCREEN_WIDTH +200,100);
     }
 
     @Override
@@ -606,7 +606,7 @@ class NivelPrueba implements Screen, IPausable {
 
     @Override
     public void dispose() {
-        Constantes.MANAGER.dispose();
+        Constants.MANAGER.dispose();
     }
 
 

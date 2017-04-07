@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-class PantallaPuntajes extends Pantalla {
+class PantallaPuntajes extends ScreenSB {
 
     private final StarBlast menu;
 
@@ -23,8 +23,8 @@ class PantallaPuntajes extends Pantalla {
     //Escenas
     private Stage escenaInicio;
 
-    //Texto
-    private Texto texto;
+    //Text
+    private Text text;
     private TextButton.TextButtonStyle textButtonStyle;
 
     PantallaPuntajes(StarBlast menu) {
@@ -39,21 +39,21 @@ class PantallaPuntajes extends Pantalla {
 
     private void crearObjetos() {
         SpriteBatch batch = new SpriteBatch();
-        escenaInicio = new Stage(vista, batch)
+        escenaInicio = new Stage(view, batch)
         {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
-                    Gdx.app.log("Pantalla Puntajes: ","Voy al Menu");
-                    menu.setScreen(new PantallaMenu(menu));
+                    Gdx.app.log("ScreenSB Puntajes: ","Voy al Menu");
+                    menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
         Image imgFondo = new Image(texturaFondo);
-        texto = new Texto(Constantes.TEXTO_FUENTE);
+        text = new Text(Constants.SOURCE_TEXT);
         escenaInicio.addActor(imgFondo);
         crearBotonAtras();
         crearTitulo();
@@ -62,44 +62,44 @@ class PantallaPuntajes extends Pantalla {
     }
 
     private void crearBotonAtras() {
-        textButtonStyle = texto.generarTexto(Color.RED,Color.GOLD,2);
+        textButtonStyle = text.generateText(Color.RED,Color.GOLD,2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2+100, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(7* Constants.SCREEN_WIDTH /8-btnPlay.getWidth()/2+100, Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
 
         escenaInicio.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
-                menu.setScreen(new PantallaMenu(menu));
+                Gdx.app.log("ScreenSB Creditos: ","Voy a pantalla menu");
+                menu.setScreen(new ScreenMenu(menu));
             }
         });
     }
 
     private void crearTitulo() {
-        textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
+        textButtonStyle = text.generateText(Color.GOLD, Color.GOLD, 2);
         TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
-        btnPlay.setPosition(Constantes.ANCHO_PANTALLA / 2 - btnPlay.getWidth() / 2, 9 * Constantes.ALTO_PANTALLA / 10 - btnPlay.getHeight() / 2);
+        btnPlay.setPosition(Constants.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, 9 * Constants.SCREEN_HEIGTH / 10 - btnPlay.getHeight() / 2);
         escenaInicio.addActor(btnPlay);
     }
 
     private void imprimirPuntajes(){
-        Preferences prefs = Gdx.app.getPreferences("Puntajes Mas Altos");
+        Preferences prefs = Gdx.app.getPreferences("High Scores");
         String punt1 = "1. "+ prefs.getString("punt1", "----- 00000");
-        crearMarcadores(punt1,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4);
+        crearMarcadores(punt1, Constants.SCREEN_WIDTH / 2, 3* Constants.SCREEN_HEIGTH / 4);
         String punt2 = "2. " + prefs.getString("punt2", "----- 00000");
-        crearMarcadores(punt2,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-100);
+        crearMarcadores(punt2, Constants.SCREEN_WIDTH / 2, 3* Constants.SCREEN_HEIGTH / 4-100);
         String punt3 = "3. " + prefs.getString("punt3", "----- 00000");
-        crearMarcadores(punt3,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-200);
+        crearMarcadores(punt3, Constants.SCREEN_WIDTH / 2, 3* Constants.SCREEN_HEIGTH / 4-200);
         String punt4 = "4. " + prefs.getString("punt4", "----- 00000");
-        crearMarcadores(punt4,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-300);
+        crearMarcadores(punt4, Constants.SCREEN_WIDTH / 2, 3* Constants.SCREEN_HEIGTH / 4-300);
         String punt5 = "5. " + prefs.getString("punt5", "----- 00000");
-        crearMarcadores(punt5,Constantes.ANCHO_PANTALLA / 2, 3*Constantes.ALTO_PANTALLA / 4-400);
+        crearMarcadores(punt5, Constants.SCREEN_WIDTH / 2, 3* Constants.SCREEN_HEIGTH / 4-400);
     }
 
     private void crearMarcadores(String nombre, float x, float y){
-        textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
+        textButtonStyle = text.generateText(Color.GOLD, Color.GOLD, 2);
         TextButton marcador = new TextButton(nombre, textButtonStyle);
         marcador.setPosition(x - marcador.getWidth() / 2, y - marcador.getHeight() / 2);
         escenaInicio.addActor(marcador);
@@ -111,13 +111,13 @@ class PantallaPuntajes extends Pantalla {
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
+        clearScreen();
         escenaInicio.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override

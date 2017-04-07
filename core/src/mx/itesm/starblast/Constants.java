@@ -4,14 +4,14 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import java.util.ArrayList;
 
-class Constantes {
-    static final float ANCHO_PANTALLA = 1280;
-    static final float ALTO_PANTALLA = 800;
+class Constants {
+    static final float SCREEN_WIDTH = 1280;
+    static final float SCREEN_HEIGTH = 800;
     static final AssetManager MANAGER = new AssetManager();
-    static final float ESCALA_NAVES = -0.3f;
-    static final String TEXTO_FUENTE = "Textos/ArcadeFont.fnt";
+    static final float SHIPS_SCALE = -0.3f;
+    static final String SOURCE_TEXT = "Textos/ArcadeFont.fnt";
     static final float TOUCHPAD_DEADZONE = 0.20f;
-    static final ArrayList<String> CODIGOS = new ArrayList<String>(5);
+    static final ArrayList<String> CODES = new ArrayList<String>(5);
 
     static final short CATEGORY_PLAYER = 1;
     static final short CATEGORY_ENEMY = 2;

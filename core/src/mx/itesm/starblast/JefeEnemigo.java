@@ -1,7 +1,6 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -26,16 +25,16 @@ class JefeEnemigo extends NaveEnemiga {
         this.vida = vida;
         COOLDOWN_DISPARO = 400;
 
-        limiteDerecho = Constantes.toWorldSize(Constantes.ANCHO_PANTALLA*0.9f);
-        limiteIzquierdo = Constantes.toWorldSize(Constantes.ANCHO_PANTALLA*0.1f);
-        limiteSuperior = Constantes.toWorldSize(Constantes.ALTO_PANTALLA*0.9f);
+        limiteDerecho = Constants.toWorldSize(Constants.SCREEN_WIDTH *0.9f);
+        limiteIzquierdo = Constants.toWorldSize(Constants.SCREEN_WIDTH *0.1f);
+        limiteSuperior = Constants.toWorldSize(Constants.SCREEN_HEIGTH *0.9f);
 
         random = new Random();
     }
 
     @Override
     public void mover(Vector2 target,float delta){
-        target = new Vector2(Constantes.toWorldSize(target.x),Constantes.toWorldSize(target.y));
+        target = new Vector2(Constants.toWorldSize(target.x), Constants.toWorldSize(target.y));
         objetivo = new Vector2(target);
         target.y = limiteSuperior;
         target.x = MathUtils.clamp(target.x,limiteIzquierdo,limiteDerecho);
@@ -45,7 +44,7 @@ class JefeEnemigo extends NaveEnemiga {
         if(hip > VELOCIDAD_MAXIMA){
             body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAXIMA/hip));
         }
-        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x),Constantes.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constants.toScreenSize(body.getPosition().x), Constants.toScreenSize(body.getPosition().y));
         sprite.setRotation(MathUtils.radiansToDegrees*MathUtils.atan2(objetivo.y-body.getPosition().y,objetivo.x-body.getPosition().x));
     }
 

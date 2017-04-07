@@ -9,21 +9,21 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-class Texto {
+class Text {
     private final BitmapFont font;
     private final Skin skin;
     private final TextureAtlas buttonAtlas;
     private final GlyphLayout layout;
 
-    Texto(String archivo) {
-        font = new BitmapFont(Gdx.files.internal(archivo));
+    Text(String files) {
+        font = new BitmapFont(Gdx.files.internal(files));
         skin = new Skin();
         buttonAtlas = new TextureAtlas();
         layout = new GlyphLayout();
     }
 
-    TextButton.TextButtonStyle generarTexto(Color colorFont, Color colorPushed, int escala) {
-        font.getData().setScale(escala);
+    TextButton.TextButtonStyle generateText(Color colorFont, Color colorPushed, int scale) {
+        font.getData().setScale(scale);
         skin.addRegions(buttonAtlas);
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
@@ -32,9 +32,9 @@ class Texto {
         return textButtonStyle;
     }
 
-    public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y, Color color) {
+    public void showMessage(SpriteBatch batch, String message, float x, float y, Color color) {
         font.setColor(color);
-        layout.setText(font, mensaje);
+        layout.setText(font, message);
         font.draw(batch, layout, x, y);
     }
 }

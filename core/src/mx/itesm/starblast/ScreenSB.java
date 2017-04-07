@@ -7,27 +7,27 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-abstract class Pantalla implements Screen{
+abstract class ScreenSB implements Screen{
 
-    // Disponibles en las subclases
-    OrthographicCamera camara;
-    Viewport vista;
 
-    Pantalla() {
-        camara = new OrthographicCamera(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA);
-        camara.position.set(Constantes.ANCHO_PANTALLA/2, Constantes.ALTO_PANTALLA/2, 0);
-        camara.update();
-        vista = new StretchViewport(Constantes.ANCHO_PANTALLA, Constantes.ALTO_PANTALLA, camara);
+    OrthographicCamera camera;
+    Viewport view;
+
+    ScreenSB() {
+        camera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH);
+        camera.position.set(Constants.SCREEN_WIDTH /2, Constants.SCREEN_HEIGTH /2, 0);
+        camera.update();
+        view = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH, camera);
     }
 
-    void borrarPantalla() {
+    void clearScreen() {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override

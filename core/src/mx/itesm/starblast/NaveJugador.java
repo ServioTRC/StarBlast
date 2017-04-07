@@ -2,7 +2,6 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.math.MathUtils;
 import static java.lang.Math.*;
@@ -30,8 +29,8 @@ class NaveJugador extends NavesEspaciales {
     NaveJugador(Texture textura,float x,float y,World world) {
         super(textura,x,y,world,90,0.1f,0.7f, false);
 
-        CATEGORY = Constantes.CATEGORY_PLAYER;
-        MASK = Constantes.MASK_PLAYER;
+        CATEGORY = Constants.CATEGORY_PLAYER;
+        MASK = Constants.MASK_PLAYER;
         COOLDOWN_DISPARO = 100;
         BULLET_DAMAGE = 10;
 
@@ -71,7 +70,7 @@ class NaveJugador extends NavesEspaciales {
             body.applyForceToCenter(new Vector2(porcentajeGiro * -1, porcentajeAceleracion), true);
         }
         body.setLinearVelocity(body.getLinearVelocity().scl(CONSTANTE_FRENADO));
-        sprite.setCenter(Constantes.toScreenSize(body.getPosition().x), Constantes.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constants.toScreenSize(body.getPosition().x), Constants.toScreenSize(body.getPosition().y));
     }
 
 

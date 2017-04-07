@@ -11,80 +11,80 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-class PantallaCreditos extends Pantalla{
+class ScreenCredits extends ScreenSB {
 
     private final StarBlast menu;
 
     //Texturas
-    private Texture texturaFondo;
+    private Texture backgroundTexture;
 
     //Escenas
-    private Stage escenaInicio;
+    private Stage creditsScene;
 
-    //Texto
-    private Texto texto;
+    //Text
+    private Text text;
 
-    PantallaCreditos(StarBlast menu) {
+    ScreenCredits(StarBlast menu) {
         this.menu=menu;
     }
 
     @Override
     public void show() {
-        cargarTexturas();
-        crearObjetos();
+        loadingTexture();
+        creatingObjects();
     }
 
-    private void crearObjetos() {
+    private void creatingObjects() {
         SpriteBatch batch = new SpriteBatch();
-        escenaInicio = new Stage(vista, batch)
+        creditsScene = new Stage(view, batch)
         {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
-                    Gdx.app.log("Pantalla Creditos: ","Voy al Menu");
-                    menu.setScreen(new PantallaMenu(menu));
+                    Gdx.app.log("ScreenCredits ","Going to ScreenMenu");
+                    menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
-        Image imgFondo = new Image(texturaFondo);
-        texto = new Texto(Constantes.TEXTO_FUENTE);
-        escenaInicio.addActor(imgFondo);
-        crearBotonAtras();
-        Gdx.input.setInputProcessor(escenaInicio);
+        Image imgFondo = new Image(backgroundTexture);
+        text = new Text(Constants.SOURCE_TEXT);
+        creditsScene.addActor(imgFondo);
+        creatingBackButton();
+        Gdx.input.setInputProcessor(creditsScene);
     }
 
-    private void crearBotonAtras() {
-        TextButton.TextButtonStyle textButtonStyle = texto.generarTexto(Color.RED, Color.GOLD, 2);
+    private void creatingBackButton() {
+        TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.RED, Color.GOLD, 2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7* Constantes.ANCHO_PANTALLA/8-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(7* Constants.SCREEN_WIDTH /8-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
 
-        escenaInicio.addActor(btnPlay);
+        creditsScene.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Pantalla Creditos: ","Voy a pantalla menu");
-                menu.setScreen(new PantallaMenu(menu));
+                Gdx.app.log("ScreenCredits ","Going to ScreenMenu");
+                menu.setScreen(new ScreenMenu(menu));
             }
         });
     }
 
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaCreditos/Creditos.jpg");
+    private void loadingTexture() {
+        backgroundTexture = new Texture("PantallaCreditos/Creditos.jpg");
     }
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
-        escenaInicio.draw();
+        clearScreen();
+        creditsScene.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override

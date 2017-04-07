@@ -6,50 +6,49 @@ import com.badlogic.gdx.audio.Music;
 
 public class StarBlast extends Game {
 
-    private Music musicaFondo;
+    private Music backgroundMusic;
 
 
     @Override
     public void create () {
-        Gdx.app.log("Creando aplicacion", "StarBlAST");
-        Preferencias.leerPreferenciasSonidos();
-        cargarEfectosSonoros();
-        if(Preferencias.MUSICA_HABILITADA) {
-            musicaFondo.play();
+        Gdx.app.log("StarBlast", "Creating application");
+        PreferencesSB.readingSoundPreferences();
+        loadMusicEffects();
+        if(PreferencesSB.MUSIC_ENABLE) {
+            backgroundMusic.play();
         }
-//        Bullet.CargarTextura();
-        setScreen(new PantallaSplashTec(this));
+        setScreen(new ScreenSplashTec(this));
     }
 
     @Override
     public void dispose(){
-        Gdx.app.log("Borrando aplicacion", "StarBlAST");
-        Constantes.MANAGER.clear();
+        Gdx.app.log("StarBlast","Disposing application");
+        Constants.MANAGER.clear();
     }
 
     @Override
     public void pause(){
-        Gdx.app.log("PAUsando musica", "StarBlAST");
-        pauseMusica();
+        Gdx.app.log("StarBlast", "Pausing music");
+        pauseMusic();
     }
 
-    private void cargarEfectosSonoros(){
-        Gdx.app.log("Creando aplicacion", "Musica");
-        Constantes.MANAGER.load("EfectosSonoros/MusicaFondo.mp3", Music.class);
-        Constantes.MANAGER.finishLoading();
-        musicaFondo = Constantes.MANAGER.get("EfectosSonoros/MusicaFondo.mp3");
-        musicaFondo.setLooping(true);
+    private void loadMusicEffects(){
+        Gdx.app.log("StarBlast", "Loading Background Music");
+        Constants.MANAGER.load("EfectosSonoros/MusicaFondo.mp3", Music.class);
+        Constants.MANAGER.finishLoading();
+        backgroundMusic = Constants.MANAGER.get("EfectosSonoros/MusicaFondo.mp3");
+        backgroundMusic.setLooping(true);
     }
 
-    public void playMusica(){
-        if (!musicaFondo.isPlaying()) {
-            musicaFondo.play();
+    public void playMusic(){
+        if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.play();
         }
     }
 
-    public void pauseMusica(){
-        if (musicaFondo.isPlaying()) {
-            musicaFondo.pause();
+    public void pauseMusic(){
+        if (backgroundMusic.isPlaying()) {
+            backgroundMusic.pause();
         }
     }
 

@@ -8,72 +8,72 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-class PantallaInicio extends Pantalla {
+class ScreenStart extends ScreenSB {
 
     private final StarBlast menu;
 
     //Texturas
-    private Texture texturaFondo;
+    private Texture backgroundTexture;
 
     //SpriteBatch
     private SpriteBatch batch;
 
     //Escenas
-    private Stage escenaInicio;
+    private Stage startScene;
 
     //Sprite
     private Sprite sprite;
 
-    private float cambioAlpha = 1/120f;
+    private float alphaChange = 1/120f;
     private float alpha = 1f;
-    private int cuenta = 0;
+    private int count = 0;
 
-    PantallaInicio(StarBlast menu) {
+    ScreenStart(StarBlast menu) {
         this.menu=menu;
     }
 
     @Override
     public void show() {
-        cargarTexturas();
-        crearObjetos();
+        loadingTextures();
+        creatingObjects();
     }
 
-    private void crearObjetos() {
+    private void creatingObjects() {
         batch = new SpriteBatch();
-        escenaInicio = new Stage(vista, batch);
-        Image imgFondo = new Image(texturaFondo);
-        escenaInicio.addActor(imgFondo);
+        startScene = new Stage(view, batch);
+        Image imgFondo = new Image(backgroundTexture);
+        startScene.addActor(imgFondo);
         sprite = new Sprite(new Texture("PantallaInicio/TAP.png"));
-        sprite.setCenter(Constantes.ANCHO_PANTALLA/2,1* Constantes.ALTO_PANTALLA/4);
+        sprite.setCenter(Constants.SCREEN_WIDTH /2,1* Constants.SCREEN_HEIGTH /4);
         Gdx.input.setCatchBackKey(false);
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        Gdx.input.setInputProcessor(new InputProcessorSB());
     }
 
 
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaInicio/FondoInicio.jpg");
+    private void loadingTextures() {
+        backgroundTexture = new Texture("PantallaInicio/FondoInicio.jpg");
     }
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
-        escenaInicio.draw();
-        batch.setProjectionMatrix(camara.combined);
+        clearScreen();
+        startScene.draw();
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         sprite.draw(batch);
         sprite.setAlpha(alpha);
-        if(cuenta >= 120){
-            cambioAlpha *= -1;
-            cuenta = 0;
+        if(count >= 120){
+            alphaChange *= -1;
+            count = 0;
         }
-        alpha -= cambioAlpha;
-        cuenta++;
+        alpha -= alphaChange;
+        count++;
         batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override
@@ -96,8 +96,8 @@ class PantallaInicio extends Pantalla {
 
     }
 
-    //Una clase para capturar los eventos del touch (teclado y mouse también)
-    private class ProcesadorEntrada implements InputProcessor {
+
+    private class InputProcessorSB implements InputProcessor {
 
         @Override
         public boolean keyDown(int keycode) {
@@ -116,9 +116,8 @@ class PantallaInicio extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            //Revisar si hace tap para reiniciar el juego
-            Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaMenu");
-            menu.setScreen(new PantallaMenu(menu));
+            Gdx.app.log("ScreenStart ","Going to ScreenMenu");
+            menu.setScreen(new ScreenMenu(menu));
             return true;
         }
 

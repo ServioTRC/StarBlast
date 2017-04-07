@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-class PantallaSeleccionMinijuegos extends Pantalla {
+class PantallaSeleccionMinijuegos extends ScreenSB {
     //TODO texturas para cuando estas haciendo click en las diferentes opciones
     private final StarBlast menu;
 
@@ -32,19 +32,19 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaSeleccion = new Stage(vista, batch){
+        escenaSeleccion = new Stage(view, batch){
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     Gdx.app.log("PantallaSeleccionMinijuegos: ","Voy al Menu");
                     dispose();
-                    menu.setScreen(new PantallaMenu(menu));
+                    menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
-        Image imgFondo = new Image(Constantes.MANAGER.get("PantallaSeleccionMinijuego/PantallaSeleccionMinijuego.png",Texture.class));
+        Image imgFondo = new Image(Constants.MANAGER.get("PantallaSeleccionMinijuego/PantallaSeleccionMinijuego.png",Texture.class));
         escenaSeleccion.addActor(imgFondo);
         //TODO checar cual minijuego es cual
         crearBotonMinijuego1();
@@ -57,12 +57,12 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     private void crearBotonMinijuego1() {
         Skin skin = new Skin();
-        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego1.png",Texture.class));
+        skin.add("up", Constants.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego1.png",Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("up");
         Button btn = new Button(estilo);
-        btn.setPosition(Constantes.ANCHO_PANTALLA / 5 - btn.getWidth() / 2,
-                        Constantes.ALTO_PANTALLA / 4 - btn.getHeight() / 2);
+        btn.setPosition(Constants.SCREEN_WIDTH / 5 - btn.getWidth() / 2,
+                        Constants.SCREEN_HEIGTH / 4 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
         btn.addListener(new ClickListener() {
             @Override
@@ -76,12 +76,12 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     private void crearBotonMinijuego2() {
         Skin skin = new Skin();
-        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego2.png",Texture.class));
+        skin.add("up", Constants.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego2.png",Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("up");
         Button btn = new Button(estilo);
-        btn.setPosition(Constantes.ANCHO_PANTALLA / 2 - btn.getWidth() / 2,
-                Constantes.ALTO_PANTALLA / 2 - btn.getHeight() / 2);
+        btn.setPosition(Constants.SCREEN_WIDTH / 2 - btn.getWidth() / 2,
+                Constants.SCREEN_HEIGTH / 2 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
         btn.addListener(new ClickListener() {
             @Override
@@ -94,12 +94,12 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     private void crearBotonMinijuego3() {
         Skin skin = new Skin();
-        skin.add("up",Constantes.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego3.png",Texture.class));
+        skin.add("up", Constants.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego3.png",Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("up");
         Button btn = new Button(estilo);
-        btn.setPosition(Constantes.ANCHO_PANTALLA - Constantes.ANCHO_PANTALLA / 5 - btn.getWidth() / 2,
-                Constantes.ALTO_PANTALLA / 4 - btn.getHeight() / 2);
+        btn.setPosition(Constants.SCREEN_WIDTH - Constants.SCREEN_WIDTH / 5 - btn.getWidth() / 2,
+                Constants.SCREEN_HEIGTH / 4 - btn.getHeight() / 2);
         escenaSeleccion.addActor(btn);
         btn.addListener(new ClickListener() {
             @Override
@@ -112,7 +112,7 @@ class PantallaSeleccionMinijuegos extends Pantalla {
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
+        clearScreen();
         escenaSeleccion.draw();
         batch.begin();
 

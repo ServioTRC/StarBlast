@@ -41,8 +41,8 @@ class StageResultados extends Stage {
 
     private void init() {
         Image backgroud = new Image(new Texture("PantallaPuntajes/CuadroResultados.png"));
-        backgroud.setPosition(Constantes.ANCHO_PANTALLA / 2 - backgroud.getWidth() / 2,
-                Constantes.ALTO_PANTALLA / 2 - backgroud.getHeight() / 2);
+        backgroud.setPosition(Constants.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
+                Constants.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
         crearBotonBack();
         crearBotonRegresar();
@@ -63,8 +63,8 @@ class StageResultados extends Stage {
                 menu.setScreen(new NivelPrueba(menu));
             }
         });
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4 - 15,
-                Constantes.ALTO_PANTALLA / 6 + 50, Align.center);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4 - 15,
+                Constants.SCREEN_HEIGTH / 6 + 50, Align.center);
         addActor(btn);
     }
 
@@ -81,11 +81,11 @@ class StageResultados extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menu.setScreen(new PantallaMenu(menu));
+                menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(Constantes.ANCHO_PANTALLA / 4 - 10,
-                Constantes.ALTO_PANTALLA / 6 + 40, Align.center);
+        btn.setPosition(Constants.SCREEN_WIDTH / 4 - 10,
+                Constants.SCREEN_HEIGTH / 6 + 40, Align.center);
         addActor(btn);
     }
 
@@ -97,18 +97,18 @@ class StageResultados extends Stage {
             textura = new Texture("PantallaPuntajes/Perdedor.png");
         }
         Image leyenda = new Image(textura);
-        leyenda.setPosition(Constantes.ANCHO_PANTALLA / 2 - leyenda.getWidth() / 2,
-                3*Constantes.ALTO_PANTALLA / 4 - 50 - leyenda.getHeight() / 2);
+        leyenda.setPosition(Constants.SCREEN_WIDTH / 2 - leyenda.getWidth() / 2,
+                3* Constants.SCREEN_HEIGTH / 4 - 50 - leyenda.getHeight() / 2);
         addActor(leyenda);
     }
 
     private void mostrarPuntaje(){
         Gdx.app.log("FINAL", Integer.toString(this.puntaje));
-        Texto texto = new Texto(Constantes.TEXTO_FUENTE);
-        TextButton.TextButtonStyle textButtonStyle = texto.generarTexto(Color.GOLD, Color.GOLD, 2);
+        Text text = new Text(Constants.SOURCE_TEXT);
+        TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.GOLD, Color.GOLD, 2);
         TextButton marcador = new TextButton(Integer.toString(this.puntaje), textButtonStyle);
-        marcador.setPosition(Constantes.ANCHO_PANTALLA/2+100 - marcador.getWidth() / 2,
-                Constantes.ALTO_PANTALLA/2-90 - marcador.getHeight() / 2);
+        marcador.setPosition(Constants.SCREEN_WIDTH /2+100 - marcador.getWidth() / 2,
+                Constants.SCREEN_HEIGTH /2-90 - marcador.getHeight() / 2);
         addActor(marcador);
     }
 
@@ -117,7 +117,7 @@ class StageResultados extends Stage {
             @Override
             public void input(String input) {
                 Gdx.app.log("Nombre Ingresado: ", input);
-                Preferencias.guardarPuntaje(input, puntaje);
+                PreferencesSB.savingScore(input, puntaje);
             }
 
             @Override
@@ -132,7 +132,7 @@ class StageResultados extends Stage {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK) {
-            menu.setScreen(new PantallaMenu(menu));
+            menu.setScreen(new ScreenMenu(menu));
             return true;
         }
         return super.keyDown(keyCode);

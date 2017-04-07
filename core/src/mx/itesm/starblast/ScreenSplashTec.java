@@ -11,70 +11,70 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
-class PantallaSplashTec extends Pantalla {
+class ScreenSplashTec extends ScreenSB {
 
 	private final StarBlast menu;
 
 	//Texturas
-	private Texture texturaBtn;
+	private Texture textureBtn;
 
 	//Escenas
-	private Stage escenaSplashTec;
+	private Stage sceneSplashTec;
 
 	//Cronómetro
-	private long tiempoInicio;
+	private long startingTime;
 
-	PantallaSplashTec(StarBlast menu) {
+	ScreenSplashTec(StarBlast menu) {
 		this.menu=menu;
 	}
 
 	@Override
 	public void show() {
-		cargarTexturas();
-		crearObjetos();
-		tiempoInicio = TimeUtils.millis();
+		loadingTextures();
+		creatingObjects();
+		startingTime = TimeUtils.millis();
 	}
 
-	private void crearObjetos() {
+	private void creatingObjects() {
 		SpriteBatch batch = new SpriteBatch();
-		escenaSplashTec = new Stage(vista, batch);
+		sceneSplashTec = new Stage(view, batch);
 
-		TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtn));
+		TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(textureBtn));
 		ImageButton btnPlay = new ImageButton(trdBtnPlay);
-		btnPlay.setPosition(Constantes.ANCHO_PANTALLA/2-btnPlay.getWidth()/2, Constantes.ALTO_PANTALLA/2-btnPlay.getHeight()/2);
+		btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /2-btnPlay.getHeight()/2);
 
-		escenaSplashTec.addActor(btnPlay);
+		sceneSplashTec.addActor(btnPlay);
 
 		btnPlay.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.log("PantallaSplashTec: ","Voy a PantallaInicio");
-				menu.setScreen(new PantallaInicio(menu));
+				Gdx.app.log("ScreenSplashTec ","Going to ScreenStart");
+				menu.setScreen(new ScreenStart(menu));
 			}
 		});
 
-        Gdx.input.setInputProcessor(escenaSplashTec);
+        Gdx.input.setInputProcessor(sceneSplashTec);
 		Gdx.input.setCatchBackKey(true);
 	}
 
-	private void cargarTexturas() {
-		texturaBtn = new Texture("LogoTec.jpg");
+	private void loadingTextures() {
+		textureBtn = new Texture("LogoTec.jpg");
 			}
 
 
 	@Override
 	public void render(float delta) {
-		borrarPantalla();
-		escenaSplashTec.draw();
-		if((TimeUtils.millis() - tiempoInicio) > 2500){
-			Gdx.app.log("Pantalla de Inicio: ","Voy a PantallaInicio");
-			menu.setScreen(new PantallaInicio(menu));
+		clearScreen();
+		sceneSplashTec.draw();
+		if((TimeUtils.millis() - startingTime) > 2500){
+			Gdx.app.log("ScreenSplashTec ","Going to ScreenStart");
+			menu.setScreen(new ScreenStart(menu));
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		vista.update(width, height);
+		view.update(width, height);
 	}
 
 	@Override

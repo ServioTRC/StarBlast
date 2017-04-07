@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-class PantallaOpciones extends Pantalla {
+class PantallaOpciones extends ScreenSB {
     private final StarBlast menu;
 
     //Texturas
@@ -36,12 +36,12 @@ class PantallaOpciones extends Pantalla {
 
     private void crearObjetos() {
         batch = new SpriteBatch();
-        escenaOpciones = new Stage(vista, batch){
+        escenaOpciones = new Stage(view, batch){
             @Override
             public boolean keyDown(int keycode) {
                 if(keycode == Input.Keys.BACK){
-                    Gdx.app.log("Pantalla Creditos: ","Voy al Menu");
-                    menu.setScreen(new PantallaMenu(menu));
+                    Gdx.app.log("ScreenSB Creditos: ","Voy al Menu");
+                    menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
@@ -76,11 +76,11 @@ class PantallaOpciones extends Pantalla {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menu.setScreen(new PantallaMenu(menu));
+                menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(12*Constantes.ANCHO_PANTALLA/13,
-                Constantes.ALTO_PANTALLA/8, Align.center);
+        btn.setPosition(12* Constants.SCREEN_WIDTH /13,
+                Constants.SCREEN_HEIGTH /8, Align.center);
         escenaOpciones.addActor(btn);
     }
 
@@ -94,12 +94,12 @@ class PantallaOpciones extends Pantalla {
         estilo.down = skin.getDrawable("Down");
 
         Button btn = new Button(estilo);
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/6+20, Align.center);
+        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
+                Constants.SCREEN_HEIGTH /6+20, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Preferencias.borrarInfoDelJuego();
+                PreferencesSB.erasingGameInfo();
             }
         });
 
@@ -121,7 +121,7 @@ class PantallaOpciones extends Pantalla {
                     @Override
                     public void input(String input) {
                         Gdx.app.log("Codigo Ingresado: ", input);
-                        Constantes.CODIGOS.add(input);
+                        Constants.CODES.add(input);
                     }
 
                     @Override
@@ -133,8 +133,8 @@ class PantallaOpciones extends Pantalla {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/3+10, Align.center);
+        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
+                Constants.SCREEN_HEIGTH /3+10, Align.center);
         escenaOpciones.addActor(btn);
     }
 
@@ -151,13 +151,13 @@ class PantallaOpciones extends Pantalla {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Preferencias.SONIDO_HABILITADO = !btn.isChecked();
-                Preferencias.escribirPreferenciasSonidos();
+                PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
+                PreferencesSB.savingSoundPreferences();
             }
         });
-        btn.setChecked(!Preferencias.SONIDO_HABILITADO);
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
-                2 * Constantes.ALTO_PANTALLA / 3 + 40, Align.center);
+        btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
+                2 * Constants.SCREEN_HEIGTH / 3 + 40, Align.center);
         escenaOpciones.addActor(btn);
     }
 
@@ -174,18 +174,18 @@ class PantallaOpciones extends Pantalla {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Preferencias.MUSICA_HABILITADA = !btn.isChecked();
-                Preferencias.escribirPreferenciasSonidos();
+                PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
+                PreferencesSB.savingSoundPreferences();
                 if (btn.isChecked()) {
-                    menu.pauseMusica();
+                    menu.pauseMusic();
                 } else {
-                    menu.playMusica();
+                    menu.playMusic();
                 }
             }
         });
-        btn.setChecked(!Preferencias.MUSICA_HABILITADA);
-        btn.setPosition(3 * Constantes.ANCHO_PANTALLA / 4,
-                Constantes.ALTO_PANTALLA / 2 + 75, Align.center);
+        btn.setChecked(!PreferencesSB.MUSIC_ENABLE);
+        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
+                Constants.SCREEN_HEIGTH / 2 + 75, Align.center);
         escenaOpciones.addActor(btn);
     }
 
@@ -197,8 +197,8 @@ class PantallaOpciones extends Pantalla {
         estilo.up = skin.getDrawable("Up");
 
         Button btn = new Button(estilo);
-        btn.setPosition(3*Constantes.ANCHO_PANTALLA/4,
-                Constantes.ALTO_PANTALLA/2-25, Align.center);
+        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
+                Constants.SCREEN_HEIGTH /2-25, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -215,14 +215,14 @@ class PantallaOpciones extends Pantalla {
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
-        batch.setProjectionMatrix(camara.combined);
+        clearScreen();
+        batch.setProjectionMatrix(camera.combined);
         escenaOpciones.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override
@@ -242,7 +242,7 @@ class PantallaOpciones extends Pantalla {
 
     @Override
     public void dispose() {
-        Constantes.MANAGER.dispose();
+        Constants.MANAGER.dispose();
     }
 
 }
