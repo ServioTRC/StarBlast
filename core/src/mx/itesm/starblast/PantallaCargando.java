@@ -191,6 +191,7 @@ class PantallaCargando extends ScreenSB {
     private void cargarHistoria() {
         Constants.MANAGER.load("PantallaJuego/AvatarSprite.png", Texture.class);
         Constants.MANAGER.load("PantallaJuego/BotonVolverMenu.png", Texture.class);
+        Constants.MANAGER.load("PantallaJuego/BotonSiguienteNivel.png", Texture.class);
         Constants.MANAGER.load("PantallaJuego/BulletSprite.png", Texture.class);
         Constants.MANAGER.load("PantallaJuego/BulletSpriteEnemigo.png", Texture.class);
         Constants.MANAGER.load("PantallaJuego/DroidHelperSprite.png", Texture.class);

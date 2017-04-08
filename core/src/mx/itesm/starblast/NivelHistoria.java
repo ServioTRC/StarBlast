@@ -56,6 +56,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
     //region escenas
     private final StagePausa escenaPausa;
     private StagePerder escenaPerdiste;
+    private StageWin escenaGanaste;
     //endregion
 
     // region world
@@ -101,6 +102,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
         escenaHUD = new Stage(view, batch);
         escenaPausa = new StagePausa(view, batch, app, this);
         escenaPerdiste = new StagePerder(view, batch, app);
+        escenaGanaste = new StageWin(view, batch, app);
         this.enemigosIniciales = enemigosIniciales;
         this.extraPerWave = extraPerWave;
         this.numberOfWaves = numberOfWaves;
@@ -152,6 +154,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
             return;
         }
         if (ganaste) {
+            escenaGanaste.draw();
             return;
         }
         if (isPaused) {
@@ -390,7 +393,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
             a.setDamage(0);
             toRemove.add(a.getBody());
             if (a instanceof NavesEspaciales) {
-                animations.add(new AutoAnimation(Constants.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constants.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.1f, a.getX(), a.getY(), 100, 100, batch));
             }
             if (a instanceof NaveEnemiga) {
                 enemigos.remove(a);
@@ -476,6 +479,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
                 //TODO se acabo el juego (ganaste)
                 isPaused = true;
                 ganaste = true;
+                Gdx.input.setInputProcessor(escenaGanaste);
             }
         }
     }
