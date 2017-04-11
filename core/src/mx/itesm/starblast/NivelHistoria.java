@@ -44,7 +44,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     //region score
     private int puntaje;
-    private Text textScore = new Text(Constants.SOURCE_TEXT);
+    private Text textScore = new Text(Constant.SOURCE_TEXT);
     //endregion
 
     //region hud

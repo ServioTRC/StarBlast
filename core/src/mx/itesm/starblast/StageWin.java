@@ -19,16 +19,16 @@ class StageWin extends Stage {
         super(viewport, batch);
         app = menu;
 
-        Image img = new Image(Constants.MANAGER.get("PantallaJuego/SplashMisionCumplida.png", Texture.class));
-        img.setPosition(Constants.SCREEN_WIDTH/2,Constants.SCREEN_HEIGTH-150,Align.center);
+        Image img = new Image(Constant.MANAGER.get("PantallaJuego/SplashMisionCumplida.png", Texture.class));
+        img.setPosition(Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH-150,Align.center);
         addActor(img);
 
         Skin skin = new Skin();
-        skin.add("Up", Constants.MANAGER.get("PantallaJuego/BotonSiguienteNivel.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("PantallaJuego/BotonSiguienteNivel.png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         Button btn = new Button(style);
-        btn.setPosition(Constants.SCREEN_WIDTH /3-100, 150, Align.center);
+        btn.setPosition(Constant.SCREEN_WIDTH /3-100, 150, Align.center);
         btn.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -38,11 +38,11 @@ class StageWin extends Stage {
         addActor(btn);
 
         skin = new Skin();
-        skin.add("Up", Constants.MANAGER.get("PantallaJuego/BotonVolverMenu.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("PantallaJuego/BotonVolverMenu.png", Texture.class));
         style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         btn = new Button(style);
-        btn.setPosition(2 * Constants.SCREEN_WIDTH /3+100, 150, Align.center);
+        btn.setPosition(2 * Constant.SCREEN_WIDTH /3+100, 150, Align.center);
         btn.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

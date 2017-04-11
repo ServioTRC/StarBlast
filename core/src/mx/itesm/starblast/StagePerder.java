@@ -30,8 +30,8 @@ class StagePerder extends Stage {
                 return true;
             }
         });
-        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constants.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(282, 280)[0]));
-        countdownAnimation.setPosition(Constants.SCREEN_WIDTH / 2, 230, Align.center);
+        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(282, 280)[0]));
+        countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, 230, Align.center);
         addActor(countdownAnimation);
     }
 

@@ -192,6 +192,7 @@ class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("PantallaJuego/AvatarSprite.png", Texture.class);
         Constant.MANAGER.load("PantallaJuego/BotonVolverMenu.png", Texture.class);
         Constant.MANAGER.load("PantallaJuego/BulletSprite.png", Texture.class);
+        Constant.MANAGER.load("PantallaJuego/BotonSiguienteNivel.png", Texture.class);
         Constant.MANAGER.load("PantallaJuego/BulletSpriteEnemigo.png", Texture.class);
         Constant.MANAGER.load("PantallaJuego/DroidHelperSprite.png", Texture.class);
         Constant.MANAGER.load("PantallaJuego/Enemigo1Sprite.png", Texture.class);
