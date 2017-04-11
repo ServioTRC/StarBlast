@@ -44,7 +44,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     //region score
     private int puntaje;
-    private Text textScore = new Text(Constant.SOURCE_TEXT);
+    private Text textScore = new Text(Constants.SOURCE_TEXT);
     //endregion
 
     //region hud
@@ -56,6 +56,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
     //region escenas
     private final StagePausa escenaPausa;
     private StagePerder escenaPerdiste;
+    private StageWin escenaGanaste;
     //endregion
 
     // region world
@@ -101,6 +102,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
         escenaHUD = new Stage(view, batch);
         escenaPausa = new StagePausa(view, batch, app, this);
         escenaPerdiste = new StagePerder(view, batch, app);
+        escenaGanaste = new StageWin(view, batch, app);
         this.enemigosIniciales = enemigosIniciales;
         this.extraPerWave = extraPerWave;
         this.numberOfWaves = numberOfWaves;
@@ -152,6 +154,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
             return;
         }
         if (ganaste) {
+            escenaGanaste.draw();
             return;
         }
         if (isPaused) {
@@ -476,6 +479,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
                 //TODO se acabo el juego (ganaste)
                 isPaused = true;
                 ganaste = true;
+                Gdx.input.setInputProcessor(escenaGanaste);
             }
         }
     }

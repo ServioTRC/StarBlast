@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class StagePerder extends Stage {
+class StagePerder extends Stage {
 
     private final StarBlast menu;
     private AnimatedImage countdownAnimation;
@@ -26,13 +26,12 @@ public class StagePerder extends Stage {
         addActor(background);
         background.addListener(new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO reiniciar nivel
+                //TODO reiniciar nivel creo que haré una Interfaz que sea IReiniciable o algo así
                 return true;
             }
         });
-        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(281, 280)[0]));
-        countdownAnimation.animation.setPlayMode(Animation.PlayMode.REVERSED);
-        countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, 230, Align.center);
+        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constants.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(282, 280)[0]));
+        countdownAnimation.setPosition(Constants.SCREEN_WIDTH / 2, 230, Align.center);
         addActor(countdownAnimation);
     }
 
