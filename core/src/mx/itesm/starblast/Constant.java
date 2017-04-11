@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import java.util.ArrayList;
 
-class Constants {
+class Constant {
     static final float SCREEN_WIDTH = 1280;
     static final float SCREEN_HEIGTH = 800;
     static final AssetManager MANAGER = new AssetManager();
@@ -32,19 +32,19 @@ class Constants {
         return world*100;
     }
 
-    enum Pantallas{
+    enum Screens {
         SPLASH,
-        INICIO,
+        START,
         MENU,
-        HISTORIA,
-        NIVEL1,
+        STORY,
+        LEVEL1,
         ENDLESS,
-        MINIJUEGOS,
+        MINIGAMES,
         MINI1,
         MINI2,
         MINI3,
-        PUNTAJES,
-        OPCIONES,
-        CREDITOS
+        SCORES,
+        OPTIONS,
+        CREDITS
     }
 }

@@ -14,10 +14,10 @@ abstract class ScreenSB implements Screen{
     Viewport view;
 
     ScreenSB() {
-        camera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH);
-        camera.position.set(Constants.SCREEN_WIDTH /2, Constants.SCREEN_HEIGTH /2, 0);
+        camera = new OrthographicCamera(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH);
+        camera.position.set(Constant.SCREEN_WIDTH /2, Constant.SCREEN_HEIGTH /2, 0);
         camera.update();
-        view = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGTH, camera);
+        view = new StretchViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH, camera);
     }
 
     void clearScreen() {

@@ -41,16 +41,16 @@ class StageResultados extends Stage {
 
     private void init() {
         Image backgroud = new Image(new Texture("PantallaPuntajes/CuadroResultados.png"));
-        backgroud.setPosition(Constants.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
-                Constants.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
+        backgroud.setPosition(Constant.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
+                Constant.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
         crearBotonBack();
         crearBotonRegresar();
     }
 
     private void crearBotonRegresar() {Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
+        skin.add("Up", new Texture("ScreenOptions/BotonReset.png"));
+        skin.add("Down", new Texture("ScreenOptions/BotonResetYellow.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -63,15 +63,15 @@ class StageResultados extends Stage {
                 menu.setScreen(new NivelPrueba(menu));
             }
         });
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4 - 15,
-                Constants.SCREEN_HEIGTH / 6 + 50, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,
+                Constant.SCREEN_HEIGTH / 6 + 50, Align.center);
         addActor(btn);
     }
 
     private void crearBotonBack() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("ScreenOptions/Back.png"));
+        skin.add("Down", new Texture("ScreenOptions/BackYellow.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -84,8 +84,8 @@ class StageResultados extends Stage {
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(Constants.SCREEN_WIDTH / 4 - 10,
-                Constants.SCREEN_HEIGTH / 6 + 40, Align.center);
+        btn.setPosition(Constant.SCREEN_WIDTH / 4 - 10,
+                Constant.SCREEN_HEIGTH / 6 + 40, Align.center);
         addActor(btn);
     }
 
@@ -97,18 +97,18 @@ class StageResultados extends Stage {
             textura = new Texture("PantallaPuntajes/Perdedor.png");
         }
         Image leyenda = new Image(textura);
-        leyenda.setPosition(Constants.SCREEN_WIDTH / 2 - leyenda.getWidth() / 2,
-                3* Constants.SCREEN_HEIGTH / 4 - 50 - leyenda.getHeight() / 2);
+        leyenda.setPosition(Constant.SCREEN_WIDTH / 2 - leyenda.getWidth() / 2,
+                3* Constant.SCREEN_HEIGTH / 4 - 50 - leyenda.getHeight() / 2);
         addActor(leyenda);
     }
 
     private void mostrarPuntaje(){
         Gdx.app.log("FINAL", Integer.toString(this.puntaje));
-        Text text = new Text(Constants.SOURCE_TEXT);
+        Text text = new Text(Constant.SOURCE_TEXT);
         TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.GOLD, Color.GOLD, 2);
         TextButton marcador = new TextButton(Integer.toString(this.puntaje), textButtonStyle);
-        marcador.setPosition(Constants.SCREEN_WIDTH /2+100 - marcador.getWidth() / 2,
-                Constants.SCREEN_HEIGTH /2-90 - marcador.getHeight() / 2);
+        marcador.setPosition(Constant.SCREEN_WIDTH /2+100 - marcador.getWidth() / 2,
+                Constant.SCREEN_HEIGTH /2-90 - marcador.getHeight() / 2);
         addActor(marcador);
     }
 

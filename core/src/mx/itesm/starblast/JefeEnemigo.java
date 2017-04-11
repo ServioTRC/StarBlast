@@ -25,16 +25,16 @@ class JefeEnemigo extends NaveEnemiga {
         this.vida = vida;
         COOLDOWN_DISPARO = 400;
 
-        limiteDerecho = Constants.toWorldSize(Constants.SCREEN_WIDTH *0.9f);
-        limiteIzquierdo = Constants.toWorldSize(Constants.SCREEN_WIDTH *0.1f);
-        limiteSuperior = Constants.toWorldSize(Constants.SCREEN_HEIGTH *0.9f);
+        limiteDerecho = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.9f);
+        limiteIzquierdo = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.1f);
+        limiteSuperior = Constant.toWorldSize(Constant.SCREEN_HEIGTH *0.9f);
 
         random = new Random();
     }
 
     @Override
     public void mover(Vector2 target,float delta){
-        target = new Vector2(Constants.toWorldSize(target.x), Constants.toWorldSize(target.y));
+        target = new Vector2(Constant.toWorldSize(target.x), Constant.toWorldSize(target.y));
         objetivo = new Vector2(target);
         target.y = limiteSuperior;
         target.x = MathUtils.clamp(target.x,limiteIzquierdo,limiteDerecho);
@@ -44,7 +44,7 @@ class JefeEnemigo extends NaveEnemiga {
         if(hip > VELOCIDAD_MAXIMA){
             body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAXIMA/hip));
         }
-        sprite.setCenter(Constants.toScreenSize(body.getPosition().x), Constants.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
         sprite.setRotation(MathUtils.radiansToDegrees*MathUtils.atan2(objetivo.y-body.getPosition().y,objetivo.x-body.getPosition().x));
     }
 

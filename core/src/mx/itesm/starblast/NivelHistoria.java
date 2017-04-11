@@ -44,7 +44,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     //region score
     private int puntaje;
-    private Text textScore = new Text(Constants.SOURCE_TEXT);
+    private Text textScore = new Text(Constant.SOURCE_TEXT);
     //endregion
 
     //region hud
@@ -116,8 +116,8 @@ class NivelHistoria extends ScreenSB implements IPausable {
         crearWorld();
         crearBordes();
 
-        jugador = new NaveJugador(Constants.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constants.SCREEN_WIDTH / 2, Constants.SCREEN_WIDTH / 5, world);
-        jugador.escalar(Constants.SHIPS_SCALE);
+        jugador = new NaveJugador(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        jugador.escalar(Constant.SHIPS_SCALE);
     }
 
     @Override
@@ -142,7 +142,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
                 it.remove();
             }
         }
-//        textScore.showMessage(batch, "Puntaje: " + puntaje, 20, Constants.SCREEN_HEIGTH - 20, Color.GOLD);
+//        textScore.showMessage(batch, "Puntaje: " + puntaje, 20, Constant.SCREEN_HEIGTH - 20, Color.GOLD);
         batch.end();
 
         escenaHUD.draw();
@@ -232,8 +232,8 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     private void crearPad() {
         Skin skin = new Skin();
-        skin.add("PadBack", Constants.MANAGER.get("HUD/JoystickPad.png", Texture.class));
-        skin.add("PadKnob", Constants.MANAGER.get("HUD/JoystickStick.png", Texture.class));
+        skin.add("PadBack", Constant.MANAGER.get("HUD/JoystickPad.png", Texture.class));
+        skin.add("PadKnob", Constant.MANAGER.get("HUD/JoystickStick.png", Texture.class));
 
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
         estilo.background = skin.getDrawable("PadBack");
@@ -247,12 +247,12 @@ class NivelHistoria extends ScreenSB implements IPausable {
             public void changed(ChangeEvent event, Actor actor) {
                 Touchpad pad = (Touchpad) actor;
 
-                if (Math.abs(pad.getKnobPercentX()) > Constants.TOUCHPAD_DEADZONE) {
+                if (Math.abs(pad.getKnobPercentX()) > Constant.TOUCHPAD_DEADZONE) {
                     jugador.girar(pad.getKnobPercentX());
                 } else {
                     jugador.girar(0);
                 }
-                if (Math.abs(pad.getKnobPercentY()) > Constants.TOUCHPAD_DEADZONE) {
+                if (Math.abs(pad.getKnobPercentY()) > Constant.TOUCHPAD_DEADZONE) {
                     jugador.acelerar(pad.getKnobPercentY());
                 } else {
                     jugador.acelerar(0);
@@ -263,22 +263,22 @@ class NivelHistoria extends ScreenSB implements IPausable {
     }
 
     private void crearBarraVida() {
-        barraVida = new ProgressBar(Constants.MANAGER.get("HUD/LifeBarBar.png", Texture.class), true);
-        barraVida.setFrame(Constants.MANAGER.get("HUD/LifeBarFrame.png", Texture.class));
-        barraVida.setPosition(9 * Constants.SCREEN_WIDTH / 10 + 40, 2 * Constants.SCREEN_HEIGTH / 8);
+        barraVida = new ProgressBar(Constant.MANAGER.get("HUD/LifeBarBar.png", Texture.class), true);
+        barraVida.setFrame(Constant.MANAGER.get("HUD/LifeBarFrame.png", Texture.class));
+        barraVida.setPosition(9 * Constant.SCREEN_WIDTH / 10 + 40, 2 * Constant.SCREEN_HEIGTH / 8);
         escenaHUD.addActor(barraVida);
     }
 
     private void crearBotonPausa() {
         Skin skin = new Skin();
-        skin.add("Pausa", Constants.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
+        skin.add("Pausa", Constant.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Pausa");
 
         botonPausa = new Button(estilo);
-        botonPausa.setPosition(11 * Constants.SCREEN_WIDTH / 12,
-                9 * Constants.SCREEN_HEIGTH / 10);
+        botonPausa.setPosition(11 * Constant.SCREEN_WIDTH / 12,
+                9 * Constant.SCREEN_HEIGTH / 10);
         botonPausa.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -298,15 +298,15 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     private void crearBotonDisparo() {
         Skin skin = new Skin();
-        skin.add("DisparoStandby", Constants.MANAGER.get("HUD/BotonAStandby.png", Texture.class));
-        skin.add("DisparoPresionado", Constants.MANAGER.get("HUD/BotonAPresionado.png", Texture.class));
+        skin.add("DisparoStandby", Constant.MANAGER.get("HUD/BotonAStandby.png", Texture.class));
+        skin.add("DisparoPresionado", Constant.MANAGER.get("HUD/BotonAPresionado.png", Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("DisparoPresionado");
         estilo.up = skin.getDrawable("DisparoStandby");
 
         Button botonDisparo = new Button(estilo);
-        botonDisparo.setPosition(13 * Constants.SCREEN_WIDTH / 16,
-                1 * Constants.SCREEN_HEIGTH / 10);
+        botonDisparo.setPosition(13 * Constant.SCREEN_WIDTH / 16,
+                1 * Constant.SCREEN_HEIGTH / 10);
 
         botonDisparo.addListener(new ClickListener() {
             @Override
@@ -325,15 +325,15 @@ class NivelHistoria extends ScreenSB implements IPausable {
 
     private void crearBotonEspecial() {
         Skin skin = new Skin();
-        skin.add("EspecialStandby", Constants.MANAGER.get("HUD/BotonBStandby.png", Texture.class));
-        skin.add("EspecialPresionado", Constants.MANAGER.get("HUD/BotonBPresionado.png", Texture.class));
+        skin.add("EspecialStandby", Constant.MANAGER.get("HUD/BotonBStandby.png", Texture.class));
+        skin.add("EspecialPresionado", Constant.MANAGER.get("HUD/BotonBPresionado.png", Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("EspecialPresionado");
         estilo.up = skin.getDrawable("EspecialStandby");
 
         Button botonEspecial = new Button(estilo);
-        botonEspecial.setPosition(12 * Constants.SCREEN_WIDTH / 16,
-                1 * Constants.SCREEN_HEIGTH / 10);
+        botonEspecial.setPosition(12 * Constant.SCREEN_WIDTH / 16,
+                1 * Constant.SCREEN_HEIGTH / 10);
 
         botonEspecial.addListener(new ClickListener() {
             @Override
@@ -390,7 +390,7 @@ class NivelHistoria extends ScreenSB implements IPausable {
             a.setDamage(0);
             toRemove.add(a.getBody());
             if (a instanceof NavesEspaciales) {
-                animations.add(new AutoAnimation(Constants.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constant.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
             }
             if (a instanceof NaveEnemiga) {
                 enemigos.remove(a);
@@ -420,10 +420,10 @@ class NivelHistoria extends ScreenSB implements IPausable {
     }
 
     private void crearBordes() {
-        new Borde(world, -100, 0, 100, Constants.SCREEN_HEIGTH);
-        new Borde(world, Constants.SCREEN_WIDTH + 100, 0, 100, Constants.SCREEN_HEIGTH);
-        new Borde(world, -100, -100, Constants.SCREEN_WIDTH + 200, 100);
-        new Borde(world, -100, Constants.SCREEN_HEIGTH + 100, Constants.SCREEN_WIDTH + 200, 100);
+        new Borde(world, -100, 0, 100, Constant.SCREEN_HEIGTH);
+        new Borde(world, Constant.SCREEN_WIDTH + 100, 0, 100, Constant.SCREEN_HEIGTH);
+        new Borde(world, -100, -100, Constant.SCREEN_WIDTH + 200, 100);
+        new Borde(world, -100, Constant.SCREEN_HEIGTH + 100, Constant.SCREEN_WIDTH + 200, 100);
     }
     //endregion
 
@@ -450,8 +450,8 @@ class NivelHistoria extends ScreenSB implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            NaveEnemiga enemigo = new NaveEnemiga(Constants.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constants.SCREEN_WIDTH), Constants.SCREEN_HEIGTH + 50, world);
-            enemigo.escalar(Constants.SHIPS_SCALE);
+            NaveEnemiga enemigo = new NaveEnemiga(Constant.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            enemigo.escalar(Constant.SHIPS_SCALE);
             enemigos.add(enemigo);
         }
     }

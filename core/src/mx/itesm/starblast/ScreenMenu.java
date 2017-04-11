@@ -53,7 +53,7 @@ class ScreenMenu extends ScreenSB {
         };
         Image imgFondo = new Image(backgroundTexture);
         menuScene.addActor(imgFondo);
-        text = new Text(Constants.SOURCE_TEXT);
+        text = new Text(Constant.SOURCE_TEXT);
         creatingButtons();
 
         Gdx.input.setCatchBackKey(true);
@@ -75,7 +75,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingHistoryButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /2-btnPlay.getHeight()/2+40);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /2-btnPlay.getHeight()/2+40);
 
         menuScene.addActor(btnPlay);
 
@@ -83,7 +83,7 @@ class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to History mode");
-                menu.setScreen(new PantallaCargando(menu, Constants.Pantallas.NIVEL1));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
             }
         });
     }
@@ -91,7 +91,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingEndlessButton(){
         textButtonStyle = text.generateText(Color.GRAY,Color.GRAY,1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 3* Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2+80);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 3* Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2+80);
 
         menuScene.addActor(btnPlay);
 
@@ -99,7 +99,7 @@ class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to Endless Mode");
-                menu.setScreen(new PantallaCargando(menu, Constants.Pantallas.ENDLESS));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             }
         });
     }
@@ -107,7 +107,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingScoresButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /3-btnPlay.getHeight()/2-25);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /3-btnPlay.getHeight()/2-25);
 
         menuScene.addActor(btnPlay);
 
@@ -115,8 +115,8 @@ class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to Scores");
-                
-                menu.setScreen(new PantallaCargando(menu, Constants.Pantallas.PUNTAJES));
+                //TODO Quitar o no la parte de cargar los assets en la pantalla opciones
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.SCORES));
             }
         });
     }
@@ -124,7 +124,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingOptionsButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 2* Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2-30);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 2* Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2-30);
 
         menuScene.addActor(btnPlay);
 
@@ -132,8 +132,8 @@ class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to Scores");
-                
-                menu.setScreen(new PantallaCargando(menu, Constants.Pantallas.OPCIONES));
+
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.OPTIONS));
             }
         });
     }
@@ -141,7 +141,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingCreditsButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
         menuScene.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
@@ -157,7 +157,7 @@ class ScreenMenu extends ScreenSB {
     private void creatingMiniGamesButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("MINIJUEGOS", textButtonStyle);
-        btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /3-btnPlay.getHeight()/2+40);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /3-btnPlay.getHeight()/2+40);
         menuScene.addActor(btnPlay);
 
         btnPlay.addListener(new ClickListener(){
@@ -165,7 +165,7 @@ class ScreenMenu extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to MiniGames");
                 
-                menu.setScreen(new PantallaCargando(menu, Constants.Pantallas.MINIJUEGOS));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES));
             }
         });
     }

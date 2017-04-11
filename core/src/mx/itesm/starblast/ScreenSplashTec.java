@@ -41,7 +41,7 @@ class ScreenSplashTec extends ScreenSB {
 
 		TextureRegionDrawable trdBtnPlay = new TextureRegionDrawable(new TextureRegion(textureBtn));
 		ImageButton btnPlay = new ImageButton(trdBtnPlay);
-		btnPlay.setPosition(Constants.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /2-btnPlay.getHeight()/2);
+		btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /2-btnPlay.getHeight()/2);
 
 		sceneSplashTec.addActor(btnPlay);
 

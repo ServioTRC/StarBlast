@@ -21,7 +21,7 @@ class Bullet implements IPlayableEntity{
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
-        sprite = new Sprite(Constants.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
+        sprite = new Sprite(Constant.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -46,7 +46,7 @@ class Bullet implements IPlayableEntity{
         }
         CircleShape bodyShape = new CircleShape();
 
-        float w = Constants.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
+        float w = Constant.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
 
         bodyShape.setRadius(w);
 
@@ -55,10 +55,10 @@ class Bullet implements IPlayableEntity{
         fixtureDef.restitution = restitution;
         fixtureDef.shape = bodyShape;
         fixtureDef.friction = 0;
-        fixtureDef.filter.categoryBits = isEnemy ? Constants.CATEGORY_BULLET_ENEMY :
-                                                    Constants.CATEGORY_BULLET;
-        fixtureDef.filter.maskBits = isEnemy ? Constants.MASK_BULLET_ENEMY :
-                                                Constants.MASK_BULLET;
+        fixtureDef.filter.categoryBits = isEnemy ? Constant.CATEGORY_BULLET_ENEMY :
+                                                    Constant.CATEGORY_BULLET;
+        fixtureDef.filter.maskBits = isEnemy ? Constant.MASK_BULLET_ENEMY :
+                                                Constant.MASK_BULLET;
         body.createFixture(fixtureDef);
 
         bodyShape.dispose();
@@ -83,8 +83,8 @@ class Bullet implements IPlayableEntity{
 
     public void draw(SpriteBatch batch) {
         //TODO ponerlo en la punta, no en el centro
-        sprite.setCenter(Constants.toScreenSize(body.getPosition().x),
-                Constants.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constant.toScreenSize(body.getPosition().x),
+                Constant.toScreenSize(body.getPosition().y));
         sprite.draw(batch);
     }
 
@@ -95,12 +95,12 @@ class Bullet implements IPlayableEntity{
 
     @Override
     public float getX() {
-        return Constants.toScreenSize(body.getPosition().x);
+        return Constant.toScreenSize(body.getPosition().x);
     }
 
     @Override
     public float getY() {
-        return Constants.toScreenSize(body.getPosition().y);
+        return Constant.toScreenSize(body.getPosition().y);
     }
 
 }

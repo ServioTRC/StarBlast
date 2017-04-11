@@ -14,7 +14,7 @@ class Borde implements IPlayableEntity {
     Borde(World world, float x, float y, float hx, float hy){
         BodyDef bdef = new BodyDef();
         bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set(Constants.toWorldSize(x), Constants.toWorldSize(y));
+        bdef.position.set(Constant.toWorldSize(x), Constant.toWorldSize(y));
         body = world.createBody(bdef);
         body.setUserData(this);
         crearFixture(hx,hy);
@@ -25,11 +25,11 @@ class Borde implements IPlayableEntity {
             body.destroyFixture(body.getFixtureList().first());
         }
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Constants.toWorldSize(x), Constants.toWorldSize(y));
+        shape.setAsBox(Constant.toWorldSize(x), Constant.toWorldSize(y));
         FixtureDef fix = new FixtureDef();
         fix.shape = shape;
-        fix.filter.categoryBits = Constants.CATEGORY_BORDERS;
-        fix.filter.maskBits = Constants.MASK_BORDERS;
+        fix.filter.categoryBits = Constant.CATEGORY_BORDERS;
+        fix.filter.maskBits = Constant.MASK_BORDERS;
         body.createFixture(fix);
     }
 

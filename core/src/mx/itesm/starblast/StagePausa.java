@@ -26,9 +26,9 @@ class StagePausa extends Stage {
     }
 
     private void init() {
-        Image backgroud = new Image(Constants.MANAGER.get("PantallaOpciones/CuadroOpciones.png", Texture.class));
-        backgroud.setPosition(Constants.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
-                Constants.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
+        Image backgroud = new Image(Constant.MANAGER.get("ScreenOptions/CuadroOpciones.png", Texture.class));
+        backgroud.setPosition(Constant.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
+                Constant.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
         addActor(backgroud);
         crearBotonSonido();
         crearBotonMusica();
@@ -39,8 +39,8 @@ class StagePausa extends Stage {
 
     private void crearBotonRegresar() {
         Skin skin = new Skin();
-        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
-        skin.add("Down", Constants.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("ScreenOptions/BotonReset.png", Texture.class));
+        skin.add("Down", Constant.MANAGER.get("ScreenOptions/BotonResetYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -53,14 +53,14 @@ class StagePausa extends Stage {
                 parent.unPause();
             }
         });
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4 - 15,
-                Constants.SCREEN_HEIGTH / 6 + 50, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,
+                Constant.SCREEN_HEIGTH / 6 + 50, Align.center);
         addActor(btn);
     }
 
     private void crearBotonCodigos() {
         Skin skin = new Skin();
-        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/BotonCodigos.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("ScreenOptions/BotonCodigos.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -73,7 +73,7 @@ class StagePausa extends Stage {
                     @Override
                     public void input(String input) {
                         Gdx.app.log("Codigo Ingresado: ", input);
-                        Constants.CODES.add(input);
+                        Constant.CODES.add(input);
                     }
 
                     @Override
@@ -85,15 +85,15 @@ class StagePausa extends Stage {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
-                Constants.SCREEN_HEIGTH / 2 - 25, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 2 - 25, Align.center);
         addActor(btn);
     }
 
     private void crearBotonBack() {
         Skin skin = new Skin();
-        skin.add("Up", Constants.MANAGER.get("PantallaOpciones/Back.png", Texture.class));
-        skin.add("Down", Constants.MANAGER.get("PantallaOpciones/BackYellow.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("ScreenOptions/Back.png", Texture.class));
+        skin.add("Down", Constant.MANAGER.get("ScreenOptions/BackYellow.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Up");
@@ -106,15 +106,15 @@ class StagePausa extends Stage {
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(Constants.SCREEN_WIDTH / 4 - 10,
-                Constants.SCREEN_HEIGTH / 6 + 40, Align.center);
+        btn.setPosition(Constant.SCREEN_WIDTH / 4 - 10,
+                Constant.SCREEN_HEIGTH / 6 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonSonido() {
         Skin skin = new Skin();
-        skin.add("Si", Constants.MANAGER.get("PantallaOpciones/BotonSonido.png", Texture.class));
-        skin.add("No", Constants.MANAGER.get("PantallaOpciones/BotonNoSonido.png", Texture.class));
+        skin.add("Si", Constant.MANAGER.get("ScreenOptions/BotonSonido.png", Texture.class));
+        skin.add("No", Constant.MANAGER.get("ScreenOptions/BotonNoSonido.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
@@ -129,15 +129,15 @@ class StagePausa extends Stage {
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
-                2 * Constants.SCREEN_HEIGTH / 3 + 40, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                2 * Constant.SCREEN_HEIGTH / 3 + 40, Align.center);
         addActor(btn);
     }
 
     private void crearBotonMusica() {
         Skin skin = new Skin();
-        skin.add("Si", Constants.MANAGER.get("PantallaOpciones/BotonMusica.png", Texture.class));
-        skin.add("No", Constants.MANAGER.get("PantallaOpciones/BotonNoMusica.png", Texture.class));
+        skin.add("Si", Constant.MANAGER.get("ScreenOptions/BotonMusica.png", Texture.class));
+        skin.add("No", Constant.MANAGER.get("ScreenOptions/BotonNoMusica.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Si");
@@ -157,8 +157,8 @@ class StagePausa extends Stage {
             }
         });
         btn.setChecked(!PreferencesSB.MUSIC_ENABLE);
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
-                Constants.SCREEN_HEIGTH / 2 + 75, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 2 + 75, Align.center);
         addActor(btn);
     }
 

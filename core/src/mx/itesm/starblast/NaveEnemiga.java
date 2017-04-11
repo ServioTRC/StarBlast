@@ -19,16 +19,16 @@ class NaveEnemiga extends NavesEspaciales {
     NaveEnemiga(Texture textura, float x, float y, World world, float angulo, float density, float restitution) {
         super(textura, x, y, world, angulo, density, restitution, true);
 
-        CATEGORY = Constants.CATEGORY_ENEMY;
-        MASK = Constants.MASK_ENEMY;
+        CATEGORY = Constant.CATEGORY_ENEMY;
+        MASK = Constant.MASK_ENEMY;
     }
 
     NaveEnemiga(Texture textura, float x, float y, World world) {
         super(textura, x, y, world, -90, 0.1f, 0.7f, true);
 
 
-        CATEGORY = Constants.CATEGORY_ENEMY;
-        MASK = Constants.MASK_ENEMY;
+        CATEGORY = Constant.CATEGORY_ENEMY;
+        MASK = Constant.MASK_ENEMY;
         COOLDOWN_DISPARO = 500;
         BULLET_DAMAGE = 5;
 
@@ -40,8 +40,8 @@ class NaveEnemiga extends NavesEspaciales {
 
     @Override
     public void disparar(long time) {
-        if (puedeDisparar && getX() > 0 && getX() < Constants.SCREEN_WIDTH &&
-                getY() > 0 && getY() < Constants.SCREEN_HEIGTH) {
+        if (puedeDisparar && getX() > 0 && getX() < Constant.SCREEN_WIDTH &&
+                getY() > 0 && getY() < Constant.SCREEN_HEIGTH) {
             super.disparar(time);
         }
     }
@@ -90,16 +90,16 @@ class NaveEnemiga extends NavesEspaciales {
         float deltaX;
         float deltaY;
 
-        if (Math.abs(Constants.toWorldSize(target.x) - body.getPosition().x) < Math.abs(body.getLinearVelocity().x)) {
-            deltaX = Constants.toWorldSize(target.x) - body.getPosition().x;
+        if (Math.abs(Constant.toWorldSize(target.x) - body.getPosition().x) < Math.abs(body.getLinearVelocity().x)) {
+            deltaX = Constant.toWorldSize(target.x) - body.getPosition().x;
         } else {
-            deltaX = Constants.toWorldSize(target.x) - (body.getLinearVelocity().x + body.getPosition().x);
+            deltaX = Constant.toWorldSize(target.x) - (body.getLinearVelocity().x + body.getPosition().x);
         }
 
-        if (Math.abs(Constants.toWorldSize(target.y) - body.getPosition().y) < Math.abs(body.getLinearVelocity().y)) {
-            deltaY = Constants.toWorldSize(target.y) - body.getPosition().y;
+        if (Math.abs(Constant.toWorldSize(target.y) - body.getPosition().y) < Math.abs(body.getLinearVelocity().y)) {
+            deltaY = Constant.toWorldSize(target.y) - body.getPosition().y;
         } else {
-            deltaY = Constants.toWorldSize(target.y) - (body.getLinearVelocity().y + body.getPosition().y);
+            deltaY = Constant.toWorldSize(target.y) - (body.getLinearVelocity().y + body.getPosition().y);
         }
 
         float angulo;
@@ -122,6 +122,6 @@ class NaveEnemiga extends NavesEspaciales {
         if (hip > VELOCIDAD_MAX) {
             body.setLinearVelocity(body.getLinearVelocity().scl(VELOCIDAD_MAX / hip));
         }
-        sprite.setCenter(Constants.toScreenSize(body.getPosition().x), Constants.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
     }
 }

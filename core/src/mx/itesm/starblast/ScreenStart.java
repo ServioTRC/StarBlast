@@ -44,7 +44,7 @@ class ScreenStart extends ScreenSB {
         Image imgFondo = new Image(backgroundTexture);
         startScene.addActor(imgFondo);
         sprite = new Sprite(new Texture("PantallaInicio/TAP.png"));
-        sprite.setCenter(Constants.SCREEN_WIDTH /2,1* Constants.SCREEN_HEIGTH /4);
+        sprite.setCenter(Constant.SCREEN_WIDTH /2,1* Constant.SCREEN_HEIGTH /4);
         Gdx.input.setCatchBackKey(false);
         Gdx.input.setInputProcessor(new InputProcessorSB());
     }

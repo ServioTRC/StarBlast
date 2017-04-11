@@ -20,9 +20,9 @@ public class StagePerder extends Stage {
     StagePerder(Viewport viewport, Batch batch, StarBlast menu) {
         super(viewport, batch);
         this.menu = menu;
-        Image background = new Image(Constants.MANAGER.get("PantallaPerder/FondoDerribado.jpg", Texture.class));
-        background.setPosition(Constants.SCREEN_WIDTH / 2 - background.getWidth() / 2,
-                Constants.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
+        Image background = new Image(Constant.MANAGER.get("PantallaPerder/FondoDerribado.jpg", Texture.class));
+        background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
+                Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
         addActor(background);
         background.addListener(new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -30,9 +30,9 @@ public class StagePerder extends Stage {
                 return true;
             }
         });
-        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constants.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(281, 280)[0]));
+        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("PantallaPerder/Countdown.png", Texture.class)).split(281, 280)[0]));
         countdownAnimation.animation.setPlayMode(Animation.PlayMode.REVERSED);
-        countdownAnimation.setPosition(Constants.SCREEN_WIDTH / 2, 230, Align.center);
+        countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, 230, Align.center);
         addActor(countdownAnimation);
     }
 

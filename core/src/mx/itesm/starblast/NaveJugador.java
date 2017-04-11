@@ -29,8 +29,8 @@ class NaveJugador extends NavesEspaciales {
     NaveJugador(Texture textura,float x,float y,World world) {
         super(textura,x,y,world,90,0.1f,0.7f, false);
 
-        CATEGORY = Constants.CATEGORY_PLAYER;
-        MASK = Constants.MASK_PLAYER;
+        CATEGORY = Constant.CATEGORY_PLAYER;
+        MASK = Constant.MASK_PLAYER;
         COOLDOWN_DISPARO = 100;
         BULLET_DAMAGE = 10;
 
@@ -70,7 +70,7 @@ class NaveJugador extends NavesEspaciales {
             body.applyForceToCenter(new Vector2(porcentajeGiro * -1, porcentajeAceleracion), true);
         }
         body.setLinearVelocity(body.getLinearVelocity().scl(CONSTANTE_FRENADO));
-        sprite.setCenter(Constants.toScreenSize(body.getPosition().x), Constants.toScreenSize(body.getPosition().y));
+        sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
     }
 
 

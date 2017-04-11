@@ -50,7 +50,7 @@ class ScreenCredits extends ScreenSB {
             }
         };
         Image imgFondo = new Image(backgroundTexture);
-        text = new Text(Constants.SOURCE_TEXT);
+        text = new Text(Constant.SOURCE_TEXT);
         creditsScene.addActor(imgFondo);
         creatingBackButton();
         Gdx.input.setInputProcessor(creditsScene);
@@ -59,7 +59,7 @@ class ScreenCredits extends ScreenSB {
     private void creatingBackButton() {
         TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.RED, Color.GOLD, 2);
         TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7* Constants.SCREEN_WIDTH /8-btnPlay.getWidth()/2, Constants.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(7* Constant.SCREEN_WIDTH /8-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
 
         creditsScene.addActor(btnPlay);
 

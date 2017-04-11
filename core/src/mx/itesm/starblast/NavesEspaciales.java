@@ -37,7 +37,7 @@ abstract class NavesEspaciales implements IPlayableEntity {
         sprite.setRotation(angulo);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(Constants.toWorldSize(x), Constants.toWorldSize(y));
+        bodyDef.position.set(Constant.toWorldSize(x), Constant.toWorldSize(y));
         bodyDef.angle = angulo;
         body = world.createBody(bodyDef);
         body.setUserData(this);
@@ -64,12 +64,12 @@ abstract class NavesEspaciales implements IPlayableEntity {
 
     @Override
     public float getX() {
-        return Constants.toScreenSize(body.getPosition().x);
+        return Constant.toScreenSize(body.getPosition().x);
     }
 
     @Override
     public float getY() {
-        return Constants.toScreenSize(body.getPosition().y);
+        return Constant.toScreenSize(body.getPosition().y);
     }
 
     void escalar(float escala) {
@@ -84,7 +84,7 @@ abstract class NavesEspaciales implements IPlayableEntity {
         }
         CircleShape bodyShape = new CircleShape();
 
-        float w= Constants.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
+        float w= Constant.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
 
         bodyShape.setRadius(w);
 

@@ -12,58 +12,58 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-class PantallaOpciones extends ScreenSB {
+class ScreenOptions extends ScreenSB {
     private final StarBlast menu;
 
     //Texturas
-    private Texture texturaFondo;
+    private Texture backgroundTexture;
 
     //SpriteBatch
     private SpriteBatch batch;
 
     //Escenas
-    private Stage escenaOpciones;
+    private Stage optionScene;
 
-    PantallaOpciones(StarBlast menu) {
+    ScreenOptions(StarBlast menu) {
         this.menu=menu;
     }
 
     @Override
     public void show() {
-        cargarTexturas();
-        crearObjetos();
+        loadingTextures();
+        creatingObjects();
     }
 
-    private void crearObjetos() {
+    private void creatingObjects() {
         batch = new SpriteBatch();
-        escenaOpciones = new Stage(view, batch){
+        optionScene = new Stage(view, batch){
             @Override
             public boolean keyDown(int keycode) {
                 if(keycode == Input.Keys.BACK){
-                    Gdx.app.log("ScreenSB Creditos: ","Voy al Menu");
+                    Gdx.app.log("ScreenOptions ","Going to ScreenMenu");
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
                 return super.keyDown(keycode);
             }
         };
-        Image imgFondo = new Image(texturaFondo);
-        escenaOpciones.addActor(imgFondo);
-        crearBotones();
+        Image imgFondo = new Image(backgroundTexture);
+        optionScene.addActor(imgFondo);
+        creatingButtons();
         Gdx.input.setCatchBackKey(true);
-        Gdx.input.setInputProcessor(escenaOpciones);
+        Gdx.input.setInputProcessor(optionScene);
     }
 
-    private void crearBotones(){
-        crearBotonAyuda();
-        crearBotonMusica();
-        crearBotonSonido();
-        crearBotonCodigos();
-        crearBotonReiniciar();
-        crearBotonBack();
+    private void creatingButtons(){
+        createButtonHelp();
+        createButtonMusic();
+        createButtonSound();
+        createButtonCodes();
+        createButtonRestart();
+        createButtonBack();
     }
 
-    private void crearBotonBack() {
+    private void createButtonBack() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/Back.png"));
         skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
@@ -79,12 +79,12 @@ class PantallaOpciones extends ScreenSB {
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(12* Constants.SCREEN_WIDTH /13,
-                Constants.SCREEN_HEIGTH /8, Align.center);
-        escenaOpciones.addActor(btn);
+        btn.setPosition(12* Constant.SCREEN_WIDTH /13,
+                Constant.SCREEN_HEIGTH /8, Align.center);
+        optionScene.addActor(btn);
     }
 
-    private void crearBotonReiniciar() {
+    private void createButtonRestart() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
         skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
@@ -94,8 +94,8 @@ class PantallaOpciones extends ScreenSB {
         estilo.down = skin.getDrawable("Down");
 
         Button btn = new Button(estilo);
-        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
-                Constants.SCREEN_HEIGTH /6+20, Align.center);
+        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
+                Constant.SCREEN_HEIGTH /6+20, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -103,10 +103,10 @@ class PantallaOpciones extends ScreenSB {
             }
         });
 
-        escenaOpciones.addActor(btn);
+        optionScene.addActor(btn);
     }
 
-    private void crearBotonCodigos() {
+    private void createButtonCodes() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
 
@@ -121,7 +121,7 @@ class PantallaOpciones extends ScreenSB {
                     @Override
                     public void input(String input) {
                         Gdx.app.log("Codigo Ingresado: ", input);
-                        Constants.CODES.add(input);
+                        Constant.CODES.add(input);
                     }
 
                     @Override
@@ -133,18 +133,18 @@ class PantallaOpciones extends ScreenSB {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
-                Constants.SCREEN_HEIGTH /3+10, Align.center);
-        escenaOpciones.addActor(btn);
+        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
+                Constant.SCREEN_HEIGTH /3+10, Align.center);
+        optionScene.addActor(btn);
     }
 
-    private void crearBotonSonido() {
+    private void createButtonSound() {
         Skin skin = new Skin();
-        skin.add("Si", new Texture("PantallaOpciones/BotonSonido.png"));
+        skin.add("Yes", new Texture("PantallaOpciones/BotonSonido.png"));
         skin.add("No", new Texture("PantallaOpciones/BotonNoSonido.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Si");
+        estilo.up = skin.getDrawable("Yes");
         estilo.checked = skin.getDrawable("No");
 
         final Button btn = new Button(estilo);
@@ -156,18 +156,18 @@ class PantallaOpciones extends ScreenSB {
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
-                2 * Constants.SCREEN_HEIGTH / 3 + 40, Align.center);
-        escenaOpciones.addActor(btn);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                2 * Constant.SCREEN_HEIGTH / 3 + 40, Align.center);
+        optionScene.addActor(btn);
     }
 
-    private void crearBotonMusica() {
+    private void createButtonMusic() {
         Skin skin = new Skin();
-        skin.add("Si", new Texture("PantallaOpciones/BotonMusica.png"));
+        skin.add("Yes", new Texture("PantallaOpciones/BotonMusica.png"));
         skin.add("No", new Texture("PantallaOpciones/BotonNoMusica.png"));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Si");
+        estilo.up = skin.getDrawable("Yes");
         estilo.checked = skin.getDrawable("No");
 
         final Button btn = new Button(estilo);
@@ -184,12 +184,12 @@ class PantallaOpciones extends ScreenSB {
             }
         });
         btn.setChecked(!PreferencesSB.MUSIC_ENABLE);
-        btn.setPosition(3 * Constants.SCREEN_WIDTH / 4,
-                Constants.SCREEN_HEIGTH / 2 + 75, Align.center);
-        escenaOpciones.addActor(btn);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 2 + 75, Align.center);
+        optionScene.addActor(btn);
     }
 
-    private void crearBotonAyuda(){
+    private void createButtonHelp(){
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonAyuda.png"));
 
@@ -197,8 +197,8 @@ class PantallaOpciones extends ScreenSB {
         estilo.up = skin.getDrawable("Up");
 
         Button btn = new Button(estilo);
-        btn.setPosition(3* Constants.SCREEN_WIDTH /4,
-                Constants.SCREEN_HEIGTH /2-25, Align.center);
+        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
+                Constant.SCREEN_HEIGTH /2-25, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -206,18 +206,18 @@ class PantallaOpciones extends ScreenSB {
             }
         });
 
-        escenaOpciones.addActor(btn);
+        optionScene.addActor(btn);
     }
 
-    private void cargarTexturas() {
-        texturaFondo = new Texture("PantallaOpciones/PantallaOpciones.jpg");
+    private void loadingTextures() {
+        backgroundTexture = new Texture("PantallaOpciones/PantallaOpciones.jpg");
     }
 
     @Override
     public void render(float delta) {
         clearScreen();
         batch.setProjectionMatrix(camera.combined);
-        escenaOpciones.draw();
+        optionScene.draw();
     }
 
     @Override
@@ -242,7 +242,7 @@ class PantallaOpciones extends ScreenSB {
 
     @Override
     public void dispose() {
-        Constants.MANAGER.dispose();
+        Constant.MANAGER.dispose();
     }
 
 }
