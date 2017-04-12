@@ -50,7 +50,7 @@ class StagePausa extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.unPause();
+                parent.unPauseIP();
             }
         });
         btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,
@@ -165,7 +165,7 @@ class StagePausa extends Stage {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK) {
-            parent.unPause();
+            parent.unPauseIP();
             return true;
         }
         return super.keyDown(keyCode);

@@ -48,7 +48,7 @@ class NivelPrueba implements Screen, IPausable {
     private Stage escenaJuego;
 
     //Sprites
-    private ArrayList<NaveEnemiga> enemigos;
+    private ArrayList<ShipEnemy> enemigos;
 
     private Vector2 target;
 
@@ -62,7 +62,7 @@ class NivelPrueba implements Screen, IPausable {
     private Button botonDisparo;
     private ProgressBar barraVida;
 
-    private NaveJugador jugador;
+    private ShipPlayer jugador;
 
     private World world;
 
@@ -128,7 +128,7 @@ class NivelPrueba implements Screen, IPausable {
         batch = new SpriteBatch();
         escenaJuego = new Stage(vista, batch);
         //Image imgFondo = new Image(texturaFondo);
-        enemigos = new ArrayList<NaveEnemiga>();
+        enemigos = new ArrayList<ShipEnemy>();
         //escenaJuego.addActor(imgFondo);
 
         crearWorld();
@@ -164,11 +164,11 @@ class NivelPrueba implements Screen, IPausable {
                 if(objetoA.doDamage(objetoB.getDamage())){
                     objetoA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
-                    if(objetoA instanceof NaveJugador){
+                    if(objetoA instanceof ShipPlayer){
                         animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
-                    }else if(objetoA instanceof NaveEnemiga){
-                        NaveEnemiga nve = (NaveEnemiga) objetoA;
+                    }else if(objetoA instanceof ShipEnemy){
+                        ShipEnemy nve = (ShipEnemy) objetoA;
                         animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
@@ -182,11 +182,11 @@ class NivelPrueba implements Screen, IPausable {
                 if(objetoB.doDamage(objetoA.getDamage())){
                     objetoB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
-                    if(objetoB instanceof NaveJugador){
+                    if(objetoB instanceof ShipPlayer){
                         animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,jugador.getX(),jugador.getY(),100,100,batch));
                         gameEnded = true;
-                    }else if(objetoB instanceof NaveEnemiga){
-                        NaveEnemiga nve = (NaveEnemiga) objetoB;
+                    }else if(objetoB instanceof ShipEnemy){
+                        ShipEnemy nve = (ShipEnemy) objetoB;
                         animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,nve.getX(),nve.getY(),100,100,batch));
                         enemigos.remove(nve);
                         puntaje += 100;
@@ -197,8 +197,8 @@ class NivelPrueba implements Screen, IPausable {
                         }
                     }
                 }
-                barraVida.setPorcentage(jugador.vida/100f);
-//                Gdx.app.log("Vida",""+jugador.vida);
+                barraVida.setPorcentage(jugador.life /100f);
+//                Gdx.app.log("Vida",""+jugador.life);
             }
 
             @Override
@@ -221,8 +221,8 @@ class NivelPrueba implements Screen, IPausable {
 
     private void crearSprites() {
         //Sprites Complejos
-        jugador = new NaveJugador(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
-        jugador.escalar(Constant.SHIPS_SCALE);
+        jugador = new ShipPlayer(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        jugador.scaling(Constant.SHIPS_SCALE);
         //Sprite del fondo
         spriteFondo = new Sprite(texturaFondo);
         spriteFondo.setPosition(0,0);
@@ -231,22 +231,22 @@ class NivelPrueba implements Screen, IPausable {
     //region metodos crearSprites
 
     private void crearEnemigos() {
-        NaveEnemiga enemigo;
+        ShipEnemy enemigo;
         Random r = new Random();
         for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new NaveEnemiga(Constant.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
-//            enemigo = new NaveEnemiga("PantallaJuego/Enemigo1.png",3*Constant.SCREEN_WIDTH/4,Constant.SCREEN_HEIGTH/3,world);
-            //enemigo = new JefeEnemigo("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
+            enemigo = new ShipEnemy(Constant.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+//            enemigo = new ShipEnemy("PantallaJuego/Enemigo1.png",3*Constant.SCREEN_WIDTH/4,Constant.SCREEN_HEIGTH/3,world);
+            //enemigo = new ShipEnemyBoss("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
 
-            enemigo.escalar(Constant.SHIPS_SCALE);
+            enemigo.scaling(Constant.SHIPS_SCALE);
             enemigos.add(enemigo);
         }
     }
 
     private void crearJefeNivel() {
         Random r = new Random();
-        NaveEnemiga jefe = new JefeEnemigo(Constant.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
-        jefe.escalar(Constant.SHIPS_SCALE);
+        ShipEnemy jefe = new ShipEnemyBoss(Constant.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
+        jefe.scaling(Constant.SHIPS_SCALE);
         enemigos.add(jefe);
     }
     //endregion
@@ -283,14 +283,14 @@ class NivelPrueba implements Screen, IPausable {
                 Touchpad pad = (Touchpad) actor;
 
                 if (Math.abs(pad.getKnobPercentX()) > Constant.TOUCHPAD_DEADZONE) {
-                    jugador.girar(pad.getKnobPercentX());
+                    jugador.turn(pad.getKnobPercentX());
                 } else {
-                    jugador.girar(0);
+                    jugador.turn(0);
                 }
                 if (Math.abs(pad.getKnobPercentY()) > Constant.TOUCHPAD_DEADZONE) {
-                    jugador.acelerar(pad.getKnobPercentY());
+                    jugador.accelerate(pad.getKnobPercentY());
                 } else {
-                    jugador.acelerar(0);
+                    jugador.accelerate(0);
                 }
             }
         });
@@ -318,9 +318,9 @@ class NivelPrueba implements Screen, IPausable {
                 Button boton = (Button) actor;
                 if (boton.isPressed()) {
                     if (!isPaused) {
-                        pausa();
+                        pauseIP();
                     } else {
-                        unPause();
+                        unPauseIP();
                     }
                 }
             }
@@ -376,7 +376,7 @@ class NivelPrueba implements Screen, IPausable {
 
     //region metodos pausa
     @Override
-    public void pausa() {
+    public void pauseIP() {
         isPaused = true;
         escenaPausa.addActor(botonPausa);
         if(!gameEnded)
@@ -389,7 +389,7 @@ class NivelPrueba implements Screen, IPausable {
     }
 
     @Override
-    public void unPause() {
+    public void unPauseIP() {
         isPaused = false;
         escenaHUD.addActor(botonPausa);
         Gdx.input.setInputProcessor(escenaHUD);
@@ -410,7 +410,7 @@ class NivelPrueba implements Screen, IPausable {
 
         if(gameEnded && animations.size()==0){
             if(!isPaused){
-                pausa();
+                pauseIP();
                 Gdx.app.log("PARA EL JUEGO", Boolean.toString(ganador));
                 escenaResultados.setGanadorYPuntaje(ganador, puntaje);
             }
@@ -418,7 +418,7 @@ class NivelPrueba implements Screen, IPausable {
         }
         moverFondo();
 
-        //Oleadas de enemigos
+        //Oleadas de enemies
         //TODO mejorar la forma en la que salen
         if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded && !isPaused && enemigos.size() < navesRestantes){
             enemigoAnterior = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
@@ -478,21 +478,21 @@ class NivelPrueba implements Screen, IPausable {
     private void moverEnemigos(float delta) {
         target = new Vector2(jugador.getX(), jugador.getY());
         //target = new Vector2(Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2);
-        for(NaveEnemiga enemigo:enemigos){
-            enemigo.mover(target,delta);
+        for(ShipEnemy enemigo:enemigos){
+            enemigo.move(target,delta);
             //se utiliza el metodo nanos en vez de millis porque millis
             //cuenta el tiempo desde 1970
 
-            enemigo.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+            enemigo.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
         }
     }
 
     private void moverJugador(float delta) {
-        jugador.mover(target,delta);
+        jugador.move(target,delta);
         if(disparando){
             //se utiliza el metodo nanos en vez de millis porque millis
             //cuenta el tiempo desde 1970
-            jugador.disparar(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+            jugador.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
         }
     }
     //endregion
@@ -540,7 +540,7 @@ class NivelPrueba implements Screen, IPausable {
     }
 //     region debug shapes
 //    private void debugearElementos() {
-//        if (enemigos.size() == 0) {
+//        if (enemies.size() == 0) {
 //            return;
 //        }
 //        camera.update();
@@ -554,7 +554,7 @@ class NivelPrueba implements Screen, IPausable {
 //
 //
 //        shapeRenderer.setColor(new Color(0, 1, 0, 0.5f));
-//        for (NaveEnemiga enemigo : enemigos) {
+//        for (ShipEnemy enemigo : enemies) {
 //            shapeRenderer.circle(enemigo.getX(), enemigo.getY(), Constant.toScreenSize(enemigo.getShape().getRadius()));
 //        }
 //        shapeRenderer.circle(jugador.getX(), jugador.getY(), Constant.toScreenSize(jugador.getShape().getRadius()));
@@ -570,7 +570,7 @@ class NivelPrueba implements Screen, IPausable {
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 //
 //        shapeRenderer.setColor(new Color(0, 1, 0, 0.5f));
-//        shapeRenderer.line(enemigos.get(0).getX(), enemigos.get(0).getY(), target.x, target.y);
+//        shapeRenderer.line(enemies.get(0).getX(), enemies.get(0).getY(), target.x, target.y);
 //
 //        shapeRenderer.end();
 //
@@ -580,10 +580,10 @@ class NivelPrueba implements Screen, IPausable {
     //endregion
 
     private void crearBordes() {
-        new Borde(world,-120,0,100, Constant.SCREEN_HEIGTH);
-        new Borde(world, Constant.SCREEN_WIDTH +120,0,100, Constant.SCREEN_HEIGTH);
-        new Borde(world,-120,-120, Constant.SCREEN_WIDTH +200,100);
-        new Borde(world,-120, Constant.SCREEN_HEIGTH +120, Constant.SCREEN_WIDTH +200,100);
+        new Edge(world,-120,0,100, Constant.SCREEN_HEIGTH);
+        new Edge(world, Constant.SCREEN_WIDTH +120,0,100, Constant.SCREEN_HEIGTH);
+        new Edge(world,-120,-120, Constant.SCREEN_WIDTH +200,100);
+        new Edge(world,-120, Constant.SCREEN_HEIGTH +120, Constant.SCREEN_WIDTH +200,100);
     }
 
     @Override

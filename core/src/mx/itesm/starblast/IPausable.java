@@ -2,8 +2,8 @@ package mx.itesm.starblast;
 
 interface IPausable {
 
-    void pausa();
+    void pauseIP();
 
-    void unPause();
+    void unPauseIP();
 
 }
