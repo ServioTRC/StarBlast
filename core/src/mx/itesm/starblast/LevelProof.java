@@ -34,35 +34,35 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
-class NivelPrueba implements Screen, IPausable {
+class LevelProof implements Screen, IPausable {
 
-    private static final int ENEMIGOS_INICIALES = 1;
-    private static long COOLDOWN_ENEMIGO = 3000;
+    private static final int INITIAL_ENEMIES = 1;
+    private static long ENEMIES_COOLDOWN = 3000;
     private final StarBlast menu;
 
     //Camara, view
-    private OrthographicCamera camara;
-    private Viewport vista;
+    private OrthographicCamera camera;
+    private Viewport view;
 
     //Escenas
-    private Stage escenaJuego;
+    private Stage gameScene;
 
     //Sprites
-    private ArrayList<ShipEnemy> enemigos;
+    private ArrayList<ShipEnemy> enemies;
 
     private Vector2 target;
 
-    private OrthographicCamera camaraHUD;
-    private Viewport vistaHUD;
-    private Stage escenaHUD;
+    private OrthographicCamera HUDcamera;
+    private Viewport HUDview;
+    private Stage HUDstage;
 
     private Touchpad touchpad;
 
-    private Button botonPausa;
-    private Button botonDisparo;
-    private ProgressBar barraVida;
+    private Button pauseButton;
+    private Button shootingButton;
+    private ProgressBar lifeBar;
 
-    private ShipPlayer jugador;
+    private ShipPlayer player;
 
     private World world;
 
@@ -71,21 +71,21 @@ class NivelPrueba implements Screen, IPausable {
     private ShapeRenderer shapeRenderer;
 
     private boolean isPaused = false;
-    private StagePausa escenaPausa;
-    private StageResultados escenaResultados;
+    private StagePause pauseScene;
+    private StageResults resultsScene;
 
 
-    private boolean disparando = false;
+    private boolean shooting = false;
 
     private HashSet<Body> toRemove;
 
     private LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
 
     private boolean gameEnded = false;
-    private boolean ganador = false;
+    private boolean winner = false;
 
     //Elementos para el fondo
-    private Texture texturaFondo = Constant.MANAGER.get("PantallaJuego/FondoNivel2.jpg", Texture.class);
+    private Texture backgroundTexture = Constant.MANAGER.get("PantallaJuego/FondoNivel2.jpg", Texture.class);
     private SpriteBatch batch;
     private Sprite spriteFondo;
     private int posY = 0;
@@ -93,112 +93,107 @@ class NivelPrueba implements Screen, IPausable {
     //Puntaje
     private Text textScore;
     private Text textShips;
-    private int puntaje = 0;
-    private int navesRestantes = 12;
+    private int score = 0;
+    private int leftShips = 12;
 
     //Oleadas
-    private long tiempoInicio;
-    private boolean oleada1Realizada = false;
-    private boolean oleada2Realizada = false;
-    private boolean oleada3Realizada = false;
-    private long enemigoAnterior = 0;
+    private long previousEnemy = 0;
 
-    NivelPrueba(StarBlast menu) {
+    LevelProof(StarBlast menu) {
         this.menu = menu;
     }
 
     @Override
     public void show() {
-        crearCamara();
-        crearObjetos();
-        tiempoInicio = TimeUtils.millis();
+        createCamera();
+        createObjects();
     }
 
     //region metodos show
 
-    private void crearCamara() {
-        camara = new OrthographicCamera(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH);
-        camara.position.set(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, 0);
-        camara.update();
-        vista = new StretchViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH, camara);
+    private void createCamera() {
+        camera = new OrthographicCamera(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH);
+        camera.position.set(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, 0);
+        camera.update();
+        view = new StretchViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH, camera);
     }
 
-    private void crearObjetos() {
+    private void createObjects() {
         target = new Vector2(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2);
         batch = new SpriteBatch();
-        escenaJuego = new Stage(vista, batch);
-        //Image imgFondo = new Image(texturaFondo);
-        enemigos = new ArrayList<ShipEnemy>();
-        //escenaJuego.addActor(imgFondo);
+        gameScene = new Stage(view, batch);
+        //Image imgFondo = new Image(backgroundTexture);
+        enemies = new ArrayList<ShipEnemy>();
+        //gameScene.addActor(imgFondo);
 
-        crearWorld();
-        crearBordes();
-        crearSprites();
-        crearHud();
+        createWorld();
+        createEdges();
+        createSprites();
+        createHUD();
 
         //Gdx.input.setInputProcessor(new Procesador());
-        Gdx.input.setInputProcessor(escenaHUD);
+        Gdx.input.setInputProcessor(HUDstage);
         shapeRenderer = new ShapeRenderer();
 
         textScore = new Text(Constant.SOURCE_TEXT);
         textShips = new Text(Constant.SOURCE_TEXT);
 
-        escenaPausa = new StagePausa(vista, batch, menu, this);
-        escenaResultados = new StageResultados(vista, batch, menu, this);
+        pauseScene = new StagePause(view, batch, menu, this);
+        resultsScene = new StageResults(view, batch, menu, this);
     }
 
     //region metodos crearObjetos
 
-    private void crearWorld() {
+    private void createWorld() {
         world = new World(Vector2.Zero, true);
         accumulator = 0;
         toRemove = new HashSet<Body>();
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                IPlayableEntity objetoA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
-                IPlayableEntity objetoB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
-                if(objetoA == null || objetoB == null){
+                IPlayableEntity objectA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
+                IPlayableEntity objectB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
+                if(objectA == null || objectB == null){
                     return;
                 }
-                if(objetoA.doDamage(objetoB.getDamage())){
-                    objetoA.setDamage(0);
+                if(objectA.doDamage(objectB.getDamage())){
+                    objectA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
-                    if(objetoA instanceof ShipPlayer){
-                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,jugador.getX(),jugador.getY(),100,100,batch));
+                    if(objectA instanceof ShipPlayer){
+                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
                         gameEnded = true;
-                    }else if(objetoA instanceof ShipEnemy){
-                        ShipEnemy nve = (ShipEnemy) objetoA;
-                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,nve.getX(),nve.getY(),100,100,batch));
-                        enemigos.remove(nve);
-                        puntaje += 100;
-                        navesRestantes--;
-                        if(navesRestantes==0){
+                    }else if(objectA instanceof ShipEnemy){
+                        ShipEnemy ship = (ShipEnemy) objectA;
+                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
+                        enemies.remove(ship);
+                        score += 100;
+                        leftShips--;
+                        if(leftShips ==0){
                             gameEnded = true;
-                            ganador = true;
+                            winner = true;
                         }
                     }
                 }
-                if(objetoB.doDamage(objetoA.getDamage())){
-                    objetoB.setDamage(0);
+                if(objectB.doDamage(objectA.getDamage())){
+                    objectB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
-                    if(objetoB instanceof ShipPlayer){
-                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,jugador.getX(),jugador.getY(),100,100,batch));
+                    if(objectB instanceof ShipPlayer){
+                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
                         gameEnded = true;
-                    }else if(objetoB instanceof ShipEnemy){
-                        ShipEnemy nve = (ShipEnemy) objetoB;
-                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,nve.getX(),nve.getY(),100,100,batch));
-                        enemigos.remove(nve);
-                        puntaje += 100;
-                        navesRestantes--;
-                        if(navesRestantes == 0){
+                    }else if(objectB instanceof ShipEnemy){
+                        ShipEnemy ship = (ShipEnemy) objectB;
+                        animations.add(new AutoAnimation(new Texture("Animaciones/ExplosionNaveFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
+                        enemies.remove(ship);
+                        score += 100;
+                        leftShips--;
+                        if(leftShips == 0){
                             gameEnded = true;
-                            ganador = true;
+                            winner = true;
                         }
                     }
                 }
-                barraVida.setPorcentage(jugador.life /100f);
-//                Gdx.app.log("Vida",""+jugador.life);
+                lifeBar.setPorcentage(player.life /100f);
+//                Gdx.app.log("Vida",""+player.life);
             }
 
             @Override
@@ -219,62 +214,62 @@ class NivelPrueba implements Screen, IPausable {
 
     }
 
-    private void crearSprites() {
+    private void createSprites() {
         //Sprites Complejos
-        jugador = new ShipPlayer(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
-        jugador.scaling(Constant.SHIPS_SCALE);
+        player = new ShipPlayer(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        player.scaling(Constant.SHIPS_SCALE);
         //Sprite del fondo
-        spriteFondo = new Sprite(texturaFondo);
+        spriteFondo = new Sprite(backgroundTexture);
         spriteFondo.setPosition(0,0);
     }
 
     //region metodos crearSprites
 
-    private void crearEnemigos() {
-        ShipEnemy enemigo;
+    private void createEnemies() {
+        ShipEnemy enemy;
         Random r = new Random();
-        for (int i = 0; i < ENEMIGOS_INICIALES; i++) {
-            enemigo = new ShipEnemy(Constant.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+        for (int i = 0; i < INITIAL_ENEMIES; i++) {
+            enemy = new ShipEnemy(Constant.MANAGER.get("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
 //            enemigo = new ShipEnemy("PantallaJuego/Enemigo1.png",3*Constant.SCREEN_WIDTH/4,Constant.SCREEN_HEIGTH/3,world);
             //enemigo = new ShipEnemyBoss("PantallaJuego/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
 
-            enemigo.scaling(Constant.SHIPS_SCALE);
-            enemigos.add(enemigo);
+            enemy.scaling(Constant.SHIPS_SCALE);
+            enemies.add(enemy);
         }
     }
 
-    private void crearJefeNivel() {
+    private void createBossLevel() {
         Random r = new Random();
-        ShipEnemy jefe = new ShipEnemyBoss(Constant.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
-        jefe.scaling(Constant.SHIPS_SCALE);
-        enemigos.add(jefe);
+        ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("PantallaJuego/NaveJefe.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
+        boss.scaling(Constant.SHIPS_SCALE);
+        enemies.add(boss);
     }
     //endregion
 
-    private void crearHud() {
-        camaraHUD = new OrthographicCamera(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH);
-        camaraHUD.position.set(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, 0);
-        camaraHUD.update();
-        vistaHUD = new StretchViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH, camaraHUD);
+    private void createHUD() {
+        HUDcamera = new OrthographicCamera(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH);
+        HUDcamera.position.set(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, 0);
+        HUDcamera.update();
+        HUDview = new StretchViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGTH, HUDcamera);
 
-        crearPad();
-        crearBarraVida();
-        crearBotonPausa();
-        crearBotonDisparo();
+        createPad();
+        createLifeBar();
+        createPauseButton();
+        createShootingButton();
     }
 
     //region metodos crearHud
-    private void crearPad() {
+    private void createPad() {
 
         Skin skin = new Skin();
         skin.add("PadBack", Constant.MANAGER.get("HUD/JoystickPad.png",Texture.class));
         skin.add("PadKnob", Constant.MANAGER.get("HUD/JoystickStick.png",Texture.class));
 
-        Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
-        estilo.background = skin.getDrawable("PadBack");
-        estilo.knob = skin.getDrawable("PadKnob");
+        Touchpad.TouchpadStyle style = new Touchpad.TouchpadStyle();
+        style.background = skin.getDrawable("PadBack");
+        style.knob = skin.getDrawable("PadKnob");
 
-        touchpad = new Touchpad(20, estilo);
+        touchpad = new Touchpad(20, style);
         touchpad.setBounds(25, 50, 200, 200);
 
         touchpad.addListener(new ChangeListener() {
@@ -283,40 +278,40 @@ class NivelPrueba implements Screen, IPausable {
                 Touchpad pad = (Touchpad) actor;
 
                 if (Math.abs(pad.getKnobPercentX()) > Constant.TOUCHPAD_DEADZONE) {
-                    jugador.turn(pad.getKnobPercentX());
+                    player.turn(pad.getKnobPercentX());
                 } else {
-                    jugador.turn(0);
+                    player.turn(0);
                 }
                 if (Math.abs(pad.getKnobPercentY()) > Constant.TOUCHPAD_DEADZONE) {
-                    jugador.accelerate(pad.getKnobPercentY());
+                    player.accelerate(pad.getKnobPercentY());
                 } else {
-                    jugador.accelerate(0);
+                    player.accelerate(0);
                 }
             }
         });
 
-        escenaHUD = new Stage(vistaHUD);
-        escenaHUD.addActor(touchpad);
+        HUDstage = new Stage(HUDview);
+        HUDstage.addActor(touchpad);
     }
 
-    private void crearBotonPausa() {
-        float escala = 0.3f;
+    private void createPauseButton() {
+        float scale = 0.3f;
 
         Skin skin = new Skin();
         skin.add("Pausa", Constant.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Pausa");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Pausa");
 
-        botonPausa = new Button(estilo);
-        botonPausa.scaleBy(escala);
-        botonPausa.setPosition(11 * Constant.SCREEN_WIDTH / 12,
+        pauseButton = new Button(style);
+        pauseButton.scaleBy(scale);
+        pauseButton.setPosition(11 * Constant.SCREEN_WIDTH / 12,
                 9 * Constant.SCREEN_HEIGTH / 10);
-        botonPausa.addListener(new ChangeListener() {
+        pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Button boton = (Button) actor;
-                if (boton.isPressed()) {
+                Button button = (Button) actor;
+                if (button.isPressed()) {
                     if (!isPaused) {
                         pauseIP();
                     } else {
@@ -326,44 +321,44 @@ class NivelPrueba implements Screen, IPausable {
             }
         });
 
-        escenaHUD.addActor(botonPausa);
+        HUDstage.addActor(pauseButton);
     }
 
-    private void crearBotonDisparo() {
-        float escala = 0.3f;
+    private void createShootingButton() {
+        float scale = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("DisparoStandby", Constant.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
-        skin.add("DisparoPresionado", Constant.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.down = skin.getDrawable("DisparoPresionado");
-        estilo.up = skin.getDrawable("DisparoStandby");
+        skin.add("StandbyShot", Constant.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
+        skin.add("PressedShot", Constant.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.down = skin.getDrawable("PressedShot");
+        style.up = skin.getDrawable("StandbyShot");
 
-        botonDisparo = new Button(estilo);
-        botonDisparo.scaleBy(escala);
-        botonDisparo.setPosition(13 * Constant.SCREEN_WIDTH / 16,
+        shootingButton = new Button(style);
+        shootingButton.scaleBy(scale);
+        shootingButton.setPosition(13 * Constant.SCREEN_WIDTH / 16,
                 1 * Constant.SCREEN_HEIGTH / 10);
 
-        botonDisparo.addListener(new ClickListener() {
+        shootingButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                disparando = true;
+                shooting = true;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                disparando = false;
+                shooting = false;
             }
         });
-        escenaHUD.addActor(botonDisparo);
+        HUDstage.addActor(shootingButton);
     }
 
-    private void crearBarraVida() {
-        barraVida = new ProgressBar(Constant.MANAGER.get("HUD/LifeBarBar.png",Texture.class),true);
-        barraVida.setFrame(Constant.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
-        barraVida.setPosition(9 * Constant.SCREEN_WIDTH / 10+40, 2* Constant.SCREEN_HEIGTH / 8);
-        escenaHUD.addActor(barraVida);
+    private void createLifeBar() {
+        lifeBar = new ProgressBar(Constant.MANAGER.get("HUD/LifeBarBar.png",Texture.class),true);
+        lifeBar.setFrame(Constant.MANAGER.get("HUD/LifeBarFrame.png",Texture.class));
+        lifeBar.setPosition(9 * Constant.SCREEN_WIDTH / 10+40, 2* Constant.SCREEN_HEIGTH / 8);
+        HUDstage.addActor(lifeBar);
     }
 
 
@@ -378,11 +373,11 @@ class NivelPrueba implements Screen, IPausable {
     @Override
     public void pauseIP() {
         isPaused = true;
-        escenaPausa.addActor(botonPausa);
+        pauseScene.addActor(pauseButton);
         if(!gameEnded)
-            Gdx.input.setInputProcessor(escenaPausa);
+            Gdx.input.setInputProcessor(pauseScene);
         else {
-            Gdx.input.setInputProcessor(escenaResultados);
+            Gdx.input.setInputProcessor(resultsScene);
             Gdx.app.log("Pausa","EscenaControl");
         }
         Gdx.app.log("Pausa","pausa");
@@ -391,8 +386,8 @@ class NivelPrueba implements Screen, IPausable {
     @Override
     public void unPauseIP() {
         isPaused = false;
-        escenaHUD.addActor(botonPausa);
-        Gdx.input.setInputProcessor(escenaHUD);
+        HUDstage.addActor(pauseButton);
+        Gdx.input.setInputProcessor(HUDstage);
         Gdx.app.log("Despausa","despausa");
     }
 
@@ -400,33 +395,32 @@ class NivelPrueba implements Screen, IPausable {
 
     @Override
     public void render(float delta) {
-        borrarPantalla();
+        clearScreen();
 
         if(!gameEnded){
-            procesarJuego(delta);
+            processGame(delta);
         }
-        dibujarElementos();
+        drawElements();
 //        debugearElementos();
 
         if(gameEnded && animations.size()==0){
             if(!isPaused){
                 pauseIP();
-                Gdx.app.log("PARA EL JUEGO", Boolean.toString(ganador));
-                escenaResultados.setGanadorYPuntaje(ganador, puntaje);
+                resultsScene.setWinnnerAndScore(winner, score);
             }
-            escenaResultados.draw();
+            resultsScene.draw();
         }
-        moverFondo();
+        backgroundMove();
 
         //Oleadas de enemies
         //TODO mejorar la forma en la que salen
-        if(enemigoAnterior + COOLDOWN_ENEMIGO < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded && !isPaused && enemigos.size() < navesRestantes){
-            enemigoAnterior = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
-            if(navesRestantes-enemigos.size() != 1) {
-                crearEnemigos();
+        if(previousEnemy + ENEMIES_COOLDOWN < TimeUtils.nanosToMillis(TimeUtils.nanoTime()) && !gameEnded && !isPaused && enemies.size() < leftShips){
+            previousEnemy = TimeUtils.nanosToMillis(TimeUtils.nanoTime());
+            if(leftShips - enemies.size() != 1) {
+                createEnemies();
             }
             else{
-                crearJefeNivel();
+                createBossLevel();
             }
 
         }
@@ -436,7 +430,7 @@ class NivelPrueba implements Screen, IPausable {
 
     //region metodos render
 
-    private void moverFondo(){
+    private void backgroundMove(){
         if(posY >= -3200 ){
             if(!isPaused) {
                 posY--;
@@ -445,16 +439,16 @@ class NivelPrueba implements Screen, IPausable {
         }
     }
 
-    private void borrarPantalla() {
+    private void clearScreen() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    private void procesarJuego(float delta) {
+    private void processGame(float delta) {
         if (!isPaused) {
             update(delta);
-            moverEnemigos(delta);
-            moverJugador(delta);
+            moveEnemies(delta);
+            movePlayer(delta);
         }
     }
 
@@ -475,35 +469,35 @@ class NivelPrueba implements Screen, IPausable {
         toRemove.clear();
     }
 
-    private void moverEnemigos(float delta) {
-        target = new Vector2(jugador.getX(), jugador.getY());
+    private void moveEnemies(float delta) {
+        target = new Vector2(player.getX(), player.getY());
         //target = new Vector2(Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2);
-        for(ShipEnemy enemigo:enemigos){
-            enemigo.move(target,delta);
+        for(ShipEnemy enemy: enemies){
+            enemy.move(target,delta);
             //se utiliza el metodo nanos en vez de millis porque millis
             //cuenta el tiempo desde 1970
 
-            enemigo.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+            enemy.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
         }
     }
 
-    private void moverJugador(float delta) {
-        jugador.move(target,delta);
-        if(disparando){
+    private void movePlayer(float delta) {
+        player.move(target,delta);
+        if(shooting){
             //se utiliza el metodo nanos en vez de millis porque millis
             //cuenta el tiempo desde 1970
-            jugador.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
+            player.shoot(TimeUtils.nanosToMillis(TimeUtils.nanoTime()));
         }
     }
     //endregion
 
-    private void dibujarElementos() {
+    private void drawElements() {
 
         batch.begin();
         spriteFondo.draw(batch);
         batch.end();
 
-        escenaJuego.draw();
+        gameScene.draw();
 
         batch.begin();
 
@@ -525,17 +519,17 @@ class NivelPrueba implements Screen, IPausable {
             }
         }
 
-        textScore.showMessage(batch, "Puntaje: "+Integer.toString(puntaje),
+        textScore.showMessage(batch, "Puntaje: "+Integer.toString(score),
                 10, Constant.SCREEN_HEIGTH -20, Color.GOLD);
-        textShips.showMessage(batch, "Enemigos: "+Integer.toString(navesRestantes),
+        textShips.showMessage(batch, "Enemigos: "+Integer.toString(leftShips),
                 Constant.SCREEN_WIDTH /2, Constant.SCREEN_HEIGTH -20, Color.ORANGE);
 
         batch.end();
 
-        batch.setProjectionMatrix(camaraHUD.combined);
-        escenaHUD.draw();
+        batch.setProjectionMatrix(HUDcamera.combined);
+        HUDstage.draw();
         if (isPaused) {
-            escenaPausa.draw();
+            pauseScene.draw();
         }
     }
 //     region debug shapes
@@ -557,7 +551,7 @@ class NivelPrueba implements Screen, IPausable {
 //        for (ShipEnemy enemigo : enemies) {
 //            shapeRenderer.circle(enemigo.getX(), enemigo.getY(), Constant.toScreenSize(enemigo.getShape().getRadius()));
 //        }
-//        shapeRenderer.circle(jugador.getX(), jugador.getY(), Constant.toScreenSize(jugador.getShape().getRadius()));
+//        shapeRenderer.circle(player.getX(), player.getY(), Constant.toScreenSize(player.getShape().getRadius()));
 //
 //        shapeRenderer.setColor(new Color(1, 0, 0, 0.7f));
 //        /*for (Bullet bala : balas) {
@@ -579,7 +573,7 @@ class NivelPrueba implements Screen, IPausable {
 
     //endregion
 
-    private void crearBordes() {
+    private void createEdges() {
         new Edge(world,-120,0,100, Constant.SCREEN_HEIGTH);
         new Edge(world, Constant.SCREEN_WIDTH +120,0,100, Constant.SCREEN_HEIGTH);
         new Edge(world,-120,-120, Constant.SCREEN_WIDTH +200,100);
@@ -588,7 +582,7 @@ class NivelPrueba implements Screen, IPausable {
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override
@@ -608,6 +602,5 @@ class NivelPrueba implements Screen, IPausable {
     public void dispose() {
         Constant.MANAGER.dispose();
     }
-
 
 }

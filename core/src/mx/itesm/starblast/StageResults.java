@@ -15,52 +15,52 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-class StageResultados extends Stage {
+class StageResults extends Stage {
 
     private final StarBlast menu;
     private final IPausable parent;
-    private boolean ganador;
-    private int puntaje;
+    private boolean winner;
+    private int score;
 
-    StageResultados(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
+    StageResults(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
         super(viewport, batch);
         this.menu = menu;
         this.parent = parent;
-        this.ganador = false;
-        this.puntaje = 0;
+        this.winner = false;
+        this.score = 0;
         init();
     }
 
-    public void setGanadorYPuntaje(boolean ganador, int puntaje){
-        this.ganador = ganador;
-        this.puntaje = puntaje;
-        pedirNombre();
-        mostrarPuntaje();
-        mostrarLeyenda();
+    public void setWinnnerAndScore(boolean winner, int score){
+        this.winner = winner;
+        this.score = score;
+        askForName();
+        showScore();
+        showText();
     }
 
     private void init() {
-        Image backgroud = new Image(new Texture("PantallaPuntajes/CuadroResultados.png"));
-        backgroud.setPosition(Constant.SCREEN_WIDTH / 2 - backgroud.getWidth() / 2,
-                Constant.SCREEN_HEIGTH / 2 - backgroud.getHeight() / 2);
-        addActor(backgroud);
-        crearBotonBack();
-        crearBotonRegresar();
+        Image background = new Image(new Texture("PantallaPuntajes/CuadroResultados.png"));
+        background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
+                Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
+        addActor(background);
+        createBackButton();
+        createReturnButton();
     }
 
-    private void crearBotonRegresar() {Skin skin = new Skin();
+    private void createReturnButton() {Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
         skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
-        estilo.down = skin.getDrawable("Down");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menu.setScreen(new NivelPrueba(menu));
+                menu.setScreen(new LevelProof(menu));
             }
         });
         btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,
@@ -68,16 +68,16 @@ class StageResultados extends Stage {
         addActor(btn);
     }
 
-    private void crearBotonBack() {
+    private void createBackButton() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/Back.png"));
         skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
-        estilo.down = skin.getDrawable("Down");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -89,35 +89,35 @@ class StageResultados extends Stage {
         addActor(btn);
     }
 
-    private void mostrarLeyenda(){
-        Texture textura;
-        if(this.ganador){
-            textura = new Texture("PantallaPuntajes/Ganador.png");
+    private void showText(){
+        Texture texture;
+        if(this.winner){
+            texture = new Texture("PantallaPuntajes/Ganador.png");
         }else{
-            textura = new Texture("PantallaPuntajes/Perdedor.png");
+            texture = new Texture("PantallaPuntajes/Perdedor.png");
         }
-        Image leyenda = new Image(textura);
-        leyenda.setPosition(Constant.SCREEN_WIDTH / 2 - leyenda.getWidth() / 2,
-                3* Constant.SCREEN_HEIGTH / 4 - 50 - leyenda.getHeight() / 2);
-        addActor(leyenda);
+        Image text = new Image(texture);
+        text.setPosition(Constant.SCREEN_WIDTH / 2 - text.getWidth() / 2,
+                3* Constant.SCREEN_HEIGTH / 4 - 50 - text.getHeight() / 2);
+        addActor(text);
     }
 
-    private void mostrarPuntaje(){
-        Gdx.app.log("FINAL", Integer.toString(this.puntaje));
+    private void showScore(){
+        Gdx.app.log("FINAL", Integer.toString(this.score));
         Text text = new Text(Constant.SOURCE_TEXT);
         TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.GOLD, Color.GOLD, 2);
-        TextButton marcador = new TextButton(Integer.toString(this.puntaje), textButtonStyle);
-        marcador.setPosition(Constant.SCREEN_WIDTH /2+100 - marcador.getWidth() / 2,
-                Constant.SCREEN_HEIGTH /2-90 - marcador.getHeight() / 2);
-        addActor(marcador);
+        TextButton score = new TextButton(Integer.toString(this.score), textButtonStyle);
+        score.setPosition(Constant.SCREEN_WIDTH /2+100 - score.getWidth() / 2,
+                Constant.SCREEN_HEIGTH /2-90 - score.getHeight() / 2);
+        addActor(score);
     }
 
-    private void pedirNombre(){
+    private void askForName(){
         Input.TextInputListener textListener = new Input.TextInputListener() {
             @Override
             public void input(String input) {
                 Gdx.app.log("Nombre Ingresado: ", input);
-                PreferencesSB.savingScore(input, puntaje);
+                PreferencesSB.savingScore(input, score);
             }
 
             @Override

@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
-class StoryLevel extends ScreenSB implements IPausable {
+class LevelStory extends ScreenSB implements IPausable {
 
     //region background
     Texture loopingBackground;
@@ -54,8 +54,8 @@ class StoryLevel extends ScreenSB implements IPausable {
     //endregion
 
     //region escenas
-    private final StagePausa pauseScene;
-    private StagePerder lostScene;
+    private final StagePause pauseScene;
+    private StageLost lostScene;
     private StageWin winningScene;
     //endregion
 
@@ -96,12 +96,12 @@ class StoryLevel extends ScreenSB implements IPausable {
     Random random = new Random();
     //endregion
 
-    StoryLevel(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves) {
+    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves) {
         super();
         this.app = app;
         HUDScene = new Stage(view, batch);
-        pauseScene = new StagePausa(view, batch, app, this);
-        lostScene = new StagePerder(view, batch, app);
+        pauseScene = new StagePause(view, batch, app, this);
+        lostScene = new StageLost(view, batch, app);
         winningScene = new StageWin(view, batch, app);
         this.initialEnemies = initialEnemies;
         this.extraPerWave = extraPerWave;
