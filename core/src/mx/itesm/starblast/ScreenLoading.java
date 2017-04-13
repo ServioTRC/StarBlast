@@ -118,7 +118,7 @@ class ScreenLoading extends ScreenSB {
 //                menu.setScreen(new LevelProof(menu));
                 break;
             case LEVEL1:
-                menu.setScreen(new LevelStory1(menu));
+                menu.setScreen(new Level1(menu));
                 break;
             case ENDLESS:
                 menu.setScreen(new LevelProof(menu));

@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -58,4 +59,5 @@ class StageLost extends Stage {
             super.act(delta);
         }
     }
+
 }
