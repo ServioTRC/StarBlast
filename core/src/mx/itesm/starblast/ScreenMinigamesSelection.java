@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 class ScreenMinigamesSelection extends ScreenSB {
     //TODO texturas para cuando estas haciendo click en las diferentes opciones
@@ -51,6 +52,7 @@ class ScreenMinigamesSelection extends ScreenSB {
         createMinigame1Button();
         createMinigame2Button();
         createMinigame3Button();
+        createBackButton();
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(selectionScene);
@@ -109,6 +111,27 @@ class ScreenMinigamesSelection extends ScreenSB {
                 //menu.setScreen(new PantallaJuego(menu));
             }
         });
+    }
+
+    private void createBackButton() {
+        Skin skin = new Skin();
+        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
+        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
+
+        final Button btn = new Button(style);
+        btn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                menu.setScreen(new ScreenMenu(menu));
+            }
+        });
+        btn.setPosition(12* Constant.SCREEN_WIDTH /13,
+                Constant.SCREEN_HEIGTH /8, Align.center);
+        selectionScene.addActor(btn);
     }
 
     @Override

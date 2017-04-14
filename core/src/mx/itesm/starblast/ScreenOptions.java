@@ -55,24 +55,24 @@ class ScreenOptions extends ScreenSB {
     }
 
     private void creatingButtons(){
-        createButtonHelp();
-        createButtonMusic();
-        createButtonSound();
-        createButtonCodes();
-        createButtonRestart();
-        createButtonBack();
+        createHelpButton();
+        createMusicButton();
+        createSoundButton();
+        createCodesButton();
+        createRestartButton();
+        createBackButton();
     }
 
-    private void createButtonBack() {
+    private void createBackButton() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/Back.png"));
         skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
-        estilo.down = skin.getDrawable("Down");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -84,16 +84,16 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createButtonRestart() {
+    private void createRestartButton() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
         skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
-        estilo.down = skin.getDrawable("Down");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
 
-        Button btn = new Button(estilo);
+        Button btn = new Button(style);
         btn.setPosition(3* Constant.SCREEN_WIDTH /4,
                 Constant.SCREEN_HEIGTH /6+20, Align.center);
         btn.addListener(new ClickListener() {
@@ -106,14 +106,14 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createButtonCodes() {
+    private void createCodesButton() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -138,16 +138,16 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createButtonSound() {
+    private void createSoundButton() {
         Skin skin = new Skin();
         skin.add("Yes", new Texture("PantallaOpciones/BotonSonido.png"));
         skin.add("No", new Texture("PantallaOpciones/BotonNoSonido.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Yes");
-        estilo.checked = skin.getDrawable("No");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Yes");
+        style.checked = skin.getDrawable("No");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -161,16 +161,16 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createButtonMusic() {
+    private void createMusicButton() {
         Skin skin = new Skin();
         skin.add("Yes", new Texture("PantallaOpciones/BotonMusica.png"));
         skin.add("No", new Texture("PantallaOpciones/BotonNoMusica.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Yes");
-        estilo.checked = skin.getDrawable("No");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Yes");
+        style.checked = skin.getDrawable("No");
 
-        final Button btn = new Button(estilo);
+        final Button btn = new Button(style);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -189,14 +189,14 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createButtonHelp(){
+    private void createHelpButton(){
         Skin skin = new Skin();
         skin.add("Up", new Texture("PantallaOpciones/BotonAyuda.png"));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Up");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
 
-        Button btn = new Button(estilo);
+        Button btn = new Button(style);
         btn.setPosition(3* Constant.SCREEN_WIDTH /4,
                 Constant.SCREEN_HEIGTH /2-25, Align.center);
         btn.addListener(new ClickListener() {

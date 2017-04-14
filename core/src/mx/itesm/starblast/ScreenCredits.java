@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 class ScreenCredits extends ScreenSB {
 
@@ -52,24 +55,29 @@ class ScreenCredits extends ScreenSB {
         Image imgFondo = new Image(backgroundTexture);
         text = new Text(Constant.SOURCE_TEXT);
         creditsScene.addActor(imgFondo);
-        creatingBackButton();
+        createBackButton();
         Gdx.input.setInputProcessor(creditsScene);
     }
 
-    private void creatingBackButton() {
-        TextButton.TextButtonStyle textButtonStyle = text.generateText(Color.RED, Color.GOLD, 2);
-        TextButton btnPlay = new TextButton("X", textButtonStyle);
-        btnPlay.setPosition(7* Constant.SCREEN_WIDTH /8-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
+    private void createBackButton() {
+        Skin skin = new Skin();
+        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
+        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
 
-        creditsScene.addActor(btnPlay);
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
 
-        btnPlay.addListener(new ClickListener(){
+        final Button btn = new Button(style);
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenCredits ","Going to ScreenMenu");
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
+        btn.setPosition(12* Constant.SCREEN_WIDTH /13,
+                Constant.SCREEN_HEIGTH /8, Align.center);
+        creditsScene.addActor(btn);
     }
 
     private void loadingTexture() {

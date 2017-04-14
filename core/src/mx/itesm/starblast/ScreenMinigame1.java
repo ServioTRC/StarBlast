@@ -3,6 +3,7 @@ package mx.itesm.starblast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Random;
 
@@ -24,7 +26,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     private SpriteBatch batch;
 
     //Escenas
-    private Stage minigameScene;
+    private Stage minigame1Scene;
 
     private boolean won = false;
     private boolean isStoryMode = false;
@@ -40,6 +42,14 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     //TODO yo creo que hay que agragar pantalla de pausa
 
+    private long startingTime;
+    private Text textScore;
+
+    private Texture backButtonTexture;
+    private Texture backButtonTextureUp;
+    private Sprite backButtonSprite;
+
+
     ScreenMinigame1(StarBlast menu, boolean isStoryMode){
         this.menu = menu;
         this.isStoryMode = isStoryMode;
@@ -49,13 +59,14 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     public void show() {
         loadingTextures();
         creatingObjects();
+        startingTime = TimeUtils.millis();
     }
 
     private void creatingObjects() {
         batch = new SpriteBatch();
-        minigameScene = new Stage(view, batch);
+        minigame1Scene = new Stage(view, batch);
         Image imgFondo = new Image(backgroundTexture);
-        minigameScene.addActor(imgFondo);
+        minigame1Scene.addActor(imgFondo);
         Random r = new Random();
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
@@ -64,13 +75,22 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
                 pieces[i*5+j].setCenter(BOARD_START_X+r.nextFloat()*PIECE_WIDTH*5,BOARD_START_Y-r.nextFloat()*PIECE_HEIGHT*5);
             }
         }
-
+        textScore = new Text(Constant.SOURCE_TEXT);
+        creatingBackButton();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(this);
     }
 
     private void loadingTextures() {
         backgroundTexture = new Texture("PantallaMinijuego1/FondoMinijuego1.jpg");
+        backButtonTexture = new Texture("PantallaOpciones/Back.png");
+        backButtonTextureUp = new Texture("PantallaOpciones/BackYellow.png");
+    }
+
+    private void creatingBackButton(){
+        backButtonSprite = new Sprite(backButtonTexture);
+        backButtonSprite.setX(12* Constant.SCREEN_WIDTH /13);
+        backButtonSprite.setY(Constant.SCREEN_HEIGTH /8);
     }
 
     @Override
@@ -78,13 +98,19 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         if(won){
             //TODO hacer algo cuando gane el usuario
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+        } else if((TimeUtils.millis() - startingTime) >= 30000){
+            //TODO pantalla de reintentar minijuego
+            menu.setScreen(new ScreenMinigamesSelection(menu));
         }
         clearScreen();
-        minigameScene.draw();
+        minigame1Scene.draw();
         batch.begin();
         for(Sprite piece : pieces){
             piece.draw(batch);
         }
+        textScore.showMessage(batch, "Tiempo restante: "+Long.toString((30000-(TimeUtils.millis() - startingTime))/100),
+                Constant.SCREEN_WIDTH-650, Constant.SCREEN_HEIGTH -20, Color.GREEN);
+        backButtonSprite.draw(batch);
         batch.end();
     }
 
@@ -139,6 +165,10 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
                 break;
             }
         }
+        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            backButtonSprite.setTexture(backButtonTextureUp);
+        else
+            backButtonSprite.setTexture(backButtonTexture);
         return true;
     }
 
@@ -159,6 +189,8 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
             }
             selectedPieceIdx = -1;
         }
+        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            menu.setScreen(new ScreenMinigamesSelection(menu));
         return true;
     }
 
