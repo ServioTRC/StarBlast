@@ -90,7 +90,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     private void creatingBackButton(){
         backButtonSprite = new Sprite(backButtonTexture);
         backButtonSprite.setX(12* Constant.SCREEN_WIDTH /13);
-        backButtonSprite.setY(Constant.SCREEN_HEIGTH /8);
+        backButtonSprite.setY(9*Constant.SCREEN_HEIGTH /10);
     }
 
     @Override
@@ -108,8 +108,8 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         for(Sprite piece : pieces){
             piece.draw(batch);
         }
-        textScore.showMessage(batch, "Tiempo restante: "+Long.toString((30000-(TimeUtils.millis() - startingTime))/100),
-                Constant.SCREEN_WIDTH-650, Constant.SCREEN_HEIGTH -20, Color.GREEN);
+        textScore.showMessage(batch, Long.toString((30000-(TimeUtils.millis() - startingTime))/1000),
+                Constant.SCREEN_WIDTH/2 - 60, Constant.SCREEN_HEIGTH -20, Color.GREEN);
         backButtonSprite.draw(batch);
         batch.end();
     }

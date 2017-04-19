@@ -1,6 +1,6 @@
 package mx.itesm.starblast;
 
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -18,9 +18,9 @@ class StageLost extends Stage {
     private final StarBlast menu;
     private AnimatedImage countdownAnimation;
 
-    StageLost(Viewport viewport, Batch batch, StarBlast menu) {
+    StageLost(Viewport viewport, Batch batch, StarBlast menuConstruct) {
         super(viewport, batch);
-        this.menu = menu;
+        this.menu = menuConstruct;
         Image background = new Image(Constant.MANAGER.get("PantallaPerder/FondoDerribado.jpg", Texture.class));
         background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
@@ -28,6 +28,17 @@ class StageLost extends Stage {
         background.addListener(new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //TODO reiniciar nivel creo que haré una Interfaz que sea IReiniciable o algo así
+                int level = PreferencesSB.readingLevelProgress();
+                if(level == 1) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level1");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
+                } else if (level == 2) {
+                    Gdx.app.log("ScreenMenu ","Going to Level2");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+                } else if (level == 3) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level3");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                }
                 return true;
             }
         });

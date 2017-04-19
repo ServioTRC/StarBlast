@@ -114,11 +114,14 @@ class ScreenLoading extends ScreenSB {
                 break;
             case MENU:
                 break;
-            case STORY:
-//                menu.setScreen(new LevelProof(menu));
-                break;
             case LEVEL1:
                 menu.setScreen(new Level1(menu));
+                break;
+            case LEVEL2:
+                menu.setScreen(new Level2(menu));
+                break;
+            case LEVEL3:
+                menu.setScreen(new Level3(menu));
                 break;
             case ENDLESS:
                 menu.setScreen(new LevelProof(menu));
@@ -153,11 +156,14 @@ class ScreenLoading extends ScreenSB {
                 break;
             case MENU:
                 break;
-            case STORY:
-                loadStory();
-                break;
             case LEVEL1:
                 loadLevel1();
+                break;
+            case LEVEL2:
+                loadLevel2();
+                break;
+            case LEVEL3:
+                loadLevel3();
                 break;
             case ENDLESS:
                 loadEndless();
@@ -184,6 +190,16 @@ class ScreenLoading extends ScreenSB {
     }
 
     private void loadLevel1() {
+        Constant.MANAGER.load("PantallaJuego/Nivel 1/LoopingBackground.jpg", Texture.class);
+        loadStory();
+    }
+
+    private void loadLevel2() {
+        Constant.MANAGER.load("PantallaJuego/Nivel 1/LoopingBackground.jpg", Texture.class);
+        loadStory();
+    }
+
+    private void loadLevel3() {
         Constant.MANAGER.load("PantallaJuego/Nivel 1/LoopingBackground.jpg", Texture.class);
         loadStory();
     }

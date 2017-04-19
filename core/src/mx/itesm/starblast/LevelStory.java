@@ -77,6 +77,7 @@ class LevelStory extends ScreenSB implements IPausable {
     float spawnedEnemiesForThisWave = 0;
     int waveNumber = 1;
     float timeoutBetweenWaves = 5;
+    int level;
 
     ArrayList<ShipEnemy> enemies = new ArrayList<ShipEnemy>();
     //endregion
@@ -96,7 +97,7 @@ class LevelStory extends ScreenSB implements IPausable {
     Random random = new Random();
     //endregion
 
-    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves) {
+    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves, int level) {
         super();
         this.app = app;
         HUDScene = new Stage(view, batch);
@@ -107,6 +108,7 @@ class LevelStory extends ScreenSB implements IPausable {
         this.extraPerWave = extraPerWave;
         this.numberOfWaves = numberOfWaves;
         numberEnemiesForThisWave = initialEnemies;
+        this.level = level;
     }
 
     //region metodos ScreenSB
@@ -155,6 +157,7 @@ class LevelStory extends ScreenSB implements IPausable {
             return;
         }
         if (youWon) {
+            PreferencesSB.savingLevelProgress(level++);
             winningScene.draw();
             return;
         }

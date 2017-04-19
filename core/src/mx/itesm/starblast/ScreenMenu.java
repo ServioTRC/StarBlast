@@ -83,7 +83,17 @@ class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to History mode");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
+                int level = PreferencesSB.readingLevelProgress();
+                if(level == 1) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level1");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
+                } else if (level == 2) {
+                    Gdx.app.log("ScreenMenu ","Going to Level2");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+                } else if (level == 3) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level3");
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                }
             }
         });
     }

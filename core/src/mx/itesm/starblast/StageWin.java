@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -34,6 +35,17 @@ class StageWin extends Stage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                  //TODO handle next level
+                int level = PreferencesSB.readingLevelProgress();
+                if(level == 1) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level1");
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.LEVEL1));
+                } else if (level == 2) {
+                    Gdx.app.log("ScreenMenu ","Going to Level2");
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.LEVEL2));
+                } else if (level == 3) {
+                    Gdx.app.log("ScreenMenu ", "Going to Level3");
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.LEVEL3));
+                }
             }
         });
         addActor(btn);
