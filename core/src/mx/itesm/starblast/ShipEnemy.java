@@ -39,7 +39,7 @@ class ShipEnemy extends Ship {
         canShoot = false;
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
-        explosionSound = Constant.MANAGER.get("EfectosSonoros/explosion2.mp3",Sound.class);
+        explosionSound = Constant.MANAGER.get("SoundEffects/Explosion2.mp3",Sound.class);
 
     }
 

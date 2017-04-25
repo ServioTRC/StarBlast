@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -39,9 +40,9 @@ class ShipPlayer extends Ship {
         damage = 20;
 
         totalLife = life;
-/*
-        fireSound = Constant.MANAGER.get("EfectosSonoros/SonidoDisparo1.mp3", Sound.class);
-        explosionSound = Constant.MANAGER.get("EfectosSonoros/explosion2.mp3", Sound.class);*/
+
+        fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
+        explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
     }
 
     @Override
