@@ -80,6 +80,9 @@ class LevelStory extends ScreenSB implements IPausable {
     int level;
 
     ArrayList<ShipEnemy> enemies = new ArrayList<ShipEnemy>();
+
+
+    ArrayList<Texture> EnemiesFiles;
     //endregion
 
     //region player
@@ -109,6 +112,12 @@ class LevelStory extends ScreenSB implements IPausable {
         this.numberOfWaves = numberOfWaves;
         numberEnemiesForThisWave = initialEnemies;
         this.level = level;
+
+        EnemiesFiles = new ArrayList<Texture>();
+        EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy1Sprite.png",Texture.class));
+        EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy2Sprite.png",Texture.class));
+        EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy3Sprite.png",Texture.class));
+
     }
 
     //region metodos ScreenSB
@@ -459,7 +468,7 @@ class LevelStory extends ScreenSB implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            ShipEnemy enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemy" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(1)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
         }

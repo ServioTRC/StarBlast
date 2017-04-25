@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -36,6 +37,10 @@ class ShipEnemy extends Ship {
         speed = 0;
         damage = 5;
         canShoot = false;
+
+        fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
+        explosionSound = Constant.MANAGER.get("EfectosSonoros/explosion2.mp3",Sound.class);
+
     }
 
     @Override
@@ -45,6 +50,12 @@ class ShipEnemy extends Ship {
             super.shoot(time);
         }
     }
+
+    @Override
+    public void playSound() {
+        fireSound.play(0.2f);
+    }
+
 
     @Override
     public void accelerate(float acceleration) {

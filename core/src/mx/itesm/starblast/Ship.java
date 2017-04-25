@@ -1,5 +1,6 @@
 package mx.itesm.starblast;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +28,8 @@ abstract class Ship implements IPlayableEntity {
     int damage;
     int BULLET_DAMAGE;
     boolean enemy;
+    Sound fireSound;
+    Sound explosionSound;
 
     Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy) {
         this.world = world;
@@ -43,14 +46,21 @@ abstract class Ship implements IPlayableEntity {
         body.setUserData(this);
         BULLET_DAMAGE = 10;
         makeFixture(density, restitution);
+
+
     }
 
     public void shoot(long time) {
         if (previousShot + COOLDOWN_SHOT < time) {
             previousShot = time;
             shoot();
+            if(PreferencesSB.SOUNDS_ENABLE) {
+                playSound();
+            }
         }
     }
+
+    public abstract void playSound();
 
     protected void shoot(){
         new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
@@ -78,7 +88,7 @@ abstract class Ship implements IPlayableEntity {
         makeFixture(fix.getDensity(), fix.getRestitution());
     }
 
-    private void makeFixture(float density, float restitution){
+    void makeFixture(float density, float restitution){
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
@@ -125,7 +135,9 @@ abstract class Ship implements IPlayableEntity {
     }
 
     public void die(){
-        //TODO chance hace algo
+        if(PreferencesSB.SOUNDS_ENABLE) {
+            explosionSound.play(0.8f);
+        }
     }
 
     @Override

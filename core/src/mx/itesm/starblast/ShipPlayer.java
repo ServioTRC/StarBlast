@@ -39,6 +39,14 @@ class ShipPlayer extends Ship {
         damage = 20;
 
         totalLife = life;
+/*
+        fireSound = Constant.MANAGER.get("EfectosSonoros/SonidoDisparo1.mp3", Sound.class);
+        explosionSound = Constant.MANAGER.get("EfectosSonoros/explosion2.mp3", Sound.class);*/
+    }
+
+    @Override
+    public void playSound() {
+        fireSound.play(0.5f);
     }
 
     @Override
