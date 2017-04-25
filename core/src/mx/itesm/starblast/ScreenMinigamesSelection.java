@@ -97,7 +97,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame3Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame32.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);

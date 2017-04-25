@@ -81,7 +81,7 @@ class ScreenCredits extends ScreenSB {
     }
 
     private void loadingTexture() {
-        backgroundTexture = new Texture("CreditsScreen/Creditos.jpg");
+        backgroundTexture = new Texture("CreditsScreen/Credits.jpg");
     }
 
     @Override
