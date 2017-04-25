@@ -152,16 +152,18 @@ class LevelStory extends ScreenSB implements IPausable {
         HUDScene.draw();
         if (youLost) {
             pauseIP();
-            lostScene.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(lostScene);
+            lostScene.act(delta);
             lostScene.draw();
-            return;
+            //return;
         }
-        if (youWon) {
-            PreferencesSB.savingLevelProgress(level++);
+        else if (youWon) {
+            PreferencesSB.savingLevelProgress(level+1);
+            Gdx.input.setInputProcessor(winningScene);
             winningScene.draw();
-            return;
+            //return;
         }
-        if (isPaused) {
+        else if (isPaused) {
             pauseScene.draw();
         }
     }
@@ -406,7 +408,6 @@ class LevelStory extends ScreenSB implements IPausable {
                 animations.add(new AutoAnimation(Constant.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
                 isPaused = true;
                 youLost = true;
-                Gdx.input.setInputProcessor(lostScene);
             }
         }
     }
@@ -484,7 +485,6 @@ class LevelStory extends ScreenSB implements IPausable {
                 //TODO se acabo el juego (ganaste)
                 isPaused = true;
                 youWon = true;
-                Gdx.input.setInputProcessor(winningScene);
             }
         }
     }
