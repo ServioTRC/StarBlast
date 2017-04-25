@@ -82,7 +82,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     }
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("Minigame1Screen/FondoMinijuego1.jpg");
+        backgroundTexture = new Texture("Minigame1Screen/Minigame1Background.jpg");
         backButtonTexture = new Texture("SettingsScreen/Back.png");
         backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
     }

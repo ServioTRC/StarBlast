@@ -106,7 +106,7 @@ class ScreenScores extends ScreenSB {
     }
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("HighScoresScreen/FondoSimple.jpg");
+        backgroundTexture = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
     }
 
     @Override

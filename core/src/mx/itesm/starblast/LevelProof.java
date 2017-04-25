@@ -86,7 +86,7 @@ class LevelProof implements Screen, IPausable {
     private boolean winner = false;
 
     //Elementos para el fondo
-    private Texture backgroundTexture = Constant.MANAGER.get("GameScreen/FondoNivel2.jpg", Texture.class);
+    private Texture backgroundTexture = Constant.MANAGER.get("GameScreen/BackgroundLevel2.jpg", Texture.class);
     private SpriteBatch batch;
     private Sprite spriteFondo;
     private int posY = 0;
@@ -161,11 +161,11 @@ class LevelProof implements Screen, IPausable {
                     objectA.setDamage(0);
                     toRemove.add(contact.getFixtureA().getBody());
                     if(objectA instanceof ShipPlayer){
-                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionNaveFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
+                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
                         gameEnded = true;
                     }else if(objectA instanceof ShipEnemy){
                         ShipEnemy ship = (ShipEnemy) objectA;
-                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionNaveFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
+                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
                         enemies.remove(ship);
                         score += 100;
                         leftShips--;
@@ -179,11 +179,11 @@ class LevelProof implements Screen, IPausable {
                     objectB.setDamage(0);
                     toRemove.add(contact.getFixtureB().getBody());
                     if(objectB instanceof ShipPlayer){
-                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionNaveFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
+                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionFrames.png"),0.15f, player.getX(), player.getY(),100,100,batch));
                         gameEnded = true;
                     }else if(objectB instanceof ShipEnemy){
                         ShipEnemy ship = (ShipEnemy) objectB;
-                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionNaveFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
+                        animations.add(new AutoAnimation(new Texture("Animations/ExplosionFrames.png"),0.15f,ship.getX(),ship.getY(),100,100,batch));
                         enemies.remove(ship);
                         score += 100;
                         leftShips--;
@@ -230,7 +230,7 @@ class LevelProof implements Screen, IPausable {
         ShipEnemy enemy;
         Random r = new Random();
         for (int i = 0; i < INITIAL_ENEMIES; i++) {
-            enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemy" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
 //            enemigo = new ShipEnemy("GameScreen/Enemigo1.png",3*Constant.SCREEN_WIDTH/4,Constant.SCREEN_HEIGTH/3,world);
             //enemigo = new ShipEnemyBoss("GameScreen/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
 
@@ -241,7 +241,7 @@ class LevelProof implements Screen, IPausable {
 
     private void createBossLevel() {
         Random r = new Random();
-        ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/NaveJefe.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
+        ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
         boss.scaling(Constant.SHIPS_SCALE);
         enemies.add(boss);
     }
@@ -299,10 +299,10 @@ class LevelProof implements Screen, IPausable {
         float scale = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("Pausa", Constant.MANAGER.get("GameScreen/Pausa.png", Texture.class));
+        skin.add("Pause", Constant.MANAGER.get("GameScreen/Pause.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
-        style.up = skin.getDrawable("Pausa");
+        style.up = skin.getDrawable("Pause");
 
         pauseButton = new Button(style);
         pauseButton.scaleBy(scale);
@@ -329,8 +329,8 @@ class LevelProof implements Screen, IPausable {
         float scale = 0.3f;
 
         Skin skin = new Skin();
-        skin.add("StandbyShot", Constant.MANAGER.get("HUD/BotonAStandby.png",Texture.class));
-        skin.add("PressedShot", Constant.MANAGER.get("HUD/BotonAPresionado.png",Texture.class));
+        skin.add("StandbyShot", Constant.MANAGER.get("HUD/ButtonAStandby.png",Texture.class));
+        skin.add("PressedShot", Constant.MANAGER.get("HUD/ButtonAPress.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.down = skin.getDrawable("PressedShot");
         style.up = skin.getDrawable("StandbyShot");

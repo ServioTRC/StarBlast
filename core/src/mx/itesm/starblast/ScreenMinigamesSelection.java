@@ -46,7 +46,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             }
         };
         Image backgroundImage =
-                new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionScreen.png",Texture.class));
+                new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class));
         selectionScene.addActor(backgroundImage);
         //TODO checar cual minijuego es cual
         createMinigame1Button();
@@ -60,7 +60,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame1Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego1.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame1.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
@@ -79,7 +79,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame2Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego2.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame2.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
@@ -97,7 +97,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame3Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego3.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);

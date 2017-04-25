@@ -280,7 +280,7 @@ class LevelStory extends ScreenSB implements IPausable {
 
     private void createPauseButton() {
         Skin skin = new Skin();
-        skin.add("Pause", Constant.MANAGER.get("GameScreen/Pausa.png", Texture.class));
+        skin.add("Pause", Constant.MANAGER.get("GameScreen/Pause.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Pause");
@@ -307,8 +307,8 @@ class LevelStory extends ScreenSB implements IPausable {
 
     private void createShotButton() {
         Skin skin = new Skin();
-        skin.add("StandbyShot", Constant.MANAGER.get("HUD/BotonAStandby.png", Texture.class));
-        skin.add("PressedShot", Constant.MANAGER.get("HUD/BotonAPresionado.png", Texture.class));
+        skin.add("StandbyShot", Constant.MANAGER.get("HUD/ButtonAStandby.png", Texture.class));
+        skin.add("PressedShot", Constant.MANAGER.get("HUD/ButtonAPress.png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.down = skin.getDrawable("PressedShot");
         style.up = skin.getDrawable("StandbyShot");
@@ -334,8 +334,8 @@ class LevelStory extends ScreenSB implements IPausable {
 
     private void createSpecialButton() {
         Skin skin = new Skin();
-        skin.add("StandbySpecial", Constant.MANAGER.get("HUD/BotonBStandby.png", Texture.class));
-        skin.add("PressedSpecial", Constant.MANAGER.get("HUD/BotonBPresionado.png", Texture.class));
+        skin.add("StandbySpecial", Constant.MANAGER.get("HUD/ButtonBStandby.png", Texture.class));
+        skin.add("PressedSpecial", Constant.MANAGER.get("HUD/ButtonBPress.png", Texture.class));
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.down = skin.getDrawable("PressedSpecial");
         estilo.up = skin.getDrawable("StandbySpecial");
@@ -399,13 +399,13 @@ class LevelStory extends ScreenSB implements IPausable {
             a.setDamage(0);
             toRemove.add(a.getBody());
             if (a instanceof Ship) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
             }
             if (a instanceof ShipEnemy) {
                 enemies.remove(a);
             }
             if (a instanceof ShipPlayer) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
                 isPaused = true;
                 youLost = true;
             }
@@ -459,7 +459,7 @@ class LevelStory extends ScreenSB implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            ShipEnemy enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            ShipEnemy enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemy" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
         }

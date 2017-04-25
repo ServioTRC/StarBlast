@@ -51,7 +51,7 @@ class ScreenStart extends ScreenSB {
 
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("SplashScreen/FondoInicio.jpg");
+        backgroundTexture = new Texture("SplashScreen/SplashBackground.jpg");
     }
 
     @Override

@@ -40,7 +40,7 @@ class StageResults extends Stage {
     }
 
     private void init() {
-        Image background = new Image(new Texture("HighScoresScreen/CuadroResultados.png"));
+        Image background = new Image(new Texture("HighScoresScreen/ResultsWindow.png"));
         background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
         addActor(background);
@@ -49,8 +49,8 @@ class StageResults extends Stage {
     }
 
     private void createReturnButton() {Skin skin = new Skin();
-        skin.add("Up", new Texture("SettingsScreen/BotonReset.png"));
-        skin.add("Down", new Texture("SettingsScreen/BotonResetYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/ButtonReset.png"));
+        skin.add("Down", new Texture("SettingsScreen/ButtonResetYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -92,9 +92,9 @@ class StageResults extends Stage {
     private void showText(){
         Texture texture;
         if(this.winner){
-            texture = new Texture("HighScoresScreen/Ganador.png");
+            texture = new Texture("HighScoresScreen/WinMessage.png");
         }else{
-            texture = new Texture("HighScoresScreen/Perdedor.png");
+            texture = new Texture("HighScoresScreen/LoseMessage.png");
         }
         Image text = new Image(texture);
         text.setPosition(Constant.SCREEN_WIDTH / 2 - text.getWidth() / 2,

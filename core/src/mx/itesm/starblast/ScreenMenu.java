@@ -31,7 +31,7 @@ class ScreenMenu extends ScreenSB {
 
     @Override
     public void show() {
-        backgroundTexture = new Texture("PantallaMenu/PantallaMenu.jpg");
+        backgroundTexture = new Texture("MainScreen/MainScreen.jpg");
         creatingObjects();
     }
 

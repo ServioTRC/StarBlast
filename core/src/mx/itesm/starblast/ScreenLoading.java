@@ -37,7 +37,7 @@ class ScreenLoading extends ScreenSB {
     private void loadingTexts() {
         texts = new Texture[NUMBER_OF_TEXTS];
         for(int i = 1; i <= NUMBER_OF_TEXTS; i++){
-            texts[i-1] = new Texture("LoadingScreen/Texto"+i+"Cargando.png");
+            texts[i-1] = new Texture("LoadingScreen/Text"+i+"Loading.png");
         }
     }
 
@@ -97,8 +97,8 @@ class ScreenLoading extends ScreenSB {
     }
 
     private void creatingProgressBar() {
-        loadingBar = new ProgressBar(new Texture("LoadingScreen/MascaraCargando.png"),false);
-        loadingBar.setFrame(new Texture("LoadingScreen/FondoCargando.jpg"));
+        loadingBar = new ProgressBar(new Texture("LoadingScreen/MaskLoading.png"),false);
+        loadingBar.setFrame(new Texture("LoadingScreen/BackgroundLoading.jpg"));
         loadingBar.setPosition((Constant.SCREEN_WIDTH - loadingBar.getWidth())/2,(Constant.SCREEN_HEIGTH - loadingBar.getHeight())/2);
 
         loadingScene.addActor(loadingBar);
@@ -206,21 +206,21 @@ class ScreenLoading extends ScreenSB {
 
     private void loadStory() {
         Constant.MANAGER.load("GameScreen/AvatarSprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/BotonVolverMenu.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/ButtonBack.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/BotonSiguienteNivel.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/BulletSpriteEnemigo.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/ButtonNextLevel.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/BulletSpriteEnemy.png", Texture.class);
         Constant.MANAGER.load("GameScreen/DroidHelperSprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/Enemigo1Sprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/Enemigo2Sprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/Enemigo3Sprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/NaveJefe.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/Pausa.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy1Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy2Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy3Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/EnemyBossSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Pause.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/SplashMisionCumplida.png", Texture.class);
-        Constant.MANAGER.load("Animations/ExplosionNaveFrames.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
+        Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
 
-        Constant.MANAGER.load("DeleteScreen/FondoDerribado.jpg", Texture.class);
+        Constant.MANAGER.load("DeleteScreen/DefeatBackground.jpg", Texture.class);
         Constant.MANAGER.load("DeleteScreen/Countdown.png", Texture.class);
 
         loadSoundsFromStory();
@@ -229,15 +229,15 @@ class ScreenLoading extends ScreenSB {
     }
 
     private void loadSoundsFromStory(){
-        Constant.MANAGER.load("SoundEffects/SonidoDisparo1.mp3", Sound.class);
-        Constant.MANAGER.load("SoundEffects/SonidoDisparo2.mp3", Sound.class);
+        Constant.MANAGER.load("SoundEffects/ShootingSound1.mp3", Sound.class);
+        Constant.MANAGER.load("SoundEffects/ShootingSound2.mp3", Sound.class);
     }
 
     private void loadHUD(){
-        Constant.MANAGER.load("HUD/BotonAPresionado.png",Texture.class);
-        Constant.MANAGER.load("HUD/BotonAStandby.png",Texture.class);
-        Constant.MANAGER.load("HUD/BotonBPresionado.png",Texture.class);
-        Constant.MANAGER.load("HUD/BotonBStandby.png",Texture.class);
+        Constant.MANAGER.load("HUD/ButtonAPress.png",Texture.class);
+        Constant.MANAGER.load("HUD/ButtonAStandby.png",Texture.class);
+        Constant.MANAGER.load("HUD/ButtonBPress.png",Texture.class);
+        Constant.MANAGER.load("HUD/ButtonBStandby.png",Texture.class);
         Constant.MANAGER.load("HUD/JoystickPad.png",Texture.class);
         Constant.MANAGER.load("HUD/JoystickStick.png",Texture.class);
         Constant.MANAGER.load("HUD/LifeBarBar.png",Texture.class);
@@ -245,29 +245,29 @@ class ScreenLoading extends ScreenSB {
     }
 
     private void loadPause(){
-        Constant.MANAGER.load("SettingsScreen/CuadroOpciones.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonReset.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonResetYellow.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonCodigos.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/SettingsWindow.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonReset.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonResetYellow.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonCodes.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/Back.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/BackYellow.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonSonido.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonNoSonido.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonMusica.png", Texture.class);
-        Constant.MANAGER.load("SettingsScreen/BotonNoMusica.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonSound.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonSoundOff.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonMusic.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonMusicOff.png", Texture.class);
     }
 
     private void loadEndless() {
         loadStory();
         //TODO quitar esto
-        Constant.MANAGER.load("GameScreen/FondoNivel2.jpg",Texture.class);
+        Constant.MANAGER.load("GameScreen/BackgroundLevel2.jpg",Texture.class);
     }
 
     private void loadMinigames() {
-        Constant.MANAGER.load("MinigameSelectionScreen/BotonMinijuego1.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/BotonMinijuego2.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/BotonMinijuego3.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionScreen.png",Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame1.png",Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2.png",Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class);
     }
 
     private void loadMinigame1() {

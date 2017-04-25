@@ -21,7 +21,7 @@ class StageLost extends Stage {
     StageLost(Viewport viewport, Batch batch, StarBlast menuConstruct) {
         super(viewport, batch);
         this.menu = menuConstruct;
-        Image background = new Image(Constant.MANAGER.get("DeleteScreen/FondoDerribado.jpg", Texture.class));
+        Image background = new Image(Constant.MANAGER.get("DeleteScreen/DefeatBackground.jpg", Texture.class));
         background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
         addActor(background);
