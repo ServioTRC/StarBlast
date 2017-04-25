@@ -43,7 +43,7 @@ class ScreenStart extends ScreenSB {
         startScene = new Stage(view, batch);
         Image imgFondo = new Image(backgroundTexture);
         startScene.addActor(imgFondo);
-        sprite = new Sprite(new Texture("PantallaInicio/TAP.png"));
+        sprite = new Sprite(new Texture("SplashScreen/TAP.png"));
         sprite.setCenter(Constant.SCREEN_WIDTH /2,1* Constant.SCREEN_HEIGTH /4);
         Gdx.input.setCatchBackKey(false);
         Gdx.input.setInputProcessor(new ScreenStart.InputProcessorSB());
@@ -51,7 +51,7 @@ class ScreenStart extends ScreenSB {
 
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("PantallaInicio/FondoInicio.jpg");
+        backgroundTexture = new Texture("SplashScreen/FondoInicio.jpg");
     }
 
     @Override

@@ -9,7 +9,7 @@ class Constant {
     static final float SCREEN_HEIGTH = 800;
     static final AssetManager MANAGER = new AssetManager();
     static final float SHIPS_SCALE = -0.3f;
-    static final String SOURCE_TEXT = "Textos/ArcadeFont.fnt";
+    static final String SOURCE_TEXT = "Text/ArcadeFont.fnt";
     static final float TOUCHPAD_DEADZONE = 0.20f;
     static final ArrayList<String> CODES = new ArrayList<String>(5);
 

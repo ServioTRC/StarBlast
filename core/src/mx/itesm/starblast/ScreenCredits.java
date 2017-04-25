@@ -61,8 +61,8 @@ class ScreenCredits extends ScreenSB {
 
     private void createBackButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/Back.png"));
+        skin.add("Down", new Texture("SettingsScreen/BackYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -81,7 +81,7 @@ class ScreenCredits extends ScreenSB {
     }
 
     private void loadingTexture() {
-        backgroundTexture = new Texture("PantallaCreditos/Creditos.jpg");
+        backgroundTexture = new Texture("CreditsScreen/Creditos.jpg");
     }
 
     @Override

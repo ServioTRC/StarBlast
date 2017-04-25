@@ -40,7 +40,7 @@ class StageResults extends Stage {
     }
 
     private void init() {
-        Image background = new Image(new Texture("PantallaPuntajes/CuadroResultados.png"));
+        Image background = new Image(new Texture("HighScoresScreen/CuadroResultados.png"));
         background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
         addActor(background);
@@ -49,8 +49,8 @@ class StageResults extends Stage {
     }
 
     private void createReturnButton() {Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/BotonReset.png"));
+        skin.add("Down", new Texture("SettingsScreen/BotonResetYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -70,8 +70,8 @@ class StageResults extends Stage {
 
     private void createBackButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/Back.png"));
+        skin.add("Down", new Texture("SettingsScreen/BackYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -92,9 +92,9 @@ class StageResults extends Stage {
     private void showText(){
         Texture texture;
         if(this.winner){
-            texture = new Texture("PantallaPuntajes/Ganador.png");
+            texture = new Texture("HighScoresScreen/Ganador.png");
         }else{
-            texture = new Texture("PantallaPuntajes/Perdedor.png");
+            texture = new Texture("HighScoresScreen/Perdedor.png");
         }
         Image text = new Image(texture);
         text.setPosition(Constant.SCREEN_WIDTH / 2 - text.getWidth() / 2,

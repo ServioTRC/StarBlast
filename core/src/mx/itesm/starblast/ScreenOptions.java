@@ -65,8 +65,8 @@ class ScreenOptions extends ScreenSB {
 
     private void createBackButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/Back.png"));
+        skin.add("Down", new Texture("SettingsScreen/BackYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -86,8 +86,8 @@ class ScreenOptions extends ScreenSB {
 
     private void createRestartButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonReset.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BotonResetYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/BotonReset.png"));
+        skin.add("Down", new Texture("SettingsScreen/BotonResetYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -108,7 +108,7 @@ class ScreenOptions extends ScreenSB {
 
     private void createCodesButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonCodigos.png"));
+        skin.add("Up", new Texture("SettingsScreen/BotonCodigos.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -140,8 +140,8 @@ class ScreenOptions extends ScreenSB {
 
     private void createSoundButton() {
         Skin skin = new Skin();
-        skin.add("Yes", new Texture("PantallaOpciones/BotonSonido.png"));
-        skin.add("No", new Texture("PantallaOpciones/BotonNoSonido.png"));
+        skin.add("Yes", new Texture("SettingsScreen/BotonSonido.png"));
+        skin.add("No", new Texture("SettingsScreen/BotonNoSonido.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Yes");
@@ -163,8 +163,8 @@ class ScreenOptions extends ScreenSB {
 
     private void createMusicButton() {
         Skin skin = new Skin();
-        skin.add("Yes", new Texture("PantallaOpciones/BotonMusica.png"));
-        skin.add("No", new Texture("PantallaOpciones/BotonNoMusica.png"));
+        skin.add("Yes", new Texture("SettingsScreen/BotonMusica.png"));
+        skin.add("No", new Texture("SettingsScreen/BotonNoMusica.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Yes");
@@ -191,7 +191,7 @@ class ScreenOptions extends ScreenSB {
 
     private void createHelpButton(){
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/BotonAyuda.png"));
+        skin.add("Up", new Texture("SettingsScreen/BotonAyuda.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -210,7 +210,7 @@ class ScreenOptions extends ScreenSB {
     }
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("PantallaOpciones/PantallaOpciones.jpg");
+        backgroundTexture = new Texture("SettingsScreen/SettingsScreen.jpg");
     }
 
     @Override

@@ -69,7 +69,7 @@ class LevelStory extends ScreenSB implements IPausable {
 
     //region enemies
     final int initialEnemies;
-    final int extraPerWave;
+    final  int extraPerWave;
     final int numberOfWaves;
     final float spawnTimeuot = 0.1f;
     float timeSinceLastSpawn = 0;
@@ -120,7 +120,7 @@ class LevelStory extends ScreenSB implements IPausable {
         createWorld();
         createEdges();
 
-        player = new ShipPlayer(Constant.MANAGER.get("PantallaJuego/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
         player.scaling(Constant.SHIPS_SCALE);
     }
 
@@ -280,7 +280,7 @@ class LevelStory extends ScreenSB implements IPausable {
 
     private void createPauseButton() {
         Skin skin = new Skin();
-        skin.add("Pause", Constant.MANAGER.get("PantallaJuego/Pausa.png", Texture.class));
+        skin.add("Pause", Constant.MANAGER.get("GameScreen/Pausa.png", Texture.class));
 
         Button.ButtonStyle estilo = new Button.ButtonStyle();
         estilo.up = skin.getDrawable("Pause");
@@ -399,13 +399,13 @@ class LevelStory extends ScreenSB implements IPausable {
             a.setDamage(0);
             toRemove.add(a.getBody());
             if (a instanceof Ship) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
             }
             if (a instanceof ShipEnemy) {
                 enemies.remove(a);
             }
             if (a instanceof ShipPlayer) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animaciones/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionNaveFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
                 isPaused = true;
                 youLost = true;
             }
@@ -459,7 +459,7 @@ class LevelStory extends ScreenSB implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            ShipEnemy enemy = new ShipEnemy(Constant.MANAGER.get("PantallaJuego/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            ShipEnemy enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemigo" + (random.nextInt(3) + 1) + "Sprite.png", Texture.class), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
         }

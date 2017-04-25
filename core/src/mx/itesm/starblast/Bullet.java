@@ -21,7 +21,7 @@ class Bullet implements IPlayableEntity{
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
-        sprite = new Sprite(Constant.MANAGER.get("PantallaJuego/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
+        sprite = new Sprite(Constant.MANAGER.get("GameScreen/"+(enemy? "BulletSpriteEnemigo.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;

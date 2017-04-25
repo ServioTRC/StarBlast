@@ -46,7 +46,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             }
         };
         Image backgroundImage =
-                new Image(Constant.MANAGER.get("PantallaSeleccionMinijuego/PantallaSeleccionMinijuego.png",Texture.class));
+                new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionScreen.png",Texture.class));
         selectionScene.addActor(backgroundImage);
         //TODO checar cual minijuego es cual
         createMinigame1Button();
@@ -60,7 +60,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame1Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego1.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego1.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
@@ -79,7 +79,7 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void createMinigame2Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego2.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego2.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
@@ -90,14 +90,14 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame2");
-                //menu.setScreen(new PantallaJuego(menu));
+                //menu.setScreen(new GameScreen(menu));
             }
         });
     }
 
     private void createMinigame3Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("PantallaSeleccionMinijuego/BotonMinijuego3.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/BotonMinijuego3.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
@@ -108,15 +108,15 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame3");
-                //menu.setScreen(new PantallaJuego(menu));
+                //menu.setScreen(new GameScreen(menu));
             }
         });
     }
 
     private void createBackButton() {
         Skin skin = new Skin();
-        skin.add("Up", new Texture("PantallaOpciones/Back.png"));
-        skin.add("Down", new Texture("PantallaOpciones/BackYellow.png"));
+        skin.add("Up", new Texture("SettingsScreen/Back.png"));
+        skin.add("Down", new Texture("SettingsScreen/BackYellow.png"));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");

@@ -26,7 +26,7 @@ class StagePause extends Stage {
     }
 
     private void init() {
-        Image background = new Image(Constant.MANAGER.get("PantallaOpciones/CuadroOpciones.png", Texture.class));
+        Image background = new Image(Constant.MANAGER.get("SettingsScreen/CuadroOpciones.png", Texture.class));
         background.setPosition(Constant.SCREEN_WIDTH / 2 - background.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - background.getHeight() / 2);
         addActor(background);
@@ -39,8 +39,8 @@ class StagePause extends Stage {
 
     private void createReturnButton() {
         Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("PantallaOpciones/BotonReset.png", Texture.class));
-        skin.add("Down", Constant.MANAGER.get("PantallaOpciones/BotonResetYellow.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("SettingsScreen/BotonReset.png", Texture.class));
+        skin.add("Down", Constant.MANAGER.get("SettingsScreen/BotonResetYellow.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -60,7 +60,7 @@ class StagePause extends Stage {
 
     private void createCodesButton() {
         Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("PantallaOpciones/BotonCodigos.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("SettingsScreen/BotonCodigos.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -92,8 +92,8 @@ class StagePause extends Stage {
 
     private void createBackButton() {
         Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("PantallaOpciones/Back.png", Texture.class));
-        skin.add("Down", Constant.MANAGER.get("PantallaOpciones/BackYellow.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        skin.add("Down", Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
@@ -113,8 +113,8 @@ class StagePause extends Stage {
 
     private void createSoundButton() {
         Skin skin = new Skin();
-        skin.add("Yes", Constant.MANAGER.get("PantallaOpciones/BotonSonido.png", Texture.class));
-        skin.add("No", Constant.MANAGER.get("PantallaOpciones/BotonNoSonido.png", Texture.class));
+        skin.add("Yes", Constant.MANAGER.get("SettingsScreen/BotonSonido.png", Texture.class));
+        skin.add("No", Constant.MANAGER.get("SettingsScreen/BotonNoSonido.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Yes");
@@ -136,8 +136,8 @@ class StagePause extends Stage {
 
     private void createMusicButton() {
         Skin skin = new Skin();
-        skin.add("Yes", Constant.MANAGER.get("PantallaOpciones/BotonMusica.png", Texture.class));
-        skin.add("No", Constant.MANAGER.get("PantallaOpciones/BotonNoMusica.png", Texture.class));
+        skin.add("Yes", Constant.MANAGER.get("SettingsScreen/BotonMusica.png", Texture.class));
+        skin.add("No", Constant.MANAGER.get("SettingsScreen/BotonNoMusica.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Yes");

@@ -21,12 +21,12 @@ class StageWin extends Stage {
         super(viewport, batch);
         app = menu;
 
-        Image img = new Image(Constant.MANAGER.get("PantallaJuego/SplashMisionCumplida.png", Texture.class));
+        Image img = new Image(Constant.MANAGER.get("GameScreen/SplashMisionCumplida.png", Texture.class));
         img.setPosition(Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH-150,Align.center);
         addActor(img);
 
         Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("PantallaJuego/BotonSiguienteNivel.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("GameScreen/BotonSiguienteNivel.png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         Button btn = new Button(style);
@@ -51,7 +51,7 @@ class StageWin extends Stage {
         addActor(btn);
 
         skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("PantallaJuego/BotonVolverMenu.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("GameScreen/BotonVolverMenu.png", Texture.class));
         style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         btn = new Button(style);

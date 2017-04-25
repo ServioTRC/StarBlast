@@ -70,7 +70,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         Random r = new Random();
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                pieces[i*5+j] = new Sprite(new Texture("PantallaMinijuego1/Rompecabezas/Pieza"+String.format("%c",'A'+i)+(j+1)+".png"));
+                pieces[i*5+j] = new Sprite(new Texture("Minigame1Screen/PuzzlePieces/Pieza"+String.format("%c",'A'+i)+(j+1)+".png"));
                 places[i*5+j] = new Vector2(BOARD_START_X+PIECE_WIDTH*(j+1f/2f),BOARD_START_Y-PIECE_HEIGHT*(i+1f/2f));
                 pieces[i*5+j].setCenter(BOARD_START_X+r.nextFloat()*PIECE_WIDTH*5,BOARD_START_Y-r.nextFloat()*PIECE_HEIGHT*5);
             }
@@ -82,9 +82,9 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     }
 
     private void loadingTextures() {
-        backgroundTexture = new Texture("PantallaMinijuego1/FondoMinijuego1.jpg");
-        backButtonTexture = new Texture("PantallaOpciones/Back.png");
-        backButtonTextureUp = new Texture("PantallaOpciones/BackYellow.png");
+        backgroundTexture = new Texture("Minigame1Screen/FondoMinijuego1.jpg");
+        backButtonTexture = new Texture("SettingsScreen/Back.png");
+        backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
     }
 
     private void creatingBackButton(){
