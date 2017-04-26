@@ -19,6 +19,10 @@ class ShipPlayer extends Ship {
     private final float BRAKE_CONSTANT = 0.97f;
     private final float MAX_TURN_RANGE = 2;
 
+    private final int MISSILE_DAMAGE;
+    private final int COOLDOWN_MISSILE = 1000;
+    private long previousMissile = 0;
+
     private float acceleration;
 
     private movementState state = movementState.STOPPED;
@@ -28,12 +32,14 @@ class ShipPlayer extends Ship {
     float totalLife;
 
     ShipPlayer(Texture texture, float x, float y, World world) {
+
         super(texture,x,y,world,90,0.1f,0.7f, false);
 
         CATEGORY = Constant.CATEGORY_PLAYER;
         MASK = Constant.MASK_PLAYER;
         COOLDOWN_SHOT = 100;
         BULLET_DAMAGE = 10;
+        MISSILE_DAMAGE = 100;
 
         speed = 0;
         acceleration = 0;
@@ -43,6 +49,20 @@ class ShipPlayer extends Ship {
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
+    }
+
+    private void shootMissile(){
+        new Missile(body.getPosition().x,body.getPosition().y,world,sprite.getRotation(),enemy,MISSILE_DAMAGE);
+    }
+
+    public void shootMissile(long time){
+        if(previousMissile + COOLDOWN_MISSILE < time){
+            previousMissile = time;
+            shootMissile();
+            if(PreferencesSB.SOUNDS_ENABLE){
+                //TODO sonido para cuando se dispare un misil
+            }
+        }
     }
 
     @Override

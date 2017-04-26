@@ -98,6 +98,7 @@ class LevelStory extends ScreenSB implements IPausable {
     private final StarBlast app;
     private final SpriteBatch batch = new SpriteBatch();
     Random random = new Random();
+    private boolean playerSpecial = false;
     //endregion
 
     LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves, int level) {
@@ -356,13 +357,13 @@ class LevelStory extends ScreenSB implements IPausable {
         specialButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                playerShooting = true;
+                playerSpecial = true;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                playerShooting = false;
+                playerSpecial = false;
             }
         });
         HUDScene.addActor(specialButton);
@@ -404,6 +405,18 @@ class LevelStory extends ScreenSB implements IPausable {
     }
 
     private void handleCollision(IPlayableEntity a, IPlayableEntity b) {
+        if(a instanceof Bullet){
+            if(b instanceof Edge) {
+                toRemove.add(a.getBody());
+                return;
+            }
+            else if(b instanceof Bullet){
+                a.doDamage(b.getDamage());
+            }
+            else if(b instanceof Ship){
+                a.doDamage(Integer.MAX_VALUE);
+            }
+        }
         if (a.doDamage(b.getDamage())) {
             a.setDamage(0);
             toRemove.add(a.getBody());
@@ -414,7 +427,6 @@ class LevelStory extends ScreenSB implements IPausable {
                 enemies.remove(a);
             }
             if (a instanceof ShipPlayer) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
                 isPaused = true;
                 youLost = true;
             }
@@ -450,6 +462,9 @@ class LevelStory extends ScreenSB implements IPausable {
         player.move(null, delta);
         if (playerShooting) {
             player.shoot(TimeUtils.millis());
+        }
+        if(playerSpecial){
+            player.shootMissile(TimeUtils.millis());
         }
     }
     //endregion

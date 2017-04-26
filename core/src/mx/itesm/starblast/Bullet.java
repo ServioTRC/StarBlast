@@ -14,21 +14,24 @@ import com.badlogic.gdx.physics.box2d.World;
 class Bullet implements IPlayableEntity{
 
     public Body body;
-    private Sprite sprite;
+    Sprite sprite;
     private static float VELOCITY = 10;
     private boolean isEnemy = false;
     int damage;
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
         isEnemy = enemy;
+
         sprite = new Sprite(Constant.MANAGER.get("GameScreen/"+(enemy? "BulletSpriteEnemy.png": "BulletSprite.png"), Texture.class));
         sprite.setCenter(x, y);
+        sprite.setRotation(angle);
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         makeFixture(0.1f, 1f);
-        sprite.setRotation(angle - 90);
+
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
         body.setUserData(this);
@@ -76,8 +79,6 @@ class Bullet implements IPlayableEntity{
 
     @Override
     public boolean doDamage(int damage) {
-        //TODO do something like remove the instance or whatever
-//        bodyShape.dispose();
         return true;
     }
 
