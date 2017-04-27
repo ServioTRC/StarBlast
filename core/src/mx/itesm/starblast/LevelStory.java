@@ -286,7 +286,7 @@ class LevelStory extends ScreenSB implements IPausable {
     }
 
     private void createLifeBar() {
-        lifeBar = new ProgressBar(Constant.MANAGER.get("HUD/LifeBarBar.png", Texture.class), true);
+        lifeBar = new ProgressBar(Constant.MANAGER.get("HUD/LifeBarBar.png", Texture.class), true,true);
         lifeBar.setFrame(Constant.MANAGER.get("HUD/LifeBarFrame.png", Texture.class));
         lifeBar.setPosition(9 * Constant.SCREEN_WIDTH / 10 + 40, 2 * Constant.SCREEN_HEIGTH / 8);
         HUDScene.addActor(lifeBar);
