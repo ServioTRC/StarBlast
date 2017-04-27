@@ -40,11 +40,8 @@ class StageLost extends Stage {
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int level = PreferencesSB.readingLevelProgress();
-        if(countdownAnimation.stateTime < 1){
-            return true;
-        }
         if(level == 1) {
             Gdx.app.log("StageLost ", "Going to Level1");
             menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
