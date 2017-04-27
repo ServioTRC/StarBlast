@@ -32,7 +32,7 @@ public class Missile extends Bullet implements IExplotable {
         restitution = 0;
         makeFixture(density,restitution);
 
-        sprite = new Sprite(Constant.MANAGER.get("GameScreen/MisileSprite.png", Texture.class));
+        sprite = new Sprite(Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class));
         sprite.setCenter(x, y);
         sprite.setRotation(angle);
 
