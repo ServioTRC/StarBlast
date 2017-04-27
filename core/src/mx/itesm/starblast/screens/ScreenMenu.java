@@ -57,7 +57,7 @@ public class ScreenMenu extends ScreenSB {
             }
         };
         Image backgroundImg = new Image(backgroundTexture);
-        backgroundImg.setScale(Math.max(Constant.SCREEN_WIDTH/backgroundTexture.getWidth(),Constant.SCREEN_HEIGTH/backgroundTexture.getHeight()));
+//        backgroundImg.setScale(Math.max(Constant.SCREEN_WIDTH/backgroundTexture.getWidth(),Constant.SCREEN_HEIGTH/backgroundTexture.getHeight()));
         menuScene.addActor(backgroundImg);
         text = new Text(Constant.SOURCE_TEXT);
         creatingButtons();

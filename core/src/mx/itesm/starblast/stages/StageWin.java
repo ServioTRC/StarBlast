@@ -38,7 +38,6 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                 //TODO handle next level
                 int level = PreferencesSB.readingLevelProgress();
                 if(level == 1) {
                     Gdx.app.log("ScreenMenu ", "Going to Level1");

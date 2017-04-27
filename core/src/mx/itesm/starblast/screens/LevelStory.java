@@ -65,12 +65,12 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             Constant.MANAGER.get("GameScreen/FondoTileGrande2.jpg", Texture.class),
             Constant.MANAGER.get("GameScreen/FondoTileGrande3.jpg", Texture.class)
     };
-    Texture beginTexture = Constant.MANAGER.get("GameScreen/FondoBegin.jpg", Texture.class);
+    Texture beginBackground = Constant.MANAGER.get("GameScreen/FondoBegin.jpg", Texture.class);
     Texture endTexture = Constant.MANAGER.get("GameScreen/FondoEnd.jpg", Texture.class);
     Texture firstBackground;
     Texture secondBackground;
     private float posY = 0;
-    private float backgroundSpeed = 50;
+    private float backgroundSpeed = 70;
     //endregion
 
     //region estados del juego
@@ -116,6 +116,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     int waveNumber = 1;
     float timeoutBetweenWaves = 5;
     int level;
+    boolean haBoss = true;
 
     ArrayList<ShipEnemy> enemies = new ArrayList<ShipEnemy>();
 
@@ -157,7 +158,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy2Sprite.png", Texture.class));
         EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy3Sprite.png", Texture.class));
 
-        firstBackground = plainBackgrounds[random.nextInt(plainBackgrounds.length)];
+        firstBackground = beginBackground;
         secondBackground = plainBackgrounds[random.nextInt(plainBackgrounds.length)];
     }
 
@@ -256,7 +257,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     //endregion
 
     //region metodos de render
-    //TODO manejar transiciones y demás cosas
     private void handleFondo(float dt) {
         batch.draw(firstBackground, 0, posY);
         batch.draw(secondBackground, 0, posY + firstBackground.getHeight());
@@ -266,20 +266,19 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 posY = 0;
                 firstBackground = secondBackground;
                 secondBackground = getBackground();
-//                secondBackground = firstBackground;
-//                firstBackground = getBackground();
             }
         }
     }
 
     private Texture getBackground(){
-        if(switchingWaves){
-            return transitionBackgrounds[random.nextInt(transitionBackgrounds.length)];
-        }
-        if(random.nextDouble() < 0.85){
+        double r = random.nextDouble();
+        if(r <= 0.5){
             return plainBackgrounds[random.nextInt(plainBackgrounds.length)];
         }
-        return meteorBackground[random.nextInt(meteorBackground.length)];
+        if(r <= 0.8){
+            return meteorBackground[random.nextInt(meteorBackground.length)];
+        }
+        return transitionBackgrounds[random.nextInt(transitionBackgrounds.length)];
     }
 
     private void handleGame(float dt) {
@@ -566,9 +565,12 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 numberEnemiesForThisWave += extraPerWave;
                 switchingWaves = true;
             } else {
-                //TODO se acabo el juego (ganaste)
-                isPaused = true;
-                youWon = true;
+                if(haBoss){
+                    //TODO aquí va el boss
+                }else{
+                    isPaused = true;
+                    youWon = true;
+                }
             }
         }
     }

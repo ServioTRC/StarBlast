@@ -16,7 +16,6 @@ import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.StarBlast;
 
 class ScreenMinigamesSelection extends ScreenSB {
-    //TODO texturas para cuando estas haciendo click en las diferentes opciones
     private final StarBlast menu;
 
     //SpriteBatch
@@ -51,7 +50,6 @@ class ScreenMinigamesSelection extends ScreenSB {
         Image backgroundImage =
                 new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class));
         selectionScene.addActor(backgroundImage);
-        //TODO checar cual minijuego es cual
         createMinigame1Button();
         createMinigame2Button();
         createMinigame3Button();

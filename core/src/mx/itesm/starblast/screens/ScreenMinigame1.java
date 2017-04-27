@@ -44,8 +44,6 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     private static final float PIECE_WIDTH = 136;
     private static final float PIECE_HEIGHT = 136;
 
-    //TODO yo creo que hay que agragar pantalla de pausa
-
     private long startingTime;
     private Text textScore;
 
@@ -58,7 +56,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         this.menu = menu;
         this.isStoryMode = isStoryMode;
     }
-    //TODO tal vez ponerle un timer para que se vuelva más interesante
+
     @Override
     public void show() {
         loadingTextures();
@@ -100,10 +98,8 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     @Override
     public void render(float delta) {
         if(won){
-            //TODO hacer algo cuando gane el usuario
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
         } else if((TimeUtils.millis() - startingTime) >= 30000){
-            //TODO pantalla de reintentar minijuego
             menu.setScreen(new ScreenMinigamesSelection(menu));
         }
         clearScreen();

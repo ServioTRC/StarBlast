@@ -34,14 +34,15 @@ public class StarBlast extends Game {
 
     private void loadMusicEffects(){
         Gdx.app.log("StarBlast", "Loading Background Music");
-        Constant.MANAGER.load("SoundEffects/BackgroundMusic.mp3", Music.class);
+        Constant.MANAGER.load("SoundEffects/BackgroundLoopingMusic.mp3", Music.class);
         Constant.MANAGER.finishLoading();
-        backgroundMusic = Constant.MANAGER.get("SoundEffects/BackgroundMusic.mp3");
+        backgroundMusic = Constant.MANAGER.get("SoundEffects/BackgroundLoopingMusic.mp3");
         backgroundMusic.setLooping(true);
     }
 
     public void playMusic(){
         if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.setVolume(0.7f);
             backgroundMusic.play();
         }
     }

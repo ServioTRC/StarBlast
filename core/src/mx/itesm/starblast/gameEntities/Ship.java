@@ -19,8 +19,6 @@ import mx.itesm.starblast.PreferencesSB;
 
 public abstract class Ship implements IPlayableEntity,IExplotable {
 
-    //TODO considerar hacer más exactos los coliders
-
     Body body;
     Sprite sprite;
     float accelerationPercentage;

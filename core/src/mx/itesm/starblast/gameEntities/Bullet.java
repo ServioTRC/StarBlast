@@ -89,7 +89,6 @@ public class Bullet implements IPlayableEntity{
     }
 
     public boolean draw(SpriteBatch batch) {
-        //TODO ponerlo en la punta, no en el centro
         sprite.setCenter(Constant.toScreenSize(body.getPosition().x),
                 Constant.toScreenSize(body.getPosition().y));
         sprite.draw(batch);
