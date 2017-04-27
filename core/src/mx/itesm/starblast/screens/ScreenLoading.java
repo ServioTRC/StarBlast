@@ -222,8 +222,8 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
 
-        Constant.MANAGER.load("DeleteScreen/DefeatBackground.jpg", Texture.class);
-        Constant.MANAGER.load("DeleteScreen/Countdown.png", Texture.class);
+        Constant.MANAGER.load("DefeatScreen/DefeatBackground.jpg", Texture.class);
+        Constant.MANAGER.load("DefeatScreen/Countdown.png", Texture.class);
 
         loadSoundsFromStory();
         loadHUD();
