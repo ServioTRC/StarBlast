@@ -60,7 +60,7 @@ class StageResults extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menu.setScreen(new LevelProof(menu));
+//                menu.setScreen(new LevelProof(menu));
             }
         });
         btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,

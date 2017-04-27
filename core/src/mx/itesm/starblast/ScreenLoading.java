@@ -124,7 +124,7 @@ class ScreenLoading extends ScreenSB {
                 menu.setScreen(new Level3(menu));
                 break;
             case ENDLESS:
-                menu.setScreen(new LevelProof(menu));
+                menu.setScreen(new EndlessScreen(menu));
                 break;
             case MINIGAMES:
                 menu.setScreen(new ScreenMinigamesSelection(menu));
@@ -208,7 +208,7 @@ class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/AvatarSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/ButtonBack.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/MissileSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/MisileSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSpriteEnemy.png", Texture.class);
         Constant.MANAGER.load("GameScreen/ButtonNextLevel.png", Texture.class);
         Constant.MANAGER.load("GameScreen/DroidHelperSprite.png", Texture.class);
@@ -263,8 +263,7 @@ class ScreenLoading extends ScreenSB {
 
     private void loadEndless() {
         loadStory();
-        //TODO quitar esto
-        Constant.MANAGER.load("GameScreen/BackgroundLevel2.jpg",Texture.class);
+        Constant.MANAGER.load("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
     }
 
     private void loadMinigames() {

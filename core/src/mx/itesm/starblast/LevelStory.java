@@ -37,7 +37,7 @@ class LevelStory extends ScreenSB implements IPausable {
 
     //region estados del juego
     private boolean isPaused;
-    private boolean switchingWaves;
+    boolean switchingWaves;
     private boolean youLost;
     private boolean youWon;
     //endregion
@@ -69,9 +69,9 @@ class LevelStory extends ScreenSB implements IPausable {
 
     //region enemies
     final int initialEnemies;
-    final  int extraPerWave;
+    int extraPerWave;
     final int numberOfWaves;
-    final float spawnTimeuot = 0.1f;
+    float spawnTimeuot = 0.1f;
     float timeSinceLastSpawn = 0;
     float numberEnemiesForThisWave;
     float spawnedEnemiesForThisWave = 0;
@@ -501,7 +501,7 @@ class LevelStory extends ScreenSB implements IPausable {
         }
     }
 
-    private void handleWaves() {
+    void handleWaves() {
         if (spawnedEnemiesForThisWave == numberEnemiesForThisWave && enemies.size() == 0) {
             if (waveNumber < numberOfWaves) {
                 waveNumber++;
