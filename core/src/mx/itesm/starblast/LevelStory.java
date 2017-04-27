@@ -386,8 +386,14 @@ class LevelStory extends ScreenSB implements IPausable {
                 }
                 IPlayableEntity objectA = (IPlayableEntity) contact.getFixtureA().getBody().getUserData();
                 IPlayableEntity objectB = (IPlayableEntity) contact.getFixtureB().getBody().getUserData();
-                handleCollision(objectA, objectB);
-                handleCollision(objectB, objectA);
+                boolean destroyA = handleCollision(objectA, objectB);
+                boolean destroyB = handleCollision(objectB, objectA);
+                if(destroyA){
+                    objectA.setDamage(0);
+                }
+                if(destroyB){
+                    objectB.setDamage(0);
+                }
 
                 lifeBar.setPorcentage(player.life / player.totalLife);
             }
@@ -408,21 +414,17 @@ class LevelStory extends ScreenSB implements IPausable {
         });
     }
 
-    private void handleCollision(IPlayableEntity a, IPlayableEntity b) {
+    private boolean handleCollision(IPlayableEntity a, IPlayableEntity b) {
         if(a instanceof Bullet){
             if(b instanceof Edge) {
                 toRemove.add(a.getBody());
-                return;
-            }
-            else if(b instanceof Bullet){
-                a.doDamage(b.getDamage());
+                return true;
             }
             else if(b instanceof Ship){
                 a.doDamage(Integer.MAX_VALUE);
             }
         }
         if (a.doDamage(b.getDamage())) {
-            a.setDamage(0);
             toRemove.add(a.getBody());
             if (a instanceof IExplotable) {
                 animations.add(((IExplotable) a).getExplosion());
@@ -434,7 +436,12 @@ class LevelStory extends ScreenSB implements IPausable {
                 isPaused = true;
                 youLost = true;
             }
+            if(a instanceof Bullet){
+                toRemove.add(a.getBody());
+            }
+            return true;
         }
+        return false;
     }
 
     private void updateWorld(float dt) {
@@ -486,8 +493,7 @@ class LevelStory extends ScreenSB implements IPausable {
         if (spawnedEnemiesForThisWave < numberEnemiesForThisWave && timeSinceLastSpawn >= spawnTimeuot) {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
-            //TODO hacerlo más generico si es necesario
-            ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(1)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world,batch);
+            ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(3)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world,batch);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
         }

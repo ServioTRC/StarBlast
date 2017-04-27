@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 class ScreenMenu extends ScreenSB {
 
@@ -51,8 +53,9 @@ class ScreenMenu extends ScreenSB {
                 return super.keyDown(keycode);
             }
         };
-        Image imgFondo = new Image(backgroundTexture);
-        menuScene.addActor(imgFondo);
+        Image backgroundImg = new Image(backgroundTexture);
+        backgroundImg.setScale(Math.max(Constant.SCREEN_WIDTH/backgroundTexture.getWidth(),Constant.SCREEN_HEIGTH/backgroundTexture.getHeight()));
+        menuScene.addActor(backgroundImg);
         text = new Text(Constant.SOURCE_TEXT);
         creatingButtons();
 

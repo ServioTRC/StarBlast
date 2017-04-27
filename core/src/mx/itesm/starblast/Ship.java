@@ -2,8 +2,10 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+
+import java.util.Random;
 
 abstract class Ship implements IPlayableEntity,IExplotable {
 
@@ -32,6 +36,7 @@ abstract class Ship implements IPlayableEntity,IExplotable {
     Sound explosionSound;
     SpriteBatch batch;
     Explosion explosion;
+    Random r;
 
     Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy, SpriteBatch batch) {
         this.world = world;
@@ -49,6 +54,7 @@ abstract class Ship implements IPlayableEntity,IExplotable {
         BULLET_DAMAGE = 10;
         makeFixture(density, restitution);
 
+        r = new Random();
         this.batch = batch;
 
     }
@@ -66,7 +72,7 @@ abstract class Ship implements IPlayableEntity,IExplotable {
     public abstract void playSound();
 
     protected void shoot(){
-        new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation(), enemy,BULLET_DAMAGE);
+        new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation()+r.nextFloat()*10-5, enemy,BULLET_DAMAGE);
     }
 
     public void accelerate(float porcentaje) {
