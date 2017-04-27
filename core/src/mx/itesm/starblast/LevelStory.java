@@ -91,7 +91,7 @@ class LevelStory extends ScreenSB implements IPausable {
     //endregion
 
     //region animaciones
-    private final LinkedList<AutoAnimation> animations = new LinkedList<AutoAnimation>();
+    private final LinkedList<Explosion> animations = new LinkedList<Explosion>();
     //endregion
 
     //region other
@@ -130,7 +130,7 @@ class LevelStory extends ScreenSB implements IPausable {
         createWorld();
         createEdges();
 
-        player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world,batch);
         player.scaling(Constant.SHIPS_SCALE);
     }
 
@@ -148,12 +148,16 @@ class LevelStory extends ScreenSB implements IPausable {
                 ((IPlayableEntity) obj).draw(batch);
             }
         }
-        Iterator<AutoAnimation> it = animations.iterator();
-        AutoAnimation anim;
+        Iterator<Explosion> it = animations.iterator();
+        Explosion explosion;
         while (it.hasNext()) {
-            anim = it.next();
-            if (anim.draw(batch, Gdx.graphics.getDeltaTime())) {
+            explosion = it.next();
+            if(!explosion.isCreated()){
+                explosion.createExplosion();
+            }
+            if (explosion.draw(batch)){
                 it.remove();
+                toRemove.add(explosion.getBody());
             }
         }
 //        textScore.showMessage(batch, "Puntaje: " + score, 20, Constant.SCREEN_HEIGTH - 20, Color.GOLD);
@@ -420,8 +424,8 @@ class LevelStory extends ScreenSB implements IPausable {
         if (a.doDamage(b.getDamage())) {
             a.setDamage(0);
             toRemove.add(a.getBody());
-            if (a instanceof Ship) {
-                animations.add(new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, a.getX(), a.getY(), 100, 100, batch));
+            if (a instanceof IExplotable) {
+                animations.add(((IExplotable) a).getExplosion());
             }
             if (a instanceof ShipEnemy) {
                 enemies.remove(a);
@@ -483,7 +487,7 @@ class LevelStory extends ScreenSB implements IPausable {
             timeSinceLastSpawn = 0;
             spawnedEnemiesForThisWave++;
             //TODO hacerlo más generico si es necesario
-            ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(1)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(1)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world,batch);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
         }
@@ -493,7 +497,7 @@ class LevelStory extends ScreenSB implements IPausable {
         Vector2 target = new Vector2(player.getX(), player.getY());
         for (ShipEnemy enemy : enemies) {
             enemy.move(target, delta);
-            enemy.shoot(TimeUtils.millis());
+            //enemy.shoot(TimeUtils.millis());
         }
     }
 

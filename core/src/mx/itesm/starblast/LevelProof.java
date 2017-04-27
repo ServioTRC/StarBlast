@@ -217,7 +217,7 @@ class LevelProof implements Screen, IPausable {
 
     private void createSprites() {
         //Sprites Complejos
-        player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world);
+        player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world,batch);
         player.scaling(Constant.SHIPS_SCALE);
         //Sprite del fondo
         spriteFondo = new Sprite(backgroundTexture);
@@ -230,7 +230,7 @@ class LevelProof implements Screen, IPausable {
         ShipEnemy enemy;
         Random r = new Random();
         for (int i = 0; i < INITIAL_ENEMIES; i++) {
-            enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemy" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world);
+            enemy = new ShipEnemy(Constant.MANAGER.get("GameScreen/Enemy" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world,batch);
 //            enemigo = new ShipEnemy("GameScreen/Enemigo1.png",3*Constant.SCREEN_WIDTH/4,Constant.SCREEN_HEIGTH/3,world);
             //enemigo = new ShipEnemyBoss("GameScreen/Enemigo" + (r.nextBoolean() ? "1" : "2") + "Sprite.png", r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
 
@@ -241,7 +241,7 @@ class LevelProof implements Screen, IPausable {
 
     private void createBossLevel() {
         Random r = new Random();
-        ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300);
+        ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png", Texture.class), r.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH, world,300,batch);
         boss.scaling(Constant.SHIPS_SCALE);
         enemies.add(boss);
     }

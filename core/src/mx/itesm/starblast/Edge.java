@@ -49,8 +49,8 @@ class Edge implements IPlayableEntity {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-
+    public boolean draw(SpriteBatch batch) {
+        return false;
     }
 
     @Override

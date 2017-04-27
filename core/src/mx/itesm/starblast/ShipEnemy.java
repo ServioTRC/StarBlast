@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,15 +18,15 @@ class ShipEnemy extends Ship {
     float speed;
     boolean canShoot;
 
-    ShipEnemy(Texture texture, float x, float y, World world, float angle, float density, float restitution) {
-        super(texture, x, y, world, angle, density, restitution, true);
+    ShipEnemy(Texture texture, float x, float y, World world, float angle, float density, float restitution, SpriteBatch batch) {
+        super(texture, x, y, world, angle, density, restitution, true,batch);
 
         CATEGORY = Constant.CATEGORY_ENEMY;
         MASK = Constant.MASK_ENEMY;
     }
 
-    ShipEnemy(Texture texture, float x, float y, World world) {
-        super(texture, x, y, world, -90, 0.1f, 0.7f, true);
+    ShipEnemy(Texture texture, float x, float y, World world,SpriteBatch batch) {
+        super(texture, x, y, world, -90, 0.1f, 0.7f, true,batch);
 
 
         CATEGORY = Constant.CATEGORY_ENEMY;

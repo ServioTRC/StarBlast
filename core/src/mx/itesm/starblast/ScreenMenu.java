@@ -90,7 +90,7 @@ class ScreenMenu extends ScreenSB {
                 } else if (level == 2) {
                     Gdx.app.log("ScreenMenu ","Going to Level2");
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
-                } else if (level == 3) {
+                } else if (level >= 3) {
                     Gdx.app.log("ScreenMenu ", "Going to Level3");
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
                 }

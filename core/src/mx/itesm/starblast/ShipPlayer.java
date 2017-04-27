@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.math.MathUtils;
@@ -31,9 +32,9 @@ class ShipPlayer extends Ship {
     private float theta;
     float totalLife;
 
-    ShipPlayer(Texture texture, float x, float y, World world) {
+    ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
-        super(texture,x,y,world,90,0.1f,0.7f, false);
+        super(texture,x,y,world,90,0.1f,0.7f, false,batch);
 
         CATEGORY = Constant.CATEGORY_PLAYER;
         MASK = Constant.MASK_PLAYER;
@@ -52,7 +53,7 @@ class ShipPlayer extends Ship {
     }
 
     private void shootMissile(){
-        new Missile(body.getPosition().x,body.getPosition().y,world,sprite.getRotation(),enemy,MISSILE_DAMAGE);
+        new Missile(body.getPosition().x,body.getPosition().y,world,sprite.getRotation(),enemy,MISSILE_DAMAGE,batch);
     }
 
     public void shootMissile(long time){

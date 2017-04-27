@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-abstract class Ship implements IPlayableEntity {
+abstract class Ship implements IPlayableEntity,IExplotable {
 
     //TODO considerar hacer más exactos los coliders
 
@@ -30,8 +30,10 @@ abstract class Ship implements IPlayableEntity {
     boolean enemy;
     Sound fireSound;
     Sound explosionSound;
+    SpriteBatch batch;
+    Explosion explosion;
 
-    Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy) {
+    Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy, SpriteBatch batch) {
         this.world = world;
         this.enemy = enemy;
         life = 100;
@@ -47,6 +49,7 @@ abstract class Ship implements IPlayableEntity {
         BULLET_DAMAGE = 10;
         makeFixture(density, restitution);
 
+        this.batch = batch;
 
     }
 
@@ -130,11 +133,13 @@ abstract class Ship implements IPlayableEntity {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public boolean draw(SpriteBatch batch) {
         sprite.draw(batch);
+        return false;
     }
 
     public void die(){
+        explosion = new Explosion(body.getPosition(),world,batch);
         if(PreferencesSB.SOUNDS_ENABLE) {
             explosionSound.play(0.8f);
         }
@@ -143,5 +148,9 @@ abstract class Ship implements IPlayableEntity {
     @Override
     public Body getBody() {
         return body;
+    }
+
+    public Explosion getExplosion(){
+        return explosion;
     }
 }

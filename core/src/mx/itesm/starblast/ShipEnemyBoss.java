@@ -1,6 +1,7 @@
 package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -18,8 +19,8 @@ class ShipEnemyBoss extends ShipEnemy {
     private Vector2 objective;
     private Random random;
 
-    ShipEnemyBoss(Texture texture, float x, float y, World world, int life) {
-        super(texture, x, y, world, -90, 0.7f, 0.1f);
+    ShipEnemyBoss(Texture texture, float x, float y, World world, int life, SpriteBatch batch) {
+        super(texture, x, y, world, -90, 0.7f, 0.1f,batch);
 
         damage = 20;
         this.life = life;

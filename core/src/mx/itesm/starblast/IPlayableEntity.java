@@ -8,7 +8,7 @@ interface IPlayableEntity {
     void setDamage(int dmg);
     int getDamage();
     boolean doDamage(int damage);
-    void draw(SpriteBatch batch);
+    boolean draw(SpriteBatch batch);
     Body getBody();
     float getX();
     float getY();

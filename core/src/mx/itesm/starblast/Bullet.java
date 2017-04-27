@@ -13,10 +13,12 @@ import com.badlogic.gdx.physics.box2d.World;
 
 class Bullet implements IPlayableEntity{
 
+    float density = 0.1f;
+    float restitution = 0.1f;
     public Body body;
     Sprite sprite;
     private static float VELOCITY = 10;
-    private boolean isEnemy = false;
+    boolean isEnemy = false;
     int damage;
 
     Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
@@ -30,7 +32,9 @@ class Bullet implements IPlayableEntity{
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
-        makeFixture(0.1f, 1f);
+
+
+        makeFixture(density, restitution);
 
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
@@ -43,7 +47,7 @@ class Bullet implements IPlayableEntity{
         this(v.x, v.y, world, angle,enemy, damage);
     }
 
-    private void makeFixture(float density, float restitution) {
+    void makeFixture(float density, float restitution) {
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
@@ -59,9 +63,9 @@ class Bullet implements IPlayableEntity{
         fixtureDef.shape = bodyShape;
         fixtureDef.friction = 0;
         fixtureDef.filter.categoryBits = isEnemy ? Constant.CATEGORY_BULLET_ENEMY :
-                                                    Constant.CATEGORY_BULLET;
+                                                    Constant.CATEGORY_BULLET_PLAYER;
         fixtureDef.filter.maskBits = isEnemy ? Constant.MASK_BULLET_ENEMY :
-                                                Constant.MASK_BULLET;
+                                                Constant.MASK_BULLET_PLAYER;
         body.createFixture(fixtureDef);
 
         bodyShape.dispose();
@@ -82,11 +86,12 @@ class Bullet implements IPlayableEntity{
         return true;
     }
 
-    public void draw(SpriteBatch batch) {
+    public boolean draw(SpriteBatch batch) {
         //TODO ponerlo en la punta, no en el centro
         sprite.setCenter(Constant.toScreenSize(body.getPosition().x),
                 Constant.toScreenSize(body.getPosition().y));
         sprite.draw(batch);
+        return false;
     }
 
     @Override

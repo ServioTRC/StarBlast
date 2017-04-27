@@ -15,15 +15,17 @@ class Constant {
 
     static final short CATEGORY_PLAYER = 1;
     static final short CATEGORY_ENEMY = 2;
-    static final short CATEGORY_BULLET = 4;
+    static final short CATEGORY_BULLET_PLAYER = 4;
     static final short CATEGORY_BULLET_ENEMY = 8;
     static final short CATEGORY_BORDERS = 16;
+    static final short CATEGORY_EXPLOSIONS = 32;
 
     static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
-    static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET | CATEGORY_ENEMY;
-    static final short MASK_BULLET = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
-    static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET | CATEGORY_BORDERS;
-    static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET | CATEGORY_BULLET_ENEMY;
+    static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_ENEMY;
+    static final short MASK_BULLET_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
+    static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BORDERS;
+    static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BULLET_ENEMY;
+    static final short MASK_EXPLOSIONS = CATEGORY_ENEMY | CATEGORY_PLAYER;
 
     static float toWorldSize(float screen){
         return screen*0.01f;
@@ -48,4 +50,7 @@ class Constant {
         OPTIONS,
         CREDITS
     }
+
+    static final int EXPLOSION_SIZE_X = 100;
+    static final int EXPLOSION_SIZE_Y = 100;
 }
