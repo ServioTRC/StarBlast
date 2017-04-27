@@ -5,24 +5,24 @@ import com.badlogic.gdx.Preferences;
 
 import java.util.ArrayList;
 
-class PreferencesSB {
-    static boolean MUSIC_ENABLE = true;
-    static boolean SOUNDS_ENABLE = true;
+public class PreferencesSB {
+    public static boolean MUSIC_ENABLE = true;
+    public static boolean SOUNDS_ENABLE = true;
 
-    static void readingSoundPreferences(){
+    public static void readingSoundPreferences(){
         Preferences prefs = Gdx.app.getPreferences("Sounds");
         MUSIC_ENABLE = prefs.getBoolean("MUSIC_ENABLE",true);
         SOUNDS_ENABLE = prefs.getBoolean("SOUNDS_ENABLE",true);
     }
 
-    static void savingSoundPreferences(){
+    public static void savingSoundPreferences(){
         Preferences prefs = Gdx.app.getPreferences("Sounds");
         prefs.putBoolean("MUSIC_ENABLE", MUSIC_ENABLE);
         prefs.putBoolean("SOUNDS_ENABLE", SOUNDS_ENABLE);
         prefs.flush();
     }
 
-    static void savingScore(String userName, int userScore){
+    public static void savingScore(String userName, int userScore){
         //Comparing Values
         Preferences prefs = Gdx.app.getPreferences("High Scores");
         ArrayList<Integer> scores = new ArrayList<Integer>(6);
@@ -48,7 +48,7 @@ class PreferencesSB {
         prefs.flush();
     }
 
-    static void erasingGameInfo(){
+    public static void erasingGameInfo(){
         Preferences prefs = Gdx.app.getPreferences("High Scores");
         //Rewriting information
         for(int i = 1; i <= 5; i++){
@@ -59,13 +59,13 @@ class PreferencesSB {
     }
 
 
-    static void savingLevelProgress(int level){
+    public static void savingLevelProgress(int level){
         Preferences prefs = Gdx.app.getPreferences("Levels");
         prefs.putInteger("Level", level);
         prefs.flush();
     }
 
-    static int readingLevelProgress(){
+    public static int readingLevelProgress(){
         Preferences prefs = Gdx.app.getPreferences("Levels");
         return prefs.getInteger("Level", 1);
     }

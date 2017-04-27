@@ -9,20 +9,20 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-class Text {
+public class Text {
     private final BitmapFont font;
     private final Skin skin;
     private final TextureAtlas buttonAtlas;
     private final GlyphLayout layout;
 
-    Text(String files) {
+    public Text(String files) {
         font = new BitmapFont(Gdx.files.internal(files));
         skin = new Skin();
         buttonAtlas = new TextureAtlas();
         layout = new GlyphLayout();
     }
 
-    TextButton.TextButtonStyle generateText(Color colorFont, Color colorPushed, int scale) {
+    public TextButton.TextButtonStyle generateText(Color colorFont, Color colorPushed, int scale) {
         font.getData().setScale(scale);
         skin.addRegions(buttonAtlas);
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();

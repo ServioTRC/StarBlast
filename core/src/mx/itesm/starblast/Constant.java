@@ -4,37 +4,37 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import java.util.ArrayList;
 
-class Constant {
-    static final float SCREEN_WIDTH = 1280;
-    static final float SCREEN_HEIGTH = 800;
-    static final AssetManager MANAGER = new AssetManager();
-    static final float SHIPS_SCALE = -0.3f;
-    static final String SOURCE_TEXT = "Text/ArcadeFont.fnt";
-    static final float TOUCHPAD_DEADZONE = 0.20f;
-    static final ArrayList<String> CODES = new ArrayList<String>(5);
+public class Constant {
+    public static final float SCREEN_WIDTH = 1280;
+    public static final float SCREEN_HEIGTH = 800;
+    public static final AssetManager MANAGER = new AssetManager();
+    public static final float SHIPS_SCALE = -0.3f;
+    public static final String SOURCE_TEXT = "Text/ArcadeFont.fnt";
+    public static final float TOUCHPAD_DEADZONE = 0.20f;
+    public static final ArrayList<String> CODES = new ArrayList<String>(5);
 
-    static final short CATEGORY_PLAYER = 1;
-    static final short CATEGORY_ENEMY = 2;
-    static final short CATEGORY_BULLET_PLAYER = 4;
-    static final short CATEGORY_BULLET_ENEMY = 8;
-    static final short CATEGORY_BORDERS = 16;
-    static final short CATEGORY_EXPLOSIONS = 32;
+    public static final short CATEGORY_PLAYER = 1;
+    public static final short CATEGORY_ENEMY = 2;
+    public static final short CATEGORY_BULLET_PLAYER = 4;
+    public static final short CATEGORY_BULLET_ENEMY = 8;
+    public static final short CATEGORY_BORDERS = 16;
+    public static final short CATEGORY_EXPLOSIONS = 32;
 
-    static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
-    static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_ENEMY;
-    static final short MASK_BULLET_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
-    static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BORDERS;
-    static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BULLET_ENEMY;
-    static final short MASK_EXPLOSIONS = CATEGORY_ENEMY | CATEGORY_PLAYER;
+    public static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
+    public static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_ENEMY;
+    public static final short MASK_BULLET_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
+    public static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BORDERS;
+    public static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BULLET_ENEMY;
+    public static final short MASK_EXPLOSIONS = CATEGORY_ENEMY | CATEGORY_PLAYER;
 
-    static float toWorldSize(float screen){
+    public static float toWorldSize(float screen){
         return screen*0.01f;
     }
-    static float toScreenSize(float world){
+    public static float toScreenSize(float world){
         return world*100;
     }
 
-    enum Screens {
+    public enum Screens {
         SPLASH,
         START,
         MENU,
@@ -51,6 +51,6 @@ class Constant {
         CREDITS
     }
 
-    static final int EXPLOSION_SIZE_X = 100;
-    static final int EXPLOSION_SIZE_Y = 100;
+    public static final int EXPLOSION_SIZE_X = 100;
+    public static final int EXPLOSION_SIZE_Y = 100;
 }

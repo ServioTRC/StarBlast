@@ -17,7 +17,7 @@ public class StarBlast extends Game {
         if(PreferencesSB.MUSIC_ENABLE) {
             backgroundMusic.play();
         }
-        setScreen(new ScreenSplashTec(this));
+        setScreen(new mx.itesm.starblast.screens.ScreenSplashTec(this));
     }
 
     @Override
