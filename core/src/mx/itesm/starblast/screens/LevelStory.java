@@ -410,7 +410,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 if (destroyB) {
                     objectB.setDamage(0);
                 }
-
                 lifeBar.setPorcentage(player.life / player.totalLife);
             }
 

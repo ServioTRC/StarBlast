@@ -26,7 +26,7 @@ public class Missile extends Bullet implements IExplotable {
     Missile(float x,float y, World world, float angle, boolean enemy, int damage,SpriteBatch batch) {
         super(x,y, world, angle, enemy, damage);
 
-        density = 0.2f;
+        density = 0.5f;
         restitution = 0;
         makeFixture(density,restitution);
 
