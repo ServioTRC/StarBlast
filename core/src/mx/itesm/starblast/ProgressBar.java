@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -16,15 +17,17 @@ public class ProgressBar extends Actor {
     private Texture frame;
     private boolean vertical;
     private float porcentage;
+    private boolean frameTop;
 
 
-    public ProgressBar(Texture texture,boolean vertical){
+    public ProgressBar(Texture texture,boolean vertical,boolean frameTop){
         this.bar = texture;
         this.textureRegion = new TextureRegion(texture);
         this.vertical = vertical;
         this.porcentage = 1;
         setWidth(texture.getWidth());
         setHeight(texture.getHeight());
+        this.frameTop = frameTop;
     }
 
     @Override
@@ -38,17 +41,31 @@ public class ProgressBar extends Actor {
     }
 
     private void drawHorizontal(Batch batch) {
+        if(!frameTop){
+            drawFrame(batch);
+            batch.draw(textureRegion, getX(), getY());
+        }
+        else {
+            batch.draw(textureRegion, getX(), getY());
+            drawFrame(batch);
+        }
+    }
+
+    private void drawFrame(Batch batch){
         if (frame != null) {
             batch.draw(frame, getX() - (frame.getWidth() - bar.getWidth()) / 2, getY() - (frame.getHeight() - bar.getHeight()) / 2);
         }
-        batch.draw(textureRegion, getX(), getY());
     }
 
     private void drawVertical(Batch batch) {
-        if (frame != null) {
-            batch.draw(frame, getX() - (frame.getWidth() - bar.getWidth()) / 2, getY() - (frame.getHeight() - bar.getHeight()) / 2);
+        if(!frameTop) {
+            drawFrame(batch);
+            batch.draw(textureRegion, getX(), getY() - (int) (bar.getHeight() * (1 - porcentage)));
         }
-        batch.draw(textureRegion, getX(), getY() - (int) (bar.getHeight() * (1 - porcentage)));
+        else {
+            batch.draw(textureRegion, getX(), getY() - (int) (bar.getHeight() * (1 - porcentage)));
+            drawFrame(batch);
+        }
     }
 
     public void setPorcentage(float porcentage){

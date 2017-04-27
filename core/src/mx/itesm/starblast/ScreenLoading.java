@@ -97,7 +97,7 @@ class ScreenLoading extends ScreenSB {
     }
 
     private void creatingProgressBar() {
-        loadingBar = new ProgressBar(new Texture("LoadingScreen/MaskLoading.png"),false);
+        loadingBar = new ProgressBar(new Texture("LoadingScreen/MaskLoading.png"),false,false);
         loadingBar.setFrame(new Texture("LoadingScreen/BackgroundLoading.jpg"));
         loadingBar.setPosition((Constant.SCREEN_WIDTH - loadingBar.getWidth())/2,(Constant.SCREEN_HEIGTH - loadingBar.getHeight())/2);
 
