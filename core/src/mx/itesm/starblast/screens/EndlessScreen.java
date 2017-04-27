@@ -1,8 +1,5 @@
 package mx.itesm.starblast.screens;
 
-import com.badlogic.gdx.graphics.Texture;
-
-import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.StarBlast;
 
 public class EndlessScreen extends LevelStory {
@@ -11,7 +8,6 @@ public class EndlessScreen extends LevelStory {
 
     EndlessScreen(StarBlast app) {
         super(app, 5, 2, 0, 0);
-        loopingBackground = Constant.MANAGER.get("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
     }
 
     @Override

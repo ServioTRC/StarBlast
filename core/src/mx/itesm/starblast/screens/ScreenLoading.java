@@ -194,17 +194,14 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadLevel1() {
-        Constant.MANAGER.load("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
         loadStory();
     }
 
     private void loadLevel2() {
-        Constant.MANAGER.load("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
         loadStory();
     }
 
     private void loadLevel3() {
-        Constant.MANAGER.load("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
         loadStory();
     }
 
@@ -231,6 +228,22 @@ public class ScreenLoading extends ScreenSB {
         loadSoundsFromStory();
         loadHUD();
         loadPause();
+        loadBackgrounds();
+    }
+
+    private void loadBackgrounds(){
+        Constant.MANAGER.load("GameScreen/FondoBegin.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoEnd.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile2.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile3.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile4.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile5.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile6.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile7.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTile8.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTileGrande.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTileGrande2.jpg", Texture.class);
+        Constant.MANAGER.load("GameScreen/FondoTileGrande3.jpg", Texture.class);
     }
 
     private void loadSoundsFromStory(){
@@ -267,7 +280,6 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadEndless() {
         loadStory();
-        Constant.MANAGER.load("GameScreen/Level1/LoopingBackground.jpg", Texture.class);
     }
 
     private void loadMinigames() {

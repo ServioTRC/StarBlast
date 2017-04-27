@@ -48,7 +48,27 @@ import mx.itesm.starblast.Text;
 class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausable {
 
     //region background
-    Texture loopingBackground;
+//    Texture loopingBackground;
+    Texture[] plainBackgrounds = {
+            Constant.MANAGER.get("GameScreen/FondoTile2.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTile3.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTile4.jpg", Texture.class)
+    };
+    Texture[] meteorBackground = {
+            Constant.MANAGER.get("GameScreen/FondoTile6.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTile7.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTile8.jpg", Texture.class)
+    };
+    Texture[] transitionBackgrounds = {
+            Constant.MANAGER.get("GameScreen/FondoTile5.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTileGrande.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTileGrande2.jpg", Texture.class),
+            Constant.MANAGER.get("GameScreen/FondoTileGrande3.jpg", Texture.class)
+    };
+    Texture beginTexture = Constant.MANAGER.get("GameScreen/FondoBegin.jpg", Texture.class);
+    Texture endTexture = Constant.MANAGER.get("GameScreen/FondoEnd.jpg", Texture.class);
+    Texture firstBackground;
+    Texture secondBackground;
     private float posY = 0;
     private float backgroundSpeed = 50;
     //endregion
@@ -137,6 +157,8 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy2Sprite.png", Texture.class));
         EnemiesFiles.add(Constant.MANAGER.get("GameScreen/Enemy3Sprite.png", Texture.class));
 
+        firstBackground = plainBackgrounds[random.nextInt(plainBackgrounds.length)];
+        secondBackground = plainBackgrounds[random.nextInt(plainBackgrounds.length)];
     }
 
     //region metodos ScreenSB
@@ -236,14 +258,28 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     //region metodos de render
     //TODO manejar transiciones y demás cosas
     private void handleFondo(float dt) {
-        batch.draw(loopingBackground, 0, posY);
-        batch.draw(loopingBackground, 0, posY + loopingBackground.getHeight());
+        batch.draw(firstBackground, 0, posY);
+        batch.draw(secondBackground, 0, posY + firstBackground.getHeight());
         if (!isPaused) {
             posY -= backgroundSpeed * dt;
-            if (posY <= 0 - loopingBackground.getHeight()) {
+            if (posY <= -firstBackground.getHeight()) {
                 posY = 0;
+                firstBackground = secondBackground;
+                secondBackground = getBackground();
+//                secondBackground = firstBackground;
+//                firstBackground = getBackground();
             }
         }
+    }
+
+    private Texture getBackground(){
+        if(switchingWaves){
+            return transitionBackgrounds[random.nextInt(transitionBackgrounds.length)];
+        }
+        if(random.nextDouble() < 0.85){
+            return plainBackgrounds[random.nextInt(plainBackgrounds.length)];
+        }
+        return meteorBackground[random.nextInt(meteorBackground.length)];
     }
 
     private void handleGame(float dt) {
