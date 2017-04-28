@@ -1,5 +1,6 @@
 package mx.itesm.starblast.gameEntities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,6 +39,7 @@ public class ShipPlayer extends Ship {
     private Sound missileSound;
 
     public float totalLife;
+    private boolean infHealth;
 
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
@@ -58,6 +60,7 @@ public class ShipPlayer extends Ship {
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav",Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
+        infHealth = Gdx.app.getPreferences("Codes").getBoolean("InfHealth",false);
     }
 
     private void shootMissile(){
@@ -121,6 +124,11 @@ public class ShipPlayer extends Ship {
         sprite.setRotation(sprite.getRotation()+ MAX_TURN_RANGE * turnPercentage);
         sprite.setRotation(min(sprite.getRotation(),90+ TURN_RANGE /2));
         sprite.setRotation(max(sprite.getRotation(),90- TURN_RANGE /2));
+    }
+
+    @Override
+    public boolean doDamage(int damage) {
+        return !infHealth && super.doDamage(damage);
     }
 
 }

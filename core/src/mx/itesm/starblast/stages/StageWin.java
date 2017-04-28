@@ -38,7 +38,7 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                int level = PreferencesSB.readingLevelProgress();
+                int level = PreferencesSB.readLevelProgress();
                 if(level == 1) {
                     Gdx.app.log("ScreenMenu ", "Going to Level1");
                     app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL1));

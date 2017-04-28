@@ -89,7 +89,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to History mode");
-                int level = PreferencesSB.readingLevelProgress();
+                int level = PreferencesSB.readLevelProgress();
                 if(level == 1) {
                     Gdx.app.log("ScreenMenu ", "Going to Level1");
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
@@ -105,7 +105,8 @@ public class ScreenMenu extends ScreenSB {
     }
 
     private void creatingEndlessButton(){
-        textButtonStyle = text.generateText(Color.GRAY,Color.GRAY,1);
+        final boolean active = PreferencesSB.readLevelProgress()>3;
+        textButtonStyle = text.generateText(active?Color.BLUE:Color.GRAY,active?Color.GOLD:Color.GRAY,1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 3* Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2+80);
 
@@ -115,7 +116,8 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to Endless Mode");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
+                //TODO quitar || true
+                if(active) menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             }
         });
     }
@@ -180,7 +182,6 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to MiniGames");
-                
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES));
             }
         });

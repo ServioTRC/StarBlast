@@ -54,18 +54,19 @@ public class PreferencesSB {
         for(int i = 1; i <= 5; i++){
             prefs.putString("punt"+i, "----- 00000");
         }
+        prefs = Gdx.app.getPreferences("Levels");
         prefs.putInteger("Level", 1);
         prefs.flush();
     }
 
 
-    public static void savingLevelProgress(int level){
+    public static void saveLevelProgress(int level){
         Preferences prefs = Gdx.app.getPreferences("Levels");
         prefs.putInteger("Level", level);
         prefs.flush();
     }
 
-    public static int readingLevelProgress(){
+    public static int readLevelProgress(){
         Preferences prefs = Gdx.app.getPreferences("Levels");
         return prefs.getInteger("Level", 1);
     }

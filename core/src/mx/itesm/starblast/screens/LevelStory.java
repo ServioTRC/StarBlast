@@ -222,7 +222,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             lostScene.draw();
             //return;
         } else if (youWon) {
-            PreferencesSB.savingLevelProgress(level + 1);
+            PreferencesSB.saveLevelProgress(level + 1);
             Gdx.input.setInputProcessor(winningScene);
             winningScene.draw();
             //return;
