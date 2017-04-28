@@ -26,7 +26,7 @@ public class ShipPlayer extends Ship {
     private final float MAX_TURN_RANGE = 2;
 
     private final int MISSILE_DAMAGE;
-    private final int COOLDOWN_MISSILE = 1000;
+    private final int COOLDOWN_MISSILE = 200;
     private long previousMissile = 0;
 
     private float acceleration;
@@ -49,7 +49,7 @@ public class ShipPlayer extends Ship {
         MASK = Constant.MASK_PLAYER;
         COOLDOWN_SHOT = 100;
         BULLET_DAMAGE = 10;
-        MISSILE_DAMAGE = 100;
+        MISSILE_DAMAGE = 500;
 
         speed = 0;
         acceleration = 0;

@@ -2,6 +2,7 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -477,15 +479,17 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     }
 
     private boolean handleCollision(IPlayableEntity a, IPlayableEntity b) {
+        boolean isDestroyed = false;
+
         if (a instanceof Bullet) {
             if (b instanceof Edge) {
                 toRemove.add(a.getBody());
                 return true;
             } else if (b instanceof Ship) {
-                a.doDamage(Integer.MAX_VALUE);
+                isDestroyed = a.doDamage(Integer.MAX_VALUE);
             }
         }
-        if (a.doDamage(b.getDamage())) {
+        if (a.doDamage(b.getDamage()) || isDestroyed) {
             toRemove.add(a.getBody());
             if (a instanceof IExplotable) {
                 animations.add(((IExplotable) a).getExplosion());
@@ -498,6 +502,9 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 youLost = true;
             }
             return true;
+        }
+        if(a instanceof ShipEnemyBoss){
+            Gdx.app.log("BossLife",""+((ShipEnemyBoss) a).life);
         }
         return false;
     }
@@ -561,7 +568,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         Vector2 target = new Vector2(player.getX(), player.getY());
         for (ShipEnemy enemy : enemies) {
             enemy.move(target, delta);
-            //enemy.shoot(TimeUtils.millis());
+            enemy.shoot(TimeUtils.millis());
         }
     }
 
@@ -576,7 +583,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             } else {
                 if(haBoss){
                     haBoss = false;
-                    ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(100*level),batch);
+                    ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(3000 + 1000*(level*(level+1))/2),batch);
                     boss.scaling(Constant.SHIPS_SCALE);
                     enemies.add(boss);
                     Gdx.app.log("Boss","The boss has spawned: " + boss.life);

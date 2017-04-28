@@ -18,7 +18,7 @@ import mx.itesm.starblast.Constant;
 
 public class Explosion implements IPlayableEntity{
 
-    private int damage = 5;
+    private int damage;
 
     private Body body;
     private Vector2 position;
@@ -28,16 +28,18 @@ public class Explosion implements IPlayableEntity{
 
     private boolean created = false;
 
-    public Explosion(Vector2 position, World world, SpriteBatch batch) {
+    public Explosion(Vector2 position, World world, SpriteBatch batch,int damage) {
         animation = new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, Constant.toScreenSize(position.x), Constant.toScreenSize(position.y), Constant.EXPLOSION_SIZE_X, Constant.EXPLOSION_SIZE_Y,batch);
         this.position = position;
         this.world = world;
+        this.damage = damage;
     }
 
-    public Explosion(Vector2 position, World world, SpriteBatch batch, AutoAnimation animation) {
+    public Explosion(Vector2 position, World world, AutoAnimation animation, int damage) {
         this.animation = animation;
         this.position = position;
         this.world = world;
+        this.damage = damage;
     }
 
     public void createExplosion(){

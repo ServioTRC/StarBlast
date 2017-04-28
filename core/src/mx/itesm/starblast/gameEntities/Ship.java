@@ -144,7 +144,7 @@ public abstract class Ship implements IPlayableEntity,IExplotable {
     }
 
     public void die(){
-        explosion = new Explosion(new Vector2(body.getPosition()),world,batch);
+        explosion = new Explosion(new Vector2(body.getPosition()),world,batch,5);
         if(PreferencesSB.SOUNDS_ENABLE) {
             explosionSound.play(0.8f);
         }
