@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Random;
@@ -35,6 +39,28 @@ public class ShipEnemyBoss extends ShipEnemy {
         random = new Random();
     }
 
+    void makeFixture(float density, float restitution){
+        while (body.getFixtureList().size > 0){
+            body.destroyFixture(body.getFixtureList().first());
+        }
+        PolygonShape bodyShape = new PolygonShape();
+
+        float w= Constant.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
+        float h= Constant.toWorldSize(sprite.getHeight()*sprite.getScaleY()/2f);
+
+        bodyShape.setAsBox(w,h);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.density=density;
+        fixtureDef.restitution=restitution;
+        fixtureDef.shape=bodyShape;
+        fixtureDef.friction = 0;
+        fixtureDef.filter.categoryBits = CATEGORY;
+        fixtureDef.filter.maskBits = MASK;
+        body.createFixture(fixtureDef);
+        bodyShape.dispose();
+    }
+
     @Override
     public void move(Vector2 target, float delta){
         target = new Vector2(Constant.toWorldSize(target.x), Constant.toWorldSize(target.y));
@@ -49,6 +75,8 @@ public class ShipEnemyBoss extends ShipEnemy {
         }
         sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
         sprite.setRotation(MathUtils.radiansToDegrees*MathUtils.atan2(objective.y-body.getPosition().y, objective.x-body.getPosition().x));
+
+        body.setTransform(body.getPosition(), MathUtils.degreesToRadians*sprite.getRotation());
     }
 
     @Override

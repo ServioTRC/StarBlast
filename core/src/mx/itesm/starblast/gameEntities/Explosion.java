@@ -26,7 +26,7 @@ public class Explosion implements IPlayableEntity{
     private AutoAnimation  animation;
     private World world;
 
-    private boolean isCreated = false;
+    private boolean created = false;
 
     public Explosion(Vector2 position, World world, SpriteBatch batch) {
         animation = new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionFrames.png", Texture.class), 0.15f, Constant.toScreenSize(position.x), Constant.toScreenSize(position.y), Constant.EXPLOSION_SIZE_X, Constant.EXPLOSION_SIZE_Y,batch);
@@ -34,7 +34,16 @@ public class Explosion implements IPlayableEntity{
         this.world = world;
     }
 
+    public Explosion(Vector2 position, World world, SpriteBatch batch, AutoAnimation animation) {
+        this.animation = animation;
+        this.position = position;
+        this.world = world;
+    }
+
     public void createExplosion(){
+        if(created){
+            return;
+        }
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(position.x,position.y);
@@ -42,7 +51,7 @@ public class Explosion implements IPlayableEntity{
 
         makeFixture(0.5f,0.5f);
 
-        isCreated = true;
+        created = true;
     }
 
     private void makeFixture(float density, float restitution){
@@ -103,6 +112,6 @@ public class Explosion implements IPlayableEntity{
     }
 
     public boolean isCreated(){
-        return isCreated;
+        return created;
     }
 }

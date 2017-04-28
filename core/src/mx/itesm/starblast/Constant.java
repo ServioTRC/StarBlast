@@ -53,4 +53,6 @@ public class Constant {
 
     public static final int EXPLOSION_SIZE_X = 100;
     public static final int EXPLOSION_SIZE_Y = 100;
+    public static final int MISSILE_EXPLOSION_SIZE_X = 150;
+    public static final int MISSILE_EXPLOSION_SIZE_Y = 150;
 }

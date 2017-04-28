@@ -12,12 +12,15 @@ import mx.itesm.starblast.Constant;
 
 public class Missile extends Bullet implements IExplotable {
 
-    private final float ACCELERATION = 2;
-    private final float VELOCITY = 10;
+    private final float ACCELERATION = 1.2f;
+    private final float VELOCITY = 2;
     private World world;
     private int life = 50;
     SpriteBatch batch;
+
+    private float thrust;
     private Explosion explosion;
+
 
     Missile(Vector2 v, World world, float angle, boolean enemy, int damage,SpriteBatch batch) {
         this(v.x,v.y,world,angle,enemy,damage,batch);
@@ -42,19 +45,23 @@ public class Missile extends Bullet implements IExplotable {
 
     @Override
     public boolean draw(SpriteBatch batch) {
-        float x = ACCELERATION*Gdx.graphics.getDeltaTime()* MathUtils.cosDeg(sprite.getRotation());
-        float y = ACCELERATION*Gdx.graphics.getDeltaTime()* MathUtils.sinDeg(sprite.getRotation());
+        thrust += ACCELERATION*Gdx.graphics.getDeltaTime();
+        float x = thrust* MathUtils.cosDeg(sprite.getRotation());
+        float y = thrust* MathUtils.sinDeg(sprite.getRotation());
         body.setLinearVelocity(body.getLinearVelocity().add(x,y));
         super.draw(batch);
         return false;
     }
 
     @Override
-    public boolean doDamage(int damage) {
-        //TODO hacer la explosion y que dañe a enemigos cercanos
+    public boolean doDamage(int damage){
+        if(explosion != null){
+            return false;
+        }
         this.life -= damage;
         if(life < 0){
-            explosion = new Explosion(body.getPosition(),world, batch);
+            AutoAnimation anim = new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionMissileFrames.png", Texture.class), 0.15f, Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y), Constant.MISSILE_EXPLOSION_SIZE_X, Constant.MISSILE_EXPLOSION_SIZE_Y,batch);;
+            explosion = new Explosion(body.getPosition(),world, batch,anim);
             return true;
         }
         else{

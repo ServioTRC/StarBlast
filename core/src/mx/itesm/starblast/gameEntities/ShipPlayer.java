@@ -34,6 +34,9 @@ public class ShipPlayer extends Ship {
     private float turnPercentage;
     private float speed;
     private float theta;
+
+    private Sound missileSound;
+
     public float totalLife;
 
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
@@ -53,6 +56,7 @@ public class ShipPlayer extends Ship {
         totalLife = life;
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
+        missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav",Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
     }
 
@@ -65,7 +69,7 @@ public class ShipPlayer extends Ship {
             previousMissile = time;
             shootMissile();
             if(PreferencesSB.SOUNDS_ENABLE){
-                //TODO sonido para cuando se dispare un misil
+                missileSound.play(0.5f);
             }
         }
     }

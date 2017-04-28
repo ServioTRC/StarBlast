@@ -221,6 +221,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
+        Constant.MANAGER.load("Animations/ExplosionMissileFrames.png",Texture.class);
 
         Constant.MANAGER.load("DefeatScreen/DefeatBackground.jpg", Texture.class);
         Constant.MANAGER.load("DefeatScreen/Countdown.png", Texture.class);
@@ -252,6 +253,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("SoundEffects/Explosion1.mp3",Sound.class);
         Constant.MANAGER.load("SoundEffects/Explosion2.mp3",Sound.class);
         //Constant.MANAGER.load("SoundEffects/Explosion3.mp3",Sound.class);
+        Constant.MANAGER.load("SoundEffects/MissileSound.wav",Sound.class);
     }
 
     private void loadHUD(){

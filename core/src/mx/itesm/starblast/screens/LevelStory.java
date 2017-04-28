@@ -3,8 +3,10 @@ package mx.itesm.starblast.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -38,6 +40,7 @@ import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.gameEntities.ProgressBar;
 import mx.itesm.starblast.gameEntities.Ship;
 import mx.itesm.starblast.gameEntities.ShipEnemy;
+import mx.itesm.starblast.gameEntities.ShipEnemyBoss;
 import mx.itesm.starblast.gameEntities.ShipPlayer;
 import mx.itesm.starblast.stages.StageLost;
 import mx.itesm.starblast.stages.StagePause;
@@ -138,6 +141,8 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     private final SpriteBatch batch = new SpriteBatch();
     Random random = new Random();
     private boolean playerSpecial = false;
+    private Box2DDebugRenderer debugRenderer;
+    private Matrix4 debugMatrix;
     //endregion
 
     LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves, int level) {
@@ -173,10 +178,15 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
         player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world, batch);
         player.scaling(Constant.SHIPS_SCALE);
+        debugRenderer = new Box2DDebugRenderer();
     }
 
     @Override
     public void render(float delta) {
+
+        debugMatrix = new Matrix4(camera.combined);
+        debugMatrix.scale(100,100,1);
+
         batch.begin();
         handleFondo(delta);
         handleGame(delta);
@@ -219,6 +229,8 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         } else if (isPaused) {
             pauseScene.draw();
         }
+
+        debugRenderer.render(world,debugMatrix);
     }
 
     @Override //pantalla
@@ -485,9 +497,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 isPaused = true;
                 youLost = true;
             }
-            if (a instanceof Bullet) {
-                toRemove.add(a.getBody());
-            }
             return true;
         }
         return false;
@@ -566,7 +575,11 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 switchingWaves = true;
             } else {
                 if(haBoss){
-                    //TODO aquí va el boss
+                    haBoss = false;
+                    ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(100*level),batch);
+                    boss.scaling(Constant.SHIPS_SCALE);
+                    enemies.add(boss);
+                    Gdx.app.log("Boss","The boss has spawned: " + boss.life);
                 }else{
                     isPaused = true;
                     youWon = true;
