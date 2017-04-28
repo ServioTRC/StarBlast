@@ -38,7 +38,7 @@ public class ShipEnemy extends Ship {
 
         life = 30;
         speed = 0;
-        damage = 5;
+        damage = 15;
         canShoot = false;
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);

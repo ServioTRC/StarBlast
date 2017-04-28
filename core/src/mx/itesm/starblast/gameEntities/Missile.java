@@ -12,10 +12,10 @@ import mx.itesm.starblast.Constant;
 
 public class Missile extends Bullet implements IExplotable {
 
-    private final float ACCELERATION = 1.2f;
+    private final float ACCELERATION = 1.1f;
     private final float VELOCITY = 2;
     private World world;
-    private int life = 50;
+    private int life = 20;
     SpriteBatch batch;
 
     private float thrust;
@@ -61,7 +61,7 @@ public class Missile extends Bullet implements IExplotable {
         this.life -= damage;
         if(life < 0){
             AutoAnimation anim = new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionMissileFrames.png", Texture.class), 0.15f, Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y), Constant.MISSILE_EXPLOSION_SIZE_X, Constant.MISSILE_EXPLOSION_SIZE_Y,batch);;
-            explosion = new Explosion(body.getPosition(),world, batch,anim);
+            explosion = new Explosion(new Vector2(body.getPosition()),world, anim, 100);
             return true;
         }
         else{

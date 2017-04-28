@@ -1,5 +1,6 @@
 package mx.itesm.starblast.gameEntities;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -37,6 +38,9 @@ public class ShipEnemyBoss extends ShipEnemy {
         upperLimit = Constant.toWorldSize(Constant.SCREEN_HEIGTH *0.9f);
 
         random = new Random();
+
+        fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
+        explosionSound = Constant.MANAGER.get("SoundEffects/Explosion2.mp3",Sound.class);
     }
 
     void makeFixture(float density, float restitution){
