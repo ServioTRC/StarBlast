@@ -76,8 +76,7 @@ public class StagePause extends Stage {
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
-                        Gdx.app.log("Codigo Ingresado: ", input);
-                        Constant.CODES.add(input);
+                        PreferencesSB.activateCheatCode(input);
                     }
 
                     @Override

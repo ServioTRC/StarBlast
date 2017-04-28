@@ -70,5 +70,39 @@ public class PreferencesSB {
         Preferences prefs = Gdx.app.getPreferences("Levels");
         return prefs.getInteger("Level", 1);
     }
+    
+    public static void activateCheatCode(String code){
+        Gdx.app.log("Codigo Ingresado", code);
+        code = code.toLowerCase().trim();
+        Preferences prefs = Gdx.app.getPreferences("Codes");
+        if(code.equals("fat man")){
+            //ininite missiles
+        }else if(code.equals("hard container")){
+            //infinite health
+            Gdx.app.log("Cheats","hard container");
+            prefs.putBoolean("InfHealth",!prefs.getBoolean("InfHealth",false));
+        }else if(code.equals("duke nuke")){
+            //super damage (balas explosivas)
+        }else if(code.equals("darude")){
+            //darude sandstorm
+        }else if(code.equals("dark souls")){
+            //get used to dying
+        }else if(code.equals("sonic the hedgehog")){
+            //super speed
+        }else if(code.equals("yeah that's honest")){
+            //super op
+        }else if(code.equals("speed run")){
+            //gana
+            Gdx.app.log("Cheats","speed run");
+            PreferencesSB.saveLevelProgress(PreferencesSB.readLevelProgress()>3?1:4);
+        }else if(code.equals("mario party")){
+            //unlock minigames
+        }else if(code.equals("uuddlrlrab")){
+            //konamy code (+ misiles, 2xVida)
+        }else if(code.equals("360 no scope")){
+            //homing misiles (and bullets)
+        }
+        prefs.flush();
+    }
 
 }

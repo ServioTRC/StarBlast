@@ -125,38 +125,7 @@ class ScreenOptions extends ScreenSB {
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
-                        Gdx.app.log("Codigo Ingresado", input);
-                        Constant.CODES.add(input);
-                        input = input.toLowerCase().trim();
-                        Preferences prefs = Gdx.app.getPreferences("Codes");
-                        if(input.equals("fat man")){
-                            //ininite missiles
-                        }else if(input.equals("hard container")){
-                            //infinite health
-                            Gdx.app.log("Cheats","hard container");
-                            prefs.putBoolean("InfHealth",!prefs.getBoolean("InfHealth",false));
-                        }else if(input.equals("duke nuke")){
-                            //super damage (balas explosivas)
-                        }else if(input.equals("darude")){
-                            //darude sandstorm
-                        }else if(input.equals("dark souls")){
-                            //get used to dying
-                        }else if(input.equals("sonic the hedgehog")){
-                            //super speed
-                        }else if(input.equals("yeah that's honest")){
-                            //super op
-                        }else if(input.equals("speed run")){
-                            //gana
-                            Gdx.app.log("Cheats","speed run");
-                            PreferencesSB.saveLevelProgress(PreferencesSB.readLevelProgress()>3?1:4);
-                        }else if(input.equals("mario party")){
-                            //unlock minigames
-                        }else if(input.equals("uuddlrlrab")){
-                            //konamy code (+ misiles, 2xVida)
-                        }else if(input.equals("360 no scope")){
-                            //homing misiles (and bullets)
-                        }
-                        prefs.flush();
+                        PreferencesSB.activateCheatCode(input);
                     }
 
                     @Override

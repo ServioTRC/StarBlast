@@ -11,7 +11,6 @@ public class Constant {
     public static final float SHIPS_SCALE = -0.3f;
     public static final String SOURCE_TEXT = "Text/ArcadeFont.fnt";
     public static final float TOUCHPAD_DEADZONE = 0.20f;
-    public static final ArrayList<String> CODES = new ArrayList<String>(5);
 
     public static final short CATEGORY_PLAYER = 1;
     public static final short CATEGORY_ENEMY = 2;
