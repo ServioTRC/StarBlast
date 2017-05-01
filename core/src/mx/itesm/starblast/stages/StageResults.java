@@ -122,7 +122,7 @@ class StageResults extends Stage {
             @Override
             public void input(String input) {
                 Gdx.app.log("Nombre Ingresado: ", input);
-                PreferencesSB.savingScore(input, score);
+                PreferencesSB.saveScore(input, score);
             }
 
             @Override

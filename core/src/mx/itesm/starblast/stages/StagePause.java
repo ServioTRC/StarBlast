@@ -76,7 +76,7 @@ public class StagePause extends Stage {
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
-                        PreferencesSB.activateCheatCode(input);
+                        PreferencesSB.activateCheatCode(input, menu);
                     }
 
                     @Override
@@ -128,7 +128,7 @@ public class StagePause extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
-                PreferencesSB.savingSoundPreferences();
+                PreferencesSB.saveSoundPreferences();
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
@@ -151,7 +151,7 @@ public class StagePause extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
-                PreferencesSB.savingSoundPreferences();
+                PreferencesSB.saveSoundPreferences();
                 if (btn.isChecked()) {
                     menu.pauseMusic();
                 } else {

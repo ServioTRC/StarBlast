@@ -116,7 +116,6 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ","Going to Endless Mode");
-                //TODO quitar || true
                 if(active) menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             }
         });

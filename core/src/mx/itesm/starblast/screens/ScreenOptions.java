@@ -2,7 +2,6 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +29,7 @@ class ScreenOptions extends ScreenSB {
     private Stage optionScene;
 
     ScreenOptions(StarBlast menu) {
-        this.menu=menu;
+        this.menu = menu;
     }
 
     @Override
@@ -41,11 +40,11 @@ class ScreenOptions extends ScreenSB {
 
     private void creatingObjects() {
         batch = new SpriteBatch();
-        optionScene = new Stage(view, batch){
+        optionScene = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
-                if(keycode == Input.Keys.BACK){
-                    Gdx.app.log("ScreenOptions ","Going to ScreenMenu");
+                if (keycode == Input.Keys.BACK) {
+                    Gdx.app.log("ScreenOptions ", "Going to ScreenMenu");
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
@@ -54,12 +53,12 @@ class ScreenOptions extends ScreenSB {
         };
         Image imgFondo = new Image(backgroundTexture);
         optionScene.addActor(imgFondo);
-        creatingButtons();
+        createButtons();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(optionScene);
     }
 
-    private void creatingButtons(){
+    private void createButtons() {
         createHelpButton();
         createMusicButton();
         createSoundButton();
@@ -84,8 +83,8 @@ class ScreenOptions extends ScreenSB {
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(12* Constant.SCREEN_WIDTH /13,
-                Constant.SCREEN_HEIGTH /8, Align.center);
+        btn.setPosition(12 * Constant.SCREEN_WIDTH / 13,
+                Constant.SCREEN_HEIGTH / 8, Align.center);
         optionScene.addActor(btn);
     }
 
@@ -99,12 +98,12 @@ class ScreenOptions extends ScreenSB {
         style.down = skin.getDrawable("Down");
 
         Button btn = new Button(style);
-        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
-                Constant.SCREEN_HEIGTH /6+20, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 6 + 20, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PreferencesSB.erasingGameInfo();
+                PreferencesSB.eraseGameInfo();
             }
         });
 
@@ -125,7 +124,7 @@ class ScreenOptions extends ScreenSB {
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
-                        PreferencesSB.activateCheatCode(input);
+                        PreferencesSB.activateCheatCode(input, menu);
                     }
 
                     @Override
@@ -136,8 +135,8 @@ class ScreenOptions extends ScreenSB {
                 Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
             }
         });
-        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
-                Constant.SCREEN_HEIGTH /3+10, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 3 + 10, Align.center);
         optionScene.addActor(btn);
     }
 
@@ -155,7 +154,7 @@ class ScreenOptions extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
-                PreferencesSB.savingSoundPreferences();
+                PreferencesSB.saveSoundPreferences();
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
@@ -178,7 +177,7 @@ class ScreenOptions extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
-                PreferencesSB.savingSoundPreferences();
+                PreferencesSB.saveSoundPreferences();
                 if (btn.isChecked()) {
                     menu.pauseMusic();
                 } else {
@@ -192,7 +191,7 @@ class ScreenOptions extends ScreenSB {
         optionScene.addActor(btn);
     }
 
-    private void createHelpButton(){
+    private void createHelpButton() {
         Skin skin = new Skin();
         skin.add("Up", new Texture("SettingsScreen/ButtonHelp.png"));
 
@@ -200,8 +199,8 @@ class ScreenOptions extends ScreenSB {
         style.up = skin.getDrawable("Up");
 
         Button btn = new Button(style);
-        btn.setPosition(3* Constant.SCREEN_WIDTH /4,
-                Constant.SCREEN_HEIGTH /2-25, Align.center);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
+                Constant.SCREEN_HEIGTH / 2 - 25, Align.center);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -26,13 +26,13 @@ public class ScreenLoading extends ScreenSB {
     private final int NUMBER_OF_TEXTS = 5;
     private final int TOTAL_TIME;
 
-    public ScreenLoading(StarBlast menu, Constant.Screens screens){
+    public ScreenLoading(StarBlast menu, Constant.Screens screens) {
         this.menu = menu;
         nextScreen = screens;
 
         batch = new SpriteBatch();
-        loadingScene = new Stage(view,batch);
-        textScene = new Stage(view,batch);
+        loadingScene = new Stage(view, batch);
+        textScene = new Stage(view, batch);
 
         loadingTexts();
         TOTAL_TIME = TIME_PER_TEXT * NUMBER_OF_TEXTS;
@@ -40,8 +40,8 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadingTexts() {
         texts = new Texture[NUMBER_OF_TEXTS];
-        for(int i = 1; i <= NUMBER_OF_TEXTS; i++){
-            texts[i-1] = new Texture("LoadingScreen/Text"+i+"Loading.png");
+        for (int i = 1; i <= NUMBER_OF_TEXTS; i++) {
+            texts[i - 1] = new Texture("LoadingScreen/Text" + i + "Loading.png");
         }
     }
 
@@ -61,16 +61,16 @@ public class ScreenLoading extends ScreenSB {
         loadingScene.draw();
         showRightText();
         textScene.draw();
-        if(Constant.MANAGER.update()){
-           goToNextScreen();
+        if (Constant.MANAGER.update()) {
+            goToNextScreen();
         }
     }
 
     private void showRightText() {
-        for(Actor a: textScene.getActors()){
+        for (Actor a : textScene.getActors()) {
             a.setVisible(false);
         }
-        textScene.getActors().get(((int)(TimeUtils.millis()% TOTAL_TIME))/1000).setVisible(true);
+        textScene.getActors().get(((int) (TimeUtils.millis() % TOTAL_TIME)) / 1000).setVisible(true);
     }
 
     @Override
@@ -93,24 +93,24 @@ public class ScreenLoading extends ScreenSB {
     //region Metodos Show
     private void creatingTexts() {
         Image img;
-        for(Texture tex : texts){
+        for (Texture tex : texts) {
             img = new Image(tex);
-            img.setPosition((Constant.SCREEN_WIDTH -img.getWidth())/2, Constant.SCREEN_HEIGTH /3);
+            img.setPosition((Constant.SCREEN_WIDTH - img.getWidth()) / 2, Constant.SCREEN_HEIGTH / 3);
             textScene.addActor(img);
         }
     }
 
     private void creatingProgressBar() {
-        loadingBar = new ProgressBar(new Texture("LoadingScreen/MaskLoading.png"),false,false);
+        loadingBar = new ProgressBar(new Texture("LoadingScreen/MaskLoading.png"), false, false);
         loadingBar.setFrame(new Texture("LoadingScreen/BackgroundLoading.jpg"));
-        loadingBar.setPosition((Constant.SCREEN_WIDTH - loadingBar.getWidth())/2,(Constant.SCREEN_HEIGTH - loadingBar.getHeight())/2);
+        loadingBar.setPosition((Constant.SCREEN_WIDTH - loadingBar.getWidth()) / 2, (Constant.SCREEN_HEIGTH - loadingBar.getHeight()) / 2);
 
         loadingScene.addActor(loadingBar);
     }
     //endregion
 
     private void goToNextScreen() {
-        switch (nextScreen){
+        switch (nextScreen) {
 
             case SPLASH:
                 break;
@@ -152,7 +152,7 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadNextScreen() {
-        switch (nextScreen){
+        switch (nextScreen) {
 
             case SPLASH:
                 break;
@@ -221,7 +221,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
-        Constant.MANAGER.load("Animations/ExplosionMissileFrames.png",Texture.class);
+        Constant.MANAGER.load("Animations/ExplosionMissileFrames.png", Texture.class);
 
         Constant.MANAGER.load("DefeatScreen/DefeatBackground.jpg", Texture.class);
         Constant.MANAGER.load("DefeatScreen/Countdown.png", Texture.class);
@@ -232,7 +232,7 @@ public class ScreenLoading extends ScreenSB {
         loadBackgrounds();
     }
 
-    private void loadBackgrounds(){
+    private void loadBackgrounds() {
         Constant.MANAGER.load("GameScreen/FondoBegin.jpg", Texture.class);
         Constant.MANAGER.load("GameScreen/FondoEnd.jpg", Texture.class);
         Constant.MANAGER.load("GameScreen/FondoTile2.jpg", Texture.class);
@@ -247,27 +247,27 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/FondoTileGrande3.jpg", Texture.class);
     }
 
-    private void loadSoundsFromStory(){
+    private void loadSoundsFromStory() {
         Constant.MANAGER.load("SoundEffects/ShootingSound1.mp3", Sound.class);
         Constant.MANAGER.load("SoundEffects/ShootingSound2.mp3", Sound.class);
-        Constant.MANAGER.load("SoundEffects/Explosion1.mp3",Sound.class);
-        Constant.MANAGER.load("SoundEffects/Explosion2.mp3",Sound.class);
+        Constant.MANAGER.load("SoundEffects/Explosion1.mp3", Sound.class);
+        Constant.MANAGER.load("SoundEffects/Explosion2.mp3", Sound.class);
         //Constant.MANAGER.load("SoundEffects/Explosion3.mp3",Sound.class);
-        Constant.MANAGER.load("SoundEffects/MissileSound.wav",Sound.class);
+        Constant.MANAGER.load("SoundEffects/MissileSound.wav", Sound.class);
     }
 
-    private void loadHUD(){
-        Constant.MANAGER.load("HUD/ButtonAPress.png",Texture.class);
-        Constant.MANAGER.load("HUD/ButtonAStandby.png",Texture.class);
-        Constant.MANAGER.load("HUD/ButtonBPress.png",Texture.class);
-        Constant.MANAGER.load("HUD/ButtonBStandby.png",Texture.class);
-        Constant.MANAGER.load("HUD/JoystickPad.png",Texture.class);
-        Constant.MANAGER.load("HUD/JoystickStick.png",Texture.class);
-        Constant.MANAGER.load("HUD/LifeBarBar.png",Texture.class);
-        Constant.MANAGER.load("HUD/LifeBarFrame.png",Texture.class);
+    private void loadHUD() {
+        Constant.MANAGER.load("HUD/ButtonAPress.png", Texture.class);
+        Constant.MANAGER.load("HUD/ButtonAStandby.png", Texture.class);
+        Constant.MANAGER.load("HUD/ButtonBPress.png", Texture.class);
+        Constant.MANAGER.load("HUD/ButtonBStandby.png", Texture.class);
+        Constant.MANAGER.load("HUD/JoystickPad.png", Texture.class);
+        Constant.MANAGER.load("HUD/JoystickStick.png", Texture.class);
+        Constant.MANAGER.load("HUD/LifeBarBar.png", Texture.class);
+        Constant.MANAGER.load("HUD/LifeBarFrame.png", Texture.class);
     }
 
-    private void loadPause(){
+    private void loadPause() {
         Constant.MANAGER.load("SettingsScreen/SettingsWindow.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/ButtonReset.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/ButtonResetYellow.png", Texture.class);
@@ -282,13 +282,14 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadEndless() {
         loadStory();
+        Constant.MANAGER.load("DefeatScreen/ArcadeDefeatBackground.jpg", Texture.class);
     }
 
     private void loadMinigames() {
-        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame1.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class);
-        Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame1.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/erroranimation.png", Texture.class);
     }
 

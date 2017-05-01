@@ -4,6 +4,6 @@ import mx.itesm.starblast.StarBlast;
 
 public class Level1 extends LevelStory {
     Level1(StarBlast app) {
-        super(app,10,10,2, 1);
+        super(app, 10, 10, 2, 4, 1);
     }
 }

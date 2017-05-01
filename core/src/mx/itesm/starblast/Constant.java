@@ -33,6 +33,9 @@ public class Constant {
         return world*100;
     }
 
+    public final static String ORIGINAL_MUSIC = "SoundEffects/BackgroundLoopingMusic.mp3";
+    public final static String DARUDE = "SoundEffects/Darude - Sandstorm.mp3";
+
     public enum Screens {
         SPLASH,
         START,

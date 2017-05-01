@@ -2,6 +2,7 @@ package mx.itesm.starblast;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 
 public class StarBlast extends Game {
@@ -10,48 +11,58 @@ public class StarBlast extends Game {
 
 
     @Override
-    public void create () {
+    public void create() {
         Gdx.app.log("StarBlast", "Creating application");
-        PreferencesSB.readingSoundPreferences();
+        PreferencesSB.readSoundPreferences();
         loadMusicEffects();
-        if(PreferencesSB.MUSIC_ENABLE) {
-            backgroundMusic.play();
+        if (PreferencesSB.MUSIC_ENABLE) {
+            playMusic();
         }
         setScreen(new mx.itesm.starblast.screens.ScreenSplashTec(this));
     }
 
     @Override
-    public void dispose(){
-        Gdx.app.log("StarBlast","Disposing application");
+    public void dispose() {
+        Gdx.app.log("StarBlast", "Disposing application");
         Constant.MANAGER.clear();
     }
 
     @Override
-    public void pause(){
+    public void pause() {
         Gdx.app.log("StarBlast", "Pausing music");
         pauseMusic();
     }
 
-    private void loadMusicEffects(){
+    private void loadMusicEffects() {
         Gdx.app.log("StarBlast", "Loading Background Music");
-        Constant.MANAGER.load("SoundEffects/BackgroundLoopingMusic.mp3", Music.class);
+        Preferences prefs = Gdx.app.getPreferences("Codes");
+        boolean darude = prefs.getBoolean("darude", false);
+        Constant.MANAGER.load(darude ? Constant.DARUDE : Constant.ORIGINAL_MUSIC, Music.class);
         Constant.MANAGER.finishLoading();
-        backgroundMusic = Constant.MANAGER.get("SoundEffects/BackgroundLoopingMusic.mp3");
+        backgroundMusic = Constant.MANAGER.get(darude ? Constant.DARUDE : Constant.ORIGINAL_MUSIC);
         backgroundMusic.setLooping(true);
     }
 
-    public void playMusic(){
+
+    public void playMusic() {
         if (!backgroundMusic.isPlaying()) {
             backgroundMusic.setVolume(0.7f);
             backgroundMusic.play();
         }
     }
 
-    public void pauseMusic(){
+    public void pauseMusic() {
         if (backgroundMusic.isPlaying()) {
             backgroundMusic.pause();
         }
     }
 
+    public void changeMusic(String music) {
+        pauseMusic();
+        Constant.MANAGER.load(music, Music.class);
+        Constant.MANAGER.finishLoading();
+        backgroundMusic = Constant.MANAGER.get(music);
+        playMusic();
+    }
 
 }

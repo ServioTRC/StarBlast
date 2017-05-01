@@ -2,7 +2,6 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -53,7 +51,6 @@ import mx.itesm.starblast.Text;
 class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausable {
 
     //region background
-//    Texture loopingBackground;
     Texture[] plainBackgrounds = {
             Constant.MANAGER.get("GameScreen/FondoTile2.jpg", Texture.class),
             Constant.MANAGER.get("GameScreen/FondoTile3.jpg", Texture.class),
@@ -79,15 +76,14 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     //endregion
 
     //region estados del juego
-    private boolean isPaused;
+    boolean isPaused;
     boolean switchingWaves;
-    private boolean youLost;
-    private boolean youWon;
+    boolean youLost;
+    boolean youWon;
     //endregion
 
     //region score
-    private int score;
-    private Text textScore = new Text(Constant.SOURCE_TEXT);
+    int score;
     //endregion
 
     //region hud
@@ -97,7 +93,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     //endregion
 
     //region escenas
-    private final StagePause pauseScene;
+    final StagePause pauseScene;
     private StageLost lostScene;
     private StageWin winningScene;
     //endregion
@@ -114,7 +110,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     final int initialEnemies;
     int extraPerWave;
     final int numberOfWaves;
-    float spawnTimeuot = 0.1f;
+    float spawnTimeuot; //3 para juego normal
     float timeSinceLastSpawn = 0;
     float numberEnemiesForThisWave;
     float spawnedEnemiesForThisWave = 0;
@@ -140,14 +136,14 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     //region other
     private final StarBlast app;
-    private final SpriteBatch batch = new SpriteBatch();
+    final SpriteBatch batch = new SpriteBatch();
     Random random = new Random();
     private boolean playerSpecial = false;
     private Box2DDebugRenderer debugRenderer;
     private Matrix4 debugMatrix;
     //endregion
 
-    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves, int level) {
+    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves,int spawnTimeuot,int level) {
         super();
         this.app = app;
         HUDScene = new Stage(view, batch);
@@ -157,6 +153,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         this.initialEnemies = initialEnemies;
         this.extraPerWave = extraPerWave;
         this.numberOfWaves = numberOfWaves;
+        this.spawnTimeuot = spawnTimeuot;
         numberEnemiesForThisWave = initialEnemies;
         this.level = level;
 
@@ -213,10 +210,15 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 toRemove.add(explosion.getBody());
             }
         }
-//        textScore.showMessage(batch, "Puntaje: " + score, 20, Constant.SCREEN_HEIGTH - 20, Color.GOLD);
         batch.end();
 
         HUDScene.draw();
+        handleStates(delta);
+
+        debugRenderer.render(world,debugMatrix);
+    }
+
+    void handleStates(float delta) {
         if (youLost) {
             pauseIP();
             Gdx.input.setInputProcessor(lostScene);
@@ -231,8 +233,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         } else if (isPaused) {
             pauseScene.draw();
         }
-
-        debugRenderer.render(world,debugMatrix);
     }
 
     @Override //pantalla
@@ -496,6 +496,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             }
             if (a instanceof ShipEnemy) {
                 enemies.remove(a);
+                score += 100;
             }
             if (a instanceof ShipPlayer) {
                 isPaused = true;
