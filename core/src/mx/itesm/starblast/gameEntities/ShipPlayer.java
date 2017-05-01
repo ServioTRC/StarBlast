@@ -21,7 +21,6 @@ public class ShipPlayer extends Ship {
     }
 
     private final float TURN_RANGE = 80;
-    private float MAX_SPEED = 8;
     private final float BRAKE_CONSTANT = 0.97f;
     private final float MAX_TURN_RANGE = 2;
 
@@ -29,13 +28,8 @@ public class ShipPlayer extends Ship {
     private final int COOLDOWN_MISSILE = 200;
     private long previousMissile = 0;
     private int missileCount = 5;
-
-    private float acceleration;
-
     private movementState state = movementState.STOPPED;
     private float turnPercentage;
-    private float speed;
-    private float theta;
 
     private float shield;
 
@@ -44,43 +38,46 @@ public class ShipPlayer extends Ship {
     public final float MAX_HEALTH;
     public final float MAX_SHIELD = 50;
     private boolean infHealth;
+    private boolean infMissiles;
+    private float speedMultiplier = 1;
 
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
-        super(texture,x,y,world,90,0.1f,0.7f, false,batch);
+        super(texture, x, y, world, 90, 0.1f, 0.7f, false, batch);
 
         CATEGORY = Constant.CATEGORY_PLAYER;
         MASK = Constant.MASK_PLAYER;
         COOLDOWN_SHOT = 100;
         BULLET_DAMAGE = 10;
         MISSILE_DAMAGE = 500;
-
-        speed = 0;
-        acceleration = 0;
         damage = 20;
 
         MAX_HEALTH = health;
         shield = 0;
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
-        missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav",Sound.class);
+        missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
-        infHealth = Gdx.app.getPreferences("Codes").getBoolean("InfHealth",false);
+        infHealth = Gdx.app.getPreferences("Codes").getBoolean("InfHealth", false);
+        infMissiles = Gdx.app.getPreferences("Codes").getBoolean("InfMissiles", false);
+        if (Gdx.app.getPreferences("Codes").getBoolean("speed", false)) {
+            speedMultiplier = 2;
+        }
     }
 
-    private void shootMissile(){
-        if(missileCount <= 0){
+    private void shootMissile() {
+        if (!infMissiles && missileCount <= 0) {
             return;
         }
         missileCount--;
-        new Missile(body.getPosition().x,body.getPosition().y,world,sprite.getRotation(),enemy,MISSILE_DAMAGE,batch);
+        new Missile(body.getPosition().x, body.getPosition().y, world, sprite.getRotation(), enemy, MISSILE_DAMAGE, batch);
     }
 
-    public void shootMissile(long time){
-        if(previousMissile + COOLDOWN_MISSILE < time){
+    public void shootMissile(long time) {
+        if (previousMissile + COOLDOWN_MISSILE < time) {
             previousMissile = time;
             shootMissile();
-            if(PreferencesSB.SOUNDS_ENABLE){
+            if (PreferencesSB.SOUNDS_ENABLE) {
                 missileSound.play(0.5f);
             }
         }
@@ -92,57 +89,35 @@ public class ShipPlayer extends Ship {
     }
 
     @Override
-    public void move(Vector2 vector, float delta) {
-
-        switch (state){
-            case TURNING:
-                turn();
-                break;
-            default:
-                break;
+    public void move(Vector2 nothing, float delta) {
+        if (state == movementState.TURNING) {
+            turn();
         }
-
-        acceleration = (float)sqrt(turnPercentage * turnPercentage + accelerationPercentage * accelerationPercentage);
-
-        speed = body.getLinearVelocity().len();
-        speed = min(speed, MAX_SPEED);
-        theta = body.getAngle();
-        if (acceleration == 0) {
-            vector = body.getLinearVelocity().scl(BRAKE_CONSTANT);
-        } else {
-            vector = body.getLinearVelocity().scl(2);
-            vector.add(turnPercentage * -1, accelerationPercentage);
-        }
-        theta = MathUtils.atan2(vector.y, vector.x);
-        speed = vector.len();
-
-        if(acceleration != 0) {
-            body.applyForceToCenter(new Vector2(turnPercentage * -1, accelerationPercentage), true);
-        }
+        body.applyForceToCenter(turnPercentage * -1 * speedMultiplier, accelerationPercentage * speedMultiplier, true);
         body.setLinearVelocity(body.getLinearVelocity().scl(BRAKE_CONSTANT));
         sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
     }
 
 
-    public void turn(float porcentaje){
-        this.turnPercentage = porcentaje*-1;
-        this.state = porcentaje == 0? movementState.STOPPED : movementState.TURNING;
+    public void turn(float porcentaje) {
+        this.turnPercentage = porcentaje * -1;
+        this.state = porcentaje == 0 ? movementState.STOPPED : movementState.TURNING;
     }
 
-    private void turn(){
-        sprite.setRotation(sprite.getRotation()+ MAX_TURN_RANGE * turnPercentage);
-        sprite.setRotation(min(sprite.getRotation(),90+ TURN_RANGE /2));
-        sprite.setRotation(max(sprite.getRotation(),90- TURN_RANGE /2));
+    private void turn() {
+        sprite.setRotation(sprite.getRotation() + MAX_TURN_RANGE * turnPercentage);
+        sprite.setRotation(min(sprite.getRotation(), 90 + TURN_RANGE / 2));
+        sprite.setRotation(max(sprite.getRotation(), 90 - TURN_RANGE / 2));
     }
 
     @Override
     public boolean doDamage(int damage) {
-        if(infHealth){
+        if (infHealth) {
             return false;
         }
-        if(shield > 0){
+        if (shield > 0) {
             shield -= damage;
-            if(shield >= 0) {
+            if (shield >= 0) {
                 return false;
             }
             damage = MathUtils.floor(-shield);
@@ -151,8 +126,8 @@ public class ShipPlayer extends Ship {
         return super.doDamage(damage);
     }
 
-    public void recievePowerUp(IPowerUp powerUp){
-        switch (powerUp.type()){
+    public void recievePowerUp(IPowerUp powerUp) {
+        switch (powerUp.type()) {
             case health:
                 recieveHealth(powerUp.getBonus());
                 break;
@@ -171,31 +146,30 @@ public class ShipPlayer extends Ship {
     }
 
     private void recieveMissile(float bonus) {
-        missileCount+=bonus;
+        missileCount += bonus;
     }
 
     private void recieveShield(float bonus) {
         shield += bonus;
-        shield = min(shield,MAX_SHIELD);
+        shield = min(shield, MAX_SHIELD);
     }
 
     private void recieveSpeedBoost(float bonus) {
-
-        MAX_SPEED += bonus;
+        speedMultiplier += bonus;
     }
 
     private void recieveHealth(float bonus) {
         health += bonus;
-        health = min(health,MAX_HEALTH);
+        health = min(health, MAX_HEALTH);
     }
 
-    private void recieveBulletDamage(float bonus){
+    private void recieveBulletDamage(float bonus) {
 
         BULLET_DAMAGE += bonus;
     }
 
     public float getHealthPercentage() {
-        return health/MAX_HEALTH;
+        return health / MAX_HEALTH;
     }
 
 }

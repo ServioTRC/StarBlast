@@ -76,6 +76,7 @@ public class PreferencesSB {
         Preferences prefs = Gdx.app.getPreferences("Codes");
         if (code.equals("fat man")) {
             //ininite missiles
+            prefs.putBoolean("InfMissiles", !prefs.getBoolean("InfMissiles", false));
         } else if (code.equals("heart container")) {
             //infinite health
             Gdx.app.log("Cheats", "hard container");
@@ -91,6 +92,8 @@ public class PreferencesSB {
             //get used to dying
         } else if (code.equals("sonic the hedgehog")) {
             //super speed
+            Gdx.app.log("Cheats","speed");
+            prefs.putBoolean("speed", !prefs.getBoolean("speed", false));
         } else if (code.equals("yeah that's honest")) {
             //think
         } else if (code.equals("speed run")) {
