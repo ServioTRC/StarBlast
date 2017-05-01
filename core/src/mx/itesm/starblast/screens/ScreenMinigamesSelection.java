@@ -132,7 +132,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             }
         });
         btn.setPosition(12* Constant.SCREEN_WIDTH /13,
-                Constant.SCREEN_HEIGTH /8, Align.center);
+                7*Constant.SCREEN_HEIGTH /8, Align.center);
         selectionScene.addActor(btn);
     }
 

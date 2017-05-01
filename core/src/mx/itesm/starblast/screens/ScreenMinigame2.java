@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,7 +22,6 @@ import java.util.Random;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
-import mx.itesm.starblast.stages.StageLost;
 
 /**
  * Created by Servio T on 27/04/2017.
@@ -52,8 +50,11 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private SpriteSB genericSprite;
     private SpriteSB genericSpriteTouch;
     private Texture backButtonTexture;
+    private Texture winningTexture;
+    private Texture losingTexture;
     private Texture backButtonTextureUp;
     private Sprite backButtonSprite;
+    private Sprite endingSprite;
     private int num;
     private boolean exploted = false;
     private String id;
@@ -61,7 +62,7 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private ArrayList<SpriteSB> pieces = new ArrayList<SpriteSB>();
     private Random r = new Random();
     private float posY;
-    private boolean lost = false;
+    private boolean ended = false;
 
     private AnimatedImage countdownAnimation;
 
@@ -87,6 +88,9 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         textScore = new Text(Constant.SOURCE_TEXT);
         topBanner = new Sprite(topBannerTexture);
         topBanner.setY(Constant.SCREEN_HEIGTH-topBanner.getHeight());
+        endingSprite = new Sprite(winningTexture);
+        endingSprite.setY(Constant.SCREEN_HEIGTH/2-endingSprite.getHeight()/2);
+        endingSprite.setX(Constant.SCREEN_WIDTH/2-endingSprite.getWidth()/2);
         creatingBackButton();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(this);
@@ -97,6 +101,8 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         backButtonTexture = new Texture("SettingsScreen/Back.png");
         backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
         topBannerTexture = new Texture("Minigame2Screen/TopBanner.png");
+        winningTexture = new Texture("Minigame2Screen/SplashMinigame2Win.png");
+        losingTexture = new Texture("Minigame1Screen/SplashMinigameLoss.png");
     }
 
     private void creatingBackButton(){
@@ -109,34 +115,27 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     public void render(float delta) {
         if((score >= piecesGenerated)&&((TimeUtils.millis() - startingTime) > 18000)){
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
-            //TODO pantalla ganar minijuego 2
-            if(isStoryMode)
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
-            else
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+            ended = true;
         } else if(((TimeUtils.millis() - startingTime) >= 20000) || exploted){
-            lost = true;
+            ended = true;
+            endingSprite.setTexture(losingTexture);
             if(exploted){
                 minigame2Scene.addActor(countdownAnimation);
-                countdownAnimation.act(delta*10);
-                if (countdownAnimation.stateTime > 5) {
-                    Gdx.app.log("StageLost ", "Going to Menu");
-                    menu.setScreen(new ScreenMinigamesSelection(menu));
-                }
-            } else{
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+                countdownAnimation.act(delta*5);
+                if(countdownAnimation.stateTime > 5)
+                    exploted = false;
             }
         }
         clearScreen();
         minigame2Scene.draw();
-        if(!lost) {
+        batch.begin();
+        if(!ended) {
             if ((TimeUtils.millis() - startingTime) <= 18000)
                 addingObjects();
-            batch.begin();
             for (int i = pieces.size() - 1; i >= 0; i--) {
                 genericSprite = pieces.get(i);
                 posY = genericSprite.getY();
-                posY -= 5;
+                posY -= 10;
                 if (posY < 100)
                     pieces.remove(i);
                 else {
@@ -150,8 +149,10 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             textScore.showMessage(batch, Integer.toString(score),
                     Constant.SCREEN_WIDTH / 2, 60, Color.GREEN);
             backButtonSprite.draw(batch);
-            batch.end();
+        } else {
+            endingSprite.draw(batch);
         }
+        batch.end();
     }
 
     private void addingObjects(){
@@ -267,6 +268,14 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             menu.setScreen(new ScreenMinigamesSelection(menu));
+
+        if(endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+            if (isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
+        }
+
         return true;
     }
 

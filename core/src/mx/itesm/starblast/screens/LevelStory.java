@@ -1,6 +1,7 @@
 package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -146,7 +147,17 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves,int spawnTimeuot,int level) {
         super();
         this.app = app;
-        HUDScene = new Stage(view, batch);
+        HUDScene = new Stage(view, batch){
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    pauseIP();
+                    pauseScene.draw();
+                    return true;
+                }
+                return false;
+            }
+        };
         pauseScene = new StagePause(view, batch, app, this);
         lostScene = new StageLost(view, batch, app);
         winningScene = new StageWin(view, batch, app);
@@ -220,7 +231,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     void handleStates(float delta) {
         if (youLost) {
-            pauseIP();
+            //pauseIP();
             Gdx.input.setInputProcessor(lostScene);
             lostScene.act(delta);
             lostScene.draw();

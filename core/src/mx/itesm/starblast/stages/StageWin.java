@@ -16,6 +16,7 @@ import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.screens.ScreenMenu;
+import mx.itesm.starblast.screens.ScreenTutoMG;
 
 public class StageWin extends Stage {
 
