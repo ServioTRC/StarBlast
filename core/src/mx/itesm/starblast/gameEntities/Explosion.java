@@ -16,7 +16,7 @@ import mx.itesm.starblast.Constant;
  * Created by Ian Neumann on 26/04/2017.
  */
 
-public class Explosion implements IPlayableEntity{
+public class Explosion extends PlayableEntity{
 
     private int damage;
 
@@ -51,12 +51,15 @@ public class Explosion implements IPlayableEntity{
         bodyDef.position.set(position.x,position.y);
         body = world.createBody(bodyDef);
 
-        makeFixture(0.5f,0.5f);
+        CircleShape bodyShape = new CircleShape();
+        bodyShape.setRadius(Constant.toWorldSize(Constant.EXPLOSION_SIZE_X)/2);
+
+        makeFixture(0.5f,0.5f,body,bodyShape,Constant.CATEGORY_EXPLOSIONS,Constant.MASK_EXPLOSIONS,true);
 
         created = true;
     }
 
-    private void makeFixture(float density, float restitution){
+    /*private void makeFixture(float density, float restitution){
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
@@ -76,7 +79,7 @@ public class Explosion implements IPlayableEntity{
         body.setUserData(this);
 
         bodyShape.dispose();
-    }
+    }*/
 
     @Override
     public void setDamage(int dmg) {

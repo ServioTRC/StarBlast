@@ -36,7 +36,7 @@ public class ShipEnemy extends Ship {
         COOLDOWN_SHOT = 500;
         BULLET_DAMAGE = 5;
 
-        life = 30;
+        health = 30;
         speed = 0;
         damage = 15;
         canShoot = false;

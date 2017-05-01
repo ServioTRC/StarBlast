@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import mx.itesm.starblast.Constant;
@@ -31,7 +32,17 @@ public class Missile extends Bullet implements IExplotable {
 
         density = 0.5f;
         restitution = 0;
-        makeFixture(density,restitution);
+
+        CircleShape bodyShape = new CircleShape();
+        float w = Constant.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
+        bodyShape.setRadius(w);
+
+        short Category = isEnemy ? Constant.CATEGORY_BULLET_ENEMY :
+                Constant.CATEGORY_BULLET_PLAYER;
+        short Mascara = isEnemy ? Constant.MASK_BULLET_ENEMY :
+                Constant.MASK_BULLET_PLAYER;
+
+        makeFixture(density,restitution,body,bodyShape,Category,Mascara, false);
 
         sprite = new Sprite(Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class));
         sprite.setCenter(x, y);

@@ -17,7 +17,7 @@ import java.util.Random;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 
-public abstract class Ship implements IPlayableEntity,IExplotable {
+public abstract class Ship extends PlayableEntity implements IExplotable {
 
     Body body;
     Sprite sprite;
@@ -27,7 +27,7 @@ public abstract class Ship implements IPlayableEntity,IExplotable {
     final World world;
     short CATEGORY = -1;
     short MASK = -1;
-    public int life;
+    float health;
     int damage;
     int BULLET_DAMAGE;
     boolean enemy;
@@ -40,7 +40,7 @@ public abstract class Ship implements IPlayableEntity,IExplotable {
     Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy, SpriteBatch batch) {
         this.world = world;
         this.enemy = enemy;
-        life = 100;
+        health = 100;
         damage = 10;
         sprite = new Sprite(texture);
         sprite.setRotation(angle);
@@ -97,24 +97,14 @@ public abstract class Ship implements IPlayableEntity,IExplotable {
     }
 
     void makeFixture(float density, float restitution){
-        while (body.getFixtureList().size > 0){
-            body.destroyFixture(body.getFixtureList().first());
-        }
+
         CircleShape bodyShape = new CircleShape();
 
         float w= Constant.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
 
         bodyShape.setRadius(w);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density=density;
-        fixtureDef.restitution=restitution;
-        fixtureDef.shape=bodyShape;
-        fixtureDef.friction = 0;
-        fixtureDef.filter.categoryBits = CATEGORY;
-        fixtureDef.filter.maskBits = MASK;
-        body.createFixture(fixtureDef);
-        bodyShape.dispose();
+        super.makeFixture(density,restitution,body,bodyShape,CATEGORY,MASK,false);
     }
 
     @Override
@@ -129,8 +119,8 @@ public abstract class Ship implements IPlayableEntity,IExplotable {
 
     @Override
     public boolean doDamage(int damage) {
-        life -= damage;
-        if(life <=0){
+        health -= damage;
+        if(health <=0){
             die();
             return true;
         }

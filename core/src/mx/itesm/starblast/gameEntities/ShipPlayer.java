@@ -21,13 +21,14 @@ public class ShipPlayer extends Ship {
     }
 
     private final float TURN_RANGE = 80;
-    private final float MAX_SPEED = 8;
+    private float MAX_SPEED = 8;
     private final float BRAKE_CONSTANT = 0.97f;
     private final float MAX_TURN_RANGE = 2;
 
     private final int MISSILE_DAMAGE;
     private final int COOLDOWN_MISSILE = 200;
     private long previousMissile = 0;
+    private int missileCount = 5;
 
     private float acceleration;
 
@@ -36,9 +37,12 @@ public class ShipPlayer extends Ship {
     private float speed;
     private float theta;
 
+    private float shield;
+
     private Sound missileSound;
 
-    public float totalLife;
+    public final float MAX_HEALTH;
+    public final float MAX_SHIELD = 50;
     private boolean infHealth;
 
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
@@ -55,7 +59,8 @@ public class ShipPlayer extends Ship {
         acceleration = 0;
         damage = 20;
 
-        totalLife = life;
+        MAX_HEALTH = health;
+        shield = 0;
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav",Sound.class);
@@ -64,6 +69,10 @@ public class ShipPlayer extends Ship {
     }
 
     private void shootMissile(){
+        if(missileCount <= 0){
+            return;
+        }
+        missileCount--;
         new Missile(body.getPosition().x,body.getPosition().y,world,sprite.getRotation(),enemy,MISSILE_DAMAGE,batch);
     }
 
@@ -128,7 +137,65 @@ public class ShipPlayer extends Ship {
 
     @Override
     public boolean doDamage(int damage) {
-        return !infHealth && super.doDamage(damage);
+        if(infHealth){
+            return false;
+        }
+        if(shield > 0){
+            shield -= damage;
+            if(shield >= 0) {
+                return false;
+            }
+            damage = MathUtils.floor(-shield);
+            shield = 0;
+        }
+        return super.doDamage(damage);
+    }
+
+    public void recievePowerUp(IPowerUp powerUp){
+        switch (powerUp.type()){
+            case health:
+                recieveHealth(powerUp.getBonus());
+                break;
+            case damage:
+                recieveBulletDamage(powerUp.getBonus());
+                break;
+            case speed:
+                recieveSpeedBoost(powerUp.getBonus());
+                break;
+            case shield:
+                recieveShield(powerUp.getBonus());
+                break;
+            case missile:
+                recieveMissile(powerUp.getBonus());
+        }
+    }
+
+    private void recieveMissile(float bonus) {
+        missileCount+=bonus;
+    }
+
+    private void recieveShield(float bonus) {
+        shield += bonus;
+        shield = min(shield,MAX_SHIELD);
+    }
+
+    private void recieveSpeedBoost(float bonus) {
+
+        MAX_SPEED += bonus;
+    }
+
+    private void recieveHealth(float bonus) {
+        health += bonus;
+        health = min(health,MAX_HEALTH);
+    }
+
+    private void recieveBulletDamage(float bonus){
+
+        BULLET_DAMAGE += bonus;
+    }
+
+    public float getHealthPercentage() {
+        return health/MAX_HEALTH;
     }
 
 }

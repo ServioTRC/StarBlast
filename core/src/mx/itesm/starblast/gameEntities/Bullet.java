@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import mx.itesm.starblast.Constant;
 
-public class Bullet implements IPlayableEntity{
+public class Bullet extends PlayableEntity{
 
     float density = 0.1f;
     float restitution = 0.1f;
@@ -35,8 +35,16 @@ public class Bullet implements IPlayableEntity{
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
 
+        CircleShape bodyShape = new CircleShape();
+        float w = Constant.toWorldSize(sprite.getWidth() * sprite.getScaleX() / 2f);
+        bodyShape.setRadius(w);
 
-        makeFixture(density, restitution);
+        short Category = isEnemy ? Constant.CATEGORY_BULLET_ENEMY :
+                Constant.CATEGORY_BULLET_PLAYER;
+        short Mascara = isEnemy ? Constant.MASK_BULLET_ENEMY :
+                Constant.MASK_BULLET_PLAYER;
+
+        makeFixture(density,restitution,body,bodyShape,Category,Mascara,false);
 
         body.setLinearVelocity(MathUtils.cosDeg(angle) * VELOCITY,
                 MathUtils.sinDeg(angle) * VELOCITY);
@@ -49,7 +57,7 @@ public class Bullet implements IPlayableEntity{
         this(v.x, v.y, world, angle,enemy, damage);
     }
 
-    void makeFixture(float density, float restitution) {
+    /*void makeFixture(float density, float restitution) {
         while (body.getFixtureList().size > 0){
             body.destroyFixture(body.getFixtureList().first());
         }
@@ -71,7 +79,7 @@ public class Bullet implements IPlayableEntity{
         body.createFixture(fixtureDef);
 
         bodyShape.dispose();
-    }
+    }*/
 
     @Override
     public void setDamage(int dmg){

@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import java.util.ArrayList;
 
-public class Constant {
+public abstract class Constant {
     public static final float SCREEN_WIDTH = 1280;
     public static final float SCREEN_HEIGTH = 800;
     public static final AssetManager MANAGER = new AssetManager();
@@ -18,13 +18,15 @@ public class Constant {
     public static final short CATEGORY_BULLET_ENEMY = 8;
     public static final short CATEGORY_BORDERS = 16;
     public static final short CATEGORY_EXPLOSIONS = 32;
+    public static final short CATEGORY_POWER_UP = 64;
 
-    public static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS | CATEGORY_EXPLOSIONS;
+    public static final short MASK_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS | CATEGORY_EXPLOSIONS | CATEGORY_POWER_UP;
     public static final short MASK_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_ENEMY | CATEGORY_EXPLOSIONS;
     public static final short MASK_BULLET_PLAYER = CATEGORY_ENEMY | CATEGORY_BULLET_ENEMY | CATEGORY_BORDERS;
     public static final short MASK_BULLET_ENEMY = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BORDERS;
-    public static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BULLET_ENEMY;
+    public static final short MASK_BORDERS = CATEGORY_PLAYER | CATEGORY_BULLET_PLAYER | CATEGORY_BULLET_ENEMY | CATEGORY_POWER_UP;
     public static final short MASK_EXPLOSIONS = CATEGORY_ENEMY | CATEGORY_PLAYER;
+    public static final short MASK_POWER_UP = CATEGORY_PLAYER  | CATEGORY_BORDERS;
 
     public static float toWorldSize(float screen){
         return screen*0.01f;

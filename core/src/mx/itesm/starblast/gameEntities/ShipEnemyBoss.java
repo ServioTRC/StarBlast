@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Random;
@@ -30,7 +28,7 @@ public class ShipEnemyBoss extends ShipEnemy {
         super(texture, x, y, world, -90, 0.7f, 0.1f,batch);
 
         damage = 20;
-        this.life = life;
+        this.health = life;
         COOLDOWN_SHOT = 400;
 
         rightLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.9f);
@@ -44,9 +42,7 @@ public class ShipEnemyBoss extends ShipEnemy {
     }
 
     void makeFixture(float density, float restitution){
-        while (body.getFixtureList().size > 0){
-            body.destroyFixture(body.getFixtureList().first());
-        }
+
         PolygonShape bodyShape = new PolygonShape();
 
         float w= Constant.toWorldSize(sprite.getWidth()*sprite.getScaleX()/2f);
@@ -54,15 +50,7 @@ public class ShipEnemyBoss extends ShipEnemy {
 
         bodyShape.setAsBox(w,h);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density=density;
-        fixtureDef.restitution=restitution;
-        fixtureDef.shape=bodyShape;
-        fixtureDef.friction = 0;
-        fixtureDef.filter.categoryBits = CATEGORY;
-        fixtureDef.filter.maskBits = MASK;
-        body.createFixture(fixtureDef);
-        bodyShape.dispose();
+        super.makeFixture(density,restitution,body,bodyShape,CATEGORY,MASK,false);
     }
 
     @Override

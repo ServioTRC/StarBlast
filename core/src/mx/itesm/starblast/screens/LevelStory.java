@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,10 +35,12 @@ import mx.itesm.starblast.gameEntities.Bullet;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.gameEntities.Edge;
 import mx.itesm.starblast.gameEntities.Explosion;
+import mx.itesm.starblast.gameEntities.HealthPowerUp;
 import mx.itesm.starblast.gameEntities.IExplotable;
 import mx.itesm.starblast.gameEntities.IPausable;
 import mx.itesm.starblast.gameEntities.IPlayableEntity;
 import mx.itesm.starblast.PreferencesSB;
+import mx.itesm.starblast.gameEntities.PowerUp;
 import mx.itesm.starblast.gameEntities.ProgressBar;
 import mx.itesm.starblast.gameEntities.Ship;
 import mx.itesm.starblast.gameEntities.ShipEnemy;
@@ -121,6 +124,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     boolean haBoss = true;
 
     ArrayList<ShipEnemy> enemies = new ArrayList<ShipEnemy>();
+    ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 
 
     ArrayList<Texture> EnemiesFiles;
@@ -203,6 +207,11 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         Object obj;
+
+        if(powerUps.size() > 0){
+            powerUps.get(0);
+        }
+
         for (Body b : bodies) {
             obj = b.getUserData();
             if (obj instanceof IPlayableEntity) {
@@ -310,6 +319,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         if (!isPaused) {
             handleWaves();
             spawnEnemies(dt);
+            //spawnPowerUps(dt);
             updateWorld(dt);
             movePlayer(dt);
             moveEnemies(dt);
@@ -470,7 +480,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 if (destroyB) {
                     objectB.setDamage(0);
                 }
-                lifeBar.setPorcentage(player.life / player.totalLife);
+                lifeBar.setPorcentage(player.getHealthPercentage());
             }
 
             @Override
@@ -491,6 +501,17 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     private boolean handleCollision(IPlayableEntity a, IPlayableEntity b) {
         boolean isDestroyed = false;
+
+        if(a instanceof PowerUp){
+            if (b instanceof ShipPlayer) {
+                ((ShipPlayer) b).recievePowerUp(((PowerUp) a));
+                toRemove.add(a.getBody());
+            }
+            if(b instanceof Edge) {
+                toRemove.add(a.getBody());
+            }
+            return false;
+        }
 
         if (a instanceof Bullet) {
             if (b instanceof Edge) {
@@ -514,9 +535,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 youLost = true;
             }
             return true;
-        }
-        if(a instanceof ShipEnemyBoss){
-            Gdx.app.log("BossLife",""+((ShipEnemyBoss) a).life);
         }
         return false;
     }
@@ -573,6 +591,15 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(3)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world, batch);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
+            Gdx.app.log("PowerUp","Spawned");
+            powerUps.add(new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2,world));
+        }
+    }
+
+    private void spawnPowerUps(float dt) {
+        if(random.nextFloat() > 0.99f && false){
+            Gdx.app.log("PowerUp","Spawned");
+            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2,world);
         }
     }
 
@@ -598,7 +625,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                     ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(3000 + 1000*(level*(level+1))/2),batch);
                     boss.scaling(Constant.SHIPS_SCALE);
                     enemies.add(boss);
-                    Gdx.app.log("Boss","The boss has spawned: " + boss.life);
                 }else{
                     isPaused = true;
                     youWon = true;
