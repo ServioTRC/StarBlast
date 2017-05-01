@@ -74,7 +74,7 @@ public class ScreenTutoMG extends ScreenSB {
                     numImage = 2;
                     timeBetween = TimeUtils.millis();
                 }
-                if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000)) {
+                if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=500)) {
                     if (numMG == 1) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame1");
                         menu.setScreen(new ScreenMinigame1(menu, isStoryMode));

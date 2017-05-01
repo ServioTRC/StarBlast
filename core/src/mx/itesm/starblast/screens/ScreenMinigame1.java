@@ -49,7 +49,11 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     private Texture backButtonTexture;
     private Texture backButtonTextureUp;
+    private Texture winningTexture;
+    private Texture losingTexture;
     private Sprite backButtonSprite;
+    private Sprite endingSprite;
+    private boolean ended = false;
 
 
     ScreenMinigame1(StarBlast menu, boolean isStoryMode){
@@ -68,6 +72,9 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         batch = new SpriteBatch();
         minigame1Scene = new Stage(view, batch);
         Image imgFondo = new Image(backgroundTexture);
+        endingSprite = new Sprite(winningTexture);
+        endingSprite.setY(Constant.SCREEN_HEIGTH/2-endingSprite.getHeight()/2);
+        endingSprite.setX(Constant.SCREEN_WIDTH/2-endingSprite.getWidth()/2);
         minigame1Scene.addActor(imgFondo);
         Random r = new Random();
         for(int i=0;i<5;i++){
@@ -87,6 +94,8 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         backgroundTexture = new Texture("Minigame1Screen/Minigame1Background.jpg");
         backButtonTexture = new Texture("SettingsScreen/Back.png");
         backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
+        winningTexture = new Texture("Minigame1Screen/SplashMinigame1Win.png");
+        losingTexture = new Texture("Minigame1Screen/SplashMinigameLoss.png");
     }
 
     private void creatingBackButton(){
@@ -97,25 +106,26 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public void render(float delta) {
-        if(won){
-            Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
-            //TODO Pantalla ganar y perder minijuego1
-            if(isStoryMode)
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
-            else
-                menu.setScreen(new ScreenMinigamesSelection(menu));
-        } else if((TimeUtils.millis() - startingTime) >= 30000){
-            menu.setScreen(new ScreenMinigamesSelection(menu));
-        }
         clearScreen();
         minigame1Scene.draw();
         batch.begin();
+
+        if(won){
+            Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+            ended = true;
+        } else if((TimeUtils.millis() - startingTime) >= 30000){
+            endingSprite.setTexture(losingTexture);
+            ended = true;
+        }
+
         for(Sprite piece : pieces){
             piece.draw(batch);
         }
         textScore.showMessage(batch, Long.toString((30000-(TimeUtils.millis() - startingTime))/1000),
                 Constant.SCREEN_WIDTH/2 - 60, Constant.SCREEN_HEIGTH -20, Color.GREEN);
         backButtonSprite.draw(batch);
+        if(ended)
+            endingSprite.draw(batch);
         batch.end();
     }
 
@@ -174,6 +184,14 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
             backButtonSprite.setTexture(backButtonTextureUp);
         else
             backButtonSprite.setTexture(backButtonTexture);
+
+        if(endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+            if (isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
+        }
+
         return true;
     }
 
@@ -196,6 +214,14 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         }
         if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             menu.setScreen(new ScreenMinigamesSelection(menu));
+
+        if(endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+            if (isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
+        }
+
         return true;
     }
 
