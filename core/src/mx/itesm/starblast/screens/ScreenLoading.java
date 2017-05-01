@@ -289,12 +289,14 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2.png",Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/erroranimation.png", Texture.class);
     }
 
     private void loadMinigame1() {
     }
 
     private void loadMinigame2() {
+
     }
 
     private void loadMinigame3() {

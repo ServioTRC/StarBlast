@@ -91,14 +91,15 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame2");
-                //menu.setScreen(new GameScreen(menu));
+                dispose();
+                menu.setScreen(new ScreenTutoMG1(menu, false));
             }
         });
     }
 
     private void createMinigame3Button() {
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame32.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);

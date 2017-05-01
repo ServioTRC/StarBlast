@@ -1,0 +1,341 @@
+package mx.itesm.starblast.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.StarBlast;
+import mx.itesm.starblast.Text;
+import mx.itesm.starblast.stages.StageLost;
+
+/**
+ * Created by Servio T on 27/04/2017.
+ */
+
+public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
+
+    private final StarBlast menu;
+
+    //SpriteBatch
+    private SpriteBatch batch;
+
+    //Escenas
+    private Stage minigame2Scene;
+
+    private boolean isStoryMode = false;
+    private Vector3 vector;
+    private long startingTime;
+    private Text textScore;
+    private int score;
+    private int piecesGenerated;
+
+    private Texture backgroundTexture;
+    private Texture topBannerTexture;
+    private Sprite topBanner;
+    private SpriteSB genericSprite;
+    private SpriteSB genericSpriteTouch;
+    private Texture backButtonTexture;
+    private Texture backButtonTextureUp;
+    private Sprite backButtonSprite;
+    private int num;
+    private boolean exploted = false;
+    private String id;
+
+    private ArrayList<SpriteSB> pieces = new ArrayList<SpriteSB>();
+    private Random r = new Random();
+    private float posY;
+    private boolean lost = false;
+
+    private AnimatedImage countdownAnimation;
+
+    ScreenMinigame2(StarBlast menu, boolean isStoryMode){
+        this.menu = menu;
+        this.isStoryMode = isStoryMode;
+        countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("Minigame2Screen/erroranimation.png", Texture.class)).split(1280, 800)[0]));
+        countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH/2, Align.center);
+    }
+
+    @Override
+    public void show() {
+        loadingTextures();
+        creatingObjects();
+        startingTime = TimeUtils.millis();
+    }
+
+    private void creatingObjects() {
+        batch = new SpriteBatch();
+        minigame2Scene = new Stage(view, batch);
+        Image imgFondo = new Image(backgroundTexture);
+        minigame2Scene.addActor(imgFondo);
+        textScore = new Text(Constant.SOURCE_TEXT);
+        topBanner = new Sprite(topBannerTexture);
+        topBanner.setY(Constant.SCREEN_HEIGTH-topBanner.getHeight());
+        creatingBackButton();
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setInputProcessor(this);
+    }
+
+    private void loadingTextures() {
+        backgroundTexture = new Texture("Minigame2Screen/BackgroundMinigame2.jpg");
+        backButtonTexture = new Texture("SettingsScreen/Back.png");
+        backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
+        topBannerTexture = new Texture("Minigame2Screen/TopBanner.png");
+    }
+
+    private void creatingBackButton(){
+        backButtonSprite = new Sprite(backButtonTexture);
+        backButtonSprite.setX((12* Constant.SCREEN_WIDTH /13)+10);
+        backButtonSprite.setY((9*Constant.SCREEN_HEIGTH /10)-15);
+    }
+
+    @Override
+    public void render(float delta) {
+        if((score >= piecesGenerated)&&((TimeUtils.millis() - startingTime) > 18000)){
+            Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+            menu.setScreen(new ScreenMinigamesSelection(menu));
+        } else if(((TimeUtils.millis() - startingTime) >= 20000) || exploted){
+            lost = true;
+            if(exploted){
+                minigame2Scene.addActor(countdownAnimation);
+                countdownAnimation.act(delta*10);
+                if (countdownAnimation.stateTime > 5) {
+                    Gdx.app.log("StageLost ", "Going to Menu");
+                    menu.setScreen(new ScreenMinigamesSelection(menu));
+                }
+            } else{
+                menu.setScreen(new ScreenMinigamesSelection(menu));
+            }
+        }
+        clearScreen();
+        minigame2Scene.draw();
+        if(!lost) {
+            if ((TimeUtils.millis() - startingTime) <= 18000)
+                addingObjects();
+            batch.begin();
+            for (int i = pieces.size() - 1; i >= 0; i--) {
+                genericSprite = pieces.get(i);
+                posY = genericSprite.getY();
+                posY -= 5;
+                if (posY < 100)
+                    pieces.remove(i);
+                else {
+                    genericSprite.setY(posY);
+                    genericSprite.draw(batch);
+                }
+            }
+            topBanner.draw(batch);
+            textScore.showMessage(batch, Long.toString((20000 - (TimeUtils.millis() - startingTime)) / 1000),
+                    Constant.SCREEN_WIDTH / 2 - 45, Constant.SCREEN_HEIGTH - 20, Color.GREEN);
+            textScore.showMessage(batch, Integer.toString(score),
+                    Constant.SCREEN_WIDTH / 2, 60, Color.GREEN);
+            backButtonSprite.draw(batch);
+            batch.end();
+        }
+    }
+
+    private void addingObjects(){
+        num = r.nextInt(33);
+        if(num == 7) {
+            num = r.nextInt(4);
+            switch (num){
+                case 0:
+                    genericSprite = new SpriteSB("Minigame2Screen/BadCollectible.png", "BadCollectible");
+                    break;
+                case 1:
+                    genericSprite = new SpriteSB("Minigame2Screen/Collectible1.png", "Collectible");
+                    piecesGenerated++;
+                    break;
+                case 2:
+                    genericSprite = new SpriteSB("Minigame2Screen/Collectible2.png", "Collectible");
+                    piecesGenerated++;
+                    break;
+                case 3:
+                    genericSprite = new SpriteSB("Minigame2Screen/Collectible3.png", "Collectible");
+                    piecesGenerated++;
+                    break;
+            }
+            num = r.nextInt(6);
+            switch(num){
+                case 0:
+                    genericSprite.setX(225);
+                    break;
+                case 1:
+                    genericSprite.setX(350);
+                    break;
+                case 2:
+                    genericSprite.setX(475);
+                    break;
+                case 3:
+                    genericSprite.setX(600);
+                    break;
+                case 4:
+                    genericSprite.setX(725);
+                    break;
+                case 5:
+                    genericSprite.setX(850);
+                    break;
+            }
+            genericSprite.setY(Constant.SCREEN_HEIGTH);
+            pieces.add(genericSprite);
+        }
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK) {
+            if(isStoryMode){
+                //TODO better handling of back on story mode
+                Gdx.app.log("ScreenMinigame1: ","Es historia y no hago nada");
+                return true;
+            }
+            Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
+            menu.setScreen(new ScreenMinigamesSelection(menu));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        vector = camera.unproject(new Vector3(screenX,screenY,0));
+        for(int i=pieces.size()-1 ;i>=0 ;i--){
+            genericSpriteTouch = pieces.get(i);
+            if(genericSpriteTouch.touched(vector)){
+                id = genericSpriteTouch.getId();
+                if(id.equals("BadCollectible")){
+                    exploted = true;
+                } else {
+                    score++;
+                }
+                pieces.remove(i);
+            }
+        }
+        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            backButtonSprite.setTexture(backButtonTextureUp);
+        else
+            backButtonSprite.setTexture(backButtonTexture);
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            menu.setScreen(new ScreenMinigamesSelection(menu));
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    private class SpriteSB{
+        private Sprite sprite;
+        private String id;
+
+        public SpriteSB(String texture, String id){
+            this.sprite = new Sprite(new Texture(texture));
+            this.id = id;
+        }
+
+        public void setY(float y){
+            this.sprite.setY(y);
+        }
+
+        public void setX(float x){
+            this.sprite.setX(x);
+        }
+
+        public float getX(){
+            return this.sprite.getX();
+        }
+
+        public float getY(){
+            return this.sprite.getY();
+        }
+
+        public void draw(SpriteBatch batch){
+            this.sprite.draw(batch);
+        }
+
+        public String getId(){
+            return this.id;
+        }
+
+        public boolean touched(Vector3 vector){
+            return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);
+        }
+
+    }
+
+    private class AnimatedImage extends Image {
+        Animation<TextureRegion> animation = null;
+        float stateTime = 0;
+
+        AnimatedImage(Animation<TextureRegion> animation) {
+            super(animation.getKeyFrame(0));
+            this.animation = animation;
+        }
+
+        @Override
+        public void act(float delta) {
+            ((TextureRegionDrawable) getDrawable()).setRegion(animation.getKeyFrame(stateTime += delta, true));
+            super.act(delta);
+        }
+    }
+
+}
+
+
