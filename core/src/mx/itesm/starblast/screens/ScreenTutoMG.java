@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -18,7 +19,7 @@ import mx.itesm.starblast.Text;
  * Created by Servio T on 30/04/2017.
  */
 
-class ScreenTutoMG extends ScreenSB implements InputProcessor{
+public class ScreenTutoMG extends ScreenSB implements InputProcessor{
 
     private StarBlast menu;
     private Texture backgroundTexture;
@@ -26,14 +27,17 @@ class ScreenTutoMG extends ScreenSB implements InputProcessor{
     private Texture tutorial2;
     private Sprite tutorial;
     private SpriteBatch batch;
-    private Stage tutorialMG1;
+    private Stage tutorialMG;
     private boolean isStoryMode;
     private int numImage = 1;
     private long timeBetween;
     private long startingTime;
     private int numMG;
+    private Vector3 vector;
 
-    ScreenTutoMG(StarBlast menu, boolean isStoryMode, int numMG) {
+
+
+    public ScreenTutoMG(StarBlast menu, boolean isStoryMode, int numMG) {
         this.menu=menu;
         this.isStoryMode = isStoryMode;
         this.numMG = numMG;
@@ -48,8 +52,8 @@ class ScreenTutoMG extends ScreenSB implements InputProcessor{
     private void creatingObjects() {
         Image imgFondo = new Image(backgroundTexture);
         batch = new SpriteBatch();
-        tutorialMG1 = new Stage(view, batch);
-        tutorialMG1.addActor(imgFondo);
+        tutorialMG = new Stage(view, batch);
+        tutorialMG.addActor(imgFondo);
         tutorial = new Sprite(tutorial1);
         startingTime = TimeUtils.millis();
     }
@@ -72,20 +76,26 @@ class ScreenTutoMG extends ScreenSB implements InputProcessor{
     @Override
     public void render(float delta) {
         clearScreen();
-        tutorialMG1.draw();
+        tutorialMG.draw();
         batch.begin();
         tutorial.draw(batch);
-        if(((TimeUtils.millis()-startingTime) > 5000)&&(numImage == 1)){
+        if(((TimeUtils.millis()-startingTime) > 3000)&&(numImage == 1)){
             tutorial.setTexture(tutorial2);
             numImage = 2;
         }
-        if((TimeUtils.millis()-startingTime) > 10000){
-            if(numMG == 1)
+        if((TimeUtils.millis()-startingTime) > 6000){
+            if(numMG == 1) {
+                Gdx.app.log("ScreenMenu ", "Going to Minigame1");
                 menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-            else if(numMG == 2)
+            }
+            else if(numMG == 2) {
+                Gdx.app.log("ScreenMenu ", "Going to Minigame2");
                 menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-            //else if(numMG == 3)
-                //menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+            }
+            /*else if(numMG == 3){
+                Gdx.app.log("ScreenMenu ", "Going to Minigame3");
+                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+            }*/
         }
         batch.end();
     }
@@ -145,12 +155,18 @@ class ScreenTutoMG extends ScreenSB implements InputProcessor{
             timeBetween = TimeUtils.millis();
         }
         if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000)) {
-            if (numMG == 1)
-                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-            else if (numMG == 2)
-                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-            //else if(numMG == 3)
-            //menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+            if (numMG == 1) {
+                Gdx.app.log("ScreenMenu ", "Going to Minigame1");
+                    menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
+                } else if (numMG == 2) {
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame2");
+                    menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+                }
+                /*else if(numMG == 3){
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame3");
+                    menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+                }*/
+
         }
         return true;
     }

@@ -99,6 +99,11 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     public void render(float delta) {
         if(won){
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+            //TODO Pantalla ganar y perder minijuego1
+            if(isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
         } else if((TimeUtils.millis() - startingTime) >= 30000){
             menu.setScreen(new ScreenMinigamesSelection(menu));
         }

@@ -39,15 +39,17 @@ public class StageWin extends Stage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 int level = PreferencesSB.readLevelProgress();
-                if(level == 1) {
-                    Gdx.app.log("ScreenMenu ", "Going to Level1");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL1));
-                } else if (level == 2) {
-                    Gdx.app.log("ScreenMenu ","Going to Level2");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL2));
+                if(level == 2) {
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame1");
+                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 1));
                 } else if (level == 3) {
-                    Gdx.app.log("ScreenMenu ", "Going to Level3");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL3));
+                    Gdx.app.log("ScreenMenu ","Going to Minigame2");
+                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 2));
+                    //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL2));
+                } else if (level >= 4) {
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame3");
+                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 3));
+                    //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL3));
                 }
             }
         });

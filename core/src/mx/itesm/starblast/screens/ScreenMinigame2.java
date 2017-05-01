@@ -109,7 +109,11 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     public void render(float delta) {
         if((score >= piecesGenerated)&&((TimeUtils.millis() - startingTime) > 18000)){
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
-            menu.setScreen(new ScreenMinigamesSelection(menu));
+            //TODO pantalla ganar minijuego 2
+            if(isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
         } else if(((TimeUtils.millis() - startingTime) >= 20000) || exploted){
             lost = true;
             if(exploted){
