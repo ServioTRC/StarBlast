@@ -29,6 +29,7 @@ public abstract class PlayableEntity implements IPlayableEntity {
         fixtureDef.isSensor = isSensor;
 
         body.createFixture(fixtureDef);
+
         bodyShape.dispose();
     }
 }

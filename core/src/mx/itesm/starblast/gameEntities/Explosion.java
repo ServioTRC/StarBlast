@@ -56,6 +56,9 @@ public class Explosion extends PlayableEntity{
 
         makeFixture(0.5f,0.5f,body,bodyShape,Constant.CATEGORY_EXPLOSIONS,Constant.MASK_EXPLOSIONS,true);
 
+        body.setUserData(this);
+//        makeFixture(0.5f,0.5f);
+
         created = true;
     }
 
@@ -79,8 +82,8 @@ public class Explosion extends PlayableEntity{
         body.setUserData(this);
 
         bodyShape.dispose();
-    }*/
-
+    }
+*/
     @Override
     public void setDamage(int dmg) {
         damage = dmg;
