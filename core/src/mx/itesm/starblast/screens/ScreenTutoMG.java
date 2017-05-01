@@ -19,7 +19,7 @@ import mx.itesm.starblast.Text;
  * Created by Servio T on 30/04/2017.
  */
 
-public class ScreenTutoMG extends ScreenSB implements InputProcessor{
+public class ScreenTutoMG extends ScreenSB {
 
     private StarBlast menu;
     private Texture backgroundTexture;
@@ -33,8 +33,6 @@ public class ScreenTutoMG extends ScreenSB implements InputProcessor{
     private long timeBetween;
     private long startingTime;
     private int numMG;
-    private Vector3 vector;
-
 
 
     public ScreenTutoMG(StarBlast menu, boolean isStoryMode, int numMG) {
@@ -52,10 +50,52 @@ public class ScreenTutoMG extends ScreenSB implements InputProcessor{
     private void creatingObjects() {
         Image imgFondo = new Image(backgroundTexture);
         batch = new SpriteBatch();
-        tutorialMG = new Stage(view, batch);
+        tutorialMG = new Stage(view, batch){
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    if(isStoryMode){
+                        //TODO better handling of back on story mode
+                        Gdx.app.log("ScreenMinigame1: ","Es historia y no hago nada");
+                        return true;
+                    }
+                    Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
+                    menu.setScreen(new ScreenMinigamesSelection(menu));
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                Gdx.app.log("ScreenMinigame1: ","Touch");
+                if(numImage == 1){
+                    tutorial.setTexture(tutorial2);
+                    numImage = 2;
+                    timeBetween = TimeUtils.millis();
+                }
+                if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000)) {
+                    if (numMG == 1) {
+                        Gdx.app.log("ScreenMenu ", "Going to Minigame1");
+                        menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
+                    } else if (numMG == 2) {
+                        Gdx.app.log("ScreenMenu ", "Going to Minigame2");
+                        menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+                    }
+                /*else if(numMG == 3){
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame3");
+                    menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+                }*/
+
+                }
+                return true;
+            }
+        };
         tutorialMG.addActor(imgFondo);
         tutorial = new Sprite(tutorial1);
         startingTime = TimeUtils.millis();
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setInputProcessor(tutorialMG);
     }
 
     private void loadingTextures() {
@@ -115,74 +155,4 @@ public class ScreenTutoMG extends ScreenSB implements InputProcessor{
 
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.BACK) {
-            if(isStoryMode){
-                //TODO better handling of back on story mode
-                Gdx.app.log("ScreenMinigame1: ","Es historia y no hago nada");
-                return true;
-            }
-            Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
-            menu.setScreen(new ScreenMinigamesSelection(menu));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.log("ScreenMinigame1: ","Touch");
-        if(numImage == 1){
-            tutorial.setTexture(tutorial2);
-            numImage = 2;
-            timeBetween = TimeUtils.millis();
-        }
-        if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000)) {
-            if (numMG == 1) {
-                Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                    menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-                } else if (numMG == 2) {
-                    Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                    menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-                }
-                /*else if(numMG == 3){
-                    Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                    menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
-                }*/
-
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }
