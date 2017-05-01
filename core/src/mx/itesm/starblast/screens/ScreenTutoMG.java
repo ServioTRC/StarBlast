@@ -18,7 +18,7 @@ import mx.itesm.starblast.Text;
  * Created by Servio T on 30/04/2017.
  */
 
-class ScreenTutoMG1 extends ScreenSB implements InputProcessor{
+class ScreenTutoMG extends ScreenSB implements InputProcessor{
 
     private StarBlast menu;
     private Texture backgroundTexture;
@@ -31,10 +31,12 @@ class ScreenTutoMG1 extends ScreenSB implements InputProcessor{
     private int numImage = 1;
     private long timeBetween;
     private long startingTime;
+    private int numMG;
 
-    ScreenTutoMG1(StarBlast menu, boolean isStoryMode) {
+    ScreenTutoMG(StarBlast menu, boolean isStoryMode, int numMG) {
         this.menu=menu;
         this.isStoryMode = isStoryMode;
+        this.numMG = numMG;
     }
 
     @Override
@@ -54,8 +56,17 @@ class ScreenTutoMG1 extends ScreenSB implements InputProcessor{
 
     private void loadingTextures() {
         backgroundTexture = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
-        tutorial1 = new Texture("Minigame2Screen/SplashTutorial1.png");
-        tutorial2 = new Texture("Minigame2Screen/SplashTutorial2.png");
+        if(numMG == 1){
+            tutorial1 = new Texture("Minigame1Screen/SplashTutorial1.png");
+            tutorial2 = new Texture("Minigame1Screen/SplashTutorial2.png");
+        }
+        else if(numMG == 2){
+            tutorial1 = new Texture("Minigame2Screen/SplashTutorial1.png");
+            tutorial2 = new Texture("Minigame2Screen/SplashTutorial2.png");
+        } else if(numMG == 3){
+            tutorial1 = new Texture("Minigame3Screen/SplashTutorial1.png");
+            tutorial2 = new Texture("Minigame3Screen/SplashTutorial2.png");
+        }
     }
 
     @Override
@@ -68,8 +79,14 @@ class ScreenTutoMG1 extends ScreenSB implements InputProcessor{
             tutorial.setTexture(tutorial2);
             numImage = 2;
         }
-        if((TimeUtils.millis()-startingTime) > 10000)
-            menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+        if((TimeUtils.millis()-startingTime) > 10000){
+            if(numMG == 1)
+                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
+            else if(numMG == 2)
+                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+            //else if(numMG == 3)
+                //menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+        }
         batch.end();
     }
 
@@ -115,19 +132,26 @@ class ScreenTutoMG1 extends ScreenSB implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.log("ScreenMinigame1: ","Touch");
         if(numImage == 1){
             tutorial.setTexture(tutorial2);
             numImage = 2;
             timeBetween = TimeUtils.millis();
-            Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
         }
-        if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000))
-            menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+        if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=1000)) {
+            if (numMG == 1)
+                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
+            else if (numMG == 2)
+                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+            //else if(numMG == 3)
+            //menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+        }
         return true;
     }
 

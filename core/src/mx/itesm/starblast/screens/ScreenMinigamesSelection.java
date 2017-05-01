@@ -73,7 +73,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame1");
                 dispose();
-                menu.setScreen(new ScreenMinigame1(menu, false));
+                menu.setScreen(new ScreenTutoMG(menu, false, 1));
             }
         });
     }
@@ -92,7 +92,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame2");
                 dispose();
-                menu.setScreen(new ScreenTutoMG1(menu, false));
+                menu.setScreen(new ScreenTutoMG(menu, false, 2));
             }
         });
     }
@@ -110,7 +110,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame3");
-                //menu.setScreen(new GameScreen(menu));
+                menu.setScreen(new ScreenTutoMG(menu, false, 3));
             }
         });
     }
