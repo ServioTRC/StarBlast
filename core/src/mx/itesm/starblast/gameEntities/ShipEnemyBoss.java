@@ -25,20 +25,21 @@ public class ShipEnemyBoss extends ShipEnemy {
     private Random random;
 
     public ShipEnemyBoss(Texture texture, float x, float y, World world, int life, SpriteBatch batch) {
-        super(texture, x, y, world, -90, 0.7f, 0.1f,batch);
+        super(texture, x, y, world, -90, 50f, 0.1f,batch);
 
         damage = 20;
         this.health = life;
         COOLDOWN_SHOT = 400;
 
-        rightLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.9f);
+        rightLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.7f);
         leftLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.1f);
-        upperLimit = Constant.toWorldSize(Constant.SCREEN_HEIGTH *0.9f);
+        upperLimit = Constant.toWorldSize(Constant.SCREEN_HEIGTH *0.7f);
 
         random = new Random();
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion2.mp3",Sound.class);
+
     }
 
     void makeFixture(float density, float restitution){
@@ -83,21 +84,21 @@ public class ShipEnemyBoss extends ShipEnemy {
             case 3:
             case 4:
             case 5:
-                new Bullet(gunPosition,world,angle,enemy,5);
+                new Bullet(gunPosition,world,angle,enemy,5,bulletTexture);
                 break;
             case 6:
             case 7:
             case 8:
-                new Bullet(gunPosition,world,angle-20,enemy,5);
-                new Bullet(gunPosition,world,angle,enemy,5);
-                new Bullet(gunPosition,world,angle+20,enemy,5);
+                new Bullet(gunPosition,world,angle-20,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle+20,enemy,5,bulletTexture);
                 break;
             case 9:
-                new Bullet(gunPosition,world,angle-50,enemy,5);
-                new Bullet(gunPosition,world,angle-25,enemy,5);
-                new Bullet(gunPosition,world,angle,enemy,5);
-                new Bullet(gunPosition,world,angle+25,enemy,5);
-                new Bullet(gunPosition,world,angle+50,enemy,5);
+                new Bullet(gunPosition,world,angle-50,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle-25,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle+25,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle+50,enemy,5,bulletTexture);
                 break;
 
         }

@@ -217,6 +217,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/BulletSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/MissileSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSpriteEnemy.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/BulletSpritePowered.png", Texture.class);
         Constant.MANAGER.load("GameScreen/ButtonNextLevel.png", Texture.class);
         Constant.MANAGER.load("GameScreen/DroidHelperSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Enemy1Sprite.png", Texture.class);
@@ -233,9 +234,20 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("DefeatScreen/Countdown.png", Texture.class);
 
         loadSoundsFromStory();
+        loadPowerups();
         loadHUD();
         loadPause();
         loadBackgrounds();
+    }
+
+    private void loadPowerups() {
+        Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/PowerupShieldSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/PowerupSpeedSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/PowerupDamageSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/PowerupMissileSprite.png", Texture.class);
+
+
     }
 
     private void loadBackgrounds() {

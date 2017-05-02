@@ -23,12 +23,12 @@ public class Missile extends Bullet implements IExplotable {
     private Explosion explosion;
 
 
-    Missile(Vector2 v, World world, float angle, boolean enemy, int damage,SpriteBatch batch) {
-        this(v.x,v.y,world,angle,enemy,damage,batch);
+    Missile(Vector2 v, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture) {
+        this(v.x,v.y,world,angle,enemy,damage,batch,texture);
     }
 
-    Missile(float x,float y, World world, float angle, boolean enemy, int damage,SpriteBatch batch) {
-        super(x,y, world, angle, enemy, damage);
+    Missile(float x,float y, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture) {
+        super(x,y, world, angle, enemy, damage, texture);
 
         density = 0.5f;
         restitution = 0;
@@ -45,7 +45,8 @@ public class Missile extends Bullet implements IExplotable {
         makeFixture(density,restitution,body,bodyShape,Category,Mascara, false);
 
         body.setUserData(this);
-        sprite = new Sprite(Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class));
+
+        sprite = new Sprite(texture);
         sprite.setCenter(x, y);
         sprite.setRotation(angle);
 

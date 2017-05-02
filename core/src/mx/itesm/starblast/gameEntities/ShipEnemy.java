@@ -25,6 +25,8 @@ public class ShipEnemy extends Ship {
 
         CATEGORY = Constant.CATEGORY_ENEMY;
         MASK = Constant.MASK_ENEMY;
+
+        bulletTexture = Constant.MANAGER.get("GameScreen/BulletSpriteEnemy.png",Texture.class);
     }
 
     public ShipEnemy(Texture texture, float x, float y, World world,SpriteBatch batch) {
@@ -43,6 +45,8 @@ public class ShipEnemy extends Ship {
 
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion2.mp3",Sound.class);
+
+        bulletTexture = Constant.MANAGER.get("GameScreen/BulletSpriteEnemy.png",Texture.class);
 
     }
 

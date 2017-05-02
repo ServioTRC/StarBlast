@@ -11,10 +11,14 @@ import com.badlogic.gdx.math.MathUtils;
 
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
+import mx.itesm.starblast.gameEntities.PowerUps.*;
 
 import static java.lang.Math.*;
 
 public class ShipPlayer extends Ship {
+
+
+
 
     private enum movementState {
         TURNING,
@@ -42,6 +46,8 @@ public class ShipPlayer extends Ship {
     private boolean infMissiles;
     private float speedMultiplier = 1;
 
+    private Texture missileTexture;
+
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
         super(texture, x, y, world, 90, 0.1f, 0.7f, false, batch);
@@ -59,6 +65,9 @@ public class ShipPlayer extends Ship {
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
+        bulletTexture = Constant.MANAGER.get("GameScreen/BulletSprite.png", Texture.class);
+        missileTexture = Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class);
+        
         Preferences pref = Gdx.app.getPreferences("Codes");
         infHealth = pref.getBoolean("InfHealth", false);
         infMissiles = pref.getBoolean("InfMissiles", false);
@@ -73,16 +82,16 @@ public class ShipPlayer extends Ship {
     }
 
     private void shootMissile() {
-        if (!infMissiles && missileCount <= 0) {
-            return;
-        }
-        missileCount--;
-        new Missile(body.getPosition().x, body.getPosition().y, world, sprite.getRotation(), enemy, MISSILE_DAMAGE, batch);
+        new Missile(body.getPosition().x, body.getPosition().y, world, sprite.getRotation(), enemy, MISSILE_DAMAGE, batch, missileTexture);
     }
 
     public void shootMissile(long time) {
         if (previousMissile + COOLDOWN_MISSILE < time) {
             previousMissile = time;
+            if (!infMissiles && missileCount <= 0) {
+                return;
+            }
+            missileCount--;
             shootMissile();
             if (PreferencesSB.SOUNDS_ENABLE) {
                 missileSound.play(0.5f);
@@ -133,7 +142,7 @@ public class ShipPlayer extends Ship {
         return super.doDamage(damage);
     }
 
-    public void recievePowerUp(IPowerUp powerUp) {
+    public void recievePowerUp(PowerUp powerUp) {
         switch (powerUp.type()) {
             case health:
                 recieveHealth(powerUp.getBonus());
@@ -171,7 +180,7 @@ public class ShipPlayer extends Ship {
     }
 
     private void recieveBulletDamage(float bonus) {
-
+        bulletTexture = Constant.MANAGER.get("GameScreen/BulletSpritePowered.png", Texture.class);
         BULLET_DAMAGE += bonus;
     }
 

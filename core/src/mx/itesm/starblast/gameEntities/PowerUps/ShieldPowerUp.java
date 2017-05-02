@@ -1,4 +1,4 @@
-package mx.itesm.starblast.gameEntities;
+package mx.itesm.starblast.gameEntities.PowerUps;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +15,7 @@ public class ShieldPowerUp extends PowerUp {
 
 
     int bonus = 50;
-    Type type = Type.health;
+    Type type = Type.shield;
 
     public ShieldPowerUp(Texture texture, float x, float y, World world){
         super(texture, x, y, world, 90, 0.2f, 0.2f);

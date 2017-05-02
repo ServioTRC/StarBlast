@@ -36,6 +36,7 @@ public abstract class Ship extends PlayableEntity implements IExplotable {
     SpriteBatch batch;
     Explosion explosion;
     Random r;
+    Texture bulletTexture;
 
     Ship(Texture texture, float x, float y, World world, float angle, float density, float restitution, boolean enemy, SpriteBatch batch) {
         this.world = world;
@@ -44,13 +45,14 @@ public abstract class Ship extends PlayableEntity implements IExplotable {
         damage = 10;
         sprite = new Sprite(texture);
         sprite.setRotation(angle);
+
+        BULLET_DAMAGE = 10;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Constant.toWorldSize(x), Constant.toWorldSize(y));
         bodyDef.angle = angle;
         body = world.createBody(bodyDef);
         body.setUserData(this);
-        BULLET_DAMAGE = 10;
         makeFixture(density, restitution);
 
         r = new Random();
@@ -71,7 +73,7 @@ public abstract class Ship extends PlayableEntity implements IExplotable {
     public abstract void playSound();
 
     protected void shoot(){
-        new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation()+r.nextFloat()*10-5, enemy,BULLET_DAMAGE);
+        new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation()+r.nextFloat()*10-5, enemy,BULLET_DAMAGE,bulletTexture);
     }
 
     public void accelerate(float porcentaje) {

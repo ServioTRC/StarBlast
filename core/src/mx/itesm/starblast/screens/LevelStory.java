@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -35,22 +34,25 @@ import mx.itesm.starblast.gameEntities.Bullet;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.gameEntities.Edge;
 import mx.itesm.starblast.gameEntities.Explosion;
-import mx.itesm.starblast.gameEntities.HealthPowerUp;
+import mx.itesm.starblast.gameEntities.PowerUps.DamagePowerUp;
+import mx.itesm.starblast.gameEntities.PowerUps.HealthPowerUp;
 import mx.itesm.starblast.gameEntities.IExplotable;
 import mx.itesm.starblast.gameEntities.IPausable;
 import mx.itesm.starblast.gameEntities.IPlayableEntity;
 import mx.itesm.starblast.PreferencesSB;
-import mx.itesm.starblast.gameEntities.PowerUp;
+import mx.itesm.starblast.gameEntities.PowerUps.MissilePowerUp;
+import mx.itesm.starblast.gameEntities.PowerUps.PowerUp;
 import mx.itesm.starblast.gameEntities.ProgressBar;
+import mx.itesm.starblast.gameEntities.PowerUps.ShieldPowerUp;
 import mx.itesm.starblast.gameEntities.Ship;
 import mx.itesm.starblast.gameEntities.ShipEnemy;
 import mx.itesm.starblast.gameEntities.ShipEnemyBoss;
 import mx.itesm.starblast.gameEntities.ShipPlayer;
+import mx.itesm.starblast.gameEntities.PowerUps.SpeedPowerUp;
 import mx.itesm.starblast.stages.StageLost;
 import mx.itesm.starblast.stages.StagePause;
 import mx.itesm.starblast.stages.StageWin;
 import mx.itesm.starblast.StarBlast;
-import mx.itesm.starblast.Text;
 
 class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausable {
 
@@ -319,7 +321,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         if (!isPaused) {
             handleWaves();
             spawnEnemies(dt);
-            //spawnPowerUps(dt);
+            spawnPowerUps(dt);
             updateWorld(dt);
             movePlayer(dt);
             moveEnemies(dt);
@@ -591,17 +593,39 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             ShipEnemy enemy = new ShipEnemy(EnemiesFiles.get(random.nextInt(3)), random.nextInt((int) Constant.SCREEN_WIDTH), Constant.SCREEN_HEIGTH + 50, world, batch);
             enemy.scaling(Constant.SHIPS_SCALE);
             enemies.add(enemy);
-            Gdx.app.log("PowerUp","Spawned");
-            powerUps.add(new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2,world));
         }
     }
 
     private void spawnPowerUps(float dt) {
-        if(random.nextFloat() > 0.99f && false){
-            Gdx.app.log("PowerUp","Spawned");
-            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH/2,world);
+        if(random.nextFloat() < 0.1f/50f){
+            spawnRandomPowerUp();
         }
     }
+
+    private void spawnRandomPowerUp(){
+        float r = random.nextFloat();
+        if(0 <= r && r < 0.30) {
+            Gdx.app.log("PowerUp","Spawned Health");
+            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        }
+        else if(r < 0.50){
+            Gdx.app.log("PowerUp","Spawned Shield");
+            new ShieldPowerUp(Constant.MANAGER.get("GameScreen/PowerupShieldSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        }
+        else if(r < 0.70){
+            Gdx.app.log("PowerUp","Spawned Speed");
+            new SpeedPowerUp(Constant.MANAGER.get("GameScreen/PowerupSpeedSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        }
+        else if(r < 0.90){
+            Gdx.app.log("PowerUp","Spawned Damage");
+            new DamagePowerUp(Constant.MANAGER.get("GameScreen/PowerupDamageSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        }
+        else {
+            Gdx.app.log("PowerUp","Spawned Missile");
+            new MissilePowerUp(Constant.MANAGER.get("GameScreen/PowerupMissileSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        }
+    }
+
 
     private void moveEnemies(float delta) {
         Vector2 target = new Vector2(player.getX(), player.getY());

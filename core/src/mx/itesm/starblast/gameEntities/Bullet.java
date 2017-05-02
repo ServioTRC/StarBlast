@@ -23,10 +23,10 @@ public class Bullet extends PlayableEntity{
     boolean isEnemy = false;
     int damage;
 
-    Bullet(float x, float y, World world, float angle, boolean enemy,int damage) {
+    Bullet(float x, float y, World world, float angle, boolean enemy,int damage, Texture texture) {
         isEnemy = enemy;
 
-        sprite = new Sprite(Constant.MANAGER.get("GameScreen/"+(enemy? "BulletSpriteEnemy.png": "BulletSprite.png"), Texture.class));
+        sprite = new Sprite(texture);
         sprite.setCenter(x, y);
         sprite.setRotation(angle);
 
@@ -53,8 +53,8 @@ public class Bullet extends PlayableEntity{
         this.damage = damage;
     }
 
-    Bullet(Vector2 v, World world, float angle, boolean enemy,int damage) {
-        this(v.x, v.y, world, angle,enemy, damage);
+    Bullet(Vector2 v, World world, float angle, boolean enemy,int damage, Texture texture) {
+        this(v.x, v.y, world, angle,enemy, damage, texture);
     }
 
     /*void makeFixture(float density, float restitution) {
