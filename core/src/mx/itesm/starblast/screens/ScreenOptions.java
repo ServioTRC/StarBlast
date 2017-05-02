@@ -204,7 +204,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO implementar
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.HELP));
             }
         });
 

@@ -154,6 +154,8 @@ public class ScreenLoading extends ScreenSB {
             case OPTIONS:
                 menu.setScreen(new ScreenOptions(menu));
                 break;
+            case HELP:
+                menu.setScreen(new ScreenHelp(menu));
             case CREDITS:
                 break;
         }
@@ -196,6 +198,8 @@ public class ScreenLoading extends ScreenSB {
                 break;
             case OPTIONS:
                 loadOptions();
+            case HELP:
+                loadHelp();
             case CREDITS:
                 break;
         }
@@ -340,5 +344,10 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadOptions() {
+    }
+
+    private void loadHelp() {
+        Constant.MANAGER.load("HelpScreen/TutorialMask.png",Texture.class);
+        Constant.MANAGER.load("HelpScreen/TutorialScreen.png",Texture.class);
     }
 }

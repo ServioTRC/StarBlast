@@ -52,6 +52,7 @@ public abstract class Constant {
         MINI3,
         SCORES,
         OPTIONS,
+        HELP,
         CREDITS
     }
 

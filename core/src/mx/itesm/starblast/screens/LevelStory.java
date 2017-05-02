@@ -143,7 +143,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     //region other
     private final StarBlast app;
-    final SpriteBatch batch = new SpriteBatch();
+    final SpriteBatch batch;
     Random random = new Random();
     private boolean playerSpecial = false;
     private Box2DDebugRenderer debugRenderer;
@@ -153,6 +153,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves,int spawnTimeuot,int level) {
         super();
         this.app = app;
+        batch  = new SpriteBatch();
         HUDScene = new Stage(view, batch){
             @Override
             public boolean keyDown(int keycode) {
@@ -384,10 +385,10 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         Skin skin = new Skin();
         skin.add("Pause", Constant.MANAGER.get("GameScreen/Pause.png", Texture.class));
 
-        Button.ButtonStyle estilo = new Button.ButtonStyle();
-        estilo.up = skin.getDrawable("Pause");
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Pause");
 
-        pauseButton = new Button(estilo);
+        pauseButton = new Button(style);
         pauseButton.setPosition(11 * Constant.SCREEN_WIDTH / 12,
                 9 * Constant.SCREEN_HEIGTH / 10);
         pauseButton.addListener(new ChangeListener() {
@@ -606,7 +607,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         float r = random.nextFloat();
         if(0 <= r && r < 0.30) {
             Gdx.app.log("PowerUp","Spawned Health");
-            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupHealthSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
         }
         else if(r < 0.50){
             Gdx.app.log("PowerUp","Spawned Shield");
