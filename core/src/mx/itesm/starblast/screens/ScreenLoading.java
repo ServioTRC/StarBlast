@@ -25,6 +25,12 @@ public class ScreenLoading extends ScreenSB {
     private final int TIME_PER_TEXT = 1000;
     private final int NUMBER_OF_TEXTS = 5;
     private final int TOTAL_TIME;
+    private boolean story;
+
+    public ScreenLoading(StarBlast menu, Constant.Screens screens, boolean story) {
+        this(menu, screens);
+        this.story = story;
+    }
 
     public ScreenLoading(StarBlast menu, Constant.Screens screens) {
         this.menu = menu;
@@ -134,10 +140,10 @@ public class ScreenLoading extends ScreenSB {
                 menu.setScreen(new ScreenMinigamesSelection(menu));
                 break;
             case MINI1:
-                menu.setScreen(new ScreenMinigame1(menu, false));
+                menu.setScreen(new ScreenMinigame1(menu, story));
                 break;
             case MINI2:
-                break;
+                menu.setScreen(new ScreenMinigame2(menu, story));
             case MINI3:
                 break;
             case SCORES:
@@ -289,6 +295,9 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame1.png", Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2.png", Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame1Grey.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2Grey.png", Texture.class);
+        Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3Grey.png", Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/erroranimation.png", Texture.class);
     }
@@ -297,7 +306,13 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadMinigame2() {
-
+        Constant.MANAGER.load("Minigame2Screen/BackgroundMinigame2.jpg", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/Back.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/BackYellow.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/TopBanner.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/SplashMinigame2Win.png", Texture.class);
+        Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/BottomBanner.png", Texture.class);
     }
 
     private void loadMinigame3() {

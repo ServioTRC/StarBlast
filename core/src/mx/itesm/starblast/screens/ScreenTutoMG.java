@@ -36,7 +36,7 @@ public class ScreenTutoMG extends ScreenSB {
 
 
     public ScreenTutoMG(StarBlast menu, boolean isStoryMode, int numMG) {
-        this.menu=menu;
+        this.menu = menu;
         this.isStoryMode = isStoryMode;
         this.numMG = numMG;
     }
@@ -50,16 +50,16 @@ public class ScreenTutoMG extends ScreenSB {
     private void creatingObjects() {
         Image imgFondo = new Image(backgroundTexture);
         batch = new SpriteBatch();
-        tutorialMG = new Stage(view, batch){
+        tutorialMG = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
-                    if(isStoryMode){
+                    if (isStoryMode) {
                         //TODO better handling of back on story mode
-                        Gdx.app.log("ScreenMinigame1: ","Es historia y no hago nada");
+                        Gdx.app.log("ScreenMinigame1: ", "Es historia y no hago nada");
                         return true;
                     }
-                    Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
+                    Gdx.app.log("ScreenMinigame1: ", "Going to minigames selection");
                     menu.setScreen(new ScreenMinigamesSelection(menu));
                     return true;
                 }
@@ -68,19 +68,21 @@ public class ScreenTutoMG extends ScreenSB {
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                Gdx.app.log("ScreenMinigame1: ","Touch");
-                if(numImage == 1){
+                Gdx.app.log("ScreenMinigame1: ", "Touch");
+                if (numImage == 1) {
                     tutorial.setTexture(tutorial2);
                     numImage = 2;
                     timeBetween = TimeUtils.millis();
                 }
-                if((numImage == 2)&&((TimeUtils.millis()-timeBetween)>=500)) {
+                if ((numImage == 2) && ((TimeUtils.millis() - timeBetween) >= 500)) {
                     if (numMG == 1) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                        menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, isStoryMode));
+
                     } else if (numMG == 2) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                        menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
+
                     }
                 /*else if(numMG == 3){
                     Gdx.app.log("ScreenMenu ", "Going to Minigame3");
@@ -100,14 +102,13 @@ public class ScreenTutoMG extends ScreenSB {
 
     private void loadingTextures() {
         backgroundTexture = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
-        if(numMG == 1){
+        if (numMG == 1) {
             tutorial1 = new Texture("Minigame1Screen/SplashTutorial1.png");
             tutorial2 = new Texture("Minigame1Screen/SplashTutorial2.png");
-        }
-        else if(numMG == 2){
+        } else if (numMG == 2) {
             tutorial1 = new Texture("Minigame2Screen/SplashTutorial1.png");
             tutorial2 = new Texture("Minigame2Screen/SplashTutorial2.png");
-        } else if(numMG == 3){
+        } else if (numMG == 3) {
             tutorial1 = new Texture("Minigame3Screen/SplashTutorial1.png");
             tutorial2 = new Texture("Minigame3Screen/SplashTutorial2.png");
         }
@@ -119,18 +120,17 @@ public class ScreenTutoMG extends ScreenSB {
         tutorialMG.draw();
         batch.begin();
         tutorial.draw(batch);
-        if(((TimeUtils.millis()-startingTime) > 3000)&&(numImage == 1)){
+        if (((TimeUtils.millis() - startingTime) > 3000) && (numImage == 1)) {
             tutorial.setTexture(tutorial2);
             numImage = 2;
         }
-        if((TimeUtils.millis()-startingTime) > 6000){
-            if(numMG == 1) {
+        if ((TimeUtils.millis() - startingTime) > 6000) {
+            if (numMG == 1) {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-            }
-            else if(numMG == 2) {
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, isStoryMode));
+            } else if (numMG == 2) {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
             }
             /*else if(numMG == 3){
                 Gdx.app.log("ScreenMenu ", "Going to Minigame3");

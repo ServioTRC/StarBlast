@@ -2,6 +2,7 @@ package mx.itesm.starblast.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,13 +18,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
+import mx.itesm.starblast.Text;
+import mx.itesm.starblast.gameEntities.IPausable;
 
 public class StagePause extends Stage {
 
     private final StarBlast menu;
-    private final mx.itesm.starblast.gameEntities.IPausable parent;
+    private final IPausable parent;
 
-    public StagePause(Viewport viewport, Batch batch, StarBlast menu, mx.itesm.starblast.gameEntities.IPausable parent) {
+    public StagePause(Viewport viewport, Batch batch, StarBlast menu, IPausable parent) {
         super(viewport, batch);
         this.menu = menu;
         this.parent = parent;
@@ -51,15 +55,23 @@ public class StagePause extends Stage {
         style.down = skin.getDrawable("Down");
 
         final Button btn = new Button(style);
-        btn.addListener(new ClickListener() {
+        ClickListener tmp = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 parent.unPauseIP();
             }
-        });
-        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 15,
+        };
+        btn.addListener(tmp);
+        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 75,
                 Constant.SCREEN_HEIGTH / 6 + 50, Align.center);
         addActor(btn);
+        Text text = new Text(Constant.SOURCE_TEXT);
+        TextButton.TextButtonStyle textButtonStyle = text.generateText(new Color(Color.rgba8888(19f / 255f, 114f / 255f, 211f / 255f, 1f)), Color.GOLD, 1.5f);
+        TextButton tbt = new TextButton("CONTINUAR", textButtonStyle);
+        tbt.addListener(tmp);
+        tbt.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 75,
+                105, Align.center);
+        addActor(tbt);
     }
 
     private void createCodesButton() {
@@ -103,15 +115,23 @@ public class StagePause extends Stage {
         style.down = skin.getDrawable("Down");
 
         final Button btn = new Button(style);
-        btn.addListener(new ClickListener() {
+        ClickListener tmp = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 menu.setScreen(new mx.itesm.starblast.screens.ScreenMenu(menu));
             }
-        });
+        };
+        btn.addListener(tmp);
         btn.setPosition(Constant.SCREEN_WIDTH / 4 - 10,
                 Constant.SCREEN_HEIGTH / 6 + 40, Align.center);
         addActor(btn);
+        Text text = new Text(Constant.SOURCE_TEXT);
+        TextButton.TextButtonStyle textButtonStyle = text.generateText(new Color(Color.rgba8888(19f / 255f, 114f / 255f, 211f / 255f, 1f)), Color.GOLD, 1.5f);
+        TextButton tbt = new TextButton("SALIR", textButtonStyle);
+        tbt.addListener(tmp);
+        tbt.setPosition(Constant.SCREEN_WIDTH / 4 - 10,
+                105, Align.center);
+        addActor(tbt);
     }
 
     private void createSoundButton() {

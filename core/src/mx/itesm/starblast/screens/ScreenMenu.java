@@ -72,13 +72,13 @@ public class ScreenMenu extends ScreenSB {
     private void creatingButtons() {
         creatingCreditsButton();
         creatingEndlessButton();
-        creatingHistoryButton();
+        creatingStoryButton();
         creatingOptionsButton();
         creatingScoresButton();
         creatingMiniGamesButton();
     }
 
-    private void creatingHistoryButton(){
+    private void creatingStoryButton(){
         textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
         btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /2-btnPlay.getHeight()/2+40);
