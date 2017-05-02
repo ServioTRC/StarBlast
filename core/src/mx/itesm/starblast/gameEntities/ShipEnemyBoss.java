@@ -1,5 +1,6 @@
 package mx.itesm.starblast.gameEntities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.Random;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 
 
 public class ShipEnemyBoss extends ShipEnemy {
@@ -25,14 +27,14 @@ public class ShipEnemyBoss extends ShipEnemy {
     private Random random;
 
     public ShipEnemyBoss(Texture texture, float x, float y, World world, int life, SpriteBatch batch) {
-        super(texture, x, y, world, -90, 50f, 0.1f,batch);
+        super(texture, x, y, world, -90, 10f, 0.1f,batch);
 
         damage = 20;
         this.health = life;
         COOLDOWN_SHOT = 400;
 
         rightLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.7f);
-        leftLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.1f);
+        leftLimit = Constant.toWorldSize(Constant.SCREEN_WIDTH *0.3f);
         upperLimit = Constant.toWorldSize(Constant.SCREEN_HEIGTH *0.7f);
 
         random = new Random();
@@ -56,16 +58,18 @@ public class ShipEnemyBoss extends ShipEnemy {
 
     @Override
     public void move(Vector2 target, float delta){
-        target = new Vector2(Constant.toWorldSize(target.x), Constant.toWorldSize(target.y));
-        objective = new Vector2(target);
+        objective = new Vector2(Constant.toWorldSize(target.x), Constant.toWorldSize(target.y));
         target.y = upperLimit;
-        target.x = MathUtils.clamp(target.x, leftLimit, rightLimit);
+        target.x = MathUtils.clamp(objective.x, leftLimit, rightLimit);
         float radians = MathUtils.atan2(target.y-body.getPosition().y,target.x-body.getPosition().x);
-        body.applyForceToCenter(new Vector2(MathUtils.cos(radians),MathUtils.sin(radians)),true);
+        body.applyForceToCenter(MathUtils.cos(radians)*200,MathUtils.sin(radians)*200,true);
+        Gdx.app.log("FuerzaX - FuerzaY",MathUtils.cos(radians)*200+ " - " + MathUtils.sin(radians)*200);
         float hip = body.getLinearVelocity().len();
+        Gdx.app.log("Speed",""+hip);
         if(hip > TOP_SPEED){
             body.setLinearVelocity(body.getLinearVelocity().scl(TOP_SPEED /hip));
         }
+
         sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
         sprite.setRotation(MathUtils.radiansToDegrees*MathUtils.atan2(objective.y-body.getPosition().y, objective.x-body.getPosition().x));
 
@@ -101,6 +105,10 @@ public class ShipEnemyBoss extends ShipEnemy {
                 new Bullet(gunPosition,world,angle+50,enemy,5,bulletTexture);
                 break;
 
+        }
+
+        if(PreferencesSB.SOUNDS_ENABLE){
+            fireSound.play(0.5f);
         }
     }
 
