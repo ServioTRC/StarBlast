@@ -113,7 +113,7 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public void render(float delta) {
-        if((score >= piecesGenerated)&&((TimeUtils.millis() - startingTime) > 18000)){
+        if((score >= (piecesGenerated-5))&&((TimeUtils.millis() - startingTime) > 18000)){
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
             ended = true;
         } else if(((TimeUtils.millis() - startingTime) >= 20000) || exploted){

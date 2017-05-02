@@ -113,7 +113,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         if(won){
             Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
             ended = true;
-        } else if((TimeUtils.millis() - startingTime) >= 30000){
+        } else if((TimeUtils.millis() - startingTime) >= 90000){
             endingSprite.setTexture(losingTexture);
             ended = true;
         }
@@ -121,11 +121,13 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         for(Sprite piece : pieces){
             piece.draw(batch);
         }
-        textScore.showMessage(batch, Long.toString((30000-(TimeUtils.millis() - startingTime))/1000),
-                Constant.SCREEN_WIDTH/2 - 60, Constant.SCREEN_HEIGTH -20, Color.GREEN);
+
         backButtonSprite.draw(batch);
         if(ended)
             endingSprite.draw(batch);
+        else
+            textScore.showMessage(batch, Long.toString((90000-(TimeUtils.millis() - startingTime))/1000),
+                    Constant.SCREEN_WIDTH/2 - 60, Constant.SCREEN_HEIGTH -20, Color.GREEN);
         batch.end();
     }
 
