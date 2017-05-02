@@ -140,11 +140,13 @@ public class ScreenLoading extends ScreenSB {
                 menu.setScreen(new ScreenMinigamesSelection(menu));
                 break;
             case MINI1:
-                menu.setScreen(new ScreenMinigame1(menu, story));
+                menu.setScreen(new ScreenTutoMG(menu, story, 1));
                 break;
             case MINI2:
-                menu.setScreen(new ScreenMinigame2(menu, story));
+                menu.setScreen(new ScreenTutoMG(menu, story, 2));
+                break;
             case MINI3:
+                menu.setScreen(new ScreenTutoMG(menu, story, 3));
                 break;
             case SCORES:
                 menu.setScreen(new ScreenScores(menu));
@@ -328,6 +330,13 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadMinigame3() {
+        Constant.MANAGER.load("Minigame3Screen/Minigame3Background.jpg", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/Back.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/BackYellow.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/SplashMinigame3Win.png", Texture.class);
+        Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/Minigame3Background.jpg", Texture.class);
+
     }
 
     private void loadOptions() {

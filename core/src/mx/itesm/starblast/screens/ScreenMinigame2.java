@@ -245,13 +245,6 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
         else
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            menu.setScreen(new ScreenMinigamesSelection(menu));
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
             if (isStoryMode)
@@ -259,6 +252,14 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             else
                 menu.setScreen(new ScreenMinigamesSelection(menu));
         }
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            menu.setScreen(new ScreenMinigamesSelection(menu));
 
         return true;
     }

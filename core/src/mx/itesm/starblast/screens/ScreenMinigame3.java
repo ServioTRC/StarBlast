@@ -3,6 +3,7 @@ package mx.itesm.starblast.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,16 +36,20 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     private boolean isStoryMode = false;
 
-    private Texture cristalTexture;
-    private Texture backgroundTexture;
-    private Texture rockTexture;
     private Sprite backButtonSprite;
+    private SpriteSB genericSprite;
     private SpriteSB crystal;
     private SpriteSB rock;
     private ArrayList<SpriteSB> crystals = new ArrayList<SpriteSB>(3);
     private ArrayList<SpriteSB> rocks = new ArrayList<SpriteSB>(9);
     private ArrayList<Integer> positions = new ArrayList<Integer>(9);
     private Random r = new Random();
+    private Vector3 vector;
+    private Text textScore;
+    private int tries = 5;
+    private int crystalFound = 0;
+    private Sprite endingSprite;
+    private boolean ended;
 
     ScreenMinigame3 (StarBlast menu, boolean isStoryMode){
         this.menu = menu;
@@ -52,120 +58,67 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     @Override
     public void show() {
-        loadingTextures();
         createObjects();
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setInputProcessor(this);
     }
 
     private void createObjects() {
         batch = new SpriteBatch();
         minigame3Scene = new Stage(view, batch);
-        Image imgFondo = new Image(backgroundTexture);
+        Image imgFondo = new Image(Constant.MANAGER.get("Minigame3Screen/Minigame3Background.jpg", Texture.class));
         minigame3Scene.addActor(imgFondo);
-        /*textScore = new Text(Constant.SOURCE_TEXT);
-        topBanner = new Sprite(Constant.MANAGER.get("Minigame2Screen/TopBanner.png", Texture.class));
-        topBanner.setY(Constant.SCREEN_HEIGTH - topBanner.getHeight());
-        bottomBanner = new Sprite(Constant.MANAGER.get("Minigame2Screen/BottomBanner.png", Texture.class));
-        endingSprite = new Sprite(Constant.MANAGER.get("Minigame2Screen/SplashMinigame2Win.png", Texture.class));
+        textScore = new Text(Constant.SOURCE_TEXT);
+        endingSprite = new Sprite(Constant.MANAGER.get("Minigame3Screen/SplashMinigame3Win.png", Texture.class));
         endingSprite.setCenterY(Constant.SCREEN_HEIGTH / 2);
-        endingSprite.setCenterX(Constant.SCREEN_WIDTH / 2);*/
-        crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
-        rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", 1);
-
-        /* Pos 0
-        crystal.setX(1*Constant.SCREEN_WIDTH/5 +20);
-        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
-        crystals.add(crystal);*/
-
-        /*Pos 1
-        crystal.setX(2*Constant.SCREEN_WIDTH/5);
-        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
-        crystals.add(crystal);*/
-
-        /*
-        Pos 2
-        crystal.setX(3*Constant.SCREEN_WIDTH/5);
-        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
-        crystals.add(crystal);*/
-
-        /* Pos 3
-        crystal.setX(1*Constant.SCREEN_WIDTH/5 +20);
-        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
-        /*
-        Pos 4
-        crystal.setX(2*Constant.SCREEN_WIDTH/5);
-        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
-        /*
-        Pos 5
-        crystal.setX(3*Constant.SCREEN_WIDTH/5);
-        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
-
-        /*Pos 6
-        crystal.setX(1*Constant.SCREEN_WIDTH/5+20);
-        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
-        crystals.add(crystal);*/
-
-        /*Pos 7
-        crystal.setX(2*Constant.SCREEN_WIDTH/5);
-        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
-        crystals.add(crystal);*/
-
-        /*Pos 8
-        crystal.setX(3*Constant.SCREEN_WIDTH/5);
-        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
-        crystals.add(crystal);*/
+        endingSprite.setCenterX(Constant.SCREEN_WIDTH / 2);
         randomPos();
         addingRocks();
         createBackButton();
-        Gdx.input.setCatchBackKey(true);
-        Gdx.input.setInputProcessor(this);
     }
 
     private void addingRocks() {
-        for(int i = 0; i < 3; i++) {
-            int pos = r.nextInt(9);
-            while (positions.contains(pos))
-                pos = r.nextInt(9);
-            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
-            switch (pos) {
+        for(int i = 0; i < 9; i++) {
+            rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", i);
+            switch (i) {
                 case 0:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 1:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 2:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 3:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
                     break;
                 case 4:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
                     break;
                 case 5:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
                     break;
                 case 6:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
                     break;
                 case 7:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
                     break;
                 case 8:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
                     break;
             }
-            positions.add(pos);
-            crystals.add(crystal);
+            rocks.add(rock);
         }
     }
 
@@ -174,7 +127,7 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             int pos = r.nextInt(9);
             while (positions.contains(pos))
                 pos = r.nextInt(9);
-            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
+            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", pos);
             switch (pos) {
                 case 0:
                     crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
@@ -216,10 +169,6 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             positions.add(pos);
             crystals.add(crystal);
         }
-    }
-
-    private void loadingTextures() {
-        backgroundTexture = new Texture("Minigame3Screen/Minigame3Background.jpg");
     }
 
     private void createBackButton() {
@@ -233,10 +182,27 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         clearScreen();
         minigame3Scene.draw();
         batch.begin();
-        for(SpriteSB crys: crystals){
+        if(crystalFound >= 3){
+            ended = true;
+        } else if(tries <= 0){
+            ended = true;
+            endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
+        }
+
+        for (SpriteSB crys : crystals) {
             crys.draw(batch);
         }
-        backButtonSprite.draw(batch);
+
+        if(!ended) {
+            for (SpriteSB rock : rocks) {
+                rock.draw(batch);
+            }
+            backButtonSprite.draw(batch);
+            textScore.showMessage(batch, Integer.toString(tries),
+                    Constant.SCREEN_WIDTH / 2 - 30, Constant.SCREEN_HEIGTH - 50, Color.GREEN);
+        } else {
+            endingSprite.draw(batch);
+        }
         batch.end();
     }
 
@@ -282,12 +248,38 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        for(int i = rocks.size()-1; i >= 0; i--){
+            genericSprite = rocks.get(i);
+            if(genericSprite.touched(vector)){
+                rocks.remove(i);
+                tries--;
+                if(positions.contains(genericSprite.getId()))
+                    crystalFound++;
+            }
+        }
+
+        if (!backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        else
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
+
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+            if (isStoryMode)
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
+            else
+                menu.setScreen(new ScreenMinigamesSelection(menu));
+        }
+
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+            menu.setScreen(new ScreenMinigamesSelection(menu));
+
+        return true;
     }
 
     @Override

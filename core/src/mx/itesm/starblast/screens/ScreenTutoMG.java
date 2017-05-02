@@ -77,16 +77,16 @@ public class ScreenTutoMG extends ScreenSB {
                 if ((numImage == 2) && ((TimeUtils.millis() - timeBetween) >= 500)) {
                     if (numMG == 1) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, isStoryMode));
+                        menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
 
                     } else if (numMG == 2) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
+                        menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
 
                     }
                 else if(numMG == 3){
                     Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                    menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+                        menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
                 }
 
                 }
@@ -127,14 +127,14 @@ public class ScreenTutoMG extends ScreenSB {
         if ((TimeUtils.millis() - startingTime) > 6000) {
             if (numMG == 1) {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, isStoryMode));
+                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
             } else if (numMG == 2) {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
+                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
             }
             else if(numMG == 3){
                 Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
             }
         }
         batch.end();
