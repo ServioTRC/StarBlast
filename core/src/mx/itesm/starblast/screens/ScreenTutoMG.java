@@ -84,10 +84,10 @@ public class ScreenTutoMG extends ScreenSB {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
 
                     }
-                /*else if(numMG == 3){
+                else if(numMG == 3){
                     Gdx.app.log("ScreenMenu ", "Going to Minigame3");
                     menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
-                }*/
+                }
 
                 }
                 return true;
@@ -132,10 +132,10 @@ public class ScreenTutoMG extends ScreenSB {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame2");
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, isStoryMode));
             }
-            /*else if(numMG == 3){
+            else if(numMG == 3){
                 Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-            }*/
+                menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+            }
         }
         batch.end();
     }
