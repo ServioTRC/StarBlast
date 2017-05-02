@@ -50,7 +50,7 @@ public class ScreenHelp extends ScreenSB{
         tapToContinue.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                starBlast.setScreen(new ScreenLoading(starBlast, Constant.Screens.OPTIONS,false));
+                starBlast.setScreen(new ScreenLoading(starBlast, Constant.Screens.OPTIONS));
                 return true;
             }
         });

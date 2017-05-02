@@ -123,13 +123,14 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     int waveNumber = 1;
     float timeoutBetweenWaves = 5;
     int level;
-    boolean haBoss = true;
+    boolean hasBoss = true;
 
     ArrayList<ShipEnemy> enemies = new ArrayList<ShipEnemy>();
     ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 
 
     ArrayList<Texture> EnemiesFiles;
+    Texture enemyBossTexture;
     //endregion
 
     //region player
@@ -645,9 +646,9 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 numberEnemiesForThisWave += extraPerWave;
                 switchingWaves = true;
             } else {
-                if(haBoss){
-                    haBoss = false;
-                    ShipEnemy boss = new ShipEnemyBoss(Constant.MANAGER.get("GameScreen/EnemyBossSprite.png",Texture.class),Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(3000 + 1000*(level*(level+1))/2),batch);
+                if(hasBoss){
+                    hasBoss = false;
+                    ShipEnemy boss = new ShipEnemyBoss(enemyBossTexture,Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(3000 + 1000*(level*(level+1))/2),batch);
                     boss.scaling(Constant.SHIPS_SCALE);
                     enemies.add(boss);
                 }else{

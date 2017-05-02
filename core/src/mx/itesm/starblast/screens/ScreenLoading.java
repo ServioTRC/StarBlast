@@ -219,14 +219,17 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadLevel1() {
         loadStory();
+        Constant.MANAGER.load("GameScreen/EnemyBoss1Sprite.png",Texture.class);
     }
 
     private void loadLevel2() {
         loadStory();
+        Constant.MANAGER.load("GameScreen/EnemyBoss2Sprite.png",Texture.class);
     }
 
     private void loadLevel3() {
         loadStory();
+        Constant.MANAGER.load("GameScreen/EnemyBoss3Sprite.png",Texture.class);
     }
 
     private void loadStory() {
@@ -241,9 +244,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/Enemy1Sprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Enemy2Sprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Enemy3Sprite.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/EnemyBossSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Pause.png", Texture.class);
-        Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionMissileFrames.png", Texture.class);
@@ -259,7 +260,6 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadPowerups() {
-        Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupHealthSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupShieldSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupSpeedSprite.png", Texture.class);
