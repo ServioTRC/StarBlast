@@ -1,6 +1,7 @@
 package mx.itesm.starblast.gameEntities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,7 +36,7 @@ public class ShipPlayer extends Ship {
 
     private Sound missileSound;
 
-    public final float MAX_HEALTH;
+    public float MAX_HEALTH;
     public final float MAX_SHIELD = 50;
     private boolean infHealth;
     private boolean infMissiles;
@@ -58,10 +59,16 @@ public class ShipPlayer extends Ship {
         fireSound = Constant.MANAGER.get("SoundEffects/ShootingSound1.mp3", Sound.class);
         missileSound = Constant.MANAGER.get("SoundEffects/MissileSound.wav", Sound.class);
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
-        infHealth = Gdx.app.getPreferences("Codes").getBoolean("InfHealth", false);
-        infMissiles = Gdx.app.getPreferences("Codes").getBoolean("InfMissiles", false);
-        if (Gdx.app.getPreferences("Codes").getBoolean("speed", false)) {
+        Preferences pref = Gdx.app.getPreferences("Codes");
+        infHealth = pref.getBoolean("InfHealth", false);
+        infMissiles = pref.getBoolean("InfMissiles", false);
+        if (pref.getBoolean("speed", false)) {
             speedMultiplier = 2;
+        }
+        if (pref.getBoolean("konami", false)) {
+            missileCount *= 2;
+            MAX_HEALTH *= 2;
+            health = MAX_HEALTH;
         }
     }
 

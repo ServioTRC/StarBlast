@@ -92,7 +92,7 @@ public class PreferencesSB {
             //get used to dying
         } else if (code.equals("sonic the hedgehog")) {
             //super speed
-            Gdx.app.log("Cheats","speed");
+            Gdx.app.log("Cheats", "speed");
             prefs.putBoolean("speed", !prefs.getBoolean("speed", false));
         } else if (code.equals("yeah that's honest")) {
             //think
@@ -104,8 +104,41 @@ public class PreferencesSB {
             //unlock minigames
         } else if (code.equals("uuddlrlrab")) {
             //konamy code (+ misiles, 2xVida)
+            prefs.putBoolean("konami", !prefs.getBoolean("konami", false));
         } else if (code.equals("360 no scope")) {
             //homing misiles (and bullets)
+        } else if (code.split(" ")[0].equals("lvl")) {
+            String[] tmp = code.split(" ");
+            if (tmp.length == 2) {
+                int level;
+                try {
+                    level = Integer.valueOf(tmp[1]);
+                    if (level <= 0) {
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    return;
+                }
+                Preferences tmpPref = Gdx.app.getPreferences("Levels");
+                tmpPref.putInteger("Level", level);
+                tmpPref.flush();
+            }
+        } else if (code.split(" ")[0].equals("mng")) {
+            String[] tmp = code.split(" ");
+            if (tmp.length == 2) {
+                int mng;
+                try {
+                    mng = Integer.valueOf(tmp[1]);
+                    if (mng <= 0 || mng > 3) {
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    return;
+                }
+                Preferences tmpPref = Gdx.app.getPreferences("Minigames");
+                tmpPref.putBoolean(mng + "", true);
+                tmpPref.flush();
+            }
         }
         prefs.flush();
     }

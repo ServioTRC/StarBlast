@@ -35,11 +35,11 @@ class ScreenMinigamesSelection extends ScreenSB {
 
     private void creatingObjects() {
         batch = new SpriteBatch();
-        selectionScene = new Stage(view, batch){
+        selectionScene = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
-                    Gdx.app.log("ScreenMinigamesSelection ","Going to Screen Menu");
+                    Gdx.app.log("ScreenMinigamesSelection ", "Going to Screen Menu");
                     dispose();
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
@@ -48,7 +48,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             }
         };
         Image backgroundImage =
-                new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionBackground.png",Texture.class));
+                new Image(Constant.MANAGER.get("MinigameSelectionScreen/MinigameSelectionBackground.png", Texture.class));
         selectionScene.addActor(backgroundImage);
         createMinigame1Button();
         createMinigame2Button();
@@ -60,37 +60,44 @@ class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame1Button() {
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("1", false);
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame1.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame1" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
         btn.setPosition(Constant.SCREEN_WIDTH / 5 - btn.getWidth() / 2,
-                        Constant.SCREEN_HEIGTH / 4 - btn.getHeight() / 2);
+                Constant.SCREEN_HEIGTH / 4 - btn.getHeight() / 2);
         selectionScene.addActor(btn);
+        if (!active) {
+            return;
+        }
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame1");
-                dispose();
+                Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame1");
                 menu.setScreen(new ScreenTutoMG(menu, false, 1));
             }
         });
     }
 
     private void createMinigame2Button() {
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("2", false);
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame2.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame2" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
         btn.setPosition(Constant.SCREEN_WIDTH / 2 - btn.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 2 - btn.getHeight() / 2);
         selectionScene.addActor(btn);
+        if (!active) {
+            return;
+        }
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame2");
+                Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame2");
                 dispose();
                 menu.setScreen(new ScreenTutoMG(menu, false, 2));
             }
@@ -98,18 +105,22 @@ class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame3Button() {
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("3", false);
         Skin skin = new Skin();
-        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3.png",Texture.class));
+        skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("up");
         Button btn = new Button(style);
         btn.setPosition(Constant.SCREEN_WIDTH - Constant.SCREEN_WIDTH / 5 - btn.getWidth() / 2,
                 Constant.SCREEN_HEIGTH / 4 - btn.getHeight() / 2);
         selectionScene.addActor(btn);
+        if (!active) {
+            return;
+        }
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMinigamesSelection ","Going to MiniGame3");
+                Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame3");
                 menu.setScreen(new ScreenTutoMG(menu, false, 3));
             }
         });
@@ -131,8 +142,8 @@ class ScreenMinigamesSelection extends ScreenSB {
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
-        btn.setPosition(12* Constant.SCREEN_WIDTH /13,
-                7*Constant.SCREEN_HEIGTH /8, Align.center);
+        btn.setPosition(12 * Constant.SCREEN_WIDTH / 13,
+                7 * Constant.SCREEN_HEIGTH / 8, Align.center);
         selectionScene.addActor(btn);
     }
 
