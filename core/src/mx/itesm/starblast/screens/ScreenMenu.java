@@ -31,7 +31,7 @@ public class ScreenMenu extends ScreenSB {
     private TextButton.TextButtonStyle textButtonStyle;
 
     public ScreenMenu(StarBlast menu) {
-        this.menu=menu;
+        this.menu = menu;
     }
 
     @Override
@@ -42,14 +42,13 @@ public class ScreenMenu extends ScreenSB {
 
     private void creatingObjects() {
         SpriteBatch batch = new SpriteBatch();
-        menuScene = new Stage(view, batch)
-        {
+        menuScene = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
-                    Gdx.app.log("ScreenMenu","Going to ScreenStart");
-                    
+                    Gdx.app.log("ScreenMenu", "Going to ScreenStart");
+
                     menu.setScreen(new ScreenStart(menu));
                     return true;
                 }
@@ -78,109 +77,120 @@ public class ScreenMenu extends ScreenSB {
         creatingMiniGamesButton();
     }
 
-    private void creatingStoryButton(){
-        textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
+    private void creatingStoryButton() {
+        textButtonStyle = text.generateText(Color.BLUE, Color.GOLD, 1);
         TextButton btnPlay = new TextButton("MODO HISTORIA", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /2-btnPlay.getHeight()/2+40);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, Constant.SCREEN_HEIGTH / 2 - btnPlay.getHeight() / 2 + 40);
 
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to History mode");
+                Gdx.app.log("ScreenMenu ", "Going to History mode");
                 int level = PreferencesSB.readLevelProgress();
-                if(level == 1) {
-                    Gdx.app.log("ScreenMenu ", "Going to Level1");
+                if (level == 1) {
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
                 } else if (level == 2) {
-                    Gdx.app.log("ScreenMenu ","Going to Level2");
-                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
-                } else if (level >= 3) {
-                    Gdx.app.log("ScreenMenu ", "Going to Level3");
-                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                    if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+                    }
+                } else if (level == 3) {
+                    if (Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                    }
+                } else {
+                    if (Gdx.app.getPreferences("Minigames").getBoolean("3", false)) {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                    }
                 }
             }
         });
     }
 
-    private void creatingEndlessButton(){
-        final boolean active = PreferencesSB.readLevelProgress()>3;
-        textButtonStyle = text.generateText(active?Color.BLUE:Color.GRAY,active?Color.GOLD:Color.GRAY,1);
+    private void creatingEndlessButton() {
+        final boolean active = PreferencesSB.readLevelProgress() > 3;
+        textButtonStyle = text.generateText(active ? Color.BLUE : Color.GRAY, active ? Color.GOLD : Color.GRAY, 1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 3* Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2+80);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, 3 * Constant.SCREEN_HEIGTH / 8 - btnPlay.getHeight() / 2 + 80);
 
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to Endless Mode");
-                if(active) menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
+                Gdx.app.log("ScreenMenu ", "Going to Endless Mode");
+                if (active) menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             }
         });
     }
 
-    private void creatingScoresButton(){
-        textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
+    private void creatingScoresButton() {
+        textButtonStyle = text.generateText(Color.BLUE, Color.GOLD, 1);
         TextButton btnPlay = new TextButton("PUNTAJES MAS ALTOS", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /3-btnPlay.getHeight()/2-25);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, Constant.SCREEN_HEIGTH / 3 - btnPlay.getHeight() / 2 - 25);
 
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to Scores");
+                Gdx.app.log("ScreenMenu ", "Going to Scores");
                 //TODO Quitar o no la parte de cargar los assets en la pantalla opciones
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.SCORES));
             }
         });
     }
 
-    private void creatingOptionsButton(){
-        textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
+    private void creatingOptionsButton() {
+        textButtonStyle = text.generateText(Color.BLUE, Color.GOLD, 1);
         TextButton btnPlay = new TextButton("OPCIONES", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, 2* Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2-30);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, 2 * Constant.SCREEN_HEIGTH / 8 - btnPlay.getHeight() / 2 - 30);
 
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to Scores");
+                Gdx.app.log("ScreenMenu ", "Going to Scores");
 
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.OPTIONS));
             }
         });
     }
 
-    private void creatingCreditsButton(){
-        textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
+    private void creatingCreditsButton() {
+        textButtonStyle = text.generateText(Color.BLUE, Color.GOLD, 1);
         TextButton btnPlay = new TextButton("CREDITOS", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /8-btnPlay.getHeight()/2);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, Constant.SCREEN_HEIGTH / 8 - btnPlay.getHeight() / 2);
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to Credits");
-                
+                Gdx.app.log("ScreenMenu ", "Going to Credits");
+
                 menu.setScreen(new ScreenCredits(menu));
             }
         });
     }
 
-    private void creatingMiniGamesButton(){
-        textButtonStyle = text.generateText(Color.BLUE,Color.GOLD,1);
+    private void creatingMiniGamesButton() {
+        textButtonStyle = text.generateText(Color.BLUE, Color.GOLD, 1);
         TextButton btnPlay = new TextButton("MINIJUEGOS", textButtonStyle);
-        btnPlay.setPosition(Constant.SCREEN_WIDTH /2-btnPlay.getWidth()/2, Constant.SCREEN_HEIGTH /3-btnPlay.getHeight()/2+40);
+        btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, Constant.SCREEN_HEIGTH / 3 - btnPlay.getHeight() / 2 + 40);
         menuScene.addActor(btnPlay);
 
-        btnPlay.addListener(new ClickListener(){
+        btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("ScreenMenu ","Going to MiniGames");
+                Gdx.app.log("ScreenMenu ", "Going to MiniGames");
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES));
             }
         });

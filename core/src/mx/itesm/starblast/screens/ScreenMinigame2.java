@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
 
-public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
+class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     private final StarBlast menu;
 
@@ -44,16 +45,12 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private Sprite topBanner;
     private Sprite bottomBanner;
     private SpriteSB genericSprite;
-    private SpriteSB genericSpriteTouch;
     private Sprite backButtonSprite;
     private Sprite endingSprite;
-    private int num;
     private boolean exploted = false;
-    private String id;
 
     private ArrayList<SpriteSB> pieces = new ArrayList<SpriteSB>();
     private Random r = new Random();
-    private float posY;
     private boolean ended = false;
 
     private AnimatedImage countdownAnimation;
@@ -96,8 +93,8 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public void render(float delta) {
-        if((score >= (piecesGenerated-5))&&((TimeUtils.millis() - startingTime) > 18000)){
-            Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+        if ((score >= (piecesGenerated - 5)) && ((TimeUtils.millis() - startingTime) > 18000)) {
+            Gdx.app.log("ScreenMinigame1: ", "El jugador ha ganado");
             ended = true;
         } else if (((TimeUtils.millis() - startingTime) >= 20000) || exploted) {
             ended = true;
@@ -117,7 +114,7 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                 addingObjects();
             for (int i = pieces.size() - 1; i >= 0; i--) {
                 genericSprite = pieces.get(i);
-                posY = genericSprite.getY();
+                float posY = genericSprite.getY();
                 posY -= 10;
                 if (posY < 0)
                     pieces.remove(i);
@@ -127,41 +124,39 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                 }
             }
             topBanner.draw(batch);
+            bottomBanner.draw(batch);
             textScore.showMessage(batch, Long.toString((20000 - (TimeUtils.millis() - startingTime)) / 1000),
                     Constant.SCREEN_WIDTH / 2 - 45, Constant.SCREEN_HEIGTH - 20, Color.GREEN);
             textScore.showMessage(batch, Integer.toString(score),
                     Constant.SCREEN_WIDTH / 2, 60, Color.GREEN);
             backButtonSprite.draw(batch);
         } else {
+            PreferencesSB.saveMinigameProgress(2);
             endingSprite.draw(batch);
         }
-        bottomBanner.draw(batch);
         batch.end();
     }
 
     private void addingObjects() {
-        num = r.nextInt(33);
-        if (num == 7) {
-            num = r.nextInt(4);
-            switch (num) {
+        if (r.nextInt(33) == 7) {
+            switch (r.nextInt(4)) {
                 case 0:
-                    genericSprite = new SpriteSB("Minigame2Screen/BadCollectible.png", "BadCollectible");
+                    genericSprite = new SpriteSB(Constant.MANAGER.get("Minigame2Screen/BadCollectible.png", Texture.class), Types.BAD);
                     break;
                 case 1:
-                    genericSprite = new SpriteSB("Minigame2Screen/Collectible1.png", "Collectible");
+                    genericSprite = new SpriteSB(Constant.MANAGER.get("Minigame2Screen/Collectible1.png", Texture.class), Types.GOOD);
                     piecesGenerated++;
                     break;
                 case 2:
-                    genericSprite = new SpriteSB("Minigame2Screen/Collectible2.png", "Collectible");
+                    genericSprite = new SpriteSB(Constant.MANAGER.get("Minigame2Screen/Collectible3.png", Texture.class), Types.GOOD);
                     piecesGenerated++;
                     break;
                 case 3:
-                    genericSprite = new SpriteSB("Minigame2Screen/Collectible3.png", "Collectible");
+                    genericSprite = new SpriteSB(Constant.MANAGER.get("Minigame2Screen/Collectible3.png", Texture.class), Types.GOOD);
                     piecesGenerated++;
                     break;
             }
-            num = r.nextInt(6);
-            switch (num) {
+            switch (r.nextInt(6)) {
                 case 0:
                     genericSprite.setX(225);
                     break;
@@ -230,10 +225,9 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         vector = camera.unproject(new Vector3(screenX, screenY, 0));
         for (int i = pieces.size() - 1; i >= 0; i--) {
-            genericSpriteTouch = pieces.get(i);
+            SpriteSB genericSpriteTouch = pieces.get(i);
             if (genericSpriteTouch.touched(vector)) {
-                id = genericSpriteTouch.getId();
-                if (id.equals("BadCollectible")) {
+                if (genericSpriteTouch.getId() == Types.BAD) {
                     exploted = true;
                 } else {
                     score++;
@@ -279,41 +273,25 @@ public class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         return false;
     }
 
-    private class SpriteSB {
-        private Sprite sprite;
-        private String id;
+    private enum Types {
+        BAD,
+        GOOD
+    }
 
-        public SpriteSB(String texture, String id) {
-            this.sprite = new Sprite(new Texture(texture));
+    private class SpriteSB extends Sprite {
+        private Types id;
+
+        SpriteSB(Texture texture, Types id) {
+            super(texture);
             this.id = id;
         }
 
-        public void setY(float y) {
-            this.sprite.setY(y);
-        }
-
-        public void setX(float x) {
-            this.sprite.setX(x);
-        }
-
-        public float getX() {
-            return this.sprite.getX();
-        }
-
-        public float getY() {
-            return this.sprite.getY();
-        }
-
-        public void draw(SpriteBatch batch) {
-            this.sprite.draw(batch);
-        }
-
-        public String getId() {
+        Types getId() {
             return this.id;
         }
 
-        public boolean touched(Vector3 vector) {
-            return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);
+        boolean touched(Vector3 vector) {
+            return this.getBoundingRectangle().contains(vector.x, vector.y);
         }
 
     }

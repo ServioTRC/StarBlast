@@ -1,6 +1,7 @@
 package mx.itesm.starblast.screens;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,9 +17,8 @@ import mx.itesm.starblast.StarBlast;
 public class ScreenLoading extends ScreenSB {
 
     StarBlast menu;
-    Constant.Screens nextScreen;
+    private Constant.Screens nextScreen;
     private ProgressBar loadingBar;
-    private SpriteBatch batch;
     private Stage loadingScene;
     private Stage textScene;
     private Texture[] texts;
@@ -36,7 +36,7 @@ public class ScreenLoading extends ScreenSB {
         this.menu = menu;
         nextScreen = screens;
 
-        batch = new SpriteBatch();
+        SpriteBatch batch = new SpriteBatch();
         loadingScene = new Stage(view, batch);
         textScene = new Stage(view, batch);
 
@@ -140,13 +140,25 @@ public class ScreenLoading extends ScreenSB {
                 menu.setScreen(new ScreenMinigamesSelection(menu));
                 break;
             case MINI1:
-                menu.setScreen(new ScreenTutoMG(menu, story, 1));
+                if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+                    menu.setScreen(new ScreenMinigame1(menu, story));
+                } else {
+                    menu.setScreen(new ScreenTutoMG(menu, story, 1));
+                }
                 break;
             case MINI2:
-                menu.setScreen(new ScreenTutoMG(menu, story, 2));
+                if (Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+                    menu.setScreen(new ScreenMinigame2(menu, story));
+                } else {
+                    menu.setScreen(new ScreenTutoMG(menu, story, 2));
+                }
                 break;
             case MINI3:
-                menu.setScreen(new ScreenTutoMG(menu, story, 3));
+                if (Gdx.app.getPreferences("Minigames").getBoolean("3", false)) {
+                    menu.setScreen(new ScreenMinigame3(menu, story));
+                } else {
+                    menu.setScreen(new ScreenTutoMG(menu, story, 3));
+                }
                 break;
             case SCORES:
                 menu.setScreen(new ScreenScores(menu));
@@ -248,6 +260,7 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadPowerups() {
         Constant.MANAGER.load("GameScreen/PowerupSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/PowerupHealthSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupShieldSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupSpeedSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/PowerupDamageSprite.png", Texture.class);
@@ -321,6 +334,22 @@ public class ScreenLoading extends ScreenSB {
     }
 
     private void loadMinigame1() {
+        Constant.MANAGER.load("Minigame1Screen/Minigame1Background.jpg", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/Back.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/BackYellow.png", Texture.class);
+        Constant.MANAGER.load("Minigame1Screen/SplashMinigame1Win.png", Texture.class);
+        Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                Constant.MANAGER.load("Minigame1Screen/PuzzlePieces/Pieza" + String.format("%c", 'A' + i) + (j + 1) + ".png", Texture.class);
+            }
+        }
+
+        if (!Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+            Constant.MANAGER.load("Minigame1Screen/SplashTutorial1.png", Texture.class);
+            Constant.MANAGER.load("Minigame1Screen/SplashTutorial2.png", Texture.class);
+        }
     }
 
     private void loadMinigame2() {
@@ -330,7 +359,16 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame2Screen/TopBanner.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/SplashMinigame2Win.png", Texture.class);
         Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/BadCollectible.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/Collectible1.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/Collectible3.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/Collectible3.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/BottomBanner.png", Texture.class);
+
+        if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+            Constant.MANAGER.load("Minigame2Screen/SplashTutorial1.png", Texture.class);
+            Constant.MANAGER.load("Minigame2Screen/SplashTutorial2.png", Texture.class);
+        }
     }
 
     private void loadMinigame3() {
@@ -341,13 +379,17 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
         Constant.MANAGER.load("Minigame3Screen/Minigame3Background.jpg", Texture.class);
 
+        if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+            Constant.MANAGER.load("Minigame3Screen/SplashTutorial1.png", Texture.class);
+            Constant.MANAGER.load("Minigame3Screen/SplashTutorial2.png", Texture.class);
+        }
     }
 
     private void loadOptions() {
     }
 
     private void loadHelp() {
-        Constant.MANAGER.load("HelpScreen/TutorialMask.png",Texture.class);
-        Constant.MANAGER.load("HelpScreen/TutorialScreen.png",Texture.class);
+        Constant.MANAGER.load("HelpScreen/TutorialMask.png", Texture.class);
+        Constant.MANAGER.load("HelpScreen/TutorialScreen.png", Texture.class);
     }
 }

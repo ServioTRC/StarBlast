@@ -55,11 +55,8 @@ public class ScreenTutoMG extends ScreenSB {
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     if (isStoryMode) {
-                        //TODO better handling of back on story mode
-                        Gdx.app.log("ScreenMinigame1: ", "Es historia y no hago nada");
                         return true;
                     }
-                    Gdx.app.log("ScreenMinigame1: ", "Going to minigames selection");
                     menu.setScreen(new ScreenMinigamesSelection(menu));
                     return true;
                 }
@@ -68,7 +65,6 @@ public class ScreenTutoMG extends ScreenSB {
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                Gdx.app.log("ScreenMinigame1: ", "Touch");
                 if (numImage == 1) {
                     tutorial.setTexture(tutorial2);
                     numImage = 2;

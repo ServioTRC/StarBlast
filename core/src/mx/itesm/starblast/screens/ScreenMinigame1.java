@@ -16,15 +16,13 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.Random;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
 class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     private final StarBlast menu;
-
-    //Texturas
-    private Texture backgroundTexture;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -47,61 +45,45 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     private long startingTime;
     private Text textScore;
 
-    private Texture backButtonTexture;
-    private Texture backButtonTextureUp;
-    private Texture winningTexture;
-    private Texture losingTexture;
     private Sprite backButtonSprite;
     private Sprite endingSprite;
     private boolean ended = false;
 
 
-    ScreenMinigame1(StarBlast menu, boolean isStoryMode){
+    ScreenMinigame1(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
         this.isStoryMode = isStoryMode;
     }
 
     @Override
     public void show() {
-        loadingTextures();
-        creatingObjects();
-        startingTime = TimeUtils.millis();
-    }
-
-    private void creatingObjects() {
         batch = new SpriteBatch();
         minigame1Scene = new Stage(view, batch);
-        Image imgFondo = new Image(backgroundTexture);
-        endingSprite = new Sprite(winningTexture);
-        endingSprite.setY(Constant.SCREEN_HEIGTH/2-endingSprite.getHeight()/2);
-        endingSprite.setX(Constant.SCREEN_WIDTH/2-endingSprite.getWidth()/2);
+        Image imgFondo = new Image(Constant.MANAGER.get("Minigame1Screen/Minigame1Background.jpg", Texture.class));
+        endingSprite = new Sprite(Constant.MANAGER.get("Minigame1Screen/SplashMinigame1Win.png", Texture.class));
+        endingSprite.setY(Constant.SCREEN_HEIGTH / 2 - endingSprite.getHeight() / 2);
+        endingSprite.setX(Constant.SCREEN_WIDTH / 2 - endingSprite.getWidth() / 2);
         minigame1Scene.addActor(imgFondo);
         Random r = new Random();
-        for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
-                pieces[i*5+j] = new Sprite(new Texture("Minigame1Screen/PuzzlePieces/Pieza"+String.format("%c",'A'+i)+(j+1)+".png"));
-                places[i*5+j] = new Vector2(BOARD_START_X+PIECE_WIDTH*(j+1f/2f),BOARD_START_Y-PIECE_HEIGHT*(i+1f/2f));
-                pieces[i*5+j].setCenter(BOARD_START_X+r.nextFloat()*PIECE_WIDTH*5,BOARD_START_Y-r.nextFloat()*PIECE_HEIGHT*5);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                pieces[i * 5 + j] = new Sprite(Constant.MANAGER.get("Minigame1Screen/PuzzlePieces/Pieza" + String.format("%c", 'A' + i) + (j + 1) + ".png", Texture.class));
+                places[i * 5 + j] = new Vector2(BOARD_START_X + PIECE_WIDTH * (j + 1f / 2f), BOARD_START_Y - PIECE_HEIGHT * (i + 1f / 2f));
+
+                pieces[i * 5 + j].setCenter(BOARD_START_X + r.nextFloat() * PIECE_WIDTH * 5, BOARD_START_Y - r.nextFloat() * PIECE_HEIGHT * 5);
             }
         }
         textScore = new Text(Constant.SOURCE_TEXT);
         creatingBackButton();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(this);
+        startingTime = TimeUtils.millis();
     }
 
-    private void loadingTextures() {
-        backgroundTexture = new Texture("Minigame1Screen/Minigame1Background.jpg");
-        backButtonTexture = new Texture("SettingsScreen/Back.png");
-        backButtonTextureUp = new Texture("SettingsScreen/BackYellow.png");
-        winningTexture = new Texture("Minigame1Screen/SplashMinigame1Win.png");
-        losingTexture = new Texture("Minigame1Screen/SplashMinigameLoss.png");
-    }
-
-    private void creatingBackButton(){
-        backButtonSprite = new Sprite(backButtonTexture);
-        backButtonSprite.setX(12* Constant.SCREEN_WIDTH /13);
-        backButtonSprite.setY(9*Constant.SCREEN_HEIGTH /10);
+    private void creatingBackButton() {
+        backButtonSprite = new Sprite(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        backButtonSprite.setX(12 * Constant.SCREEN_WIDTH / 13);
+        backButtonSprite.setY(9 * Constant.SCREEN_HEIGTH / 10);
     }
 
     @Override
@@ -110,24 +92,26 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         minigame1Scene.draw();
         batch.begin();
 
-        if(won){
-            Gdx.app.log("ScreenMinigame1: ","El jugador ha ganado");
+        if (won) {
+            Gdx.app.log("ScreenMinigame1: ", "El jugador ha ganado");
             ended = true;
-        } else if((TimeUtils.millis() - startingTime) >= 90000){
-            endingSprite.setTexture(losingTexture);
+        } else if ((TimeUtils.millis() - startingTime) >= 90000) {
+            endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
             ended = true;
         }
 
-        for(Sprite piece : pieces){
+        for (Sprite piece : pieces) {
             piece.draw(batch);
         }
 
         backButtonSprite.draw(batch);
-        if(ended)
+        if (ended) {
+            PreferencesSB.saveMinigameProgress(1);
             endingSprite.draw(batch);
-        else
-            textScore.showMessage(batch, Long.toString((90000-(TimeUtils.millis() - startingTime))/1000),
-                    Constant.SCREEN_WIDTH/2 - 60, Constant.SCREEN_HEIGTH -20, Color.GREEN);
+        } else {
+            textScore.showMessage(batch, Long.toString((90000 - (TimeUtils.millis() - startingTime)) / 1000),
+                    Constant.SCREEN_WIDTH / 2 - 60, Constant.SCREEN_HEIGTH - 20, Color.GREEN);
+        }
         batch.end();
     }
 
@@ -149,12 +133,12 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            if(isStoryMode){
+            if (isStoryMode) {
                 //TODO better handling of back on story mode
-                Gdx.app.log("ScreenMinigame1: ","Es historia y no hago nada");
+                Gdx.app.log("ScreenMinigame1: ", "Es historia y no hago nada");
                 return true;
             }
-            Gdx.app.log("ScreenMinigame1: ","Going to minigames selection");
+            Gdx.app.log("ScreenMinigame1: ", "Going to minigames selection");
             menu.setScreen(new ScreenMinigamesSelection(menu));
             return true;
         }
@@ -173,40 +157,31 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        vector = camera.unproject(new Vector3(screenX,screenY,0));
-        for(int i=pieces.length-1;i>=0;i--){
-            if(pieces[i].getBoundingRectangle().contains(vector.x,vector.y)){
-                if(!done[i]){
+        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        for (int i = pieces.length - 1; i >= 0; i--) {
+            if (pieces[i].getBoundingRectangle().contains(vector.x, vector.y)) {
+                if (!done[i]) {
                     selectedPieceIdx = i;
                 }
                 break;
             }
         }
-        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            backButtonSprite.setTexture(backButtonTextureUp);
-        else
-            backButtonSprite.setTexture(backButtonTexture);
-
-        if(endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
-            if (isStoryMode)
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
-            else
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y)) {
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
         }
-
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(selectedPieceIdx != -1){
-            vector = camera.unproject(new Vector3(screenX,screenY,0));
-            if(places[selectedPieceIdx].dst(vector.x,vector.y)<PIECE_WIDTH/2){
-                pieces[selectedPieceIdx].setCenter(places[selectedPieceIdx].x,places[selectedPieceIdx].y);
+        if (selectedPieceIdx != -1) {
+            vector = camera.unproject(new Vector3(screenX, screenY, 0));
+            if (places[selectedPieceIdx].dst(vector.x, vector.y) < PIECE_WIDTH / 2) {
+                pieces[selectedPieceIdx].setCenter(places[selectedPieceIdx].x, places[selectedPieceIdx].y);
                 done[selectedPieceIdx] = true;
                 won = true;
-                for(boolean dn : done){
-                    if(!dn){
+                for (boolean dn : done) {
+                    if (!dn) {
                         won = false;
                         break;
                     }
@@ -214,10 +189,14 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
             }
             selectedPieceIdx = -1;
         }
-        if(backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+        if (backButtonSprite.getTexture().equals(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class))) {
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        }
+
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             menu.setScreen(new ScreenMinigamesSelection(menu));
 
-        if(endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
             if (isStoryMode)
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
             else
@@ -229,11 +208,11 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(selectedPieceIdx==-1){
+        if (selectedPieceIdx == -1) {
             return true;
         }
-        vector = camera.unproject(new Vector3(screenX,screenY,0));
-        pieces[selectedPieceIdx].setCenter(vector.x,vector.y);
+        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        pieces[selectedPieceIdx].setCenter(vector.x, vector.y);
         return true;
     }
 

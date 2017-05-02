@@ -17,14 +17,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
-/**
- * Created by a01371719 on 02/05/17.
- */
-
-public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
+class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     private final StarBlast menu;
 
@@ -51,7 +48,7 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private Sprite endingSprite;
     private boolean ended;
 
-    ScreenMinigame3 (StarBlast menu, boolean isStoryMode){
+    ScreenMinigame3(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
         this.isStoryMode = isStoryMode;
     }
@@ -78,7 +75,7 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     }
 
     private void addingRocks() {
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", i);
             switch (i) {
                 case 0:
@@ -122,8 +119,8 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         }
     }
 
-    private void randomPos(){
-        for(int i = 0; i < 3; i++) {
+    private void randomPos() {
+        for (int i = 0; i < 3; i++) {
             int pos = r.nextInt(9);
             while (positions.contains(pos))
                 pos = r.nextInt(9);
@@ -182,9 +179,9 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         clearScreen();
         minigame3Scene.draw();
         batch.begin();
-        if(crystalFound >= 3){
+        if (crystalFound >= 3) {
             ended = true;
-        } else if(tries <= 0){
+        } else if (tries <= 0) {
             ended = true;
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
         }
@@ -193,7 +190,7 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             crys.draw(batch);
         }
 
-        if(!ended) {
+        if (!ended) {
             for (SpriteSB rock : rocks) {
                 rock.draw(batch);
             }
@@ -201,6 +198,7 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             textScore.showMessage(batch, Integer.toString(tries),
                     Constant.SCREEN_WIDTH / 2 - 30, Constant.SCREEN_HEIGTH - 50, Color.GREEN);
         } else {
+            PreferencesSB.saveMinigameProgress(3);
             endingSprite.draw(batch);
         }
         batch.end();
@@ -249,12 +247,12 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         vector = camera.unproject(new Vector3(screenX, screenY, 0));
-        for(int i = rocks.size()-1; i >= 0; i--){
+        for (int i = rocks.size() - 1; i >= 0; i--) {
             genericSprite = rocks.get(i);
-            if(genericSprite.touched(vector)){
+            if (genericSprite.touched(vector)) {
                 rocks.remove(i);
                 tries--;
-                if(positions.contains(genericSprite.getId()))
+                if (positions.contains(genericSprite.getId()))
                     crystalFound++;
             }
         }

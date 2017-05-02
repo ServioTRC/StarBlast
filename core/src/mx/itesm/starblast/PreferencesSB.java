@@ -58,7 +58,6 @@ public class PreferencesSB {
         prefs.flush();
     }
 
-
     public static void saveLevelProgress(int level) {
         Preferences prefs = Gdx.app.getPreferences("Levels");
         prefs.putInteger("Level", level);
@@ -143,4 +142,11 @@ public class PreferencesSB {
         prefs.flush();
     }
 
+    public static void saveMinigameProgress(int minigame) {
+        Preferences prefs = Gdx.app.getPreferences("Minigames");
+        if (!prefs.getBoolean("" + minigame, false)) {
+            prefs.putBoolean("" + minigame, true);
+            prefs.flush();
+        }
+    }
 }

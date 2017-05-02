@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
+import mx.itesm.starblast.screens.ScreenLoading;
 import mx.itesm.starblast.screens.ScreenMenu;
 import mx.itesm.starblast.screens.ScreenTutoMG;
 
@@ -27,7 +28,7 @@ public class StageWin extends Stage {
         app = menu;
 
         Image img = new Image(Constant.MANAGER.get("GameScreen/SpriteStageClear.png", Texture.class));
-        img.setPosition(Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH-150,Align.center);
+        img.setPosition(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH - 150, Align.center);
         addActor(img);
 
         Skin skin = new Skin();
@@ -35,21 +36,21 @@ public class StageWin extends Stage {
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         Button btn = new Button(style);
-        btn.setPosition(Constant.SCREEN_WIDTH /3-100, 150, Align.center);
-        btn.addListener(new ClickListener(){
+        btn.setPosition(Constant.SCREEN_WIDTH / 3 - 100, 150, Align.center);
+        btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 int level = PreferencesSB.readLevelProgress();
-                if(level == 2) {
+                if (level == 2) {
                     Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 1));
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI1, true));
                 } else if (level == 3) {
-                    Gdx.app.log("ScreenMenu ","Going to Minigame2");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 2));
+                    Gdx.app.log("ScreenMenu ", "Going to Minigame2");
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI2, true));
                     //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL2));
                 } else if (level >= 4) {
                     Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                    app.setScreen(new mx.itesm.starblast.screens.ScreenTutoMG(app, true, 3));
+                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI3, true));
                     //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL3));
                 }
             }
@@ -61,8 +62,8 @@ public class StageWin extends Stage {
         style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");
         btn = new Button(style);
-        btn.setPosition(2 * Constant.SCREEN_WIDTH /3+100, 150, Align.center);
-        btn.addListener(new ClickListener(){
+        btn.setPosition(2 * Constant.SCREEN_WIDTH / 3 + 100, 150, Align.center);
+        btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 app.setScreen(new ScreenMenu(app));
