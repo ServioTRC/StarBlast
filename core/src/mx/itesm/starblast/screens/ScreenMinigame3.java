@@ -6,9 +6,13 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.StarBlast;
@@ -35,6 +39,11 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private Texture rockTexture;
     private Sprite backButtonSprite;
     private SpriteSB crystal;
+    private SpriteSB rock;
+    private ArrayList<SpriteSB> crystals = new ArrayList<SpriteSB>(3);
+    private ArrayList<SpriteSB> rocks = new ArrayList<SpriteSB>(9);
+    private ArrayList<Integer> positions = new ArrayList<Integer>(9);
+    private Random r = new Random();
 
     ScreenMinigame3 (StarBlast menu, boolean isStoryMode){
         this.menu = menu;
@@ -60,11 +69,153 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         endingSprite.setCenterY(Constant.SCREEN_HEIGTH / 2);
         endingSprite.setCenterX(Constant.SCREEN_WIDTH / 2);*/
         crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
+        rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", 1);
+
+        /* Pos 0
+        crystal.setX(1*Constant.SCREEN_WIDTH/5 +20);
+        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
+        crystals.add(crystal);*/
+
+        /*Pos 1
         crystal.setX(2*Constant.SCREEN_WIDTH/5);
-        crystal.setY(2*Constant.SCREEN_HEIGTH/5);
+        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
+        crystals.add(crystal);*/
+
+        /*
+        Pos 2
+        crystal.setX(3*Constant.SCREEN_WIDTH/5);
+        crystal.setY(4*Constant.SCREEN_HEIGTH/5-160);
+        crystals.add(crystal);*/
+
+        /* Pos 3
+        crystal.setX(1*Constant.SCREEN_WIDTH/5 +20);
+        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
+        /*
+        Pos 4
+        crystal.setX(2*Constant.SCREEN_WIDTH/5);
+        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
+        /*
+        Pos 5
+        crystal.setX(3*Constant.SCREEN_WIDTH/5);
+        crystal.setY(2*Constant.SCREEN_HEIGTH/5-80);*/
+
+        /*Pos 6
+        crystal.setX(1*Constant.SCREEN_WIDTH/5+20);
+        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
+        crystals.add(crystal);*/
+
+        /*Pos 7
+        crystal.setX(2*Constant.SCREEN_WIDTH/5);
+        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
+        crystals.add(crystal);*/
+
+        /*Pos 8
+        crystal.setX(3*Constant.SCREEN_WIDTH/5);
+        crystal.setY(1*Constant.SCREEN_HEIGTH/5-120);
+        crystals.add(crystal);*/
+        randomPos();
+        addingRocks();
         createBackButton();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(this);
+    }
+
+    private void addingRocks() {
+        for(int i = 0; i < 3; i++) {
+            int pos = r.nextInt(9);
+            while (positions.contains(pos))
+                pos = r.nextInt(9);
+            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
+            switch (pos) {
+                case 0:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 1:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 2:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 3:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 4:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 5:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 6:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+                case 7:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+                case 8:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+            }
+            positions.add(pos);
+            crystals.add(crystal);
+        }
+    }
+
+    private void randomPos(){
+        for(int i = 0; i < 3; i++) {
+            int pos = r.nextInt(9);
+            while (positions.contains(pos))
+                pos = r.nextInt(9);
+            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", 1);
+            switch (pos) {
+                case 0:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 1:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 2:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    break;
+                case 3:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 4:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 5:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    break;
+                case 6:
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+                case 7:
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+                case 8:
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    break;
+            }
+            positions.add(pos);
+            crystals.add(crystal);
+        }
     }
 
     private void loadingTextures() {
@@ -82,7 +233,10 @@ public class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         clearScreen();
         minigame3Scene.draw();
         batch.begin();
-        crystal.draw(batch);
+        for(SpriteSB crys: crystals){
+            crys.draw(batch);
+        }
+        backButtonSprite.draw(batch);
         batch.end();
     }
 
