@@ -133,13 +133,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            if (isStoryMode) {
-                //TODO better handling of back on story mode
-                Gdx.app.log("ScreenMinigame1: ", "Es historia y no hago nada");
-                return true;
-            }
-            Gdx.app.log("ScreenMinigame1: ", "Going to minigames selection");
-            menu.setScreen(new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
             return true;
         }
         return false;
@@ -194,7 +188,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         }
 
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            menu.setScreen(new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
             if (isStoryMode)
