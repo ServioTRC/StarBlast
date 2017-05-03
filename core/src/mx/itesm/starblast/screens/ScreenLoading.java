@@ -219,17 +219,17 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadLevel1() {
         loadStory();
-        Constant.MANAGER.load("GameScreen/EnemyBoss1Sprite.png",Texture.class);
+        Constant.MANAGER.load("GameScreen/EnemyBoss1Sprite.png", Texture.class);
     }
 
     private void loadLevel2() {
         loadStory();
-        Constant.MANAGER.load("GameScreen/EnemyBoss2Sprite.png",Texture.class);
+        Constant.MANAGER.load("GameScreen/EnemyBoss2Sprite.png", Texture.class);
     }
 
     private void loadLevel3() {
         loadStory();
-        Constant.MANAGER.load("GameScreen/EnemyBoss3Sprite.png",Texture.class);
+        Constant.MANAGER.load("GameScreen/EnemyBoss3Sprite.png", Texture.class);
     }
 
     private void loadStory() {
@@ -330,7 +330,6 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame2Grey.png", Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/ButtonMinigame3Grey.png", Texture.class);
         Constant.MANAGER.load("MinigameSelectionScreen/MinigameSelectionBackground.png", Texture.class);
-        Constant.MANAGER.load("Minigame2Screen/erroranimation.png", Texture.class);
     }
 
     private void loadMinigame1() {
@@ -364,6 +363,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame2Screen/Collectible3.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/Collectible3.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/BottomBanner.png", Texture.class);
+        Constant.MANAGER.load("Minigame2Screen/ErrorAnimation.png", Texture.class);
 
         if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame2Screen/SplashTutorial1.png", Texture.class);
