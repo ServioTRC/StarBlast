@@ -47,6 +47,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private int crystalFound = 0;
     private Sprite endingSprite;
     private boolean ended;
+    private long endingTime;
 
     ScreenMinigame3(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
@@ -120,7 +121,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     }
 
     private void randomPos() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i <= 3; i++) {
             int pos = r.nextInt(9);
             while (positions.contains(pos))
                 pos = r.nextInt(9);
@@ -181,8 +182,10 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         batch.begin();
         if (crystalFound >= 3) {
             ended = true;
+            endingTime = TimeUtils.millis();
         } else if (tries <= 0) {
             ended = true;
+            endingTime = TimeUtils.millis();
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
         }
 
@@ -246,8 +249,10 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             if (genericSprite.touched(vector)) {
                 rocks.remove(i);
                 tries--;
-                if (positions.contains(genericSprite.getId()))
+                if (positions.contains(genericSprite.getId())) {
                     crystalFound++;
+                    tries++;
+                }
             }
         }
 
@@ -256,7 +261,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         else
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
-        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis()-endingTime)>1000)) {
             if (isStoryMode)
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             else

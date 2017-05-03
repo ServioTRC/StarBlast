@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import mx.itesm.starblast.Constant;
@@ -20,6 +21,8 @@ public class StageLost extends Stage {
 
     private final StarBlast menu;
     private AnimatedImage countdownAnimation;
+    private long startingTime;
+    private boolean countDownActive = false;
 
     public StageLost(Viewport viewport, Batch batch, StarBlast menuConstruct) {
         super(viewport, batch);
@@ -30,11 +33,16 @@ public class StageLost extends Stage {
         addActor(background);
         countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("DefeatScreen/Countdown.png", Texture.class)).split(282, 280)[0]));
         countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, 230, Align.center);
-        addActor(countdownAnimation);
+        startingTime = TimeUtils.millis();
     }
 
     @Override
     public void draw() {
+        if(((TimeUtils.millis() - startingTime) > 1000)&&(!countDownActive)){
+            addActor(countdownAnimation);
+            countDownActive = true;
+        }
+
         if (countdownAnimation.stateTime >= 9) {
             Gdx.app.log("StageLost ", "Going to Menu");
             menu.setScreen(new ScreenMenu(menu));
@@ -44,19 +52,21 @@ public class StageLost extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(countdownAnimation.stateTime <= 1){
-            return true;
-        }
-        int level = PreferencesSB.readLevelProgress();
-        if(level == 1) {
-            Gdx.app.log("StageLost ", "Going to Level1");
-            menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL1));
-        } else if (level == 2) {
-            Gdx.app.log("StageLost ","Going to Level2");
-            menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL2));
-        } else if (level >= 3) {
-            Gdx.app.log("StageLost ", "Going to Level3");
-            menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL3));
+        if((TimeUtils.millis() - startingTime) > 1000){
+            if (countdownAnimation.stateTime <= 1) {
+                return true;
+            }
+            int level = PreferencesSB.readLevelProgress();
+            if (level == 1) {
+                Gdx.app.log("StageLost ", "Going to Level1");
+                menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL1));
+            } else if (level == 2) {
+                Gdx.app.log("StageLost ", "Going to Level2");
+                menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL2));
+            } else if (level >= 3) {
+                Gdx.app.log("StageLost ", "Going to Level3");
+                menu.setScreen(new mx.itesm.starblast.screens.ScreenLoading(menu, Constant.Screens.LEVEL3));
+            }
         }
         return true;
     }

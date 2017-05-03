@@ -38,6 +38,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private boolean isStoryMode = false;
     private Vector3 vector;
     private long startingTime;
+    private long endingTime;
     private Text textScore;
     private int score;
     private int piecesGenerated;
@@ -96,13 +97,15 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         if ((score >= (piecesGenerated - 5)) && ((TimeUtils.millis() - startingTime) > 18000)) {
             Gdx.app.log("ScreenMinigame1: ", "El jugador ha ganado");
             ended = true;
+            endingTime = TimeUtils.millis();
         } else if (((TimeUtils.millis() - startingTime) >= 20000) || exploted) {
             ended = true;
+            endingTime = TimeUtils.millis();
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
             if (exploted) {
                 minigame2Scene.addActor(countdownAnimation);
-                countdownAnimation.act(delta * 5);
-                if (countdownAnimation.stateTime > 5)
+                countdownAnimation.act(delta * 3);
+                if (countdownAnimation.stateTime >= 5)
                     exploted = false;
             }
         }
@@ -229,12 +232,12 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                 pieces.remove(i);
             }
         }
-        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+        if (!backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
         else
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
-        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis()-endingTime)>1000)){
             if (isStoryMode)
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
             else
