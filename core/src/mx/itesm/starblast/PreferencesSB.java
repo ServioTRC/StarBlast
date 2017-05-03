@@ -99,6 +99,11 @@ public class PreferencesSB {
             //gana
             Gdx.app.log("Cheats", "speed run");
             PreferencesSB.saveLevelProgress(PreferencesSB.readLevelProgress() > 3 ? 1 : 4);
+            Preferences pref = Gdx.app.getPreferences("Minigames");
+            pref.putBoolean("1", true);
+            pref.putBoolean("2", true);
+            pref.putBoolean("3", true);
+            pref.flush();
         } else if (code.equals("mario party")) {
             //unlock minigames
         } else if (code.equals("uuddlrlrab")) {
