@@ -8,6 +8,6 @@ import mx.itesm.starblast.StarBlast;
 public class Level3 extends LevelStory {
     Level3(StarBlast app) {
         super(app, 10, 10, 2, 2, 3);
-        enemyBossTexture = Constant.MANAGER.get("GameScreen/EnemyBoss1Sprite.png", Texture.class);
+        enemyBossTexture = Constant.MANAGER.get("GameScreen/EnemyBoss3Sprite.png", Texture.class);
     }
 }

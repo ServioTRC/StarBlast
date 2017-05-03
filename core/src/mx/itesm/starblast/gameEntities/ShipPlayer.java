@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -47,6 +48,7 @@ public class ShipPlayer extends Ship {
     private float speedMultiplier = 1;
 
     private Texture missileTexture;
+    private Sprite shieldSprite;
 
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
@@ -67,6 +69,7 @@ public class ShipPlayer extends Ship {
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
         bulletTexture = Constant.MANAGER.get("GameScreen/BulletSprite.png", Texture.class);
         missileTexture = Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class);
+        shieldSprite = new Sprite(Constant.MANAGER.get("GameScreen/ShieldSprite.png",Texture.class));
         
         Preferences pref = Gdx.app.getPreferences("Codes");
         infHealth = pref.getBoolean("InfHealth", false);
@@ -124,6 +127,16 @@ public class ShipPlayer extends Ship {
         sprite.setRotation(sprite.getRotation() + MAX_TURN_RANGE * turnPercentage);
         sprite.setRotation(min(sprite.getRotation(), 90 + TURN_RANGE / 2));
         sprite.setRotation(max(sprite.getRotation(), 90 - TURN_RANGE / 2));
+    }
+
+    @Override
+    public boolean draw(SpriteBatch batch) {
+        if(shield > 0) {
+            shieldSprite.setCenter(getX(), getY());
+            shieldSprite.setAlpha(getShieldPercentage());
+            shieldSprite.draw(batch);
+        }
+        return super.draw(batch);
     }
 
     @Override
@@ -186,6 +199,10 @@ public class ShipPlayer extends Ship {
 
     public float getHealthPercentage() {
         return health / MAX_HEALTH;
+    }
+
+    public float getShieldPercentage(){
+        return shield / MAX_SHIELD;
     }
 
 }
