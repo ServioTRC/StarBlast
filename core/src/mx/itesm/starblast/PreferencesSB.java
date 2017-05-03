@@ -56,6 +56,9 @@ public class PreferencesSB {
         prefs = Gdx.app.getPreferences("Codes");
         prefs.clear();
         prefs.flush();
+        prefs = Gdx.app.getPreferences("Minigames");
+        prefs.clear();
+        prefs.flush();
     }
 
     public static void saveLevelProgress(int level) {

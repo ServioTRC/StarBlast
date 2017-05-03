@@ -37,7 +37,6 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     private ArrayList<Piece> notDonePieces = new ArrayList<Piece>(25);
     private ArrayList<Piece> donePieces = new ArrayList<Piece>(25);
     private Piece selectedPiece;
-    private Vector3 vector;
     private static final float BOARD_START_X = 275;
     private static final float BOARD_START_Y = 733;
     private static final float PIECE_WIDTH = 136;
@@ -191,7 +190,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         for (Piece piece : notDonePieces) {
             if (piece.sprite.getBoundingRectangle().contains(vector.x, vector.y)) {
                 selectedPiece = piece;
@@ -206,8 +205,8 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         if (selectedPiece != null) {
-            vector = camera.unproject(new Vector3(screenX, screenY, 0));
             boolean validMove = false;
             for (Place place : notDonePlaces) {
                 if (place.place.dst(vector.x, vector.y) < PIECE_WIDTH / 2) {
@@ -268,7 +267,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         if (selectedPiece == null) {
             return true;
         }
-        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         selectedPiece.sprite.setCenter(vector.x, vector.y);
         return true;
     }

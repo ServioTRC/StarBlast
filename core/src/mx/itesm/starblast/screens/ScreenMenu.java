@@ -93,21 +93,21 @@ public class ScreenMenu extends ScreenSB {
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
                 } else if (level == 2) {
                     if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
-                    } else {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
                     }
                 } else if (level == 3) {
                     if (Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
-                    } else {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
                     }
                 } else {
                     if (Gdx.app.getPreferences("Minigames").getBoolean("3", false)) {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
-                    } else {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                    } else {
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
                     }
                 }
             }

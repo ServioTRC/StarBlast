@@ -41,7 +41,6 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private ArrayList<SpriteSB> rocks = new ArrayList<SpriteSB>(9);
     private ArrayList<Integer> positions = new ArrayList<Integer>(9);
     private Random r = new Random();
-    private Vector3 vector;
     private Text textScore;
     private int tries = 5;
     private int crystalFound = 0;
@@ -243,7 +242,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         for (int i = rocks.size() - 1; i >= 0; i--) {
             genericSprite = rocks.get(i);
             if (genericSprite.touched(vector)) {
@@ -256,9 +255,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             }
         }
 
-        if (!backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
-        else
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis()-endingTime)>1000)) {
@@ -273,6 +270,10 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        if (backButtonSprite.getTexture().equals(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class))) {
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        }
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
 

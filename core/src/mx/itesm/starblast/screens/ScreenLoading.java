@@ -312,6 +312,8 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("SettingsScreen/ButtonCodes.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/Back.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/BackYellow.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonBack.png", Texture.class);
+        Constant.MANAGER.load("SettingsScreen/ButtonBackYellow.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/ButtonSound.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/ButtonSoundOff.png", Texture.class);
         Constant.MANAGER.load("SettingsScreen/ButtonMusic.png", Texture.class);

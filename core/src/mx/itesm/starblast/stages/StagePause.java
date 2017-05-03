@@ -47,8 +47,8 @@ public class StagePause extends Stage {
 
     private void createReturnButton() {
         Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("SettingsScreen/ButtonReset.png", Texture.class));
-        skin.add("Down", Constant.MANAGER.get("SettingsScreen/ButtonResetYellow.png", Texture.class));
+        skin.add("Up", Constant.MANAGER.get("SettingsScreen/ButtonBack.png", Texture.class));
+        skin.add("Down", Constant.MANAGER.get("SettingsScreen/ButtonBackYellow.png", Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Up");

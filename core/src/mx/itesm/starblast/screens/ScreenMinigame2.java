@@ -36,7 +36,6 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private Stage minigame2Scene;
 
     private boolean isStoryMode = false;
-    private Vector3 vector;
     private long startingTime;
     private long endingTime;
     private Text textScore;
@@ -220,7 +219,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         for (int i = pieces.size() - 1; i >= 0; i--) {
             SpriteSB genericSpriteTouch = pieces.get(i);
             if (genericSpriteTouch.touched(vector)) {
@@ -232,9 +231,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                 pieces.remove(i);
             }
         }
-        if (!backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
-        else
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis()-endingTime)>1000)){
@@ -249,6 +246,10 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
+        if (backButtonSprite.getTexture().equals(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class))) {
+            backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
+        }
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
 

@@ -27,6 +27,9 @@ class ScreenOptions extends ScreenSB {
 
     //Escenas
     private Stage optionScene;
+    private Stage stageConfirm;
+
+    private boolean isDialogOpen;
 
     ScreenOptions(StarBlast menu) {
         this.menu = menu;
@@ -35,10 +38,10 @@ class ScreenOptions extends ScreenSB {
     @Override
     public void show() {
         loadTextures();
-        creatingObjects();
+        createObjects();
     }
 
-    private void creatingObjects() {
+    private void createObjects() {
         batch = new SpriteBatch();
         optionScene = new Stage(view, batch) {
             @Override
@@ -51,11 +54,66 @@ class ScreenOptions extends ScreenSB {
                 return super.keyDown(keycode);
             }
         };
+        stageConfirm = new Stage(view, batch) {
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    Gdx.input.setInputProcessor(optionScene);
+                    isDialogOpen = false;
+                    return true;
+                }
+                return super.keyDown(keycode);
+            }
+        };
         Image imgFondo = new Image(backgroundTexture);
         optionScene.addActor(imgFondo);
+        createConfirmDialog();
         createButtons();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(optionScene);
+    }
+
+    private void createConfirmDialog() {
+        final Image img = new Image(new Texture("SettingsScreen/ConfirmResetWIndow.jpg"));
+        img.setPosition(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, Align.center);
+        stageConfirm.addActor(img);
+        Skin skin = new Skin();
+        skin.add("Up", new Texture("SettingsScreen/ButtonYes.png"));
+        skin.add("Down", new Texture("SettingsScreen/ButtonYesYellow.png"));
+
+        Button.ButtonStyle style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
+
+        Button btn = new Button(style);
+        btn.setPosition(Constant.SCREEN_WIDTH / 2 + 150, Constant.SCREEN_HEIGTH / 2 - 80, Align.center);
+        btn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.eraseGameInfo();
+                isDialogOpen = false;
+                Gdx.input.setInputProcessor(optionScene);
+            }
+        });
+        stageConfirm.addActor(btn);
+
+        skin = new Skin();
+        skin.add("Up", new Texture("SettingsScreen/ButtonNo.png"));
+        skin.add("Down", new Texture("SettingsScreen/ButtonNoYellow.png"));
+
+        style = new Button.ButtonStyle();
+        style.up = skin.getDrawable("Up");
+        style.down = skin.getDrawable("Down");
+        btn = new Button(style);
+        btn.setPosition(Constant.SCREEN_WIDTH / 2 - 150, Constant.SCREEN_HEIGTH / 2 - 80, Align.center);
+        btn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isDialogOpen = false;
+                Gdx.input.setInputProcessor(optionScene);
+            }
+        });
+        stageConfirm.addActor(btn);
     }
 
     private void createButtons() {
@@ -103,7 +161,8 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PreferencesSB.eraseGameInfo();
+                Gdx.input.setInputProcessor(stageConfirm);
+                isDialogOpen = true;
             }
         });
 
@@ -220,6 +279,9 @@ class ScreenOptions extends ScreenSB {
         clearScreen();
         batch.setProjectionMatrix(camera.combined);
         optionScene.draw();
+        if (isDialogOpen) {
+            stageConfirm.draw();
+        }
     }
 
     @Override
