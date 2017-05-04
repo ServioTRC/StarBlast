@@ -385,6 +385,8 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame2Screen/Collectible3.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/BottomBanner.png", Texture.class);
         Constant.MANAGER.load("Minigame2Screen/ErrorAnimation.png", Texture.class);
+        Constant.MANAGER.load("SoundEffects/Explosion1.mp3", Sound.class);
+        Constant.MANAGER.load("SoundEffects/PowerupPickupSound.wav", Sound.class);
 
         if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame2Screen/SplashTutorial1.png", Texture.class);
@@ -399,6 +401,8 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame3Screen/SplashMinigame3Win.png", Texture.class);
         Constant.MANAGER.load("Minigame1Screen/SplashMinigameLoss.png", Texture.class);
         Constant.MANAGER.load("Minigame3Screen/Minigame3Background.jpg", Texture.class);
+        Constant.MANAGER.load("SoundEffects/RockDiggingSound.wav", Sound.class);
+        Constant.MANAGER.load("SoundEffects/SelectionSound.mp3", Sound.class);
 
         if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame3Screen/SplashTutorial1.png", Texture.class);

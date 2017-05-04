@@ -3,6 +3,7 @@ package mx.itesm.starblast.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -48,12 +49,16 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private Sprite backButtonSprite;
     private Sprite endingSprite;
     private boolean exploted = false;
+    private boolean timeTaken = false;
+
 
     private ArrayList<SpriteSB> pieces = new ArrayList<SpriteSB>();
     private Random r = new Random();
     private boolean ended = false;
 
     private AnimatedImage countdownAnimation;
+    private Sound explotionSound;
+    private Sound captureSound;
 
     ScreenMinigame2(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
@@ -78,6 +83,8 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         topBanner.setY(Constant.SCREEN_HEIGTH - topBanner.getHeight());
         bottomBanner = new Sprite(Constant.MANAGER.get("Minigame2Screen/BottomBanner.png", Texture.class));
         endingSprite = new Sprite(Constant.MANAGER.get("Minigame2Screen/SplashMinigame2Win.png", Texture.class));
+        explotionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
+        captureSound = Constant.MANAGER.get("SoundEffects/PowerupPickupSound.wav", Sound.class);
         endingSprite.setCenterY(Constant.SCREEN_HEIGTH / 2);
         endingSprite.setCenterX(Constant.SCREEN_WIDTH / 2);
         createBackButton();
@@ -93,14 +100,20 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public void render(float delta) {
-        if ((score >= (piecesGenerated - 5)) && ((TimeUtils.millis() - startingTime) > 18000)) {
+        if ((score >= (piecesGenerated - 10)) && ((TimeUtils.millis() - startingTime) > 18000)) {
             Gdx.app.log("ScreenMinigame1: ", "El jugador ha ganado");
             ended = true;
-            endingTime = TimeUtils.millis();
+            if(!timeTaken) {
+                endingTime = TimeUtils.millis();
+                timeTaken = true;
+            }
         } else if (((TimeUtils.millis() - startingTime) >= 20000) || exploted) {
             ended = true;
-            endingTime = TimeUtils.millis();
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
+            if(!timeTaken) {
+                endingTime = TimeUtils.millis();
+                timeTaken = true;
+            }
             if (exploted) {
                 minigame2Scene.addActor(countdownAnimation);
                 countdownAnimation.act(delta * 3);
@@ -225,8 +238,12 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             if (genericSpriteTouch.touched(vector)) {
                 if (genericSpriteTouch.getId() == Types.BAD) {
                     exploted = true;
+                    if(PreferencesSB.SOUNDS_ENABLE)
+                        explotionSound.play(1f);
                 } else {
                     score++;
+                    if(PreferencesSB.SOUNDS_ENABLE)
+                        captureSound.play(1f);
                 }
                 pieces.remove(i);
             }
@@ -234,7 +251,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
-        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 1000)) {
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 500)) {
             menu.setScreen(isStoryMode ? new ScreenLoading(menu, Constant.Screens.NEXT_LEVEL) : new ScreenMinigamesSelection(menu, false));
         }
 

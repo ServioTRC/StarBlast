@@ -3,6 +3,7 @@ package mx.itesm.starblast.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -46,7 +47,10 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private int crystalFound = 0;
     private Sprite endingSprite;
     private boolean ended;
-    private long endingTime;
+    private long endingTime = 0;
+    private Sound breakingRockSound;
+    private Sound crystalSelectedSound;
+    private boolean timeTaken = false;
 
     ScreenMinigame3(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
@@ -69,6 +73,8 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         endingSprite = new Sprite(Constant.MANAGER.get("Minigame3Screen/SplashMinigame3Win.png", Texture.class));
         endingSprite.setCenterY(Constant.SCREEN_HEIGTH / 2);
         endingSprite.setCenterX(Constant.SCREEN_WIDTH / 2);
+        breakingRockSound = Constant.MANAGER.get("SoundEffects/RockDiggingSound.wav", Sound.class);
+        crystalSelectedSound = Constant.MANAGER.get("SoundEffects/SelectionSound.mp3", Sound.class);
         randomPos();
         addingRocks();
         createBackButton();
@@ -181,11 +187,17 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         batch.begin();
         if (crystalFound >= 3) {
             ended = true;
-            endingTime = TimeUtils.millis();
+            if(!timeTaken) {
+                endingTime = TimeUtils.millis();
+                timeTaken = true;
+            }
         } else if (tries <= 0) {
             ended = true;
-            endingTime = TimeUtils.millis();
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
+            if(!timeTaken) {
+                endingTime = TimeUtils.millis();
+                timeTaken = true;
+            }
         }
 
         for (SpriteSB crys : crystals) {
@@ -203,6 +215,8 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             PreferencesSB.saveMinigameProgress(3);
             endingSprite.draw(batch);
         }
+        Gdx.app.log("Tiempo:", Long.toString(endingTime));
+        Gdx.app.log("Acabado:", Boolean.toString(ended));
         batch.end();
     }
 
@@ -248,9 +262,13 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             if (genericSprite.touched(vector)) {
                 rocks.remove(i);
                 tries--;
+                if(PreferencesSB.SOUNDS_ENABLE)
+                    breakingRockSound.play(1f);
                 if (positions.contains(genericSprite.getId())) {
                     crystalFound++;
                     tries++;
+                    if(PreferencesSB.SOUNDS_ENABLE)
+                        crystalSelectedSound.play(1f);
                 }
             }
         }
@@ -258,7 +276,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
-        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 1000)) {
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 500)) {
             menu.setScreen(isStoryMode ? new ScreenLoading(menu, Constant.Screens.NEXT_LEVEL) : new ScreenMinigamesSelection(menu, false));
         }
 
