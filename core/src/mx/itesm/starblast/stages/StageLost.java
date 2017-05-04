@@ -52,7 +52,8 @@ public class StageLost extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if((TimeUtils.millis() - startingTime) > 1000){
+        if((TimeUtils.millis() - startingTime) > 500){
+            PreferencesSB.clickedSound();
             if (countdownAnimation.stateTime <= 1) {
                 return true;
             }

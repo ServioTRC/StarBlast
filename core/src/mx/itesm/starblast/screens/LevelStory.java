@@ -394,6 +394,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                PreferencesSB.clickedSound();
                 Button boton = (Button) actor;
                 if (boton.isPressed()) {
                     if (!isPaused) {

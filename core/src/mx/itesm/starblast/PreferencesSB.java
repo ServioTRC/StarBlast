@@ -175,4 +175,10 @@ public class PreferencesSB {
         }
         return toR;
     }
+
+    public static void clickedSound(){
+        if(PreferencesSB.SOUNDS_ENABLE)
+            Constant.clickSound.play(0.5f);
+    }
+
 }

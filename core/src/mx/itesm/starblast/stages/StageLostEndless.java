@@ -81,6 +81,7 @@ public class StageLostEndless extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenMenu(menu));
             }
         });

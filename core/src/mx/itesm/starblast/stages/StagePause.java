@@ -58,6 +58,7 @@ public class StagePause extends Stage {
         ClickListener tmp = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 parent.unPauseIP();
             }
         };
@@ -85,6 +86,7 @@ public class StagePause extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
@@ -118,6 +120,7 @@ public class StagePause extends Stage {
         ClickListener tmp = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new mx.itesm.starblast.screens.ScreenMenu(menu));
             }
         };
@@ -149,6 +152,7 @@ public class StagePause extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
                 PreferencesSB.saveSoundPreferences();
+                PreferencesSB.clickedSound();
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
@@ -170,6 +174,7 @@ public class StagePause extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
                 PreferencesSB.saveSoundPreferences();
                 if (btn.isChecked()) {
@@ -188,6 +193,7 @@ public class StagePause extends Stage {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK) {
+            PreferencesSB.clickedSound();
             parent.unPauseIP();
             return true;
         }

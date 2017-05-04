@@ -86,6 +86,7 @@ class StageResults extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new mx.itesm.starblast.screens.ScreenMenu(menu));
             }
         });
@@ -118,6 +119,7 @@ class StageResults extends Stage {
     }
 
     private void askForName(){
+        PreferencesSB.clickedSound();
         Input.TextInputListener textListener = new Input.TextInputListener() {
             @Override
             public void input(String input) {
@@ -137,6 +139,7 @@ class StageResults extends Stage {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK) {
+            PreferencesSB.clickedSound();
             menu.setScreen(new mx.itesm.starblast.screens.ScreenMenu(menu));
             return true;
         }

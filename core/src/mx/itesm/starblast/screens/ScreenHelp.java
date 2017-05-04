@@ -1,6 +1,7 @@
 package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 
 /**
@@ -25,11 +27,22 @@ public class ScreenHelp extends ScreenSB{
     private Stage stageHUD;
     private SpriteBatch batch;
 
-    public ScreenHelp(StarBlast starBlast){
+    public ScreenHelp(final StarBlast starBlast){
         super();
         this.starBlast = starBlast;
         batch = new SpriteBatch();
-        stageHUD = new Stage(view,batch);
+        stageHUD = new Stage(view,batch){
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.BACK) {
+                    Gdx.app.log("ScreenOptions ", "Going to ScreenMenu");
+                    PreferencesSB.clickedSound();
+                    starBlast.setScreen(new ScreenOptions(starBlast));
+                    return true;
+                }
+                return super.keyDown(keycode);
+            }
+        };
         background = new Image(Constant.MANAGER.get("HelpScreen/TutorialScreen.png",Texture.class));
         stageHUD.addActor(background);
         createTapToContinue();
@@ -50,6 +63,7 @@ public class ScreenHelp extends ScreenSB{
         tapToContinue.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                PreferencesSB.clickedSound();
                 starBlast.setScreen(new ScreenLoading(starBlast, Constant.Screens.OPTIONS));
                 return true;
             }

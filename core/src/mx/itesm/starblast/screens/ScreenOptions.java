@@ -48,6 +48,7 @@ class ScreenOptions extends ScreenSB {
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     Gdx.app.log("ScreenOptions ", "Going to ScreenMenu");
+                    PreferencesSB.clickedSound();
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
@@ -59,6 +60,7 @@ class ScreenOptions extends ScreenSB {
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
                     Gdx.input.setInputProcessor(optionScene);
+                    PreferencesSB.clickedSound();
                     isDialogOpen = false;
                     return true;
                 }
@@ -90,6 +92,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 PreferencesSB.eraseGameInfo();
                 isDialogOpen = false;
                 Gdx.input.setInputProcessor(optionScene);
@@ -109,6 +112,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 isDialogOpen = false;
                 Gdx.input.setInputProcessor(optionScene);
             }
@@ -138,6 +142,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenMenu(menu));
             }
         });
@@ -161,6 +166,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 Gdx.input.setInputProcessor(stageConfirm);
                 isDialogOpen = true;
             }
@@ -180,6 +186,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 Input.TextInputListener textListener = new Input.TextInputListener() {
                     @Override
                     public void input(String input) {
@@ -214,6 +221,7 @@ class ScreenOptions extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.SOUNDS_ENABLE = !btn.isChecked();
                 PreferencesSB.saveSoundPreferences();
+                PreferencesSB.clickedSound();
             }
         });
         btn.setChecked(!PreferencesSB.SOUNDS_ENABLE);
@@ -237,6 +245,7 @@ class ScreenOptions extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.MUSIC_ENABLE = !btn.isChecked();
                 PreferencesSB.saveSoundPreferences();
+                PreferencesSB.clickedSound();
                 if (btn.isChecked()) {
                     menu.pauseMusic();
                 } else {
@@ -263,6 +272,7 @@ class ScreenOptions extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.HELP));
             }
         });

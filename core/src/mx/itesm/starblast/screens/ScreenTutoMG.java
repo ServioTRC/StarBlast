@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
@@ -57,6 +58,7 @@ public class ScreenTutoMG extends ScreenSB {
                     if (isStoryMode) {
                         return true;
                     }
+                    PreferencesSB.clickedSound();
                     menu.setScreen(new ScreenMinigamesSelection(menu, isStoryMode));
                     return true;
                 }
@@ -65,6 +67,7 @@ public class ScreenTutoMG extends ScreenSB {
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                PreferencesSB.clickedSound();
                 if (numImage == 1) {
                     tutorial.setTexture(tutorial2);
                     numImage = 2;

@@ -48,7 +48,7 @@ public class ScreenMenu extends ScreenSB {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
                     Gdx.app.log("ScreenMenu", "Going to ScreenStart");
-
+                    PreferencesSB.clickedSound();
                     menu.setScreen(new ScreenStart(menu));
                     return true;
                 }
@@ -88,6 +88,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to History mode");
+                PreferencesSB.clickedSound();
                 int level = PreferencesSB.readLevelProgress();
                 if (level == 1) {
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
@@ -129,6 +130,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to Endless Mode");
+                PreferencesSB.clickedSound();
                 if (active) menu.setScreen(new ScreenLoading(menu, Constant.Screens.ENDLESS));
             }
         });
@@ -145,6 +147,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to Scores");
+                PreferencesSB.clickedSound();
                 //TODO Quitar o no la parte de cargar los assets en la pantalla opciones
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.SCORES));
             }
@@ -162,7 +165,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to Scores");
-
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.OPTIONS));
             }
         });
@@ -178,7 +181,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to Credits");
-
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenCredits(menu));
             }
         });
@@ -194,6 +197,7 @@ public class ScreenMenu extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMenu ", "Going to MiniGames");
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES));
             }
         });

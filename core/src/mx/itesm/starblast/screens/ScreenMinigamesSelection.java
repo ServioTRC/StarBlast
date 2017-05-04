@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 
 public class ScreenMinigamesSelection extends ScreenSB {
@@ -43,6 +44,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
                 if (keycode == Input.Keys.BACK) {
                     Gdx.app.log("ScreenMinigamesSelection ", "Going to Screen Menu");
                     dispose();
+                    PreferencesSB.clickedSound();
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
@@ -78,6 +80,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame1");
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, story));
             }
         });
@@ -101,6 +104,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame2");
                 dispose();
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, story));
             }
         });
@@ -123,6 +127,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame3");
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, story));
             }
         });
@@ -141,6 +146,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenMenu(menu));
             }
         });

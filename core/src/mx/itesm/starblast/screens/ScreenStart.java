@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 
 class ScreenStart extends ScreenSB {
@@ -120,6 +121,7 @@ class ScreenStart extends ScreenSB {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Gdx.app.log("ScreenStart ","Going to ScreenMenu");
+            PreferencesSB.clickedSound();
             menu.setScreen(new ScreenMenu(menu));
             return true;
         }

@@ -85,40 +85,40 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", i);
             switch (i) {
                 case 0:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
                     rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 1:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
                     rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 2:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
                     rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 3:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 4:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 5:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 6:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 7:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 8:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
             }
             rocks.add(rock);
@@ -133,40 +133,40 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", pos);
             switch (pos) {
                 case 0:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
                     crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 1:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
                     crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 2:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
                     crystal.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 3:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 4:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 5:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 80);
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    crystal.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 6:
-                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 20);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 7:
-                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    crystal.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 8:
-                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5);
-                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 120);
+                    crystal.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    crystal.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
             }
             positions.add(pos);
@@ -215,8 +215,6 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             PreferencesSB.saveMinigameProgress(3);
             endingSprite.draw(batch);
         }
-        Gdx.app.log("Tiempo:", Long.toString(endingTime));
-        Gdx.app.log("Acabado:", Boolean.toString(ended));
         batch.end();
     }
 
@@ -238,6 +236,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
+            PreferencesSB.clickedSound();
             menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
             return true;
         }
@@ -273,10 +272,13 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             }
         }
 
-        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
+        if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y)) {
+            PreferencesSB.clickedSound();
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
+        }
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 500)) {
+            PreferencesSB.clickedSound();
             menu.setScreen(isStoryMode ? new ScreenLoading(menu, Constant.Screens.NEXT_LEVEL) : new ScreenMinigamesSelection(menu, false));
         }
 

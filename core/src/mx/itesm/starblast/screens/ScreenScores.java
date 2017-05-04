@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
@@ -49,6 +50,7 @@ public class ScreenScores extends ScreenSB {
                 if (keycode == Input.Keys.BACK) {
                     // DEBUG
                     Gdx.app.log("ScreenScores", " Going to ScreenMenu");
+                    PreferencesSB.clickedSound();
                     menu.setScreen(new ScreenMenu(menu));
                     return true;
                 }
@@ -75,6 +77,7 @@ public class ScreenScores extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenScores", " Going to ScreenMenu");
+                PreferencesSB.clickedSound();
                 menu.setScreen(new ScreenMenu(menu));
             }
         });

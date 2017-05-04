@@ -40,6 +40,7 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                PreferencesSB.clickedSound();
 //                int level = PreferencesSB.readLevelProgress();
                 app.setScreen(new ScreenLoading(app, Constant.Screens.MINIGAMES, true));
 //                if (level == 2) {
@@ -62,6 +63,7 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                PreferencesSB.clickedSound();
                 app.setScreen(new ScreenMenu(app));
             }
         });
