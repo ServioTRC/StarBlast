@@ -11,11 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.screens.ScreenLoading;
 import mx.itesm.starblast.screens.ScreenMenu;
+import mx.itesm.starblast.screens.ScreenMinigamesSelection;
 
 public class StageWin extends Stage {
 
@@ -38,19 +40,15 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                int level = PreferencesSB.readLevelProgress();
-                if (level == 2) {
-                    Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI1, true));
-                } else if (level == 3) {
-                    Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI2, true));
-                    //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL2));
-                } else if (level >= 4) {
-                    Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI3, true));
-                    //app.setScreen(new mx.itesm.starblast.screens.ScreenLoading(app, Constant.Screens.LEVEL3));
-                }
+//                int level = PreferencesSB.readLevelProgress();
+                app.setScreen(new ScreenLoading(app, Constant.Screens.MINIGAMES, true));
+//                if (level == 2) {
+//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI1, true));
+//                } else if (level == 3) {
+//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI2, true));
+//                } else if (level >= 4) {
+//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI3, true));
+//                }
             }
         });
         addActor(btn);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import mx.itesm.starblast.Constant;
+import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.gameEntities.ProgressBar;
 import mx.itesm.starblast.StarBlast;
 
@@ -137,7 +138,7 @@ public class ScreenLoading extends ScreenSB {
                 menu.setScreen(new EndlessScreen(menu));
                 break;
             case MINIGAMES:
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+                menu.setScreen(new ScreenMinigamesSelection(menu, story));
                 break;
             case MINI1:
                 if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
@@ -190,6 +191,23 @@ public class ScreenLoading extends ScreenSB {
                 break;
             case LEVEL3:
                 loadLevel3();
+                break;
+            case NEXT_LEVEL:
+                switch (PreferencesSB.readLevelProgress()) {
+                    case 1:
+                        nextScreen = Constant.Screens.LEVEL1;
+                        break;
+                    case 2:
+                        nextScreen = Constant.Screens.LEVEL2;
+                        break;
+                    case 3:
+                        nextScreen = Constant.Screens.LEVEL3;
+                        break;
+                    default:
+                        nextScreen = Constant.Screens.ENDLESS;
+                        break;
+                }
+                loadNextScreen();
                 break;
             case ENDLESS:
                 loadEndless();

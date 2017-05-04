@@ -201,7 +201,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
             return true;
         }
         return false;
@@ -234,11 +234,8 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/BackYellow.png", Texture.class));
 
-        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis()-endingTime)>1000)){
-            if (isStoryMode)
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
-            else
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+        if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended && ((TimeUtils.millis() - endingTime) > 1000)) {
+            menu.setScreen(isStoryMode ? new ScreenLoading(menu, Constant.Screens.NEXT_LEVEL) : new ScreenMinigamesSelection(menu, false));
         }
 
         return true;
@@ -251,7 +248,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             backButtonSprite.setTexture(Constant.MANAGER.get("SettingsScreen/Back.png", Texture.class));
         }
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
 
         return true;
     }

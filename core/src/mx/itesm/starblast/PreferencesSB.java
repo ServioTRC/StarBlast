@@ -114,7 +114,10 @@ public class PreferencesSB {
             prefs.putBoolean("konami", !prefs.getBoolean("konami", false));
         } else if (code.equals("360 no scope")) {
             //homing misiles (and bullets)
-        } else if (code.split(" ")[0].equals("lvl")) {
+        } else if(code.equals("hard as nails")) {
+            //extra colision damage
+            prefs.putBoolean("nails", !prefs.getBoolean("nails", false));
+        }else if (code.split(" ")[0].equals("lvl")) {
             String[] tmp = code.split(" ");
             if (tmp.length == 2) {
                 int level;
@@ -156,5 +159,20 @@ public class PreferencesSB {
             prefs.putBoolean("" + minigame, true);
             prefs.flush();
         }
+    }
+
+    public static int getMinigameCount() {
+        Preferences prefs = Gdx.app.getPreferences("Minigames");
+        int toR = 0;
+        if (prefs.getBoolean("1", false)) {
+            toR++;
+        }
+        if (prefs.getBoolean("2", false)) {
+            toR++;
+        }
+        if (prefs.getBoolean("3", false)) {
+            toR++;
+        }
+        return toR;
     }
 }

@@ -45,6 +45,7 @@ public abstract class Constant {
         LEVEL1,
         LEVEL2,
         LEVEL3,
+        NEXT_LEVEL,
         ENDLESS,
         MINIGAMES,
         MINI1,

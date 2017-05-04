@@ -92,22 +92,25 @@ public class ScreenMenu extends ScreenSB {
                 if (level == 1) {
                     menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
                 } else if (level == 2) {
-                    if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+                    if (PreferencesSB.getMinigameCount() > 0) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
                     } else {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
+//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 } else if (level == 3) {
-                    if (Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+                    if (PreferencesSB.getMinigameCount() > 1) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
                     } else {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
+//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 } else {
-                    if (Gdx.app.getPreferences("Minigames").getBoolean("3", false)) {
+                    if (PreferencesSB.getMinigameCount() > 2) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
                     } else {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
+//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 }
             }

@@ -18,9 +18,6 @@ import static java.lang.Math.*;
 
 public class ShipPlayer extends Ship {
 
-
-
-
     private enum movementState {
         TURNING,
         STOPPED
@@ -46,6 +43,7 @@ public class ShipPlayer extends Ship {
     private boolean infHealth;
     private boolean infMissiles;
     private float speedMultiplier = 1;
+    private int damageMultiplier;
 
     private Texture missileTexture;
     private Sprite shieldSprite;
@@ -81,6 +79,9 @@ public class ShipPlayer extends Ship {
             missileCount *= 2;
             MAX_HEALTH *= 2;
             health = MAX_HEALTH;
+        }
+        if (pref.getBoolean("nails", false)) {
+            damageMultiplier = 4;
         }
     }
 
@@ -137,6 +138,11 @@ public class ShipPlayer extends Ship {
             shieldSprite.draw(batch);
         }
         return super.draw(batch);
+    }
+
+    @Override
+    public int getDamage() {
+        return damageMultiplier * super.getDamage();
     }
 
     @Override

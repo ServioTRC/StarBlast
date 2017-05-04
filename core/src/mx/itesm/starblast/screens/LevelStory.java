@@ -74,6 +74,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             Constant.MANAGER.get("GameScreen/FondoTileGrande3.jpg", Texture.class)
     };
     Texture beginBackground = Constant.MANAGER.get("GameScreen/FondoBegin.jpg", Texture.class);
+    //TODO usarla
     Texture endTexture = Constant.MANAGER.get("GameScreen/FondoEnd.jpg", Texture.class);
     Texture firstBackground;
     Texture secondBackground;
@@ -143,7 +144,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     //endregion
 
     //region other
-    private final StarBlast app;
     final SpriteBatch batch;
     Random random = new Random();
     private boolean playerSpecial = false;
@@ -153,7 +153,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves,int spawnTimeuot,int level) {
         super();
-        this.app = app;
         batch  = new SpriteBatch();
         HUDScene = new Stage(view, batch){
             @Override
@@ -627,7 +626,6 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
             new MissilePowerUp(Constant.MANAGER.get("GameScreen/PowerupMissileSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
         }
     }
-
 
     private void moveEnemies(float delta) {
         Vector2 target = new Vector2(player.getX(), player.getY());

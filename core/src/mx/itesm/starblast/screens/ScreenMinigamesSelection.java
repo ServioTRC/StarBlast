@@ -15,8 +15,9 @@ import com.badlogic.gdx.utils.Align;
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.StarBlast;
 
-class ScreenMinigamesSelection extends ScreenSB {
+public class ScreenMinigamesSelection extends ScreenSB {
     private final StarBlast menu;
+    private final boolean story;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -24,8 +25,9 @@ class ScreenMinigamesSelection extends ScreenSB {
     //Escenas
     private Stage selectionScene;
 
-    ScreenMinigamesSelection(StarBlast menu) {
+    public ScreenMinigamesSelection(StarBlast menu, boolean story) {
         this.menu = menu;
+        this.story = story;
     }
 
     @Override
@@ -60,7 +62,7 @@ class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame1Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("1", false);
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("1", false) ^ story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame1" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
@@ -76,13 +78,13 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame1");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, story));
             }
         });
     }
 
     private void createMinigame2Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("2", false);
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("2", false) ^ story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame2" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
@@ -99,13 +101,13 @@ class ScreenMinigamesSelection extends ScreenSB {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame2");
                 dispose();
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, story));
             }
         });
     }
 
     private void createMinigame3Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("3", false);
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("3", false) ^ story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
@@ -121,7 +123,7 @@ class ScreenMinigamesSelection extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("ScreenMinigamesSelection ", "Going to MiniGame3");
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3));
+                menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, story));
             }
         });
     }

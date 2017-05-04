@@ -172,7 +172,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
             return true;
         }
         return false;
@@ -250,13 +250,10 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
         }
 
         if (backButtonSprite.getBoundingRectangle().contains(vector.x, vector.y))
-            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
 
         if (endingSprite.getBoundingRectangle().contains(vector.x, vector.y) && ended) {
-            if (isStoryMode)
-                menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
-            else
-                menu.setScreen(new ScreenMinigamesSelection(menu));
+            menu.setScreen(isStoryMode ? new ScreenLoading(menu, Constant.Screens.NEXT_LEVEL) : new ScreenMinigamesSelection(menu, false));
         }
 
         return true;
