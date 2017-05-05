@@ -403,6 +403,11 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame3Screen/Minigame3Background.jpg", Texture.class);
         Constant.MANAGER.load("SoundEffects/RockDiggingSound.wav", Sound.class);
         Constant.MANAGER.load("SoundEffects/SelectionSound.mp3", Sound.class);
+        Constant.MANAGER.load("Minigame3Screen/RockSpriteNew.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/RockSpriteDamaged.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/RockSpriteVeryDamaged.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/Minigame3Crystal.png", Texture.class);
+        Constant.MANAGER.load("Minigame3Screen/RockBreakingAnimation.png", Texture.class);
 
         if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame3Screen/SplashTutorial1.png", Texture.class);

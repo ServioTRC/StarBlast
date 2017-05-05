@@ -8,19 +8,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
+import mx.itesm.starblast.gameEntities.AutoAnimation;
 
 class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
@@ -35,12 +37,10 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private boolean isStoryMode = false;
 
     private Sprite backButtonSprite;
-    private SpriteSB genericSprite;
-    private SpriteSB crystal;
-    private SpriteSB rock;
-    private ArrayList<SpriteSB> crystals = new ArrayList<SpriteSB>(3);
-    private ArrayList<SpriteSB> rocks = new ArrayList<SpriteSB>(9);
+    private ArrayList<Sprite> crystals = new ArrayList<Sprite>(3);
+    private ArrayList<Rock> rocks = new ArrayList<Rock>(9);
     private ArrayList<Integer> positions = new ArrayList<Integer>(9);
+    private ArrayList<AutoAnimation> animations = new ArrayList<AutoAnimation>();
     private Random r = new Random();
     private Text textScore;
     private int tries = 5;
@@ -51,6 +51,29 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private Sound breakingRockSound;
     private Sound crystalSelectedSound;
     private boolean timeTaken = false;
+
+    class Rock {
+        int numClicks = 0;
+        Texture[] states;
+        int id;
+        Sprite sprite;
+
+        Rock(int id, Texture[] textures) {
+            states = textures;
+            this.id = id;
+            sprite = new Sprite(textures[0]);
+        }
+
+        boolean getDamage() {
+            numClicks++;
+            if (numClicks < states.length) {
+                sprite.setTexture(states[numClicks]);
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 
     ScreenMinigame3(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
@@ -76,49 +99,52 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         breakingRockSound = Constant.MANAGER.get("SoundEffects/RockDiggingSound.wav", Sound.class);
         crystalSelectedSound = Constant.MANAGER.get("SoundEffects/SelectionSound.mp3", Sound.class);
         randomPos();
-        addingRocks();
+        addRocks();
         createBackButton();
     }
 
-    private void addingRocks() {
+    private void addRocks() {
+        Texture[] textures = {Constant.MANAGER.get("Minigame3Screen/RockSpriteNew.png", Texture.class),
+                Constant.MANAGER.get("Minigame3Screen/RockSpriteDamaged.png", Texture.class),
+                Constant.MANAGER.get("Minigame3Screen/RockSpriteVeryDamaged.png", Texture.class)};
         for (int i = 0; i < 9; i++) {
-            rock = new SpriteSB("Minigame3Screen/RockSpriteNew.png", i);
+            Rock rock = new Rock(i, textures);
             switch (i) {
                 case 0:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
-                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.sprite.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    rock.sprite.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 1:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
-                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.sprite.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    rock.sprite.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 2:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
-                    rock.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
+                    rock.sprite.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    rock.sprite.setY(4 * Constant.SCREEN_HEIGTH / 5 - 160);
                     break;
                 case 3:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
+                    rock.sprite.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    rock.sprite.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 4:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
+                    rock.sprite.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    rock.sprite.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 5:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
-                    rock.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
+                    rock.sprite.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    rock.sprite.setY(2 * Constant.SCREEN_HEIGTH / 5 - 70);
                     break;
                 case 6:
-                    rock.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
+                    rock.sprite.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
+                    rock.sprite.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 7:
-                    rock.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
+                    rock.sprite.setX(2 * Constant.SCREEN_WIDTH / 5 + 15);
+                    rock.sprite.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
                 case 8:
-                    rock.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
-                    rock.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
+                    rock.sprite.setX(3 * Constant.SCREEN_WIDTH / 5 - 10);
+                    rock.sprite.setY(1 * Constant.SCREEN_HEIGTH / 5 - 140);
                     break;
             }
             rocks.add(rock);
@@ -130,7 +156,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             int pos = r.nextInt(9);
             while (positions.contains(pos))
                 pos = r.nextInt(9);
-            crystal = new SpriteSB("Minigame3Screen/Minigame3Crystal.png", pos);
+            Sprite crystal = new Sprite(Constant.MANAGER.get("Minigame3Screen/Minigame3Crystal.png", Texture.class));
             switch (pos) {
                 case 0:
                     crystal.setX(1 * Constant.SCREEN_WIDTH / 5 + 40);
@@ -187,26 +213,35 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         batch.begin();
         if (crystalFound >= 3) {
             ended = true;
-            if(!timeTaken) {
+            if (!timeTaken) {
                 endingTime = TimeUtils.millis();
                 timeTaken = true;
             }
         } else if (tries <= 0) {
             ended = true;
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
-            if(!timeTaken) {
+            if (!timeTaken) {
                 endingTime = TimeUtils.millis();
                 timeTaken = true;
             }
         }
 
-        for (SpriteSB crys : crystals) {
+        for (Sprite crys : crystals) {
             crys.draw(batch);
         }
 
+        Iterator<AutoAnimation> it = animations.iterator();
+        AutoAnimation animation;
+        while (it.hasNext()) {
+            animation = it.next();
+            if (animation.draw(batch, delta)) {
+                it.remove();
+            }
+        }
+
         if (!ended) {
-            for (SpriteSB rock : rocks) {
-                rock.draw(batch);
+            for (Rock rock : rocks) {
+                rock.sprite.draw(batch);
             }
             backButtonSprite.draw(batch);
             textScore.showMessage(batch, Integer.toString(tries),
@@ -257,18 +292,24 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 vector = camera.unproject(new Vector3(screenX, screenY, 0));
         for (int i = rocks.size() - 1; i >= 0; i--) {
-            genericSprite = rocks.get(i);
-            if (genericSprite.touched(vector)) {
-                rocks.remove(i);
-                tries--;
-                if(PreferencesSB.SOUNDS_ENABLE)
-                    breakingRockSound.play(1f);
-                if (positions.contains(genericSprite.getId())) {
-                    crystalFound++;
-                    tries++;
-                    if(PreferencesSB.SOUNDS_ENABLE)
-                        crystalSelectedSound.play(1f);
+            Rock rock = rocks.get(i);
+            if (rock.sprite.getBoundingRectangle().contains(vector.x, vector.y)) {
+                if (rock.getDamage()) {
+                    //TODO play animation
+                    animations.add(new AutoAnimation(Constant.MANAGER.get("Minigame3Screen/RockBreakingAnimation.png", Texture.class),
+                            0.15f, rock.sprite.getX() + rock.sprite.getWidth() / 2, rock.sprite.getY() + rock.sprite.getHeight() / 2, 218, 218, batch));
+                    rocks.remove(i);
+                    tries--;
+                    if (positions.contains(rock.id)) {
+                        crystalFound++;
+                        tries++;
+                        if (PreferencesSB.SOUNDS_ENABLE)
+                            crystalSelectedSound.play(1f);
+                    }
+                    if (PreferencesSB.SOUNDS_ENABLE)
+                        breakingRockSound.play(1f);
                 }
+
             }
         }
 
@@ -310,45 +351,6 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
-
-    private class SpriteSB {
-        private Sprite sprite;
-        private Integer id;
-
-        public SpriteSB(String texture, Integer id) {
-            this.sprite = new Sprite(new Texture(texture));
-            this.id = id;
-        }
-
-        public void setY(float y) {
-            this.sprite.setY(y);
-        }
-
-        public void setX(float x) {
-            this.sprite.setX(x);
-        }
-
-        public float getX() {
-            return this.sprite.getX();
-        }
-
-        public float getY() {
-            return this.sprite.getY();
-        }
-
-        public void draw(SpriteBatch batch) {
-            this.sprite.draw(batch);
-        }
-
-        public Integer getId() {
-            return this.id;
-        }
-
-        public boolean touched(Vector3 vector) {
-            return this.sprite.getBoundingRectangle().contains(vector.x, vector.y);
-        }
-
     }
 
 }
