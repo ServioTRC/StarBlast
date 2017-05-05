@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -52,7 +51,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private Sound crystalSelectedSound;
     private boolean timeTaken = false;
 
-    class Rock {
+    private class Rock {
         int numClicks = 0;
         Texture[] states;
         int id;
@@ -295,9 +294,8 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             Rock rock = rocks.get(i);
             if (rock.sprite.getBoundingRectangle().contains(vector.x, vector.y)) {
                 if (rock.getDamage()) {
-                    //TODO play animation
                     animations.add(new AutoAnimation(Constant.MANAGER.get("Minigame3Screen/RockBreakingAnimation.png", Texture.class),
-                            0.15f, rock.sprite.getX() + rock.sprite.getWidth() / 2, rock.sprite.getY() + rock.sprite.getHeight() / 2, 218, 218, batch));
+                            0.1f, rock.sprite.getX() + rock.sprite.getWidth() / 2, rock.sprite.getY() + rock.sprite.getHeight() / 2, 218, 218, batch));
                     rocks.remove(i);
                     tries--;
                     if (positions.contains(rock.id)) {

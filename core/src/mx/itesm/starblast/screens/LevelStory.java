@@ -145,16 +145,16 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
     //region other
     final SpriteBatch batch;
-    Random random = new Random();
+    private Random random = new Random();
     private boolean playerSpecial = false;
-    private Box2DDebugRenderer debugRenderer;
-    private Matrix4 debugMatrix;
+//    private Box2DDebugRenderer debugRenderer;
+//    private Matrix4 debugMatrix;
     //endregion
 
-    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves,int spawnTimeuot,int level) {
+    LevelStory(StarBlast app, int initialEnemies, int extraPerWave, int numberOfWaves, int spawnTimeuot, int level) {
         super();
-        batch  = new SpriteBatch();
-        HUDScene = new Stage(view, batch){
+        batch = new SpriteBatch();
+        HUDScene = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.BACK) {
@@ -195,14 +195,14 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
 
         player = new ShipPlayer(Constant.MANAGER.get("GameScreen/AvatarSprite.png", Texture.class), Constant.SCREEN_WIDTH / 2, Constant.SCREEN_WIDTH / 5, world, batch);
         player.scaling(Constant.SHIPS_SCALE);
-        debugRenderer = new Box2DDebugRenderer();
+//        debugRenderer = new Box2DDebugRenderer();
     }
 
     @Override
     public void render(float delta) {
 
-        debugMatrix = new Matrix4(camera.combined);
-        debugMatrix.scale(100,100,1);
+//        debugMatrix = new Matrix4(camera.combined);
+//        debugMatrix.scale(100,100,1);
 
         batch.begin();
         handleFondo(delta);
@@ -211,7 +211,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         world.getBodies(bodies);
         Object obj;
 
-        if(powerUps.size() > 0){
+        if (powerUps.size() > 0) {
             powerUps.get(0);
         }
 
@@ -238,7 +238,7 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         HUDScene.draw();
         handleStates(delta);
 
-        debugRenderer.render(world,debugMatrix);
+//        debugRenderer.render(world,debugMatrix);
     }
 
     void handleStates(float delta) {
@@ -307,12 +307,12 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
         }
     }
 
-    private Texture getBackground(){
+    private Texture getBackground() {
         double r = random.nextDouble();
-        if(r <= 0.5){
+        if (r <= 0.5) {
             return plainBackgrounds[random.nextInt(plainBackgrounds.length)];
         }
-        if(r <= 0.8){
+        if (r <= 0.8) {
             return meteorBackground[random.nextInt(meteorBackground.length)];
         }
         return transitionBackgrounds[random.nextInt(transitionBackgrounds.length)];
@@ -506,12 +506,12 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     private boolean handleCollision(IPlayableEntity a, IPlayableEntity b) {
         boolean isDestroyed = false;
 
-        if(a instanceof PowerUp){
+        if (a instanceof PowerUp) {
             if (b instanceof ShipPlayer) {
                 ((ShipPlayer) b).recievePowerUp(((PowerUp) a));
                 toRemove.add(a.getBody());
             }
-            if(b instanceof Edge) {
+            if (b instanceof Edge) {
                 toRemove.add(a.getBody());
             }
             return false;
@@ -599,32 +599,28 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
     }
 
     private void spawnPowerUps(float dt) {
-        if(random.nextFloat() < 0.1f/50f){
+        if (random.nextFloat() < 0.1f / 50f) {
             spawnRandomPowerUp();
         }
     }
 
-    private void spawnRandomPowerUp(){
+    private void spawnRandomPowerUp() {
         float r = random.nextFloat();
-        if(0 <= r && r < 0.30) {
-            Gdx.app.log("PowerUp","Spawned Health");
-            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupHealthSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
-        }
-        else if(r < 0.50){
-            Gdx.app.log("PowerUp","Spawned Shield");
-            new ShieldPowerUp(Constant.MANAGER.get("GameScreen/PowerupShieldSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
-        }
-        else if(r < 0.70){
-            Gdx.app.log("PowerUp","Spawned Speed");
-            new SpeedPowerUp(Constant.MANAGER.get("GameScreen/PowerupSpeedSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
-        }
-        else if(r < 0.90){
-            Gdx.app.log("PowerUp","Spawned Damage");
-            new DamagePowerUp(Constant.MANAGER.get("GameScreen/PowerupDamageSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
-        }
-        else {
-            Gdx.app.log("PowerUp","Spawned Missile");
-            new MissilePowerUp(Constant.MANAGER.get("GameScreen/PowerupMissileSprite.png", Texture.class), random.nextFloat()*(Constant.SCREEN_WIDTH-200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        if (0 <= r && r < 0.30) {
+            Gdx.app.log("PowerUp", "Spawned Health");
+            new HealthPowerUp(Constant.MANAGER.get("GameScreen/PowerupHealthSprite.png", Texture.class), random.nextFloat() * (Constant.SCREEN_WIDTH - 200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        } else if (r < 0.50) {
+            Gdx.app.log("PowerUp", "Spawned Shield");
+            new ShieldPowerUp(Constant.MANAGER.get("GameScreen/PowerupShieldSprite.png", Texture.class), random.nextFloat() * (Constant.SCREEN_WIDTH - 200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        } else if (r < 0.70) {
+            Gdx.app.log("PowerUp", "Spawned Speed");
+            new SpeedPowerUp(Constant.MANAGER.get("GameScreen/PowerupSpeedSprite.png", Texture.class), random.nextFloat() * (Constant.SCREEN_WIDTH - 200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        } else if (r < 0.90) {
+            Gdx.app.log("PowerUp", "Spawned Damage");
+            new DamagePowerUp(Constant.MANAGER.get("GameScreen/PowerupDamageSprite.png", Texture.class), random.nextFloat() * (Constant.SCREEN_WIDTH - 200) + 100, Constant.SCREEN_HEIGTH - 100, world);
+        } else {
+            Gdx.app.log("PowerUp", "Spawned Missile");
+            new MissilePowerUp(Constant.MANAGER.get("GameScreen/PowerupMissileSprite.png", Texture.class), random.nextFloat() * (Constant.SCREEN_WIDTH - 200) + 100, Constant.SCREEN_HEIGTH - 100, world);
         }
     }
 
@@ -645,12 +641,12 @@ class LevelStory extends mx.itesm.starblast.screens.ScreenSB implements IPausabl
                 numberEnemiesForThisWave += extraPerWave;
                 switchingWaves = true;
             } else {
-                if(hasBoss){
+                if (hasBoss) {
                     hasBoss = false;
-                    ShipEnemy boss = new ShipEnemyBoss(enemyBossTexture,Constant.SCREEN_WIDTH/2,Constant.SCREEN_HEIGTH+100,world,(int)(3000 + 1000*(level*(level+1))/2),batch);
+                    ShipEnemy boss = new ShipEnemyBoss(enemyBossTexture, Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH + 100, world, (int) (3000 + 1000 * (level * (level + 1)) / 2), batch);
                     boss.scaling(Constant.SHIPS_SCALE);
                     enemies.add(boss);
-                }else{
+                } else {
                     isPaused = true;
                     youWon = true;
                 }
