@@ -16,10 +16,6 @@ import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.Text;
 
-/**
- * Created by Servio T on 30/04/2017.
- */
-
 public class ScreenTutoMG extends ScreenSB {
 
     private StarBlast menu;
@@ -31,8 +27,6 @@ public class ScreenTutoMG extends ScreenSB {
     private Stage tutorialMG;
     private boolean isStoryMode;
     private int numImage = 1;
-    private long timeBetween;
-    private long startingTime;
     private int numMG;
 
 
@@ -54,12 +48,14 @@ public class ScreenTutoMG extends ScreenSB {
         tutorialMG = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keycode) {
+                PreferencesSB.clickedSound();
                 if (keycode == Input.Keys.BACK) {
-                    if (isStoryMode) {
-                        return true;
+                    if (numImage == 2) {
+                        numImage = 1;
+                        tutorial.setTexture(tutorial1);
+                    } else {
+                        menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, isStoryMode));
                     }
-                    PreferencesSB.clickedSound();
-                    menu.setScreen(new ScreenMinigamesSelection(menu, isStoryMode));
                     return true;
                 }
                 return false;
@@ -71,9 +67,7 @@ public class ScreenTutoMG extends ScreenSB {
                 if (numImage == 1) {
                     tutorial.setTexture(tutorial2);
                     numImage = 2;
-                    timeBetween = TimeUtils.millis();
-                }
-                if ((numImage == 2) && ((TimeUtils.millis() - timeBetween) >= 500)) {
+                } else if (numImage == 2) {
                     if (numMG == 1) {
                         Gdx.app.log("ScreenMenu ", "Going to Minigame1");
                         menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
@@ -93,7 +87,6 @@ public class ScreenTutoMG extends ScreenSB {
         };
         tutorialMG.addActor(imgFondo);
         tutorial = new Sprite(tutorial1);
-        startingTime = TimeUtils.millis();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(tutorialMG);
     }
@@ -118,22 +111,6 @@ public class ScreenTutoMG extends ScreenSB {
         tutorialMG.draw();
         batch.begin();
         tutorial.draw(batch);
-        /*if (((TimeUtils.millis() - startingTime) > 3000) && (numImage == 1)) {
-            tutorial.setTexture(tutorial2);
-            numImage = 2;
-        }
-        if ((TimeUtils.millis() - startingTime) > 6000) {
-            if (numMG == 1) {
-                Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-            } else if (numMG == 2) {
-                Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-            } else if (numMG == 3) {
-                Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
-            }
-        }*/
         batch.end();
     }
 

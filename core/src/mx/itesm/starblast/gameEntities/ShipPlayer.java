@@ -70,8 +70,8 @@ public class ShipPlayer extends Ship {
         explosionSound = Constant.MANAGER.get("SoundEffects/Explosion1.mp3", Sound.class);
         bulletTexture = Constant.MANAGER.get("GameScreen/BulletSprite.png", Texture.class);
         missileTexture = Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class);
-        shieldSprite = new Sprite(Constant.MANAGER.get("GameScreen/ShieldSprite.png",Texture.class));
-        droidHelper = new DroidHelper(Constant.MANAGER.get("GameScreen/DroidHelperSprite.png",Texture.class),getX()-2*sprite.getWidth(),getY(),world,90,0.1f,0.7f,batch);
+        shieldSprite = new Sprite(Constant.MANAGER.get("GameScreen/ShieldSprite.png", Texture.class));
+        droidHelper = new DroidHelper(Constant.MANAGER.get("GameScreen/DroidHelperSprite.png", Texture.class), getX() - 2 * sprite.getWidth(), getY(), world, 90, 0.1f, 0.7f, batch);
         Preferences pref = Gdx.app.getPreferences("Codes");
         infHealth = pref.getBoolean("InfHealth", false);
         infMissiles = pref.getBoolean("InfMissiles", false);
@@ -85,6 +85,16 @@ public class ShipPlayer extends Ship {
         }
         if (pref.getBoolean("nails", false)) {
             damageMultiplier = 4;
+        }
+        pref = Gdx.app.getPreferences("Minigames");
+        if (pref.getBoolean("1", false)) {
+            //TODO aqui checas lo del droide
+        }
+        if (pref.getBoolean("2", false)) {
+            MAX_HEALTH *= 2;
+        }
+        if (pref.getBoolean("3", false)) {
+            BULLET_DAMAGE *= 2;
         }
     }
 
@@ -119,8 +129,8 @@ public class ShipPlayer extends Ship {
         body.applyForceToCenter(turnPercentage * -1 * speedMultiplier, accelerationPercentage * speedMultiplier, true);
         body.setLinearVelocity(body.getLinearVelocity().scl(BRAKE_CONSTANT));
         sprite.setCenter(getX(), getY());
-        if(droidHelper != null && !droidHelper.isDead()) {
-            droidHelper.move(turnPercentage*-1*speedMultiplier, accelerationPercentage * speedMultiplier, delta);
+        if (droidHelper != null && !droidHelper.isDead()) {
+            droidHelper.move(turnPercentage * -1 * speedMultiplier, accelerationPercentage * speedMultiplier, delta);
             droidHelper.setRotation(sprite.getRotation());
         }
     }
@@ -139,7 +149,7 @@ public class ShipPlayer extends Ship {
 
     @Override
     public boolean draw(SpriteBatch batch) {
-        if(shield > 0) {
+        if (shield > 0) {
             shieldSprite.setCenter(getX(), getY());
             shieldSprite.setAlpha(getShieldPercentage());
             shieldSprite.draw(batch);
@@ -214,13 +224,13 @@ public class ShipPlayer extends Ship {
         return health / MAX_HEALTH;
     }
 
-    public float getShieldPercentage(){
+    public float getShieldPercentage() {
         return shield / MAX_SHIELD;
     }
 
     @Override
     public void scale(float scale) {
-        if(!(droidHelper == null) && !droidHelper.isDead()) {
+        if (!(droidHelper == null) && !droidHelper.isDead()) {
             droidHelper.scale(scale);
         }
         super.scale(scale);
@@ -228,7 +238,7 @@ public class ShipPlayer extends Ship {
 
     @Override
     protected void shoot() {
-        if(!(droidHelper == null) && !droidHelper.isDead()) {
+        if (!(droidHelper == null) && !droidHelper.isDead()) {
             droidHelper.shoot();
         }
         super.shoot();

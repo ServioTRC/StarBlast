@@ -2,6 +2,7 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -96,21 +97,19 @@ public class ScreenMenu extends ScreenSB {
                     if (PreferencesSB.getMinigameCount() > 0) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));
                     } else {
-//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI1, true));
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 } else if (level == 3) {
                     if (PreferencesSB.getMinigameCount() > 1) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
                     } else {
-//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI2, true));
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 } else {
                     if (PreferencesSB.getMinigameCount() > 2) {
-                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL3));
+                        PreferencesSB.saveLevelProgress(1);
+                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
                     } else {
-//                        menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINI3, true));
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.MINIGAMES, true));
                     }
                 }
