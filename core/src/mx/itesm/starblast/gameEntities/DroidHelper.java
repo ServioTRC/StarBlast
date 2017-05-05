@@ -41,16 +41,18 @@ public class DroidHelper extends Ship {
     }
 
     @Override
-    public void move(Vector2 force, float delta) {
-        body.applyForceToCenter(force,true);
-        sprite.setCenter(getX(),getY());
+    public void move(Vector2 target, float delta) {
+        float targetAngle = MathUtils.atan2(target.y-body.getPosition().y,target.x - body.getPosition().x);
+        body.applyForceToCenter(MathUtils.cos(targetAngle),MathUtils.sin(targetAngle),true);
         body.setLinearVelocity(body.getLinearVelocity().scl(BRAKE_CONSTANT));
+        sprite.setCenter(getX(),getY());
     }
 
-    public void move(float fx, float fy, float delta){
-        body.applyForceToCenter(fx,fy,true);
-        sprite.setCenter(getX(),getY());
+    public void move(float x, float y, float delta) {
+        float targetAngle = MathUtils.atan2(y-body.getPosition().y,x - body.getPosition().x);
+        body.applyForceToCenter(MathUtils.cos(targetAngle),MathUtils.sin(targetAngle),true);
         body.setLinearVelocity(body.getLinearVelocity().scl(BRAKE_CONSTANT));
+        sprite.setCenter(getX(),getY());
     }
 
     @Override

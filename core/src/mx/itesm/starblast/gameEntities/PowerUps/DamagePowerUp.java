@@ -1,9 +1,11 @@
 package mx.itesm.starblast.gameEntities.PowerUps;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import mx.itesm.starblast.Constant;
 
@@ -16,9 +18,11 @@ public class DamagePowerUp extends PowerUp {
 
     int bonus = 20;
     Type type = Type.damage;
+    final int COOLDOWN = 10000;
 
     public DamagePowerUp(Texture texture, float x, float y, World world){
         super(texture, x, y, world, 90, 0.2f, 0.2f);
+        timeToLive = TimeUtils.millis()+COOLDOWN;
     }
 
 

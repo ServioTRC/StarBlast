@@ -1,13 +1,16 @@
 package mx.itesm.starblast.gameEntities.PowerUps;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Random;
 
@@ -23,6 +26,8 @@ public abstract class PowerUp extends PlayableEntity implements IPowerUp {
     World world;
     Sprite sprite;
     Body body;
+    long currentTime;
+    long timeToLive;
 
     PowerUp(Texture texture, float x, float y, World world, float angle, float density, float restitution) {
         this.world = world;
@@ -40,8 +45,9 @@ public abstract class PowerUp extends PlayableEntity implements IPowerUp {
         body.setUserData(this);
         CircleShape bodyShape = new CircleShape();
         bodyShape.setRadius(Constant.toWorldSize(sprite.getWidth()/2));
-
+        currentTime = TimeUtils.millis();
         makeFixture(density, restitution,body,bodyShape,Constant.CATEGORY_POWER_UP,Constant.MASK_POWER_UP, true);
+
     }
 
     private Vector2 getVelocityVector(float x, float y) {
@@ -49,5 +55,18 @@ public abstract class PowerUp extends PlayableEntity implements IPowerUp {
         float maxAngle = MathUtils.atan2(-y,Constant.SCREEN_WIDTH-x);
         float angle = new Random().nextFloat()*(maxAngle-minAngle)+minAngle;
         return new Vector2(MathUtils.cos(angle),MathUtils.sin(angle));
+    }
+
+    public boolean isDisabled(){
+        if(timeToLive < currentTime){
+            return true;
+        }
+        return false;
+    }
+
+    public void addTime(float delta){
+        currentTime += (int)(delta*1000);
+        Gdx.app.log("PowerUp","Delta: "+(delta*1000));
+        Gdx.app.log("PowerUp",""+currentTime);
     }
 }
