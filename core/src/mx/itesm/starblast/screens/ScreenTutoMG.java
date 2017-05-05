@@ -118,7 +118,7 @@ public class ScreenTutoMG extends ScreenSB {
         tutorialMG.draw();
         batch.begin();
         tutorial.draw(batch);
-        if (((TimeUtils.millis() - startingTime) > 3000) && (numImage == 1)) {
+        /*if (((TimeUtils.millis() - startingTime) > 3000) && (numImage == 1)) {
             tutorial.setTexture(tutorial2);
             numImage = 2;
         }
@@ -133,7 +133,7 @@ public class ScreenTutoMG extends ScreenSB {
                 Gdx.app.log("ScreenMenu ", "Going to Minigame3");
                 menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
             }
-        }
+        }*/
         batch.end();
     }
 
