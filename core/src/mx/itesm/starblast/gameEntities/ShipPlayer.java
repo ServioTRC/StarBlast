@@ -48,6 +48,8 @@ public class ShipPlayer extends Ship {
     private Texture missileTexture;
     private Sprite shieldSprite;
 
+    private DroidHelper droidHelper;
+
     public ShipPlayer(Texture texture, float x, float y, World world, SpriteBatch batch) {
 
         super(texture, x, y, world, 90, 0.1f, 0.7f, false, batch);
@@ -58,6 +60,7 @@ public class ShipPlayer extends Ship {
         BULLET_DAMAGE = 10;
         MISSILE_DAMAGE = 500;
         damage = 20;
+        damageMultiplier = 1;
 
         MAX_HEALTH = health;
         shield = 0;
@@ -68,7 +71,7 @@ public class ShipPlayer extends Ship {
         bulletTexture = Constant.MANAGER.get("GameScreen/BulletSprite.png", Texture.class);
         missileTexture = Constant.MANAGER.get("GameScreen/MissileSprite.png", Texture.class);
         shieldSprite = new Sprite(Constant.MANAGER.get("GameScreen/ShieldSprite.png",Texture.class));
-        
+        droidHelper = new DroidHelper(Constant.MANAGER.get("GameScreen/DroidHelperSprite.png",Texture.class),getX()-2*sprite.getWidth(),getY(),world,90,0.1f,0.7f,batch);
         Preferences pref = Gdx.app.getPreferences("Codes");
         infHealth = pref.getBoolean("InfHealth", false);
         infMissiles = pref.getBoolean("InfMissiles", false);
@@ -115,13 +118,17 @@ public class ShipPlayer extends Ship {
         }
         body.applyForceToCenter(turnPercentage * -1 * speedMultiplier, accelerationPercentage * speedMultiplier, true);
         body.setLinearVelocity(body.getLinearVelocity().scl(BRAKE_CONSTANT));
-        sprite.setCenter(Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y));
+        sprite.setCenter(getX(), getY());
+        if(droidHelper != null && !droidHelper.isDead()) {
+            droidHelper.move(turnPercentage*-1*speedMultiplier, accelerationPercentage * speedMultiplier, delta);
+            droidHelper.setRotation(sprite.getRotation());
+        }
     }
 
 
-    public void turn(float porcentaje) {
-        this.turnPercentage = porcentaje * -1;
-        this.state = porcentaje == 0 ? movementState.STOPPED : movementState.TURNING;
+    public void turn(float percentage) {
+        this.turnPercentage = percentage * -1;
+        this.state = percentage == 0 ? movementState.STOPPED : movementState.TURNING;
     }
 
     private void turn() {
@@ -211,4 +218,19 @@ public class ShipPlayer extends Ship {
         return shield / MAX_SHIELD;
     }
 
+    @Override
+    public void scale(float scale) {
+        if(!(droidHelper == null) && !droidHelper.isDead()) {
+            droidHelper.scale(scale);
+        }
+        super.scale(scale);
+    }
+
+    @Override
+    protected void shoot() {
+        if(!(droidHelper == null) && !droidHelper.isDead()) {
+            droidHelper.shoot();
+        }
+        super.shoot();
+    }
 }
