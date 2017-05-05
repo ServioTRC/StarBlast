@@ -76,11 +76,11 @@ public abstract class Ship extends PlayableEntity implements IExplotable {
         new Bullet(body.getPosition().x, body.getPosition().y,world, sprite.getRotation()+r.nextFloat()*10-5, enemy,BULLET_DAMAGE,bulletTexture);
     }
 
-    public void accelerate(float porcentaje) {
-        this.accelerationPercentage = porcentaje;
+    public void accelerate(float percentage) {
+        this.accelerationPercentage = percentage;
     }
 
-    public abstract void move(Vector2 punto, float delta);
+    public abstract void move(Vector2 target, float delta);
 
     @Override
     public float getX() {
@@ -92,7 +92,7 @@ public abstract class Ship extends PlayableEntity implements IExplotable {
         return Constant.toScreenSize(body.getPosition().y);
     }
 
-    public void scaling(float scale) {
+    public void scale(float scale) {
         this.sprite.scale(scale);
         Fixture fix = body.getFixtureList().first();
         makeFixture(fix.getDensity(), fix.getRestitution());
