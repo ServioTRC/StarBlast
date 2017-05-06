@@ -50,6 +50,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private Sound breakingRockSound;
     private Sound crystalSelectedSound;
     private boolean timeTaken = false;
+    private boolean won = false;
 
     private class Rock {
         int numClicks = 0;
@@ -212,11 +213,13 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
         batch.begin();
         if (crystalFound >= 3) {
             ended = true;
+            won = true;
             if (!timeTaken) {
                 endingTime = TimeUtils.millis();
                 timeTaken = true;
             }
         } else if (tries <= 0) {
+            won = false;
             ended = true;
             endingSprite.setTexture(Constant.MANAGER.get("Minigame1Screen/SplashMinigameLoss.png", Texture.class));
             if (!timeTaken) {
@@ -246,7 +249,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             textScore.showMessage(batch, Integer.toString(tries),
                     Constant.SCREEN_WIDTH / 2 - 30, Constant.SCREEN_HEIGTH - 50, Color.GREEN);
         } else {
-            PreferencesSB.saveMinigameProgress(3, isStoryMode);
+            PreferencesSB.saveMinigameProgress(3, isStoryMode,won);
 
             endingSprite.draw(batch);
         }

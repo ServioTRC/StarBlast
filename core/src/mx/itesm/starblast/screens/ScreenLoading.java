@@ -256,6 +256,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/ButtonBack.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/MissileSprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/MissileSpriteEnemy.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSpriteEnemy.png", Texture.class);
         Constant.MANAGER.load("GameScreen/BulletSpritePowered.png", Texture.class);
         Constant.MANAGER.load("GameScreen/ButtonNextLevel.png", Texture.class);

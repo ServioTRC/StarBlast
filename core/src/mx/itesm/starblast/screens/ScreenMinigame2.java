@@ -59,6 +59,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
     private AnimatedImage countdownAnimation;
     private Sound explotionSound;
     private Sound captureSound;
+    private boolean won = false;
 
     ScreenMinigame2(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
@@ -103,6 +104,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         if ((score >= (piecesGenerated - 10)) && ((TimeUtils.millis() - startingTime) > 18000)) {
             Gdx.app.log("ScreenMinigame1: ", "El jugador ha ganado");
             ended = true;
+            won = true;
             if (!timeTaken) {
                 endingTime = TimeUtils.millis();
                 timeTaken = true;
@@ -146,7 +148,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                     Constant.SCREEN_WIDTH / 2, 60, Color.GREEN);
             backButtonSprite.draw(batch);
         } else {
-            PreferencesSB.saveMinigameProgress(2, isStoryMode);
+            PreferencesSB.saveMinigameProgress(2, isStoryMode,won);
             endingSprite.draw(batch);
         }
         batch.end();
@@ -239,6 +241,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
             if (genericSpriteTouch.touched(vector)) {
                 if (genericSpriteTouch.getId() == Types.BAD) {
                     exploted = true;
+                    won = false;
                     if (PreferencesSB.SOUNDS_ENABLE)
                         explotionSound.play(1f);
                 } else {

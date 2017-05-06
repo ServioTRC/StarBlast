@@ -18,6 +18,7 @@ import mx.itesm.starblast.PreferencesSB;
 
 public class ShipEnemyBoss extends ShipEnemy {
 
+    private static final int MISSILE_DAMAGE = 50;
     private final float leftLimit;
     private final float rightLimit;
     private final float upperLimit;
@@ -98,11 +99,13 @@ public class ShipEnemyBoss extends ShipEnemy {
                 new Bullet(gunPosition,world,angle+20,enemy,5,bulletTexture);
                 break;
             case 9:
+                new Missile(gunPosition,world,angle,enemy,MISSILE_DAMAGE,batch,Constant.MANAGER.get("GameScreen/MissileSpriteEnemy.png",Texture.class));
+                /*
                 new Bullet(gunPosition,world,angle-50,enemy,5,bulletTexture);
                 new Bullet(gunPosition,world,angle-25,enemy,5,bulletTexture);
                 new Bullet(gunPosition,world,angle,enemy,5,bulletTexture);
                 new Bullet(gunPosition,world,angle+25,enemy,5,bulletTexture);
-                new Bullet(gunPosition,world,angle+50,enemy,5,bulletTexture);
+                new Bullet(gunPosition,world,angle+50,enemy,5,bulletTexture);*/
                 break;
 
         }

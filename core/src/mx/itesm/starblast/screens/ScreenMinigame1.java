@@ -145,7 +145,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
         backButtonSprite.draw(batch);
         if (ended) {
-            PreferencesSB.saveMinigameProgress(1, isStoryMode);
+            PreferencesSB.saveMinigameProgress(1, isStoryMode,won);
             endingSprite.draw(batch);
         } else {
             textScore.showMessage(batch, Long.toString((90000 - (TimeUtils.millis() - startingTime)) / 1000),

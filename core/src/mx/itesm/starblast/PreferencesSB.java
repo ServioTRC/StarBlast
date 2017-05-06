@@ -151,8 +151,16 @@ public class PreferencesSB {
         prefs.flush();
     }
 
-    public static void saveMinigameProgress(int minigame, boolean count) {
+    public static int lastMinigameWon(){
         Preferences prefs = Gdx.app.getPreferences("Minigames");
+        return prefs.getInteger("lastMinigameWon",0);
+    }
+
+    public static void saveMinigameProgress(int minigame, boolean count, boolean won) {
+        Preferences prefs = Gdx.app.getPreferences("Minigames");
+        if(count) {
+            prefs.putInteger("lastMinigameWon", won ? minigame : 0);
+        }
         if (!prefs.getBoolean("" + minigame, false)) {
             prefs.putBoolean("" + minigame, true);
             if (count) {
