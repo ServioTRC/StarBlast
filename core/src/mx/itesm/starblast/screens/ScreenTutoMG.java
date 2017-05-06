@@ -2,31 +2,26 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Array;
 
-import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
-import mx.itesm.starblast.Text;
 
 public class ScreenTutoMG extends ScreenSB {
 
     private StarBlast menu;
     private Texture backgroundTexture;
-    private Texture tutorial1;
-    private Texture tutorial2;
+    private Array<Texture> tutorialTextures;
     private Sprite tutorial;
     private SpriteBatch batch;
     private Stage tutorialMG;
     private boolean isStoryMode;
-    private int numImage = 1;
+    private int numImage = 0;
     private int numMG;
 
 
@@ -34,15 +29,19 @@ public class ScreenTutoMG extends ScreenSB {
         this.menu = menu;
         this.isStoryMode = isStoryMode;
         this.numMG = numMG;
+        tutorialTextures = new Array<Texture>();
+        if(PreferencesSB.getMinigameCount() == 0){
+            tutorialTextures.add(new Texture("MinigameSelectionScreen/SplashTutorial1.png"));
+        }
     }
 
     @Override
     public void show() {
-        loadingTextures();
-        creatingObjects();
+        loadTextures();
+        createObjects();
     }
 
-    private void creatingObjects() {
+    private void createObjects() {
         Image imgFondo = new Image(backgroundTexture);
         batch = new SpriteBatch();
         tutorialMG = new Stage(view, batch) {
@@ -50,11 +49,12 @@ public class ScreenTutoMG extends ScreenSB {
             public boolean keyDown(int keycode) {
                 PreferencesSB.clickedSound();
                 if (keycode == Input.Keys.BACK) {
-                    if (numImage == 2) {
-                        numImage = 1;
-                        tutorial.setTexture(tutorial1);
-                    } else {
+                    numImage--;
+                    if (numImage < 0) {
                         menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, isStoryMode));
+                    }
+                    else{
+                        tutorial.setTexture(tutorialTextures.get(numImage));
                     }
                     return true;
                 }
@@ -64,44 +64,45 @@ public class ScreenTutoMG extends ScreenSB {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 PreferencesSB.clickedSound();
-                if (numImage == 1) {
-                    tutorial.setTexture(tutorial2);
-                    numImage = 2;
-                } else if (numImage == 2) {
-                    if (numMG == 1) {
-                        Gdx.app.log("ScreenMenu ", "Going to Minigame1");
-                        menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
-
-                    } else if (numMG == 2) {
-                        Gdx.app.log("ScreenMenu ", "Going to Minigame2");
-                        menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
-
-                    } else if (numMG == 3) {
-                        Gdx.app.log("ScreenMenu ", "Going to Minigame3");
-                        menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
+                numImage++;
+                if(numImage >= tutorialTextures.size){
+                    switch (numMG){
+                        case 1:
+                            menu.setScreen(new ScreenMinigame1(menu,isStoryMode));
+                            break;
+                        case 2:
+                            menu.setScreen(new ScreenMinigame2(menu,isStoryMode));
+                            break;
+                        case 3:
+                            menu.setScreen(new ScreenMinigame3(menu,isStoryMode));
+                            break;
+                        default:
+                            break;
                     }
-
+                }
+                else{
+                    tutorial.setTexture(tutorialTextures.get(numImage));
                 }
                 return true;
             }
         };
         tutorialMG.addActor(imgFondo);
-        tutorial = new Sprite(tutorial1);
+        tutorial = new Sprite(tutorialTextures.get(0));
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(tutorialMG);
     }
 
-    private void loadingTextures() {
+    private void loadTextures() {
         backgroundTexture = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
         if (numMG == 1) {
-            tutorial1 = new Texture("Minigame1Screen/SplashTutorial1.png");
-            tutorial2 = new Texture("Minigame1Screen/SplashTutorial2.png");
+            tutorialTextures.add(new Texture("Minigame1Screen/SplashTutorial1.png"));
+            tutorialTextures.add(new Texture("Minigame1Screen/SplashTutorial2.png"));
         } else if (numMG == 2) {
-            tutorial1 = new Texture("Minigame2Screen/SplashTutorial1.png");
-            tutorial2 = new Texture("Minigame2Screen/SplashTutorial2.png");
+            tutorialTextures.add(new Texture("Minigame2Screen/SplashTutorial1.png"));
+            tutorialTextures.add(new Texture("Minigame2Screen/SplashTutorial2.png"));
         } else if (numMG == 3) {
-            tutorial1 = new Texture("Minigame3Screen/SplashTutorial1.png");
-            tutorial2 = new Texture("Minigame3Screen/SplashTutorial2.png");
+            tutorialTextures.add(new Texture("Minigame3Screen/SplashTutorial1.png"));
+            tutorialTextures.add(new Texture("Minigame3Screen/SplashTutorial2.png"));
         }
     }
 
