@@ -63,9 +63,9 @@ public class ShipEnemyBoss extends ShipEnemy {
         target.x = MathUtils.clamp(objective.x, leftLimit, rightLimit);
         float radians = MathUtils.atan2(target.y-body.getPosition().y,target.x-body.getPosition().x);
         body.applyForceToCenter(MathUtils.cos(radians)*200,MathUtils.sin(radians)*200,true);
-        Gdx.app.log("FuerzaX - FuerzaY",MathUtils.cos(radians)*200+ " - " + MathUtils.sin(radians)*200);
+
         float hip = body.getLinearVelocity().len();
-        Gdx.app.log("Speed",""+hip);
+
         if(hip > TOP_SPEED){
             body.setLinearVelocity(body.getLinearVelocity().scl(TOP_SPEED /hip));
         }

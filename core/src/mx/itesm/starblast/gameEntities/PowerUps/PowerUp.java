@@ -66,7 +66,5 @@ public abstract class PowerUp extends PlayableEntity implements IPowerUp {
 
     public void addTime(float delta){
         currentTime += (int)(delta*1000);
-        Gdx.app.log("PowerUp","Delta: "+(delta*1000));
-        Gdx.app.log("PowerUp",""+currentTime);
     }
 }
