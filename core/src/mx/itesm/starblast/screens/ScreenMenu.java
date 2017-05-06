@@ -2,7 +2,6 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -88,11 +87,12 @@ public class ScreenMenu extends ScreenSB {
         btnPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Constant.isGameHelp = true;
                 Gdx.app.log("ScreenMenu ", "Going to History mode");
                 PreferencesSB.clickedSound();
                 int level = PreferencesSB.readLevelProgress();
                 if (level == 1) {
-                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL1));
+                    menu.setScreen(new ScreenLoading(menu, Constant.Screens.HELP));
                 } else if (level == 2) {
                     if (PreferencesSB.getMinigameCount() > 0) {
                         menu.setScreen(new ScreenLoading(menu, Constant.Screens.LEVEL2));

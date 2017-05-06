@@ -65,5 +65,6 @@ public abstract class Constant {
     public static final int MISSILE_EXPLOSION_SIZE_Y = 150;
 
     public static Sound clickSound = Gdx.audio.newSound(Gdx.files.internal("SoundEffects/SelectionSound.mp3"));
+    public static boolean isGameHelp;
 
 }

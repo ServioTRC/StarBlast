@@ -420,6 +420,7 @@ public class ScreenLoading extends ScreenSB {
 
     private void loadHelp() {
         Constant.MANAGER.load("HelpScreen/TutorialMask.png", Texture.class);
+        Constant.MANAGER.load("HelpScreen/TutorialMaskOptions.png", Texture.class);
         Constant.MANAGER.load("HelpScreen/TutorialScreen.png", Texture.class);
     }
 }

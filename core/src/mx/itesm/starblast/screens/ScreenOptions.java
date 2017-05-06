@@ -273,6 +273,7 @@ class ScreenOptions extends ScreenSB {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PreferencesSB.clickedSound();
+                Constant.isGameHelp = false;
                 menu.setScreen(new ScreenLoading(menu, Constant.Screens.HELP));
             }
         });

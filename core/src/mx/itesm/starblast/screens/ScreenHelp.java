@@ -37,7 +37,8 @@ public class ScreenHelp extends ScreenSB{
                 if (keycode == Input.Keys.BACK) {
                     Gdx.app.log("ScreenOptions ", "Going to ScreenMenu");
                     PreferencesSB.clickedSound();
-                    starBlast.setScreen(new ScreenOptions(starBlast));
+                    starBlast.setScreen(Constant.isGameHelp ? new ScreenMenu(starBlast):
+                            new ScreenOptions(starBlast));
                     return true;
                 }
                 return super.keyDown(keycode);
@@ -52,7 +53,8 @@ public class ScreenHelp extends ScreenSB{
 
     private void createTapToContinue() {
         Skin skin = new Skin();
-        skin.add("Continue", Constant.MANAGER.get("HelpScreen/TutorialMask.png",Texture.class));
+        skin.add("Continue", Constant.isGameHelp ? Constant.MANAGER.get("HelpScreen/TutorialMask.png",Texture.class):
+                Constant.MANAGER.get("HelpScreen/TutorialMaskOptions.png",Texture.class));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Continue");
@@ -64,7 +66,8 @@ public class ScreenHelp extends ScreenSB{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 PreferencesSB.clickedSound();
-                starBlast.setScreen(new ScreenLoading(starBlast, Constant.Screens.OPTIONS));
+                starBlast.setScreen(new ScreenLoading(starBlast, Constant.isGameHelp ? Constant.Screens.LEVEL1:
+                        Constant.Screens.OPTIONS));
                 return true;
             }
         });
