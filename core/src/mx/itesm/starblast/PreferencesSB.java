@@ -102,11 +102,7 @@ public class PreferencesSB {
             //gana
             Gdx.app.log("Cheats", "speed run");
             PreferencesSB.saveLevelProgress(PreferencesSB.readLevelProgress() > 3 ? 1 : 4);
-            Preferences pref = Gdx.app.getPreferences("Minigames");
-            pref.putBoolean("1", true);
-            pref.putBoolean("2", true);
-            pref.putBoolean("3", true);
-            pref.flush();
+            PreferencesSB.unlockMinigames();
         } else if (code.equals("mario party")) {
             //unlock minigames
         } else if (code.equals("uuddlrlrab")) {
@@ -114,10 +110,10 @@ public class PreferencesSB {
             prefs.putBoolean("konami", !prefs.getBoolean("konami", false));
         } else if (code.equals("360 no scope")) {
             //homing misiles (and bullets)
-        } else if(code.equals("hard as nails")) {
+        } else if (code.equals("hard as nails")) {
             //extra colision damage
             prefs.putBoolean("nails", !prefs.getBoolean("nails", false));
-        }else if (code.split(" ")[0].equals("lvl")) {
+        } else if (code.split(" ")[0].equals("lvl")) {
             String[] tmp = code.split(" ");
             if (tmp.length == 2) {
                 int level;
@@ -149,35 +145,38 @@ public class PreferencesSB {
                 tmpPref.putBoolean(mng + "", true);
                 tmpPref.flush();
             }
+        } else if (code.equals("boss only")) {
+            prefs.putBoolean("boss", !prefs.getBoolean("boss", false));
         }
         prefs.flush();
     }
 
-    public static void saveMinigameProgress(int minigame) {
+    public static void saveMinigameProgress(int minigame, boolean count) {
         Preferences prefs = Gdx.app.getPreferences("Minigames");
         if (!prefs.getBoolean("" + minigame, false)) {
             prefs.putBoolean("" + minigame, true);
+            if (count) {
+                prefs.putInteger("count", prefs.getInteger("count", 0) + 1);
+            }
             prefs.flush();
         }
     }
 
-    public static int getMinigameCount() {
-        Preferences prefs = Gdx.app.getPreferences("Minigames");
-        int toR = 0;
-        if (prefs.getBoolean("1", false)) {
-            toR++;
-        }
-        if (prefs.getBoolean("2", false)) {
-            toR++;
-        }
-        if (prefs.getBoolean("3", false)) {
-            toR++;
-        }
-        return toR;
+    public static void unlockMinigames() {
+        Preferences pref = Gdx.app.getPreferences("Minigames");
+        pref.putBoolean("1", true);
+        pref.putBoolean("2", true);
+        pref.putBoolean("3", true);
+        pref.flush();
     }
 
-    public static void clickedSound(){
-        if(PreferencesSB.SOUNDS_ENABLE)
+    public static int getMinigameCount() {
+        Preferences prefs = Gdx.app.getPreferences("Minigames");
+        return prefs.getInteger("count", 0);
+    }
+
+    public static void clickedSound() {
+        if (PreferencesSB.SOUNDS_ENABLE)
             Constant.clickSound.play(0.5f);
     }
 

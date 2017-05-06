@@ -204,6 +204,7 @@ public class ScreenLoading extends ScreenSB {
                         nextScreen = Constant.Screens.LEVEL3;
                         break;
                     default:
+                        PreferencesSB.unlockMinigames();
                         nextScreen = Constant.Screens.ENDLESS;
                         break;
                 }

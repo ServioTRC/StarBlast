@@ -64,7 +64,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame1Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("1", false) ^ story;
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("1", false) | story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame1" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
@@ -87,7 +87,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame2Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("2", false) ^ story;
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("2", false) | story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame2" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();
@@ -111,7 +111,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
     }
 
     private void createMinigame3Button() {
-        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("3", false) ^ story;
+        boolean active = Gdx.app.getPreferences("Minigames").getBoolean("3", false) | story;
         Skin skin = new Skin();
         skin.add("up", Constant.MANAGER.get("MinigameSelectionScreen/ButtonMinigame3" + (active ? "" : "Grey") + ".png", Texture.class));
         Button.ButtonStyle style = new Button.ButtonStyle();

@@ -42,7 +42,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
     private ArrayList<AutoAnimation> animations = new ArrayList<AutoAnimation>();
     private Random r = new Random();
     private Text textScore;
-    private int tries = 5;
+    private int tries = 4;
     private int crystalFound = 0;
     private Sprite endingSprite;
     private boolean ended;
@@ -246,7 +246,8 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             textScore.showMessage(batch, Integer.toString(tries),
                     Constant.SCREEN_WIDTH / 2 - 30, Constant.SCREEN_HEIGTH - 50, Color.GREEN);
         } else {
-            PreferencesSB.saveMinigameProgress(3);
+            PreferencesSB.saveMinigameProgress(3, isStoryMode);
+
             endingSprite.draw(batch);
         }
         batch.end();
