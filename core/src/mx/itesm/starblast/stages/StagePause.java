@@ -1,6 +1,5 @@
 package mx.itesm.starblast.stages;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,7 +40,6 @@ public class StagePause extends Stage {
         createSoundButton();
         createMusicButton();
         createBackButton();
-        createCodesButton();
         createReturnButton();
     }
 
@@ -73,38 +71,6 @@ public class StagePause extends Stage {
         tbt.setPosition(3 * Constant.SCREEN_WIDTH / 4 - 75,
                 105, Align.center);
         addActor(tbt);
-    }
-
-    private void createCodesButton() {
-        Skin skin = new Skin();
-        skin.add("Up", Constant.MANAGER.get("SettingsScreen/ButtonCodes.png", Texture.class));
-
-        Button.ButtonStyle style = new Button.ButtonStyle();
-        style.up = skin.getDrawable("Up");
-
-        final Button btn = new Button(style);
-        btn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                PreferencesSB.clickedSound();
-                Input.TextInputListener textListener = new Input.TextInputListener() {
-                    @Override
-                    public void input(String input) {
-                        PreferencesSB.activateCheatCode(input, menu);
-                    }
-
-                    @Override
-                    public void canceled() {
-                        Gdx.app.log("Codigo Ingresado: ", "Salida del teclado");
-                    }
-                };
-
-                Gdx.input.getTextInput(textListener, "Ingresar Código: ", "", "");
-            }
-        });
-        btn.setPosition(3 * Constant.SCREEN_WIDTH / 4,
-                Constant.SCREEN_HEIGTH / 2 - 25, Align.center);
-        addActor(btn);
     }
 
     private void createBackButton() {
