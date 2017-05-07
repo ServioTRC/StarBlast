@@ -166,8 +166,8 @@ public class PreferencesSB {
             if (count) {
                 prefs.putInteger("count", prefs.getInteger("count", 0) + 1);
             }
-            prefs.flush();
         }
+        prefs.flush();
     }
 
     public static void unlockMinigames() {
