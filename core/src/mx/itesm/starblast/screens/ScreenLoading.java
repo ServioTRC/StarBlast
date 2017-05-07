@@ -142,21 +142,21 @@ public class ScreenLoading extends ScreenSB {
                 menu.setScreen(new ScreenMinigamesSelection(menu, story));
                 break;
             case MINI1:
-                if (Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+                if (Gdx.app.getPreferences("Tutos").getBoolean("1", false)) {
                     menu.setScreen(new ScreenMinigame1(menu, story));
                 } else {
                     menu.setScreen(new ScreenTutoMG(menu, story, 1));
                 }
                 break;
             case MINI2:
-                if (Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+                if (Gdx.app.getPreferences("Tutos").getBoolean("2", false)) {
                     menu.setScreen(new ScreenMinigame2(menu, story));
                 } else {
                     menu.setScreen(new ScreenTutoMG(menu, story, 2));
                 }
                 break;
             case MINI3:
-                if (Gdx.app.getPreferences("Minigames").getBoolean("3", false)) {
+                if (Gdx.app.getPreferences("Tutos").getBoolean("3", false)) {
                     menu.setScreen(new ScreenMinigame3(menu, story));
                 } else {
                     menu.setScreen(new ScreenTutoMG(menu, story, 3));
@@ -369,7 +369,7 @@ public class ScreenLoading extends ScreenSB {
             }
         }
 
-        if (!Gdx.app.getPreferences("Minigames").getBoolean("1", false)) {
+        if (!Gdx.app.getPreferences("Tutos").getBoolean("1", false)) {
             Constant.MANAGER.load("Minigame1Screen/SplashTutorial1.png", Texture.class);
             Constant.MANAGER.load("Minigame1Screen/SplashTutorial2.png", Texture.class);
         }
@@ -391,7 +391,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("SoundEffects/Explosion1.mp3", Sound.class);
         Constant.MANAGER.load("SoundEffects/PowerupPickupSound.wav", Sound.class);
 
-        if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+        if (!Gdx.app.getPreferences("Tutos").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame2Screen/SplashTutorial1.png", Texture.class);
             Constant.MANAGER.load("Minigame2Screen/SplashTutorial2.png", Texture.class);
         }
@@ -412,7 +412,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("Minigame3Screen/Minigame3Crystal.png", Texture.class);
         Constant.MANAGER.load("Minigame3Screen/RockBreakingAnimation.png", Texture.class);
 
-        if (!Gdx.app.getPreferences("Minigames").getBoolean("2", false)) {
+        if (!Gdx.app.getPreferences("Tutos").getBoolean("2", false)) {
             Constant.MANAGER.load("Minigame3Screen/SplashTutorial1.png", Texture.class);
             Constant.MANAGER.load("Minigame3Screen/SplashTutorial2.png", Texture.class);
         }

@@ -30,7 +30,7 @@ public class ScreenTutoMG extends ScreenSB {
         this.isStoryMode = isStoryMode;
         this.numMG = numMG;
         tutorialTextures = new Array<Texture>();
-        if(PreferencesSB.getMinigameCount() == 0){
+        if (PreferencesSB.getMinigameCount() == 0) {
             tutorialTextures.add(new Texture("MinigameSelectionScreen/SplashTutorial1.png"));
         }
     }
@@ -51,9 +51,8 @@ public class ScreenTutoMG extends ScreenSB {
                 if (keycode == Input.Keys.BACK) {
                     numImage--;
                     if (numImage < 0) {
-                        menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, isStoryMode));
-                    }
-                    else{
+                        menu.setScreen(isStoryMode ? new ScreenMenu(menu) : new ScreenMinigamesSelection(menu, false));
+                    } else {
                         tutorial.setTexture(tutorialTextures.get(numImage));
                     }
                     return true;
@@ -65,22 +64,22 @@ public class ScreenTutoMG extends ScreenSB {
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 PreferencesSB.clickedSound();
                 numImage++;
-                if(numImage >= tutorialTextures.size){
-                    switch (numMG){
+                if (numImage >= tutorialTextures.size) {
+                    Gdx.app.getPreferences("Tutos").putBoolean("" + numMG, true).flush();
+                    switch (numMG) {
                         case 1:
-                            menu.setScreen(new ScreenMinigame1(menu,isStoryMode));
+                            menu.setScreen(new ScreenMinigame1(menu, isStoryMode));
                             break;
                         case 2:
-                            menu.setScreen(new ScreenMinigame2(menu,isStoryMode));
+                            menu.setScreen(new ScreenMinigame2(menu, isStoryMode));
                             break;
                         case 3:
-                            menu.setScreen(new ScreenMinigame3(menu,isStoryMode));
+                            menu.setScreen(new ScreenMinigame3(menu, isStoryMode));
                             break;
                         default:
                             break;
                     }
-                }
-                else{
+                } else {
                     tutorial.setTexture(tutorialTextures.get(numImage));
                 }
                 return true;
