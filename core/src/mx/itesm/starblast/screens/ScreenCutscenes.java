@@ -28,6 +28,8 @@ class ScreenCutscenes extends ScreenSB {
     private float currentTime = 0;
     private Sprite tapToContinue;
     private Texture background;
+    private boolean inTransition;
+    private float transitionTime;
 
     ScreenCutscenes(StarBlast app, Constant.Screens screen) {
         this(app, screen, false);
@@ -98,7 +100,8 @@ class ScreenCutscenes extends ScreenSB {
                 if (keyCode == Input.Keys.BACK) {
                     num--;
                     if (num >= 0) {
-                        sprite.setTexture(textures.get(num));
+//                        sprite.setTexture(textures.get(num));
+                        inTransition = true;
                     } else {
                         app.setScreen(new ScreenMenu(app));
                     }
@@ -114,7 +117,8 @@ class ScreenCutscenes extends ScreenSB {
                 }
                 num++;
                 if (num < textures.size()) {
-                    sprite.setTexture(textures.get(num));
+//                    sprite.setTexture(textures.get(num));
+                    inTransition = true;
                 } else {
                     switch (screen) {
                         case LEVEL1:
@@ -157,6 +161,22 @@ class ScreenCutscenes extends ScreenSB {
 
     @Override
     public void render(float delta) {
+        if (inTransition) {
+            transitionTime += delta;
+            if (transitionTime >= 0.5f) {
+                sprite.setTexture(textures.get(num));
+            }
+            if (transitionTime >= 1f) {
+                transitionTime = 0;
+                inTransition = false;
+            }
+            clearScreen();
+            batch.begin();
+            sprite.setAlpha((MathUtils.cos(MathUtils.PI2 * transitionTime) + 1) / 2f);
+            sprite.draw(batch);
+            batch.end();
+            return;
+        }
         batch.begin();
         batch.draw(background, 0, 0);
         sprite.draw(batch);
