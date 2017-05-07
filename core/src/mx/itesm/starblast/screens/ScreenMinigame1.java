@@ -75,6 +75,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
     ScreenMinigame1(StarBlast menu, boolean isStoryMode) {
         this.menu = menu;
         this.isStoryMode = isStoryMode;
+        Gdx.app.getPreferences("Tutos").putBoolean("" + 1, true).flush();
     }
 
     @Override

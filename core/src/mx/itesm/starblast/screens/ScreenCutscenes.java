@@ -5,57 +5,80 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 
+import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 
 class ScreenCutscenes extends ScreenSB {
 
-    private int level;
+    private boolean isStoryMode;
+    private Constant.Screens screen;
     StarBlast app;
     private ArrayList<Texture> textures = new ArrayList<Texture>();
     private SpriteBatch batch;
     private int num = 0;
     private Sprite sprite;
     private long startTime;
+    private float currentTime = 0;
+    private Sprite tapToContinue;
+    private Texture background;
 
-    ScreenCutscenes(StarBlast app, int level) {
+    ScreenCutscenes(StarBlast app, Constant.Screens screen) {
+        this(app, screen, false);
+    }
+
+    ScreenCutscenes(StarBlast app, Constant.Screens screen, boolean isStoryMode) {
         super();
         this.app = app;
-        this.level = level;
-        //TODO kp2 con el ending
-        switch (level) {
-            case 1:
+        this.screen = screen;
+        this.isStoryMode = isStoryMode;
+        background = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
+        switch (screen) {
+            case LEVEL1:
                 for (int i = 1; i < 6; i++) {
                     textures.add(new Texture("StoryScreen/Intro/Level1_Story" + i + ".jpg"));
                 }
                 textures.add(new Texture("StoryScreen/Intro/Mision1.jpg"));
                 break;
-            case 2:
+            case LEVEL2:
                 for (int i = 1; i < 3; i++) {
                     textures.add(new Texture("StoryScreen/Level 2/Level2_Story" + i + ".jpg"));
                 }
                 textures.add(new Texture("StoryScreen/Level 2/Mision2.jpg"));
                 break;
-            case 3:
+            case LEVEL3:
                 for (int i = 1; i < 3; i++) {
                     textures.add(new Texture("StoryScreen/Level 3/Level3_Story" + i + ".jpg"));
                 }
                 textures.add(new Texture("StoryScreen/Level 3/Mision3.jpg"));
                 break;
-            case 4:
+            case ENDLESS:
                 for (int i = 1; i < 3; i++) {
                     textures.add(new Texture("StoryScreen/Ending/Ending" + i + ".jpg"));
                 }
                 textures.add(new Texture("StoryScreen/Ending/TheEnd.jpg"));
                 textures.add(new Texture("StoryScreen/Ending/EndlessIntro.jpg"));
                 break;
-            default:
-                app.setScreen(new ScreenMenu(app));
+            case MINI1:
+                textures.add(new Texture("Minigame1Screen/SplashTutorial1.png"));
+                textures.add(new Texture("Minigame1Screen/SplashTutorial2.png"));
+                break;
+            case MINI2:
+                textures.add(new Texture("Minigame2Screen/SplashTutorial1.png"));
+                textures.add(new Texture("Minigame2Screen/SplashTutorial2.png"));
+                break;
+            case MINI3:
+                textures.add(new Texture("Minigame3Screen/SplashTutorial1.png"));
+                textures.add(new Texture("Minigame3Screen/SplashTutorial2.png"));
+                break;
+            case MINIGAMES:
+                textures.add(new Texture("MinigameSelectionScreen/SplashTutorial1.png"));
                 break;
         }
     }
@@ -65,6 +88,9 @@ class ScreenCutscenes extends ScreenSB {
         batch = new SpriteBatch();
         sprite = new Sprite(textures.get(0));
         startTime = TimeUtils.millis();
+        tapToContinue = new Sprite(new Texture("StoryScreen/BannerTapToContinue.png"));
+        tapToContinue.setY(Constant.SCREEN_HEIGTH - tapToContinue.getHeight() - 20);
+        tapToContinue.setX(Constant.SCREEN_WIDTH - tapToContinue.getWidth() - 20);
         Stage stage = new Stage(view, batch) {
             @Override
             public boolean keyDown(int keyCode) {
@@ -90,21 +116,30 @@ class ScreenCutscenes extends ScreenSB {
                 if (num < textures.size()) {
                     sprite.setTexture(textures.get(num));
                 } else {
-                    switch (level) {
-                        case 1:
+                    switch (screen) {
+                        case LEVEL1:
                             app.setScreen(new Level1(app));
                             break;
-                        case 2:
+                        case LEVEL2:
                             app.setScreen(new Level2(app));
                             break;
-                        case 3:
+                        case LEVEL3:
                             app.setScreen(new Level3(app));
                             break;
-                        case 4:
+                        case ENDLESS:
                             app.setScreen(new EndlessScreen(app));
                             break;
-                        default:
-                            app.setScreen(new ScreenMenu(app));
+                        case MINI1:
+                            app.setScreen(new ScreenMinigame1(app, isStoryMode));
+                            break;
+                        case MINI2:
+                            app.setScreen(new ScreenMinigame2(app, isStoryMode));
+                            break;
+                        case MINI3:
+                            app.setScreen(new ScreenMinigame3(app, isStoryMode));
+                            break;
+                        case MINIGAMES:
+                            app.setScreen(new ScreenMinigamesSelection(app, isStoryMode));
                             break;
                     }
                 }
@@ -113,12 +148,23 @@ class ScreenCutscenes extends ScreenSB {
         };
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);
+
+
+        if (screen == Constant.Screens.MINIGAMES && PreferencesSB.getMinigameCount() > 0) {
+            app.setScreen(new ScreenMinigamesSelection(app, isStoryMode));
+        }
     }
 
     @Override
     public void render(float delta) {
         batch.begin();
+        batch.draw(background, 0, 0);
         sprite.draw(batch);
+        if (num == 0) {
+            currentTime += delta;
+            tapToContinue.setAlpha((MathUtils.cos(MathUtils.PI * currentTime) + 1) / 2f);
+            tapToContinue.draw(batch);
+        }
         batch.end();
     }
 

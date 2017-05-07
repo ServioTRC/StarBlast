@@ -15,7 +15,6 @@ public class EndlessScreen extends LevelStory {
     EndlessScreen(StarBlast app) {
         super(app, 5, 2, 0, 3, 0);
         lostWonStage = new StageLostEndless(view, batch, app);
-        Gdx.app.getPreferences("Levels").putBoolean("firstEndles", false).flush();
     }
 
     @Override

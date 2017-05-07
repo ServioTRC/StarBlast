@@ -66,6 +66,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
         this.isStoryMode = isStoryMode;
         countdownAnimation = new AnimatedImage(new Animation<TextureRegion>(1f, new TextureRegion(Constant.MANAGER.get("Minigame2Screen/ErrorAnimation.png", Texture.class)).split(1280, 800)[0]));
         countdownAnimation.setPosition(Constant.SCREEN_WIDTH / 2, Constant.SCREEN_HEIGTH / 2, Align.center);
+        Gdx.app.getPreferences("Tutos").putBoolean("" + 2, true).flush();
     }
 
     @Override

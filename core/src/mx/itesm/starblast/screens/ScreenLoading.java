@@ -128,41 +128,41 @@ public class ScreenLoading extends ScreenSB {
                 break;
             case LEVEL1:
 //                menu.setScreen(new Level1(menu));
-                menu.setScreen(new ScreenCutscenes(menu, 1));
+                menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.LEVEL1));
                 break;
             case LEVEL2:
 //                menu.setScreen(new Level2(menu));
-                menu.setScreen(new ScreenCutscenes(menu, 2));
+                menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.LEVEL2));
                 break;
             case LEVEL3:
 //                menu.setScreen(new Level3(menu));
-                menu.setScreen(new ScreenCutscenes(menu, 3));
+                menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.LEVEL3));
                 break;
             case ENDLESS:
-                menu.setScreen(Gdx.app.getPreferences("Levels").getBoolean("firstEndles", true) ? new ScreenCutscenes(menu, 4) : new EndlessScreen(menu));
+                menu.setScreen(story ? new ScreenCutscenes(menu, Constant.Screens.ENDLESS) : new EndlessScreen(menu));
                 break;
             case MINIGAMES:
-                menu.setScreen(new ScreenMinigamesSelection(menu, story));
+                menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.MINIGAMES, story));
                 break;
             case MINI1:
                 if (Gdx.app.getPreferences("Tutos").getBoolean("1", false)) {
                     menu.setScreen(new ScreenMinigame1(menu, story));
                 } else {
-                    menu.setScreen(new ScreenTutoMG(menu, story, 1));
+                    menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.MINI1, story));
                 }
                 break;
             case MINI2:
                 if (Gdx.app.getPreferences("Tutos").getBoolean("2", false)) {
                     menu.setScreen(new ScreenMinigame2(menu, story));
                 } else {
-                    menu.setScreen(new ScreenTutoMG(menu, story, 2));
+                    menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.MINI2, story));
                 }
                 break;
             case MINI3:
                 if (Gdx.app.getPreferences("Tutos").getBoolean("3", false)) {
                     menu.setScreen(new ScreenMinigame3(menu, story));
                 } else {
-                    menu.setScreen(new ScreenTutoMG(menu, story, 3));
+                    menu.setScreen(new ScreenCutscenes(menu, Constant.Screens.MINI3, story));
                 }
                 break;
             case SCORES:
@@ -209,6 +209,8 @@ public class ScreenLoading extends ScreenSB {
                         break;
                     default:
                         PreferencesSB.unlockMinigames();
+                        Gdx.app.getPreferences("Levels").putBoolean("gameWon", true).flush();
+                        story = true;
                         nextScreen = Constant.Screens.ENDLESS;
                         break;
                 }

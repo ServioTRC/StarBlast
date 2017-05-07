@@ -105,6 +105,7 @@ public class PreferencesSB {
             //gana
             Gdx.app.log("Cheats", "speed run");
             PreferencesSB.saveLevelProgress(PreferencesSB.readLevelProgress() > 3 ? 1 : 4);
+            Gdx.app.getPreferences("Levels").putBoolean("gameWon", true).flush();
             PreferencesSB.unlockMinigames();
         } else if (code.equals("mario party")) {
             //unlock minigames
@@ -150,6 +151,8 @@ public class PreferencesSB {
             }
         } else if (code.equals("boss only")) {
             prefs.putBoolean("boss", !prefs.getBoolean("boss", false));
+        } else if (code.equals("golden boy")) {
+            prefs.putBoolean("golden", !prefs.getBoolean("golden", false));
         }
         prefs.flush();
     }

@@ -16,7 +16,7 @@ import mx.itesm.starblast.Constant;
 import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 
-public class ScreenMinigamesSelection extends ScreenSB {
+class ScreenMinigamesSelection extends ScreenSB {
     private final StarBlast menu;
     private final boolean story;
 
@@ -26,17 +26,13 @@ public class ScreenMinigamesSelection extends ScreenSB {
     //Escenas
     private Stage selectionScene;
 
-    public ScreenMinigamesSelection(StarBlast menu, boolean story) {
+    ScreenMinigamesSelection(StarBlast menu, boolean story) {
         this.menu = menu;
         this.story = story;
     }
 
     @Override
     public void show() {
-        creatingObjects();
-    }
-
-    private void creatingObjects() {
         batch = new SpriteBatch();
         selectionScene = new Stage(view, batch) {
             @Override
@@ -157,11 +153,7 @@ public class ScreenMinigamesSelection extends ScreenSB {
 
     @Override
     public void render(float delta) {
-        clearScreen();
         selectionScene.draw();
-        batch.begin();
-
-        batch.end();
     }
 
     @Override

@@ -2,6 +2,7 @@ package mx.itesm.starblast.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -119,7 +120,7 @@ public class ScreenMenu extends ScreenSB {
     }
 
     private void creatingEndlessButton() {
-        final boolean active = PreferencesSB.readLevelProgress() > 3 || !Gdx.app.getPreferences("Levels").getBoolean("firstEndles", true);
+        final boolean active = Gdx.app.getPreferences("Levels").getBoolean("gameWon", false);
         textButtonStyle = text.generateText(active ? Color.BLUE : Color.GRAY, active ? Color.GOLD : Color.GRAY, 1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, 3 * Constant.SCREEN_HEIGTH / 8 - btnPlay.getHeight() / 2 + 80);
