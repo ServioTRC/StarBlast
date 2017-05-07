@@ -36,7 +36,7 @@ public class ScreenMenu extends ScreenSB {
 
     @Override
     public void show() {
-        menu.changeMusic(Constant.ORIGINAL_MUSIC);
+        menu.changeMusic("SoundEffects/MenuMusic.mp3");
         backgroundTexture = new Texture("MainScreen/MainScreen.jpg");
         creatingObjects();
     }
