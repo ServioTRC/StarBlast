@@ -127,16 +127,19 @@ public class ScreenLoading extends ScreenSB {
             case MENU:
                 break;
             case LEVEL1:
-                menu.setScreen(new Level1(menu));
+//                menu.setScreen(new Level1(menu));
+                menu.setScreen(new ScreenCutscenes(menu, 1));
                 break;
             case LEVEL2:
-                menu.setScreen(new Level2(menu));
+//                menu.setScreen(new Level2(menu));
+                menu.setScreen(new ScreenCutscenes(menu, 2));
                 break;
             case LEVEL3:
-                menu.setScreen(new Level3(menu));
+//                menu.setScreen(new Level3(menu));
+                menu.setScreen(new ScreenCutscenes(menu, 3));
                 break;
             case ENDLESS:
-                menu.setScreen(new EndlessScreen(menu));
+                menu.setScreen(Gdx.app.getPreferences("Levels").getBoolean("firstEndles", true) ? new ScreenCutscenes(menu, 4) : new EndlessScreen(menu));
                 break;
             case MINIGAMES:
                 menu.setScreen(new ScreenMinigamesSelection(menu, story));

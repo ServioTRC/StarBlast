@@ -119,7 +119,7 @@ public class ScreenMenu extends ScreenSB {
     }
 
     private void creatingEndlessButton() {
-        final boolean active = PreferencesSB.readLevelProgress() > 3;
+        final boolean active = PreferencesSB.readLevelProgress() > 3 || !Gdx.app.getPreferences("Levels").getBoolean("firstEndles", true);
         textButtonStyle = text.generateText(active ? Color.BLUE : Color.GRAY, active ? Color.GOLD : Color.GRAY, 1);
         TextButton btnPlay = new TextButton("MODO ENDLESS", textButtonStyle);
         btnPlay.setPosition(Constant.SCREEN_WIDTH / 2 - btnPlay.getWidth() / 2, 3 * Constant.SCREEN_HEIGTH / 8 - btnPlay.getHeight() / 2 + 80);

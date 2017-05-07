@@ -15,6 +15,7 @@ public class EndlessScreen extends LevelStory {
     EndlessScreen(StarBlast app) {
         super(app, 5, 2, 0, 3, 0);
         lostWonStage = new StageLostEndless(view, batch, app);
+        Gdx.app.getPreferences("Levels").putBoolean("firstEndles", false).flush();
     }
 
     @Override
@@ -39,7 +40,7 @@ public class EndlessScreen extends LevelStory {
         time += delta * 10;
         if (youLost) {
             pauseIP();
-            if(!scoreSet) {
+            if (!scoreSet) {
                 lostWonStage.setScore(score - (int) time);
                 scoreSet = true;
             }
