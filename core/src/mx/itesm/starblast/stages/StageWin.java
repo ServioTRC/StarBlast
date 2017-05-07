@@ -1,6 +1,5 @@
 package mx.itesm.starblast.stages;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import mx.itesm.starblast.Constant;
@@ -17,14 +17,15 @@ import mx.itesm.starblast.PreferencesSB;
 import mx.itesm.starblast.StarBlast;
 import mx.itesm.starblast.screens.ScreenLoading;
 import mx.itesm.starblast.screens.ScreenMenu;
-import mx.itesm.starblast.screens.ScreenMinigamesSelection;
 
 public class StageWin extends Stage {
 
     private final StarBlast app;
+    private long startTime;
 
     public StageWin(Viewport viewport, Batch batch, StarBlast menu) {
         super(viewport, batch);
+        startTime = TimeUtils.millis();
         app = menu;
 
         Image img = new Image(Constant.MANAGER.get("GameScreen/SpriteStageClear.png", Texture.class));
@@ -40,16 +41,11 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(TimeUtils.millis() - startTime < 500){
+                    return;
+                }
                 PreferencesSB.clickedSound();
-//                int level = PreferencesSB.readLevelProgress();
                 app.setScreen(new ScreenLoading(app, Constant.Screens.MINIGAMES, true));
-//                if (level == 2) {
-//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI1, true));
-//                } else if (level == 3) {
-//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI2, true));
-//                } else if (level >= 4) {
-//                    app.setScreen(new ScreenLoading(app, Constant.Screens.MINI3, true));
-//                }
             }
         });
         addActor(btn);
@@ -63,6 +59,9 @@ public class StageWin extends Stage {
         btn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(TimeUtils.millis() - startTime < 500){
+                    return;
+                }
                 PreferencesSB.clickedSound();
                 app.setScreen(new ScreenMenu(app));
             }
