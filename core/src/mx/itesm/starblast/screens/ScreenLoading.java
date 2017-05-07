@@ -56,6 +56,7 @@ public class ScreenLoading extends ScreenSB {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(null);
         creatingProgressBar();
         creatingTexts();
         loadNextScreen();
