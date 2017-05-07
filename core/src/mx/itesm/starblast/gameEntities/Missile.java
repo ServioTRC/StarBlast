@@ -15,6 +15,7 @@ public class Missile extends Bullet implements IExplotable {
 
     private final float ACCELERATION = 1.1f;
     private final float VELOCITY = 2;
+    private final int EXPLOSION_DAMAGE;
     private World world;
     private int life = 20;
     SpriteBatch batch;
@@ -23,12 +24,14 @@ public class Missile extends Bullet implements IExplotable {
     private Explosion explosion;
 
 
-    Missile(Vector2 v, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture) {
-        this(v.x,v.y,world,angle,enemy,damage,batch,texture);
+    Missile(Vector2 v, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture, int explosionDamage) {
+        this(v.x,v.y,world,angle,enemy,damage,batch,texture,explosionDamage);
     }
 
-    Missile(float x,float y, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture) {
+    Missile(float x,float y, World world, float angle, boolean enemy, int damage,SpriteBatch batch, Texture texture, int explosionDamage) {
         super(x,y, world, angle, enemy, damage, texture);
+
+        EXPLOSION_DAMAGE = explosionDamage;
 
         density = 0.5f;
         restitution = 0;
@@ -74,7 +77,7 @@ public class Missile extends Bullet implements IExplotable {
         this.life -= damage;
         if(life < 0){
             AutoAnimation anim = new AutoAnimation(Constant.MANAGER.get("Animations/ExplosionMissileFrames.png", Texture.class), 0.15f, Constant.toScreenSize(body.getPosition().x), Constant.toScreenSize(body.getPosition().y), Constant.MISSILE_EXPLOSION_SIZE_X, Constant.MISSILE_EXPLOSION_SIZE_Y,batch);;
-            explosion = new Explosion(new Vector2(body.getPosition()),world, anim, 100);
+            explosion = new Explosion(new Vector2(body.getPosition()),world, anim, EXPLOSION_DAMAGE);
             return true;
         }
         else{
