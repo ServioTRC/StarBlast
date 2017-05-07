@@ -70,6 +70,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
 
     @Override
     public void show() {
+        menu.changeMusic("SoundEffects/MinigameMusic" + (new Random().nextInt(2) + 1) + ".mp3");
         createObjects();
         startingTime = TimeUtils.millis();
     }
@@ -148,7 +149,7 @@ class ScreenMinigame2 extends ScreenSB implements InputProcessor {
                     Constant.SCREEN_WIDTH / 2, 60, Color.GREEN);
             backButtonSprite.draw(batch);
         } else {
-            PreferencesSB.saveMinigameProgress(2, isStoryMode,won);
+            PreferencesSB.saveMinigameProgress(2, isStoryMode, won);
             endingSprite.draw(batch);
         }
         batch.end();

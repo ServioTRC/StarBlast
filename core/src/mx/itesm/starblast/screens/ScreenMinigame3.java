@@ -82,6 +82,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
 
     @Override
     public void show() {
+        menu.changeMusic("SoundEffects/MinigameMusic" + (new Random().nextInt(2) + 1) + ".mp3");
         createObjects();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(this);
@@ -249,7 +250,7 @@ class ScreenMinigame3 extends ScreenSB implements InputProcessor {
             textScore.showMessage(batch, Integer.toString(tries),
                     Constant.SCREEN_WIDTH / 2 - 30, Constant.SCREEN_HEIGTH - 50, Color.GREEN);
         } else {
-            PreferencesSB.saveMinigameProgress(3, isStoryMode,won);
+            PreferencesSB.saveMinigameProgress(3, isStoryMode, won);
 
             endingSprite.draw(batch);
         }

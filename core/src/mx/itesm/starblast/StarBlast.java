@@ -58,11 +58,16 @@ public class StarBlast extends Game {
     }
 
     public void changeMusic(String music) {
+        if (Gdx.app.getPreferences("Codes").getBoolean("darude", false)) {
+            return;
+        }
         pauseMusic();
         Constant.MANAGER.load(music, Music.class);
         Constant.MANAGER.finishLoading();
         backgroundMusic = Constant.MANAGER.get(music);
-        playMusic();
+        if (PreferencesSB.MUSIC_ENABLE) {
+            playMusic();
+        }
     }
 
 }

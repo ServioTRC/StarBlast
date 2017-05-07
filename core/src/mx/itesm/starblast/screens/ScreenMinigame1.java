@@ -79,6 +79,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
     @Override
     public void show() {
+        menu.changeMusic("SoundEffects/MinigameMusic" + (new Random().nextInt(2) + 1) + ".mp3");
         batch = new SpriteBatch();
         minigame1Scene = new Stage(view, batch);
         Image imgFondo = new Image(Constant.MANAGER.get("Minigame1Screen/Minigame1Background.jpg", Texture.class));
@@ -145,7 +146,7 @@ class ScreenMinigame1 extends ScreenSB implements InputProcessor {
 
         backButtonSprite.draw(batch);
         if (ended) {
-            PreferencesSB.saveMinigameProgress(1, isStoryMode,won);
+            PreferencesSB.saveMinigameProgress(1, isStoryMode, won);
             endingSprite.draw(batch);
         } else {
             textScore.showMessage(batch, Long.toString((90000 - (TimeUtils.millis() - startingTime)) / 1000),
