@@ -271,6 +271,9 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("GameScreen/Enemy1Sprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Enemy2Sprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Enemy3Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy4Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy5Sprite.png", Texture.class);
+        Constant.MANAGER.load("GameScreen/Enemy6Sprite.png", Texture.class);
         Constant.MANAGER.load("GameScreen/Pause.png", Texture.class);
         Constant.MANAGER.load("GameScreen/SpriteStageClear.png", Texture.class);
         Constant.MANAGER.load("Animations/ExplosionFrames.png", Texture.class);
