@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ class ScreenCutscenes extends ScreenSB {
     @Override
     public void show() {
         batch = new SpriteBatch();
+        batch.setProjectionMatrix(camera.combined);
         sprite = new Sprite(textures.get(0));
         startTime = TimeUtils.millis();
         tapToContinue = new Sprite(new Texture("StoryScreen/BannerTapToContinue.png"));
@@ -152,7 +154,6 @@ class ScreenCutscenes extends ScreenSB {
         };
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);
-
 
         if (screen == Constant.Screens.MINIGAMES && PreferencesSB.getMinigameCount() > 0) {
             app.setScreen(new ScreenMinigamesSelection(app, isStoryMode));
