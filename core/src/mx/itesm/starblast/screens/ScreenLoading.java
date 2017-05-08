@@ -321,6 +321,7 @@ public class ScreenLoading extends ScreenSB {
         Constant.MANAGER.load("SoundEffects/Explosion2.mp3", Sound.class);
         //Constant.MANAGER.load("SoundEffects/Explosion3.mp3",Sound.class);
         Constant.MANAGER.load("SoundEffects/MissileSound.wav", Sound.class);
+        Constant.MANAGER.load("SoundEffects/PowerupPickupSound.wav",Sound.class);
     }
 
     private void loadHUD() {

@@ -33,7 +33,7 @@ public class Missile extends Bullet implements IExplotable {
 
         EXPLOSION_DAMAGE = explosionDamage;
 
-        density = 0.5f;
+        density = 0.2f;
         restitution = 0;
 
         CircleShape bodyShape = new CircleShape();
