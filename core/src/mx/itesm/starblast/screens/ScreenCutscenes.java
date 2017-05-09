@@ -28,7 +28,7 @@ class ScreenCutscenes extends ScreenSB {
     private long startTime;
     private float currentTime = 0;
     private Sprite tapToContinue;
-    private Texture background;
+    private Sprite background;
     private boolean inTransition;
     private float transitionTime;
 
@@ -41,7 +41,7 @@ class ScreenCutscenes extends ScreenSB {
         this.app = app;
         this.screen = screen;
         this.isStoryMode = isStoryMode;
-        background = new Texture("HighScoresScreen/BackgroundHighScores.jpg");
+        background = new Sprite(new Texture("HighScoresScreen/BackgroundHighScores.jpg"));
         switch (screen) {
             case LEVEL1:
                 for (int i = 1; i < 6; i++) {
@@ -173,13 +173,20 @@ class ScreenCutscenes extends ScreenSB {
             }
             clearScreen();
             batch.begin();
+            if (screen == Constant.Screens.MINI1 || screen == Constant.Screens.MINI2 || screen == Constant.Screens.MINI3) {
+                background.setAlpha((MathUtils.cos(MathUtils.PI2 * transitionTime) + 1) / 2f);
+                background.draw(batch);
+            }
             sprite.setAlpha((MathUtils.cos(MathUtils.PI2 * transitionTime) + 1) / 2f);
             sprite.draw(batch);
             batch.end();
             return;
         }
         batch.begin();
-        batch.draw(background, 0, 0);
+//        batch.draw(background, 0, 0);
+        if (screen == Constant.Screens.MINI1 || screen == Constant.Screens.MINI2 || screen == Constant.Screens.MINI3) {
+            background.draw(batch);
+        }
         sprite.draw(batch);
         if (num == 0) {
             currentTime += delta;
